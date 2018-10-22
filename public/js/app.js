@@ -62750,6 +62750,41 @@ var SideNav = function (_Component) {
                                             "a",
                                             { href: "#" },
                                             "Carousel"
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            "ul",
+                                            null,
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                "li",
+                                                null,
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "a",
+                                                    { href: "#" },
+                                                    "Video"
+                                                ),
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    "ul",
+                                                    null,
+                                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                        "li",
+                                                        null,
+                                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                            "a",
+                                                            { href: "ui-bootstrap.html" },
+                                                            "Bootstrap UI"
+                                                        )
+                                                    ),
+                                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                        "li",
+                                                        null,
+                                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                            "a",
+                                                            { href: "ui-typography.html" },
+                                                            "Typography"
+                                                        )
+                                                    )
+                                                )
+                                            )
                                         )
                                     )
                                 )
