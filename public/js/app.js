@@ -61334,7 +61334,10 @@ var Home = function (_Component) {
                 'div',
                 { id: 'wrapper' },
                 'debugger',
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_topNav__["a" /* default */], null)
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_topNav__["a" /* default */], null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_sideNav__["a" /* default */], null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Content, null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__layouts_rightNav__["a" /* default */], null)
             );
         }
     }]);
@@ -62510,14 +62513,11 @@ var TopNav = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 "form",
                                 { role: "search", className: "" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", placeholder: "Search...", className: "form-control" }),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    "input",
-                                    { type: "text", placeholder: "Search...", className: "form-control" },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "a",
-                                        { href: "#" },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-search" })
-                                    )
+                                    "a",
+                                    { href: "#" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-search" })
                                 )
                             )
                         )
@@ -62750,33 +62750,6 @@ var SideNav = function (_Component) {
                                             "a",
                                             { href: "#" },
                                             "Carousel"
-                                        ),
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            "li",
-                                            null,
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                "a",
-                                                { href: "#" },
-                                                "Video"
-                                            ),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                "li",
-                                                null,
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    "a",
-                                                    { href: "ui-bootstrap.html" },
-                                                    "Bootstrap UI"
-                                                )
-                                            ),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                "li",
-                                                null,
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    "a",
-                                                    { href: "ui-typography.html" },
-                                                    "Typography"
-                                                )
-                                            )
                                         )
                                     )
                                 )
@@ -64065,7 +64038,7 @@ var SideNav = function (_Component) {
     return SideNav;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
-/* unused harmony default export */ var _unused_webpack_default_export = (SideNav);
+/* harmony default export */ __webpack_exports__["a"] = (SideNav);
 
 /***/ }),
 /* 103 */
@@ -64319,7 +64292,7 @@ var RightNav = function (_Component) {
     return RightNav;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
-/* unused harmony default export */ var _unused_webpack_default_export = (RightNav);
+/* harmony default export */ __webpack_exports__["a"] = (RightNav);
 
 /***/ })
 /******/ ]);

@@ -115,9 +115,8 @@ export default class TopNav extends Component {
                         </li>
                         <li className="hide-phone app-search">
                             <form role="search" className="">
-                                <input type="text" placeholder="Search..." className="form-control">
-                                    <a href="#"><i className="fa fa-search"/></a>
-                                </input>
+                                <input type="text" placeholder="Search..." className="form-control"/>
+                                <a href="#"><i className="fa fa-search"/></a>
                             </form>
                         </li>
                     </ul>

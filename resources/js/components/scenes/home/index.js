@@ -10,6 +10,9 @@ export default class Home extends Component {
             <div id="wrapper">
                 debugger
                 <TopNav/>
+                <SideNav/>
+                <Content/>
+                <RightNav/>
             </div>
         );
     }

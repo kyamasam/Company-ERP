@@ -36,10 +36,10 @@ export default class SideNav extends Component {
                                     <li><a href="#">Notification</a></li>
                                     <li><a href="#">Images</a></li>
                                     <li><a href="#">Carousel</a>
-                                        <li><a href="#">Video</a>
+{/*                                        <li><a href="#">Video</a>
                                             <li><a href="ui-bootstrap.html">Bootstrap UI</a></li>
                                             <li><a href="ui-typography.html">Typography</a></li>
-                                        </li>
+                                        </li>*/}
                                     </li>
                                 </ul>
                             </li>
