@@ -11,7 +11,7 @@ export default class Home extends Component {
 
     componentDidMount(){
         const script = document.createElement("script");
-        script.src = "/plugins/peity/jquery.peity.min.js";
+        script.src = "/assets/js/jquery.core.js";
         script.async = true;
         document.body.appendChild(script);
     }
