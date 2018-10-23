@@ -22,10 +22,6 @@
 <div id="app">
 
 </div>
-<script src="{{ asset('/js/app.js') }}"></script>
-<script>
-    var resizefunc = [];
-</script>
 <script src="{{asset('/assets/js/jquery.min.js')}}"></script>
 <script src="{{asset('/assets/js/popper.min.js')}}"></script><!-- Popper for Bootstrap -->
 <script src="{{asset('/assets/js/bootstrap.min.js')}}"></script>
@@ -37,8 +33,13 @@
 <script src="{{asset('/assets/js/wow.min.js')}}"></script>
 <script src="{{asset('/assets/js/jquery.nicescroll.js')}}"></script>
 <script src="{{asset('/assets/js/jquery.scrollTo.min.js')}}"></script>
+<script src="{{ asset('/js/app.js') }}"></script>
+<script>
+    var resizefunc = [];
+</script>
 
-<script src="{{asset('/plugins/peity/jquery.peity.min.js')}}"></script>
+
+{{--<script src="{{asset('/plugins/peity/jquery.peity.min.js')}}"></script>--}}
 
 <script src="{{asset('/plugins/jquery-sparkline/jquery.sparkline.min.js')}}"></script>
 

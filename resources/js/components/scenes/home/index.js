@@ -5,6 +5,17 @@ import SideNav from "../layouts/sideNav";
 import RightNav from "../layouts/rightNav";
 
 export default class Home extends Component {
+    constructor(props){
+        super(props);
+    }
+
+    componentDidMount(){
+        const script = document.createElement("script");
+        script.src = "/plugins/peity/jquery.peity.min.js";
+        script.async = true;
+        document.body.appendChild(script);
+    }
+
     render() {
         return (
             <div id="wrapper">
