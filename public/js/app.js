@@ -783,13 +783,33 @@ var padding_correction = {
 var SideNav = function (_Component) {
     _inherits(SideNav, _Component);
 
-    function SideNav() {
+    function SideNav(props) {
         _classCallCheck(this, SideNav);
 
-        return _possibleConstructorReturn(this, (SideNav.__proto__ || Object.getPrototypeOf(SideNav)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (SideNav.__proto__ || Object.getPrototypeOf(SideNav)).call(this, props));
     }
 
     _createClass(SideNav, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var scripts_array = ['/assets/js/bootstrap.min.js', '/assets/js/detect.js', '/assets/js/fastclick.js', '/assets/js/jquery.slimscroll.js', '/assets/js/jquery.blockUI.js', '/assets/js/waves.js', '/assets/js/wow.min.js', '/assets/js/jquery.nicescroll.js', '/assets/js/jquery.scrollTo.min.js'];
+
+            for (var i = 0; i < scripts_array.length; i++) {
+                var var_name = "script" + i;
+                var script2 = document.createElement("script");
+                script2.src = "" + scripts_array[i];
+                script2.async = false;
+                document.body.appendChild(script2);
+            }
+            var script = document.createElement("script");
+            script.innerText = "var resizefunc = [] ;";
+
+            document.body.appendChild(script);
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {}
+    }, {
         key: 'render',
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -62113,6 +62133,16 @@ var Home = function (_Component) {
             script.src = "/assets/js/jquery.core.js";
             script.async = true;
             document.body.appendChild(script);
+
+            var scripts_array = ['/plugins/peity/jquery.peity.min.js', '/plugins/jquery-sparkline/jquery.sparkline.min.js', '/assets/pages/jquery.dashboard_3.js', '/assets/js/jquery.core.js', '/assets/js/jquery.app.js'];
+
+            for (var i = 0; i < scripts_array.length; i++) {
+                var var_name = "script" + i;
+                var script2 = document.createElement("script");
+                script2.src = "" + scripts_array[i];
+                script2.async = true;
+                document.body.appendChild(script2);
+            }
         }
     }, {
         key: 'render',

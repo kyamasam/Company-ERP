@@ -5,7 +5,42 @@ const padding_correction={
     paddingTop: '0px'
 };
 
+
 export default class SideNav extends Component {
+    constructor(props){
+        super(props);
+    }
+
+    componentDidMount(){
+        var scripts_array=[
+            '/assets/js/bootstrap.min.js'
+            ,'/assets/js/detect.js'
+            ,'/assets/js/fastclick.js'
+            ,'/assets/js/jquery.slimscroll.js'
+            ,'/assets/js/jquery.blockUI.js'
+            ,'/assets/js/waves.js'
+            ,'/assets/js/wow.min.js'
+            ,'/assets/js/jquery.nicescroll.js'
+            ,'/assets/js/jquery.scrollTo.min.js'
+        ];
+
+        for(var i=0; i< scripts_array.length ;i++) {
+            var var_name="script"+i;
+            const script2 = document.createElement("script");
+            script2.src = ""+scripts_array[i];
+            script2.async = false;
+            document.body.appendChild(script2);
+        }
+        const script = document.createElement("script");
+        script.innerText ="var resizefunc = [] ;";
+
+        document.body.appendChild(script);
+
+    }
+    componentWillUnmount(){
+
+    }
+
     render() {
         return (
             <div className="left side-menu">

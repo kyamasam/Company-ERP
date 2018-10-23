@@ -4,6 +4,7 @@ import TopNav from "../layouts/topNav";
 import SideNav from "../layouts/sideNav";
 import RightNav from "../layouts/rightNav";
 
+
 export default class Home extends Component {
     constructor(props){
         super(props);
@@ -14,6 +15,23 @@ export default class Home extends Component {
         script.src = "/assets/js/jquery.core.js";
         script.async = true;
         document.body.appendChild(script);
+
+        var scripts_array=[
+            '/plugins/peity/jquery.peity.min.js'
+            ,'/plugins/jquery-sparkline/jquery.sparkline.min.js'
+            ,'/assets/pages/jquery.dashboard_3.js'
+            ,'/assets/js/jquery.core.js'
+            ,'/assets/js/jquery.app.js'
+
+        ];
+
+        for(var i=0; i< scripts_array.length ;i++) {
+            var var_name="script"+i;
+            const script2 = document.createElement("script");
+            script2.src = ""+scripts_array[i];
+            script2.async = true;
+            document.body.appendChild(script2);
+        }
     }
 
     render() {
