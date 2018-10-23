@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 
 export default class TopNav extends Component {
     render() {
@@ -6,13 +7,11 @@ export default class TopNav extends Component {
             <div className="topbar">
                 <div className="topbar-left">
                     <div className="text-center">
-                        <a href="index.html" className="logo"><i className="icon-magnet icon-c-logo"/><span>Ub<i
-                            className="md md-album"/>ld</span></a>
+                        <Link className='logo' to='/'><i className="icon-magnet icon-c-logo"/><span>Skality</span></Link>
                     </div>
                 </div>
 
                 <nav className="navbar-custom">
-
                     <ul className="list-inline float-right mb-0">
                         <li className="list-inline-item dropdown notification-list">
                             <a className="nav-link dropdown-toggle arrow-none waves-light waves-effect"
@@ -125,3 +124,4 @@ export default class TopNav extends Component {
         );
     }
 }
+

@@ -8,7 +8,6 @@ export default class Home extends Component {
     render() {
         return (
             <div id="wrapper">
-                debugger
                 <TopNav/>
                 <SideNav/>
                 <Content/>
@@ -329,8 +328,4 @@ class Content extends Component{
             </div>
         );
     }
-}
-
-if (document.getElementById('app')) {
-    ReactDOM.render(<Home/>, document.getElementById('app'));
 }
