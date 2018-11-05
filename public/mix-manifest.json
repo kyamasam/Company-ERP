@@ -1,4 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/js/detect.js": "/js/detect.js",
+    "/css/app.css": "/css/app.css",
+    "/js/jquery.dashboard_3.js": "/js/jquery.dashboard_3.js",
+    "/js/jquery.core.js": "/js/jquery.core.js"
 }

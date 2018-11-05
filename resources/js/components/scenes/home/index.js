@@ -10,10 +10,18 @@ export default class Home extends Component {
     }
 
     componentDidMount(){
-        const script = document.createElement("script");
-        script.src = "/assets/js/jquery.core.js";
-        script.async = true;
-        document.body.appendChild(script);
+        var scripts_array=[
+            '/js/jquery.dashboard_3.js',
+            '/js/jquery.core.js',
+            '/assets/js/jquery.app.js'
+        ];
+
+        for(var i=0; i< scripts_array.length ;i++) {
+            const script = document.createElement("script");
+            script.src = scripts_array[i];
+            script.async = true;
+            document.body.appendChild(script);
+        }
     }
 
     render() {
@@ -76,9 +84,11 @@ class Content extends Component{
                                                 <p className="text-muted m-b-0 m-t-0">Total Revenue</p>
                                             </div>
                                             <div className="table-detail text-right">
-                                                <span data-plugin="peity-bar" data-colors="#34d3eb,#ebeff2"
+                                                <span data-plugin="peity-bar"
+                                                      data-colors="#34d3eb,#ebeff2"
                                                       data-width="120"
-                                                      data-height="45">5,3,9,6,5,9,7,3,5,2,9,7,2,1</span>
+                                                      data-height="45">5,3,9,6,5,9,7,3,5,2,9,7,2,1
+                                                </span>
                                             </div>
 
                                         </div>

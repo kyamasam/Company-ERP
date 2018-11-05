@@ -54,3 +54,25 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+
+/**
+ * CUSTOM
+ *FastClick
+ */
+window.FastClick = require('fastclick');
+
+/**
+ * CUSTOM
+ *WOW Javascript
+ * Import through NPM
+ */
+const wow = require('wowjs');
+window.WOW = wow.WOW;
+
+window.slimScroll= require('jquery-slimscroll');
+window.nicescroll= require('jquery.nicescroll');
+window.scrollto= require('jquery.scrollTo');
+window.blockUI= require('block-ui');
+window.peity=require('peity');
+window.sparkline=require('jquery-sparkline');

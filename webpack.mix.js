@@ -12,4 +12,7 @@ let mix = require('laravel-mix');
  */
 
 mix.react('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css');
+    .js('resources/assets/js/detect.js','public/js')
+    .js('resources/assets/js/jquery.core.js','public/js')
+    .js('resources/assets/pages/jquery.dashboard_3.js','public/js')
+    .sass('resources/sass/app.scss', 'public/css');
