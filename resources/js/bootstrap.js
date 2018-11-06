@@ -83,3 +83,7 @@ window.scrollto= require('jquery.scrollto');
 window.blockUI= require('block-ui');
 window.peity=require('peity');
 window.sparkline=require('jquery-sparkline');
+
+/**
+ *PaceJS
+ */

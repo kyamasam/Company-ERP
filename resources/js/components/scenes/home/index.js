@@ -7,6 +7,9 @@ import Content from "./components/content";
 export default class Home extends Component {
     constructor(props){
         super(props);
+        this.state={
+            isLoading:true
+        }
     }
 
     componentDidMount(){
@@ -22,6 +25,7 @@ export default class Home extends Component {
             script.async = false;
             document.body.appendChild(script);
         }
+        this.setState({isLoading: false})
     }
 
     render() {
