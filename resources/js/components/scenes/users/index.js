@@ -27,7 +27,7 @@ export default class Home extends Component {
             <div id="wrapper">
                 <TopNav/>
                 <SideNav/>
-                <Content/>
+                <Content{...this.props}/>
                 <RightNav/>
             </div>
         );

@@ -1,8 +1,14 @@
 import {Component} from "react";
 import React from "react";
 import Footer from "../../layouts/footer"
+import Breadcrumbs from "../../layouts/breadcrumbs_2l";
 
 export default class Content extends Component {
+    constructor(props){
+        super(props);
+    }
+    componentWillMount(){
+    }
     render() {
         return (
             <div className="content-page">
@@ -23,12 +29,7 @@ export default class Content extends Component {
                                     </div>
                                 </div>
 
-                                <h4 className="page-title">Dashboard 3</h4>
-                                <ol className="breadcrumb">
-                                    <li className="breadcrumb-item"><a href="#">Ubold</a></li>
-                                    <li className="breadcrumb-item"><a href="#">Dashboard</a></li>
-                                    <li className="breadcrumb-item active">Dashboard 3</li>
-                                </ol>
+                                <Breadcrumbs{...this.props}/>
 
                             </div>
                         </div>

@@ -28,7 +28,7 @@ export default class Settings extends Component {
             <div id="wrapper">
                 <TopNav/>
                 <SideNav/>
-                <Content/>
+                <Content{...this.props}/>
                 <RightNav/>
             </div>
         );

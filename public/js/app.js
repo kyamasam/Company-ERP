@@ -48015,6 +48015,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_scenes_auth_login_index__ = __webpack_require__(132);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+var _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+        var source = arguments[i];for (var key in source) {
+            if (Object.prototype.hasOwnProperty.call(source, key)) {
+                target[key] = source[key];
+            }
+        }
+    }return target;
+};
+
 var _createClass = function () {
     function defineProperties(target, props) {
         for (var i = 0; i < props.length; i++) {
@@ -48072,7 +48082,31 @@ var Index = function (_Component) {
     _createClass(Index, [{
         key: 'render',
         value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["a" /* BrowserRouter */], null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["d" /* Switch */], null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/', exact: true, component: __WEBPACK_IMPORTED_MODULE_4__components_scenes_home_index__["a" /* default */] }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/projects', exact: true, component: __WEBPACK_IMPORTED_MODULE_5__components_scenes_projects_index__["a" /* default */] }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/quotations', exact: true, component: __WEBPACK_IMPORTED_MODULE_6__components_scenes_quotations_index__["a" /* default */] }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/invoices', exact: true, component: __WEBPACK_IMPORTED_MODULE_7__components_scenes_invoices_index__["a" /* default */] }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/payments', exact: true, component: __WEBPACK_IMPORTED_MODULE_8__components_scenes_payments_index__["a" /* default */] }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/tickets', exact: true, component: __WEBPACK_IMPORTED_MODULE_9__components_scenes_tickets_index__["a" /* default */] }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/announcements', exact: true, component: __WEBPACK_IMPORTED_MODULE_10__components_scenes_announcements_index__["a" /* default */] }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/users', exact: true, component: __WEBPACK_IMPORTED_MODULE_11__components_scenes_users_index__["a" /* default */] }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/settings', exact: true, component: __WEBPACK_IMPORTED_MODULE_12__components_scenes_settings_index__["a" /* default */] }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/help', exact: true, component: __WEBPACK_IMPORTED_MODULE_13__components_scenes_help_index__["a" /* default */] }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/register', exact: true, component: __WEBPACK_IMPORTED_MODULE_14__components_scenes_auth_register_index__["a" /* default */] }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/login', exact: true, component: __WEBPACK_IMPORTED_MODULE_15__components_scenes_auth_login_index__["a" /* default */] }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { component: __WEBPACK_IMPORTED_MODULE_3__components_scenes_error_noMatch__["a" /* default */] }))));
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["a" /* BrowserRouter */], null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["d" /* Switch */], null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/', exact: true, render: function render(props) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_scenes_home_index__["a" /* default */], _extends({}, props, { details: { title: "Dashboard" } }));
+                } }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/projects', exact: true, render: function render(props) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_scenes_projects_index__["a" /* default */], _extends({}, props, { details: { title: "Projects" } }));
+                } }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/quotations', exact: true, render: function render(props) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__components_scenes_quotations_index__["a" /* default */], _extends({}, props, { details: { title: "Quotation" } }));
+                } }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/invoices', exact: true, render: function render(props) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__components_scenes_invoices_index__["a" /* default */], _extends({}, props, { details: { title: "Invoices" } }));
+                } }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/payments', exact: true, render: function render(props) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__components_scenes_payments_index__["a" /* default */], _extends({}, props, { details: { title: "Payments" } }));
+                } }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/tickets', exact: true, render: function render(props) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__components_scenes_tickets_index__["a" /* default */], _extends({}, props, { details: { title: "Tickets" } }));
+                } }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/announcements', exact: true, render: function render(props) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__components_scenes_announcements_index__["a" /* default */], _extends({}, props, { details: { title: "Announcements" } }));
+                } }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/users', exact: true, render: function render(props) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__components_scenes_users_index__["a" /* default */], _extends({}, props, { details: { title: "Users" } }));
+                } }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/settings', exact: true, render: function render(props) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_12__components_scenes_settings_index__["a" /* default */], _extends({}, props, { details: { title: "Settings" } }));
+                } }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/help', exact: true, render: function render(props) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_13__components_scenes_help_index__["a" /* default */], _extends({}, props, { details: { title: "Help" } }));
+                } }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/register', exact: true, render: function render(props) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_14__components_scenes_auth_register_index__["a" /* default */], _extends({}, props, { details: { title: "Register" } }));
+                } }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/login', exact: true, render: function render(props) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_15__components_scenes_auth_login_index__["a" /* default */], _extends({}, props, { details: { title: "Login" } }));
+                } }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { component: __WEBPACK_IMPORTED_MODULE_3__components_scenes_error_noMatch__["a" /* default */] }))));
         }
     }]);
 
@@ -71571,14 +71605,14 @@ var Home = function (_Component) {
             for (var i = 0; i < scripts_array.length; i++) {
                 var script = document.createElement("script");
                 script.src = scripts_array[i];
-                script.async = true;
+                script.async = false;
                 document.body.appendChild(script);
             }
         }
     }, {
         key: "render",
         value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "wrapper" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_content__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_rightNav__["a" /* default */], null));
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "wrapper" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_content__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_rightNav__["a" /* default */], null));
         }
     }]);
 
@@ -71595,6 +71629,7 @@ var Home = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layouts_footer__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__ = __webpack_require__(138);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () {
@@ -71629,6 +71664,7 @@ function _inherits(subClass, superClass) {
 
 
 
+
 var Content = function (_Component) {
     _inherits(Content, _Component);
 
@@ -71639,11 +71675,14 @@ var Content = function (_Component) {
     }
 
     _createClass(Content, [{
+        key: "componentWillMount",
+        value: function componentWillMount() {}
+    }, {
         key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content-page" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "container-fluid" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group pull-right m-t-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "button",
                 className: "btn btn-default dropdown-toggle waves-effect waves-light",
-                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "page-title" }, "Dashboard 3"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("ol", { className: "breadcrumb" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Ubold")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Dashboard")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item active" }, "test")))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-lg-12 col-xl-4" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "card-box" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "bar-widget" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-box" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "iconbox bg-info" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "icon-layers" }))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "m-t-0 m-b-5" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "12560")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-muted m-b-0 m-t-0" }, "Total Revenue")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail text-right" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { "data-plugin": "peity-bar",
+                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-lg-12 col-xl-4" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "card-box" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "bar-widget" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-box" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "iconbox bg-info" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "icon-layers" }))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "m-t-0 m-b-5" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "12560")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-muted m-b-0 m-t-0" }, "Total Revenue")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail text-right" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { "data-plugin": "peity-bar",
                 "data-colors": "#34d3eb,#ebeff2",
                 "data-width": "120",
                 "data-height": "45" }, "5,3,9,6,5,9,7,3,5,2,9,7,2,1")))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-lg-12 col-xl-4" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "card-box" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "bar-widget" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-box" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "iconbox bg-custom" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "icon-layers" }))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "m-t-0 m-b-5" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "356")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-muted m-b-0 m-t-0" }, "Ave. weekly Sales")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail text-right" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { "data-plugin": "peity-pie", "data-colors": "#5fbeaa,#ebeff2",
@@ -71729,7 +71768,7 @@ var Projects = function (_Component) {
     }, {
         key: "render",
         value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "wrapper" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_content__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_rightNav__["a" /* default */], null));
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "wrapper" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_content__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_rightNav__["a" /* default */], null));
         }
     }]);
 
@@ -71746,6 +71785,7 @@ var Projects = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layouts_footer__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__ = __webpack_require__(138);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () {
@@ -71780,21 +71820,25 @@ function _inherits(subClass, superClass) {
 
 
 
+
 var Content = function (_Component) {
     _inherits(Content, _Component);
 
-    function Content() {
+    function Content(props) {
         _classCallCheck(this, Content);
 
-        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
     }
 
     _createClass(Content, [{
+        key: "componentWillMount",
+        value: function componentWillMount() {}
+    }, {
         key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content-page" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "container-fluid" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group pull-right m-t-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "button",
                 className: "btn btn-default dropdown-toggle waves-effect waves-light",
-                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "page-title" }, "Dashboard 3"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("ol", { className: "breadcrumb" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Ubold")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Dashboard")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item active" }, "Dashboard 3")))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
+                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
         }
     }]);
 
@@ -71874,7 +71918,7 @@ var Quotations = function (_Component) {
     }, {
         key: "render",
         value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "wrapper" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_content__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_rightNav__["a" /* default */], null));
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "wrapper" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_content__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_rightNav__["a" /* default */], null));
         }
     }]);
 
@@ -71891,6 +71935,7 @@ var Quotations = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layouts_footer__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__ = __webpack_require__(138);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () {
@@ -71925,21 +71970,25 @@ function _inherits(subClass, superClass) {
 
 
 
+
 var Content = function (_Component) {
     _inherits(Content, _Component);
 
-    function Content() {
+    function Content(props) {
         _classCallCheck(this, Content);
 
-        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
     }
 
     _createClass(Content, [{
+        key: "componentWillMount",
+        value: function componentWillMount() {}
+    }, {
         key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content-page" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "container-fluid" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group pull-right m-t-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "button",
                 className: "btn btn-default dropdown-toggle waves-effect waves-light",
-                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "page-title" }, "Dashboard 3"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("ol", { className: "breadcrumb" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Ubold")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Dashboard")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item active" }, "Dashboard 3")))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
+                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
         }
     }]);
 
@@ -72019,7 +72068,7 @@ var Invoices = function (_Component) {
     }, {
         key: "render",
         value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "wrapper" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_content__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_rightNav__["a" /* default */], null));
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "wrapper" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_content__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_rightNav__["a" /* default */], null));
         }
     }]);
 
@@ -72036,6 +72085,7 @@ var Invoices = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layouts_footer__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__ = __webpack_require__(138);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () {
@@ -72070,21 +72120,26 @@ function _inherits(subClass, superClass) {
 
 
 
+
 var Content = function (_Component) {
     _inherits(Content, _Component);
 
-    function Content() {
+    function Content(props) {
         _classCallCheck(this, Content);
 
-        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
     }
 
     _createClass(Content, [{
+        key: "componentWillMount",
+        value: function componentWillMount() {}
+    }, {
         key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content-page" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "container-fluid" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group pull-right m-t-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "button",
                 className: "btn btn-default dropdown-toggle waves-effect waves-light",
-                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "page-title" }, "Dashboard 3"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("ol", { className: "breadcrumb" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Ubold")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Dashboard")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item active" }, "Dashboard 3")))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
+                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "form-group" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { htmlFor: "exampleInputEmail1" }, "Email address"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", className: "form-control", id: "exampleInputEmail1", "aria-describedby": "emailHelp", placeholder: "Enter email" }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("small", { id: "emailHelp", className: "form-text text-muted" }, "We'll never share your email with anyone else.")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "form-group" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { htmlFor: "exampleInputPassword1" }, "Password"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", className: "form-control", id: "exampleInputPassword1",
+                placeholder: "Password" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "form-check" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "checkbox", className: "form-check-input", id: "exampleCheck1" }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { className: "form-check-label", htmlFor: "exampleCheck1" }, "Check me out")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "submit", className: "btn btn-primary" }, "Submit")))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
         }
     }]);
 
@@ -72164,7 +72219,7 @@ var Payments = function (_Component) {
     }, {
         key: "render",
         value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "wrapper" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_content__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_rightNav__["a" /* default */], null));
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "wrapper" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_content__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_rightNav__["a" /* default */], null));
         }
     }]);
 
@@ -72181,6 +72236,7 @@ var Payments = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layouts_footer__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__ = __webpack_require__(138);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () {
@@ -72215,21 +72271,25 @@ function _inherits(subClass, superClass) {
 
 
 
+
 var Content = function (_Component) {
     _inherits(Content, _Component);
 
-    function Content() {
+    function Content(props) {
         _classCallCheck(this, Content);
 
-        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
     }
 
     _createClass(Content, [{
+        key: "componentWillMount",
+        value: function componentWillMount() {}
+    }, {
         key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content-page" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "container-fluid" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group pull-right m-t-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "button",
                 className: "btn btn-default dropdown-toggle waves-effect waves-light",
-                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "page-title" }, "Dashboard 3"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("ol", { className: "breadcrumb" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Ubold")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Dashboard")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item active" }, "Dashboard 3")))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
+                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
         }
     }]);
 
@@ -72309,7 +72369,7 @@ var Tickets = function (_Component) {
     }, {
         key: "render",
         value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "wrapper" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_content__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_rightNav__["a" /* default */], null));
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "wrapper" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_content__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_rightNav__["a" /* default */], null));
         }
     }]);
 
@@ -72326,6 +72386,7 @@ var Tickets = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layouts_footer__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__ = __webpack_require__(138);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () {
@@ -72360,21 +72421,25 @@ function _inherits(subClass, superClass) {
 
 
 
+
 var Content = function (_Component) {
     _inherits(Content, _Component);
 
-    function Content() {
+    function Content(props) {
         _classCallCheck(this, Content);
 
-        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
     }
 
     _createClass(Content, [{
+        key: "componentWillMount",
+        value: function componentWillMount() {}
+    }, {
         key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content-page" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "container-fluid" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group pull-right m-t-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "button",
                 className: "btn btn-default dropdown-toggle waves-effect waves-light",
-                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "page-title" }, "Dashboard 3"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("ol", { className: "breadcrumb" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Ubold")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Dashboard")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item active" }, "Dashboard 3")))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
+                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
         }
     }]);
 
@@ -72454,7 +72519,7 @@ var Announcements = function (_Component) {
     }, {
         key: "render",
         value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "wrapper" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_content__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_rightNav__["a" /* default */], null));
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "wrapper" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_content__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_rightNav__["a" /* default */], null));
         }
     }]);
 
@@ -72471,6 +72536,7 @@ var Announcements = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layouts_footer__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__ = __webpack_require__(138);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () {
@@ -72505,21 +72571,25 @@ function _inherits(subClass, superClass) {
 
 
 
+
 var Content = function (_Component) {
     _inherits(Content, _Component);
 
-    function Content() {
+    function Content(props) {
         _classCallCheck(this, Content);
 
-        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
     }
 
     _createClass(Content, [{
+        key: "componentWillMount",
+        value: function componentWillMount() {}
+    }, {
         key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content-page" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "container-fluid" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group pull-right m-t-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "button",
                 className: "btn btn-default dropdown-toggle waves-effect waves-light",
-                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "page-title" }, "Dashboard 3"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("ol", { className: "breadcrumb" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Ubold")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Dashboard")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item active" }, "Dashboard 3")))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
+                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
         }
     }]);
 
@@ -72599,7 +72669,7 @@ var Home = function (_Component) {
     }, {
         key: "render",
         value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "wrapper" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_content__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_rightNav__["a" /* default */], null));
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "wrapper" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_content__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_rightNav__["a" /* default */], null));
         }
     }]);
 
@@ -72616,6 +72686,7 @@ var Home = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layouts_footer__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__ = __webpack_require__(138);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () {
@@ -72650,21 +72721,25 @@ function _inherits(subClass, superClass) {
 
 
 
+
 var Content = function (_Component) {
     _inherits(Content, _Component);
 
-    function Content() {
+    function Content(props) {
         _classCallCheck(this, Content);
 
-        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
     }
 
     _createClass(Content, [{
+        key: "componentWillMount",
+        value: function componentWillMount() {}
+    }, {
         key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content-page" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "container-fluid" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group pull-right m-t-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "button",
                 className: "btn btn-default dropdown-toggle waves-effect waves-light",
-                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "page-title" }, "Dashboard 3"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("ol", { className: "breadcrumb" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Ubold")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Dashboard")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item active" }, "Dashboard 3")))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
+                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
         }
     }]);
 
@@ -72744,7 +72819,7 @@ var Settings = function (_Component) {
     }, {
         key: "render",
         value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "wrapper" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_content__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_rightNav__["a" /* default */], null));
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "wrapper" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_content__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_rightNav__["a" /* default */], null));
         }
     }]);
 
@@ -72761,6 +72836,7 @@ var Settings = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layouts_footer__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__ = __webpack_require__(138);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () {
@@ -72795,21 +72871,25 @@ function _inherits(subClass, superClass) {
 
 
 
+
 var Content = function (_Component) {
     _inherits(Content, _Component);
 
-    function Content() {
+    function Content(props) {
         _classCallCheck(this, Content);
 
-        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
     }
 
     _createClass(Content, [{
+        key: "componentWillMount",
+        value: function componentWillMount() {}
+    }, {
         key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content-page" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "container-fluid" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group pull-right m-t-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "button",
                 className: "btn btn-default dropdown-toggle waves-effect waves-light",
-                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "page-title" }, "Dashboard 3"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("ol", { className: "breadcrumb" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Ubold")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Dashboard")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item active" }, "Dashboard 3")))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
+                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
         }
     }]);
 
@@ -72892,7 +72972,7 @@ var Help = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { id: 'wrapper' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_content__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__layouts_rightNav__["a" /* default */], null));
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { id: 'wrapper' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_topNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__layouts_sideNav__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_content__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__layouts_rightNav__["a" /* default */], null));
         }
     }]);
 
@@ -72909,6 +72989,7 @@ var Help = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layouts_footer__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__ = __webpack_require__(138);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () {
@@ -72943,21 +73024,25 @@ function _inherits(subClass, superClass) {
 
 
 
+
 var Content = function (_Component) {
     _inherits(Content, _Component);
 
-    function Content() {
+    function Content(props) {
         _classCallCheck(this, Content);
 
-        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
     }
 
     _createClass(Content, [{
+        key: "componentWillMount",
+        value: function componentWillMount() {}
+    }, {
         key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content-page" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "container-fluid" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group pull-right m-t-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "button",
                 className: "btn btn-default dropdown-toggle waves-effect waves-light",
-                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "page-title" }, "Dashboard 3"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("ol", { className: "breadcrumb" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Ubold")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "Dashboard")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item active" }, "Dashboard 3")))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
+                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
         }
     }]);
 
@@ -73114,6 +73199,77 @@ var Home = function (_Component) {
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
 /* harmony default export */ __webpack_exports__["a"] = (Home);
+
+/***/ }),
+/* 133 */,
+/* 134 */,
+/* 135 */,
+/* 136 */,
+/* 137 */,
+/* 138 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__(10);
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () {
+    function defineProperties(target, props) {
+        for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+        }
+    }return function (Constructor, protoProps, staticProps) {
+        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+    };
+}();
+
+function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+    }
+}
+
+function _possibleConstructorReturn(self, call) {
+    if (!self) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }return call && ((typeof call === "undefined" ? "undefined" : _typeof(call)) === "object" || typeof call === "function") ? call : self;
+}
+
+function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+
+
+
+
+var Breadcrumbs_2l = function (_Component) {
+    _inherits(Breadcrumbs_2l, _Component);
+
+    function Breadcrumbs_2l(props) {
+        _classCallCheck(this, Breadcrumbs_2l);
+
+        return _possibleConstructorReturn(this, (Breadcrumbs_2l.__proto__ || Object.getPrototypeOf(Breadcrumbs_2l)).call(this, props));
+    }
+
+    _createClass(Breadcrumbs_2l, [{
+        key: "componentWillMount",
+        value: function componentWillMount() {}
+    }, {
+        key: "render",
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "page-title" }, this.props.details.title), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("ol", { className: "breadcrumb" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["b" /* Link */], { to: "/" }, "Clients")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item active" }, this.props.details.title)));
+        }
+    }]);
+
+    return Breadcrumbs_2l;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Breadcrumbs_2l);
 
 /***/ })
 /******/ ]);

@@ -19,7 +19,7 @@ export default class Home extends Component {
         for(var i=0; i< scripts_array.length ;i++) {
             const script = document.createElement("script");
             script.src = scripts_array[i];
-            script.async = true;
+            script.async = false;
             document.body.appendChild(script);
         }
     }
@@ -29,7 +29,7 @@ export default class Home extends Component {
             <div id="wrapper">
                 <TopNav/>
                 <SideNav/>
-                <Content/>
+                <Content{...this.props} />
                 <RightNav/>
             </div>
         );

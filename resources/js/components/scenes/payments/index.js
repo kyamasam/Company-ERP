@@ -27,7 +27,7 @@ export default class Payments extends Component {
             <div id="wrapper">
                 <TopNav/>
                 <SideNav/>
-                <Content/>
+                <Content{...this.props}/>
                 <RightNav/>
             </div>
         );

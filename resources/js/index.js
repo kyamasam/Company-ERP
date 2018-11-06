@@ -22,18 +22,18 @@ export default class Index extends Component {
             <Router>
                 <div>
                     <Switch>
-                        <Route path="/" exact component={Home}/>
-                        <Route path="/projects" exact component={Projects}/>
-                        <Route path="/quotations" exact component={Quotations}/>
-                        <Route path="/invoices" exact component={Invoices}/>
-                        <Route path="/payments" exact component={Payments}/>
-                        <Route path="/tickets" exact component={Tickets}/>
-                        <Route path="/announcements" exact component={Announcements}/>
-                        <Route path="/users" exact component={Users}/>
-                        <Route path="/settings" exact component={Settings}/>
-                        <Route path="/help" exact component={Help}/>
-                        <Route path="/register" exact component={Register}/>
-                        <Route path="/login" exact component={Login}/>
+                        <Route path="/" exact render={props => <Home{...props} details={{title:"Dashboard"}}/>}/>
+                        <Route path="/projects" exact render={props => <Projects{...props} details={{title:"Projects"}}/>}/>
+                        <Route path="/quotations" exact render={props => <Quotations{...props} details={{title:"Quotation"}}/>}/>
+                        <Route path="/invoices" exact render={props => <Invoices{...props} details={{title:"Invoices"}}/>}/>
+                        <Route path="/payments" exact render={props => <Payments{...props} details={{title:"Payments"}}/>}/>
+                        <Route path="/tickets" exact render={props => <Tickets{...props} details={{title:"Tickets"}}/>}/>
+                        <Route path="/announcements" exact render={props => <Announcements{...props} details={{title:"Announcements"}}/>}/>
+                        <Route path="/users" exact render={props => <Users{...props} details={{title:"Users"}}/>}/>
+                        <Route path="/settings" exact render={props => <Settings{...props} details={{title:"Settings"}}/>}/>
+                        <Route path="/help" exact render={props => <Help{...props} details={{title:"Help"}}/>}/>
+                        <Route path="/register" exact render={props => <Register{...props} details={{title:"Register"}}/>}/>
+                        <Route path="/login" exact render={props => <Login{...props} details={{title:"Login"}}/>}/>
                         <Route component={NoMatch}/>
                     </Switch>
                 </div>
