@@ -4,13 +4,14 @@ import SideNav from "../layouts/sideNav";
 import RightNav from "../layouts/rightNav";
 import Content from "./components/content";
 
-export default class Projects extends Component {
+export default class Quotations extends Component {
     constructor(props){
         super(props);
     }
 
     componentDidMount(){
         var scripts_array=[
+            '/js/jquery.dashboard_3.js',
             '/js/jquery.core.js',
             '/assets/js/jquery.app.js'
         ];

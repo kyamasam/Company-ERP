@@ -267,7 +267,7 @@
     setTimeout(function(){updateScrollbars(cm);}, 100);
   }
 
-  // Returns a function that estimates the height of a line, to use as
+  // Returns a function that quotations the height of a line, to use as
   // first approximation until the line becomes visible (and is thus
   // properly measurable).
   function estimateHeight(cm) {

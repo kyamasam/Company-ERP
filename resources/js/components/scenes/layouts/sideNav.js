@@ -25,8 +25,8 @@ export default class SideNav extends Component {
                             </li>
 
                             <li>
-                                <Link className='waves-effect' to='/estimates'><i className="ti-bar-chart"/>
-                                    <span> Estimates </span>
+                                <Link className='waves-effect' to='/quotations'><i className="ti-bar-chart"/>
+                                    <span> Quotations </span>
                                 </Link>
                             </li>
 

@@ -2,6 +2,8 @@
 window._ = require('lodash');
 window.Popper = require('popper.js').default;
 
+
+
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
  * for JavaScript based Bootstrap features such as modals and tabs. This
@@ -13,6 +15,12 @@ try {
 
     require('bootstrap');
 } catch (e) {}
+
+/**
+ * CUSTOM
+ * Adding Nicescroll
+ */
+window.nicescroll= require('jquery.nicescroll');
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -71,8 +79,7 @@ const wow = require('wowjs');
 window.WOW = wow.WOW;
 
 window.slimScroll= require('jquery-slimscroll');
-window.nicescroll= require('jquery.nicescroll');
-window.scrollto= require('jquery.scrollTo');
+window.scrollto= require('jquery.scrollto');
 window.blockUI= require('block-ui');
 window.peity=require('peity');
 window.sparkline=require('jquery-sparkline');
