@@ -736,7 +736,7 @@ var Breadcrumbs_2l = function (_Component) {
     }, {
         key: "render",
         value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "page-title" }, this.props.details.title), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("ol", { className: "breadcrumb" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["b" /* Link */], { to: "/" }, "Clients")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item active" }, this.props.details.title)));
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "page-title" }, this.props.details.title), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("ol", { className: "breadcrumb" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["b" /* Link */], { to: "/" }, "Skality")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", { className: "breadcrumb-item active" }, this.props.details.title)));
         }
     }]);
 
