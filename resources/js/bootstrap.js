@@ -72,7 +72,7 @@ window.WOW = wow.WOW;
 
 window.slimScroll= require('jquery-slimscroll');
 window.nicescroll= require('jquery.nicescroll');
-window.scrollto= require('jquery.scrollTo');
+window.scrollto= require('jquery.scrollto');
 window.blockUI= require('block-ui');
 window.peity=require('peity');
 window.sparkline=require('jquery-sparkline');
