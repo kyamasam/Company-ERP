@@ -24,6 +24,7 @@
     </script>
     <script src="{{ asset('/js/app.js') }}"></script>
     <script src="{{ asset('/js/detect.js') }}"></script>
+    <script src="{{ asset('/js/pace.js') }}"></script>
     <script src="{{ asset('/assets/js/waves.js') }}"></script>
 </body>
 </html>
