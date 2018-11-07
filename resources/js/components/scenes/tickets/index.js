@@ -1,36 +1,34 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import TopNav from "../layouts/topNav";
 import SideNav from "../layouts/sideNav";
 import RightNav from "../layouts/rightNav";
+import Content from "./components/content";
 
-export default class Home extends Component {
+export default class Tickets extends Component {
+    constructor(props){
+        super(props);
+    }
+
+    componentDidMount(){
+        var scripts_array=[
+            '/js/jquery.core.js',
+            '/assets/js/jquery.app.js'
+        ];
+
+        for(var i=0; i< scripts_array.length ;i++) {
+            const script = document.createElement("script");
+            script.src = scripts_array[i];
+            script.async = true;
+            document.body.appendChild(script);
+        }
+    }
     render() {
         return (
             <div id="wrapper">
                 <TopNav/>
                 <SideNav/>
-                <Content/>
+                <Content{...this.props}/>
                 <RightNav/>
-            </div>
-        );
-    }
-}
-
-class Content extends Component{
-    render(){
-        return(
-            <div className="container">
-                <div className="row justify-content-center">
-                    <div className="col-md-8">
-                        <div className="card">
-                            <div className="card-header">Example Component</div>
-                            <div className="card-body">
-                                I'm an example component!
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         );
     }
