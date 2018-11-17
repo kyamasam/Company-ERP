@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\category;
-use App\Http\Resources\CategoryResource;
+use App\Http\Resources\UserResource;
+use App\User;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class SystemUserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        CategoryResource::withoutWrapping();
 
-        return CategoryResource::collection(\App\category::all());
+        UserResource::withoutWrapping();
+
+        return UserResource::collection(User::all());
 
     }
 
@@ -45,23 +46,27 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\category  $category
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(category $category)
+    public function show($id)
     {
-        CategoryResource::withoutWrapping();
+        $user=\App\User::findOrFail($id);
+        UserResource::withoutWrapping();
 
-        return CategoryResource::collection(\App\category::find($category));
+
+        return new UserResource($user);
+//             ArticleResource::withoutWrapping();
+//        return new ArticleResource($article);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\category  $category
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(category $category)
+    public function edit($id)
     {
         //
     }
@@ -70,10 +75,10 @@ class CategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\category  $category
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, category $category)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -81,10 +86,22 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\category  $category
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(category $category)
+    public function destroy($id)
+    {
+        //
+    }
+
+    /**
+     * Show the projects this user is involved in the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function assigned_projects(Request $request, $id)
     {
         //
     }

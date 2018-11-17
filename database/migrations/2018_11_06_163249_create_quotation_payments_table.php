@@ -17,7 +17,6 @@ class CreateQuotationPaymentsTable extends Migration
             $table->increments('id');
             $table->integer('quotation_id')->references('id')->on('quotation_id');
             $table->integer('payment_id')->references('id')->on('payment_id');
-
             $table->timestamps();
         });
     }

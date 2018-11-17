@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\QuotationResource;
 use App\quotation;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,9 @@ class QuotationController extends Controller
      */
     public function index()
     {
-        return quotation::all();
+        QuotationResource::withoutWrapping();
+        return QuotationResource::collection(quotation::all());
+
     }
 
     /**
@@ -46,7 +49,10 @@ class QuotationController extends Controller
      */
     public function show(quotation $quotation)
     {
-        //
+        QuotationResource::withoutWrapping();
+        $user= quotation::findOrFail($quotation->id);
+//        return $user;
+        return new QuotationResource($user);
     }
 
     /**

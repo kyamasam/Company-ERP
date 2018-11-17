@@ -13,13 +13,19 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
-Route::resource('products', 'ProductController');
-Route::resource('projects', 'ProjectController');
-Route::resource('quotations', 'QuotationController');
-Route::resource('categories', 'CategoryController');
-Route::resource('user_types', 'UserTypeController');
-Route::resource('proficiencies', 'ProficiencyController');
+Route::group(['prefix'=>'v1','as'=>'v1.'], function(){
+    Route::middleware('auth:api')->get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::resource('products', 'ProductController');
+    Route::resource('systemuser', 'SystemUserController');
+    Route::resource('projects', 'ProjectController');
+    Route::resource('quotations', 'QuotationController');
+    Route::resource('payments', 'PaymentController');
+    Route::resource('proficiencies', 'ProficiencyController');
+    Route::resource('categories', 'CategoryController');
+    Route::resource('employees', 'EmployeeProjectController');
+    Route::resource('user_types', 'UserTypeController');
+
+});

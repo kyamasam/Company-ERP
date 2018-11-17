@@ -16,7 +16,7 @@ class CreateProjectCustomersTable extends Migration
         Schema::create('project_customers', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('project_id')->references('id')->on('projects');
-            $table->integer('customer_id')->references('id')->on('customers');
+            $table->integer('user_id')->references('id')->on('customers');
             $table->timestamps();
         });
     }

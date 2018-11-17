@@ -17,7 +17,6 @@ class CreateProjectsTable extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-	        $table->string('customers');//an array you have to explode
 	        $table->integer('progress');
             $table->timestamps();
         });

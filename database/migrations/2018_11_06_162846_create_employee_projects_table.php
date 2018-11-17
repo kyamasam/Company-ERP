@@ -17,7 +17,6 @@ class CreateEmployeeProjectsTable extends Migration
             $table->increments('id');
             $table->integer('employee_id')->references('id')->on('users');//an employee is just a user...
             $table->integer('project_id')->references('id')->on('projects');
-
             $table->timestamps();
         });
     }

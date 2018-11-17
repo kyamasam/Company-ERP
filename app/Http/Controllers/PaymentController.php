@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PaymentResource;
 use App\payment;
+use App\quotation_payment;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -14,7 +16,9 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        //
+        PaymentResource::withoutWrapping();
+
+        return PaymentResource::collection(payment::all());
     }
 
     /**
@@ -46,7 +50,9 @@ class PaymentController extends Controller
      */
     public function show(payment $payment)
     {
-        //
+        PaymentResource::withoutWrapping();
+
+        return PaymentResource::collection(payment::find($payment));
     }
 
     /**
