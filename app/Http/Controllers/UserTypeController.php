@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserTypeResource;
 use App\user_type;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,10 @@ class UserTypeController extends Controller
      */
     public function index()
     {
-        return user_type::all();
+
+        UserTypeResource::withoutWrapping();
+
+        return UserTypeResource::collection(user_type::all());
     }
 
     /**
@@ -46,7 +50,9 @@ class UserTypeController extends Controller
      */
     public function show(user_type $user_type)
     {
-        //
+        UserTypeResource::withoutWrapping();
+
+        return new UserTypeResource($user_type);
     }
 
     /**

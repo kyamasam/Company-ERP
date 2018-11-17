@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserProficiencyResource;
 use App\user_proficiency;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,9 @@ class UserProficiencyController extends Controller
      */
     public function index()
     {
-        //
+        UserProficiencyResource::withoutWrapping();
+
+        return UserProficiencyResource::collection(User::all());
     }
 
     /**
@@ -46,7 +49,9 @@ class UserProficiencyController extends Controller
      */
     public function show(user_proficiency $user_proficiency)
     {
-        //
+        UserProficiencyResource::withoutWrapping();
+
+        return new UserProficiencyResource($user_proficiency);
     }
 
     /**

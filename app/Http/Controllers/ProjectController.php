@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProjectsResource;
 use App\project;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,10 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return project::all();
+        ProjectsResource::withoutWrapping();
+
+        return ProjectsResource::collection(project::all());
+
     }
 
     /**
@@ -46,7 +50,9 @@ class ProjectController extends Controller
      */
     public function show(project $project)
     {
-        //
+        ProjectsResource::withoutWrapping();
+
+        return new ProjectsResource($project);
     }
 
     /**
