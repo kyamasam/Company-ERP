@@ -11,6 +11,7 @@ import Tickets from "./components/scenes/tickets/index";
 import Announcements from "./components/scenes/announcements/index";
 import Users from "./components/scenes/users/index";
 import Settings from "./components/scenes/settings/index";
+import Profile from "./components/scenes/profile/index";
 import Help from "./components/scenes/help/index";
 import Register from "./components/scenes/auth/register/index"
 import Login from "./components/scenes/auth/login/index"
@@ -34,6 +35,7 @@ export default class Index extends Component {
                         <Route path="/help" exact render={props => <Help{...props} details={{title:"Help"}}/>}/>
                         <Route path="/register" exact render={props => <Register{...props} details={{title:"Register"}}/>}/>
                         <Route path="/login" exact render={props => <Login{...props} details={{title:"Login"}}/>}/>
+                        <Route path="/profile" exact render={props => <Profile{...props} details={{title:"Profile"}}/>}/>
                         <Route component={NoMatch}/>
                     </Switch>
                 </div>

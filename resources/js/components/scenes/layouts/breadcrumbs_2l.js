@@ -15,7 +15,7 @@ export default class Breadcrumbs_2l extends Component {
             <div>
                 <h4 className="page-title">{this.props.details.title}</h4>
                 <ol className="breadcrumb">
-                    <li className="breadcrumb-item"><Link to='/'>Clients</Link></li>
+                    <li className="breadcrumb-item"><Link to='/'>Skality</Link></li>
                     <li className="breadcrumb-item active">{this.props.details.title}</li>
                 </ol>
             </div>
