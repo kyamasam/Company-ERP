@@ -2,7 +2,11 @@
     "/js/app.js": "/js/app.js",
     "/js/detect.js": "/js/detect.js",
     "/css/app.css": "/css/app.css",
+    "/js/bootstrap-table.js": "/js/bootstrap-table.js",
     "/js/jquery.dashboard_3.js": "/js/jquery.dashboard_3.js",
+    "/js/jquery.bs-table.js": "/js/jquery.bs-table.js",
+    "/js/tableExport.js": "/js/tableExport.js",
     "/js/pace.js": "/js/pace.js",
-    "/js/jquery.core.js": "/js/jquery.core.js"
+    "/js/jquery.core.js": "/js/jquery.core.js",
+    "/js/bootstrap-table-export.js": "/js/bootstrap-table-export.js"
 }

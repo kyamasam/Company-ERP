@@ -85,5 +85,6 @@ window.peity=require('peity');
 window.sparkline=require('jquery-sparkline');
 
 /**
- *PaceJS
+ *Bootstrap Table
  */
+window.bootstrapTable=require('bootstrap-table');

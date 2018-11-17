@@ -7,7 +7,10 @@ export default class TopNav extends Component {
             <div className="topbar">
                 <div className="topbar-left">
                     <div className="text-center">
-                        <Link className='logo' to='/'><i className="icon-magnet icon-c-logo"/><span>Skality</span></Link>
+                        <Link className='logo' to='/'>
+                            <i className="icon-magnet icon-c-logo"/>
+                            <span>Skality</span>
+                        </Link>
                     </div>
                 </div>
 
@@ -82,28 +85,17 @@ export default class TopNav extends Component {
                                         <small>Welcome ! John</small>
                                     </h5>
                                 </div>
-
-                                <a href="javascript:void(0);" className="dropdown-item notify-item">
+                                <Link className="dropdown-item notify-item" to='/profile'>
                                     <i className="md md-account-circle"/> <span>Profile</span>
-                                </a>
-
-
-                                <a href="javascript:void(0);" className="dropdown-item notify-item">
+                                </Link>
+                                <Link className="dropdown-item notify-item" to='/settings'>
                                     <i className="md md-settings"/> <span>Settings</span>
-                                </a>
-
-                                <a href="javascript:void(0);" className="dropdown-item notify-item">
-                                    <i className="md md-lock-open"/> <span>Lock Screen</span>
-                                </a>
-
-
+                                </Link>
                                 <a href="javascript:void(0);" className="dropdown-item notify-item">
                                     <i className="md md-settings-power"/> <span>Logout</span>
                                 </a>
-
                             </div>
                         </li>
-
                     </ul>
 
                     <ul className="list-inline menu-left mb-0">
