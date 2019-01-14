@@ -15,9 +15,9 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        ProjectsResource::withoutWrapping();
+//        ProjectsResource::withoutWrapping();
 
-        return ProjectsResource::collection(project::all());
+        return ProjectsResource::collection(project::paginate());
 
     }
 
@@ -50,7 +50,7 @@ class ProjectController extends Controller
      */
     public function show(project $project)
     {
-        ProjectsResource::withoutWrapping();
+//        ProjectsResource::withoutWrapping();
 
         return new ProjectsResource($project);
     }

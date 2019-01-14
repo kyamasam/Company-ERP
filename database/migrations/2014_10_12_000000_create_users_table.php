@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->integer('type')->references('id')->on('user_types');
             $table->string('username');
+            $table->text('user_avatar');
             $table->rememberToken();
             $table->timestamps();
         });

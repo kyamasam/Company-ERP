@@ -16,9 +16,9 @@ class SystemUserController extends Controller
     public function index()
     {
 
-        UserResource::withoutWrapping();
+//        UserResource::withoutWrapping();
 
-        return UserResource::collection(User::all());
+        return UserResource::collection(User::paginate());
 
     }
 
@@ -52,7 +52,7 @@ class SystemUserController extends Controller
     public function show($id)
     {
         $user=\App\User::findOrFail($id);
-        UserResource::withoutWrapping();
+//        UserResource::withoutWrapping();
 
 
         return new UserResource($user);

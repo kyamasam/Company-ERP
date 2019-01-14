@@ -16,9 +16,9 @@ class UserTypeController extends Controller
     public function index()
     {
 
-        UserTypeResource::withoutWrapping();
+//        UserTypeResource::withoutWrapping();
 
-        return UserTypeResource::collection(user_type::all());
+        return UserTypeResource::collection(user_type::paginate());
     }
 
     /**
@@ -50,7 +50,7 @@ class UserTypeController extends Controller
      */
     public function show(user_type $user_type)
     {
-        UserTypeResource::withoutWrapping();
+//        UserTypeResource::withoutWrapping();
 
         return new UserTypeResource($user_type);
     }

@@ -766,7 +766,7 @@ var Breadcrumbs_2l = function (_Component) {
 /* unused harmony reexport Redirect */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Route__ = __webpack_require__(34);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_7__Route__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Router__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Router__ = __webpack_require__(21);
 /* unused harmony reexport Router */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__StaticRouter__ = __webpack_require__(113);
 /* unused harmony reexport StaticRouter */
@@ -11546,6 +11546,33 @@ var locationsAreEqual = function locationsAreEqual(a, b) {
 
 /***/ }),
 /* 16 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11649,7 +11676,7 @@ module.exports = defaults;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(66)))
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11746,7 +11773,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11844,7 +11871,7 @@ module.exports = checkPropTypes;
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11929,18 +11956,18 @@ var createTransitionManager = function createTransitionManager() {
 /* harmony default export */ __webpack_exports__["a"] = (createTransitionManager);
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_Router__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_Router__ = __webpack_require__(22);
 // Written in this round about way for babel-transform-imports
 
 
 /* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_react_router_es_Router__["a" /* default */]);
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12059,7 +12086,7 @@ Router.childContextTypes = {
 /* harmony default export */ __webpack_exports__["a"] = (Router);
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12139,33 +12166,6 @@ var matchPath = function matchPath(pathname) {
 /* harmony default export */ __webpack_exports__["a"] = (matchPath);
 
 /***/ }),
-/* 23 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
 /* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -12173,7 +12173,7 @@ module.exports = g;
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(global) {/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
- * @version 1.14.5
+ * @version 1.14.6
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
  *
@@ -12923,8 +12923,8 @@ function getReferenceOffsets(state, popper, reference) {
 function getOuterSizes(element) {
   var window = element.ownerDocument.defaultView;
   var styles = window.getComputedStyle(element);
-  var x = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
-  var y = parseFloat(styles.marginLeft) + parseFloat(styles.marginRight);
+  var x = parseFloat(styles.marginTop || 0) + parseFloat(styles.marginBottom || 0);
+  var y = parseFloat(styles.marginLeft || 0) + parseFloat(styles.marginRight || 0);
   var result = {
     width: element.offsetWidth + y,
     height: element.offsetHeight + x
@@ -13376,6 +13376,52 @@ function applyStyleOnLoad(reference, popper, options, modifierOptions, state) {
 
 /**
  * @function
+ * @memberof Popper.Utils
+ * @argument {Object} data - The data object generated by `update` method
+ * @argument {Boolean} shouldRound - If the offsets should be rounded at all
+ * @returns {Object} The popper's position offsets rounded
+ *
+ * The tale of pixel-perfect positioning. It's still not 100% perfect, but as
+ * good as it can be within reason.
+ * Discussion here: https://github.com/FezVrasta/popper.js/pull/715
+ *
+ * Low DPI screens cause a popper to be blurry if not using full pixels (Safari
+ * as well on High DPI screens).
+ *
+ * Firefox prefers no rounding for positioning and does not have blurriness on
+ * high DPI screens.
+ *
+ * Only horizontal placement and left/right values need to be considered.
+ */
+function getRoundedOffsets(data, shouldRound) {
+  var _data$offsets = data.offsets,
+      popper = _data$offsets.popper,
+      reference = _data$offsets.reference;
+
+
+  var isVertical = ['left', 'right'].indexOf(data.placement) !== -1;
+  var isVariation = data.placement.indexOf('-') !== -1;
+  var sameWidthOddness = reference.width % 2 === popper.width % 2;
+  var bothOddWidth = reference.width % 2 === 1 && popper.width % 2 === 1;
+  var noRound = function noRound(v) {
+    return v;
+  };
+
+  var horizontalToInteger = !shouldRound ? noRound : isVertical || isVariation || sameWidthOddness ? Math.round : Math.floor;
+  var verticalToInteger = !shouldRound ? noRound : Math.round;
+
+  return {
+    left: horizontalToInteger(bothOddWidth && !isVariation && shouldRound ? popper.left - 1 : popper.left),
+    top: verticalToInteger(popper.top),
+    bottom: verticalToInteger(popper.bottom),
+    right: horizontalToInteger(popper.right)
+  };
+}
+
+var isFirefox = isBrowser && /Firefox/i.test(navigator.userAgent);
+
+/**
+ * @function
  * @memberof Modifiers
  * @argument {Object} data - The data object generated by `update` method
  * @argument {Object} options - Modifiers configuration and options
@@ -13404,15 +13450,7 @@ function computeStyle(data, options) {
     position: popper.position
   };
 
-  // Avoid blurry text by using full pixel integers.
-  // For pixel-perfect positioning, top/bottom prefers rounded
-  // values, while left/right prefers floored values.
-  var offsets = {
-    left: Math.floor(popper.left),
-    top: Math.round(popper.top),
-    bottom: Math.round(popper.bottom),
-    right: Math.floor(popper.right)
-  };
+  var offsets = getRoundedOffsets(data, window.devicePixelRatio < 2 || !isFirefox);
 
   var sideA = x === 'bottom' ? 'top' : 'bottom';
   var sideB = y === 'right' ? 'left' : 'right';
@@ -14706,7 +14744,7 @@ Popper.Defaults = Defaults;
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(23)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(16)))
 
 /***/ }),
 /* 25 */
@@ -15247,7 +15285,7 @@ Link.contextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__matchPath__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__matchPath__ = __webpack_require__(23);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33115,7 +33153,7 @@ window.bootstrapTable = __webpack_require__(89);
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(23), __webpack_require__(59)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16), __webpack_require__(59)(module)))
 
 /***/ }),
 /* 59 */
@@ -33150,18 +33188,18 @@ module.exports = function(module) {
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
-  * Bootstrap v4.1.3 (https://getbootstrap.com/)
+  * Bootstrap v4.2.1 (https://getbootstrap.com/)
   * Copyright 2011-2018 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 (function (global, factory) {
-   true ? factory(exports, __webpack_require__(11), __webpack_require__(24)) :
-  typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'popper.js'], factory) :
-  (factory((global.bootstrap = {}),global.jQuery,global.Popper));
-}(this, (function (exports,$,Popper) { 'use strict';
+   true ? factory(exports, __webpack_require__(24), __webpack_require__(11)) :
+  typeof define === 'function' && define.amd ? define(['exports', 'popper.js', 'jquery'], factory) :
+  (factory((global.bootstrap = {}),global.Popper,global.jQuery));
+}(this, (function (exports,Popper,$) { 'use strict';
 
-  $ = $ && $.hasOwnProperty('default') ? $['default'] : $;
   Popper = Popper && Popper.hasOwnProperty('default') ? Popper['default'] : Popper;
+  $ = $ && $.hasOwnProperty('default') ? $['default'] : $;
 
   function _defineProperties(target, props) {
     for (var i = 0; i < props.length; i++) {
@@ -33221,3851 +33259,4155 @@ module.exports = function(module) {
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v4.1.3): util.js
+   * Bootstrap (v4.2.1): util.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
    * --------------------------------------------------------------------------
    */
+  /**
+   * ------------------------------------------------------------------------
+   * Private TransitionEnd Helpers
+   * ------------------------------------------------------------------------
+   */
 
-  var Util = function ($$$1) {
+  var TRANSITION_END = 'transitionend';
+  var MAX_UID = 1000000;
+  var MILLISECONDS_MULTIPLIER = 1000; // Shoutout AngusCroll (https://goo.gl/pxwQGp)
+
+  function toType(obj) {
+    return {}.toString.call(obj).match(/\s([a-z]+)/i)[1].toLowerCase();
+  }
+
+  function getSpecialTransitionEndEvent() {
+    return {
+      bindType: TRANSITION_END,
+      delegateType: TRANSITION_END,
+      handle: function handle(event) {
+        if ($(event.target).is(this)) {
+          return event.handleObj.handler.apply(this, arguments); // eslint-disable-line prefer-rest-params
+        }
+
+        return undefined; // eslint-disable-line no-undefined
+      }
+    };
+  }
+
+  function transitionEndEmulator(duration) {
+    var _this = this;
+
+    var called = false;
+    $(this).one(Util.TRANSITION_END, function () {
+      called = true;
+    });
+    setTimeout(function () {
+      if (!called) {
+        Util.triggerTransitionEnd(_this);
+      }
+    }, duration);
+    return this;
+  }
+
+  function setTransitionEndSupport() {
+    $.fn.emulateTransitionEnd = transitionEndEmulator;
+    $.event.special[Util.TRANSITION_END] = getSpecialTransitionEndEvent();
+  }
+  /**
+   * --------------------------------------------------------------------------
+   * Public Util Api
+   * --------------------------------------------------------------------------
+   */
+
+
+  var Util = {
+    TRANSITION_END: 'bsTransitionEnd',
+    getUID: function getUID(prefix) {
+      do {
+        // eslint-disable-next-line no-bitwise
+        prefix += ~~(Math.random() * MAX_UID); // "~~" acts like a faster Math.floor() here
+      } while (document.getElementById(prefix));
+
+      return prefix;
+    },
+    getSelectorFromElement: function getSelectorFromElement(element) {
+      var selector = element.getAttribute('data-target');
+
+      if (!selector || selector === '#') {
+        var hrefAttr = element.getAttribute('href');
+        selector = hrefAttr && hrefAttr !== '#' ? hrefAttr.trim() : '';
+      }
+
+      return selector && document.querySelector(selector) ? selector : null;
+    },
+    getTransitionDurationFromElement: function getTransitionDurationFromElement(element) {
+      if (!element) {
+        return 0;
+      } // Get transition-duration of the element
+
+
+      var transitionDuration = $(element).css('transition-duration');
+      var transitionDelay = $(element).css('transition-delay');
+      var floatTransitionDuration = parseFloat(transitionDuration);
+      var floatTransitionDelay = parseFloat(transitionDelay); // Return 0 if element or transition duration is not found
+
+      if (!floatTransitionDuration && !floatTransitionDelay) {
+        return 0;
+      } // If multiple durations are defined, take the first
+
+
+      transitionDuration = transitionDuration.split(',')[0];
+      transitionDelay = transitionDelay.split(',')[0];
+      return (parseFloat(transitionDuration) + parseFloat(transitionDelay)) * MILLISECONDS_MULTIPLIER;
+    },
+    reflow: function reflow(element) {
+      return element.offsetHeight;
+    },
+    triggerTransitionEnd: function triggerTransitionEnd(element) {
+      $(element).trigger(TRANSITION_END);
+    },
+    // TODO: Remove in v5
+    supportsTransitionEnd: function supportsTransitionEnd() {
+      return Boolean(TRANSITION_END);
+    },
+    isElement: function isElement(obj) {
+      return (obj[0] || obj).nodeType;
+    },
+    typeCheckConfig: function typeCheckConfig(componentName, config, configTypes) {
+      for (var property in configTypes) {
+        if (Object.prototype.hasOwnProperty.call(configTypes, property)) {
+          var expectedTypes = configTypes[property];
+          var value = config[property];
+          var valueType = value && Util.isElement(value) ? 'element' : toType(value);
+
+          if (!new RegExp(expectedTypes).test(valueType)) {
+            throw new Error(componentName.toUpperCase() + ": " + ("Option \"" + property + "\" provided type \"" + valueType + "\" ") + ("but expected type \"" + expectedTypes + "\"."));
+          }
+        }
+      }
+    },
+    findShadowRoot: function findShadowRoot(element) {
+      if (!document.documentElement.attachShadow) {
+        return null;
+      } // Can find the shadow root otherwise it'll return the document
+
+
+      if (typeof element.getRootNode === 'function') {
+        var root = element.getRootNode();
+        return root instanceof ShadowRoot ? root : null;
+      }
+
+      if (element instanceof ShadowRoot) {
+        return element;
+      } // when we don't find a shadow root
+
+
+      if (!element.parentNode) {
+        return null;
+      }
+
+      return Util.findShadowRoot(element.parentNode);
+    }
+  };
+  setTransitionEndSupport();
+
+  /**
+   * ------------------------------------------------------------------------
+   * Constants
+   * ------------------------------------------------------------------------
+   */
+
+  var NAME = 'alert';
+  var VERSION = '4.2.1';
+  var DATA_KEY = 'bs.alert';
+  var EVENT_KEY = "." + DATA_KEY;
+  var DATA_API_KEY = '.data-api';
+  var JQUERY_NO_CONFLICT = $.fn[NAME];
+  var Selector = {
+    DISMISS: '[data-dismiss="alert"]'
+  };
+  var Event = {
+    CLOSE: "close" + EVENT_KEY,
+    CLOSED: "closed" + EVENT_KEY,
+    CLICK_DATA_API: "click" + EVENT_KEY + DATA_API_KEY
+  };
+  var ClassName = {
+    ALERT: 'alert',
+    FADE: 'fade',
+    SHOW: 'show'
     /**
      * ------------------------------------------------------------------------
-     * Private TransitionEnd Helpers
+     * Class Definition
      * ------------------------------------------------------------------------
      */
-    var TRANSITION_END = 'transitionend';
-    var MAX_UID = 1000000;
-    var MILLISECONDS_MULTIPLIER = 1000; // Shoutout AngusCroll (https://goo.gl/pxwQGp)
 
-    function toType(obj) {
-      return {}.toString.call(obj).match(/\s([a-z]+)/i)[1].toLowerCase();
-    }
+  };
 
-    function getSpecialTransitionEndEvent() {
-      return {
-        bindType: TRANSITION_END,
-        delegateType: TRANSITION_END,
-        handle: function handle(event) {
-          if ($$$1(event.target).is(this)) {
-            return event.handleObj.handler.apply(this, arguments); // eslint-disable-line prefer-rest-params
-          }
+  var Alert =
+  /*#__PURE__*/
+  function () {
+    function Alert(element) {
+      this._element = element;
+    } // Getters
 
-          return undefined; // eslint-disable-line no-undefined
-        }
-      };
-    }
 
-    function transitionEndEmulator(duration) {
+    var _proto = Alert.prototype;
+
+    // Public
+    _proto.close = function close(element) {
+      var rootElement = this._element;
+
+      if (element) {
+        rootElement = this._getRootElement(element);
+      }
+
+      var customEvent = this._triggerCloseEvent(rootElement);
+
+      if (customEvent.isDefaultPrevented()) {
+        return;
+      }
+
+      this._removeElement(rootElement);
+    };
+
+    _proto.dispose = function dispose() {
+      $.removeData(this._element, DATA_KEY);
+      this._element = null;
+    }; // Private
+
+
+    _proto._getRootElement = function _getRootElement(element) {
+      var selector = Util.getSelectorFromElement(element);
+      var parent = false;
+
+      if (selector) {
+        parent = document.querySelector(selector);
+      }
+
+      if (!parent) {
+        parent = $(element).closest("." + ClassName.ALERT)[0];
+      }
+
+      return parent;
+    };
+
+    _proto._triggerCloseEvent = function _triggerCloseEvent(element) {
+      var closeEvent = $.Event(Event.CLOSE);
+      $(element).trigger(closeEvent);
+      return closeEvent;
+    };
+
+    _proto._removeElement = function _removeElement(element) {
       var _this = this;
 
-      var called = false;
-      $$$1(this).one(Util.TRANSITION_END, function () {
-        called = true;
+      $(element).removeClass(ClassName.SHOW);
+
+      if (!$(element).hasClass(ClassName.FADE)) {
+        this._destroyElement(element);
+
+        return;
+      }
+
+      var transitionDuration = Util.getTransitionDurationFromElement(element);
+      $(element).one(Util.TRANSITION_END, function (event) {
+        return _this._destroyElement(element, event);
+      }).emulateTransitionEnd(transitionDuration);
+    };
+
+    _proto._destroyElement = function _destroyElement(element) {
+      $(element).detach().trigger(Event.CLOSED).remove();
+    }; // Static
+
+
+    Alert._jQueryInterface = function _jQueryInterface(config) {
+      return this.each(function () {
+        var $element = $(this);
+        var data = $element.data(DATA_KEY);
+
+        if (!data) {
+          data = new Alert(this);
+          $element.data(DATA_KEY, data);
+        }
+
+        if (config === 'close') {
+          data[config](this);
+        }
       });
-      setTimeout(function () {
-        if (!called) {
-          Util.triggerTransitionEnd(_this);
-        }
-      }, duration);
-      return this;
-    }
-
-    function setTransitionEndSupport() {
-      $$$1.fn.emulateTransitionEnd = transitionEndEmulator;
-      $$$1.event.special[Util.TRANSITION_END] = getSpecialTransitionEndEvent();
-    }
-    /**
-     * --------------------------------------------------------------------------
-     * Public Util Api
-     * --------------------------------------------------------------------------
-     */
-
-
-    var Util = {
-      TRANSITION_END: 'bsTransitionEnd',
-      getUID: function getUID(prefix) {
-        do {
-          // eslint-disable-next-line no-bitwise
-          prefix += ~~(Math.random() * MAX_UID); // "~~" acts like a faster Math.floor() here
-        } while (document.getElementById(prefix));
-
-        return prefix;
-      },
-      getSelectorFromElement: function getSelectorFromElement(element) {
-        var selector = element.getAttribute('data-target');
-
-        if (!selector || selector === '#') {
-          selector = element.getAttribute('href') || '';
-        }
-
-        try {
-          return document.querySelector(selector) ? selector : null;
-        } catch (err) {
-          return null;
-        }
-      },
-      getTransitionDurationFromElement: function getTransitionDurationFromElement(element) {
-        if (!element) {
-          return 0;
-        } // Get transition-duration of the element
-
-
-        var transitionDuration = $$$1(element).css('transition-duration');
-        var floatTransitionDuration = parseFloat(transitionDuration); // Return 0 if element or transition duration is not found
-
-        if (!floatTransitionDuration) {
-          return 0;
-        } // If multiple durations are defined, take the first
-
-
-        transitionDuration = transitionDuration.split(',')[0];
-        return parseFloat(transitionDuration) * MILLISECONDS_MULTIPLIER;
-      },
-      reflow: function reflow(element) {
-        return element.offsetHeight;
-      },
-      triggerTransitionEnd: function triggerTransitionEnd(element) {
-        $$$1(element).trigger(TRANSITION_END);
-      },
-      // TODO: Remove in v5
-      supportsTransitionEnd: function supportsTransitionEnd() {
-        return Boolean(TRANSITION_END);
-      },
-      isElement: function isElement(obj) {
-        return (obj[0] || obj).nodeType;
-      },
-      typeCheckConfig: function typeCheckConfig(componentName, config, configTypes) {
-        for (var property in configTypes) {
-          if (Object.prototype.hasOwnProperty.call(configTypes, property)) {
-            var expectedTypes = configTypes[property];
-            var value = config[property];
-            var valueType = value && Util.isElement(value) ? 'element' : toType(value);
-
-            if (!new RegExp(expectedTypes).test(valueType)) {
-              throw new Error(componentName.toUpperCase() + ": " + ("Option \"" + property + "\" provided type \"" + valueType + "\" ") + ("but expected type \"" + expectedTypes + "\"."));
-            }
-          }
-        }
-      }
-    };
-    setTransitionEndSupport();
-    return Util;
-  }($);
-
-  /**
-   * --------------------------------------------------------------------------
-   * Bootstrap (v4.1.3): alert.js
-   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
-   * --------------------------------------------------------------------------
-   */
-
-  var Alert = function ($$$1) {
-    /**
-     * ------------------------------------------------------------------------
-     * Constants
-     * ------------------------------------------------------------------------
-     */
-    var NAME = 'alert';
-    var VERSION = '4.1.3';
-    var DATA_KEY = 'bs.alert';
-    var EVENT_KEY = "." + DATA_KEY;
-    var DATA_API_KEY = '.data-api';
-    var JQUERY_NO_CONFLICT = $$$1.fn[NAME];
-    var Selector = {
-      DISMISS: '[data-dismiss="alert"]'
-    };
-    var Event = {
-      CLOSE: "close" + EVENT_KEY,
-      CLOSED: "closed" + EVENT_KEY,
-      CLICK_DATA_API: "click" + EVENT_KEY + DATA_API_KEY
-    };
-    var ClassName = {
-      ALERT: 'alert',
-      FADE: 'fade',
-      SHOW: 'show'
-      /**
-       * ------------------------------------------------------------------------
-       * Class Definition
-       * ------------------------------------------------------------------------
-       */
-
     };
 
-    var Alert =
-    /*#__PURE__*/
-    function () {
-      function Alert(element) {
-        this._element = element;
-      } // Getters
-
-
-      var _proto = Alert.prototype;
-
-      // Public
-      _proto.close = function close(element) {
-        var rootElement = this._element;
-
-        if (element) {
-          rootElement = this._getRootElement(element);
-        }
-
-        var customEvent = this._triggerCloseEvent(rootElement);
-
-        if (customEvent.isDefaultPrevented()) {
-          return;
-        }
-
-        this._removeElement(rootElement);
-      };
-
-      _proto.dispose = function dispose() {
-        $$$1.removeData(this._element, DATA_KEY);
-        this._element = null;
-      }; // Private
-
-
-      _proto._getRootElement = function _getRootElement(element) {
-        var selector = Util.getSelectorFromElement(element);
-        var parent = false;
-
-        if (selector) {
-          parent = document.querySelector(selector);
-        }
-
-        if (!parent) {
-          parent = $$$1(element).closest("." + ClassName.ALERT)[0];
-        }
-
-        return parent;
-      };
-
-      _proto._triggerCloseEvent = function _triggerCloseEvent(element) {
-        var closeEvent = $$$1.Event(Event.CLOSE);
-        $$$1(element).trigger(closeEvent);
-        return closeEvent;
-      };
-
-      _proto._removeElement = function _removeElement(element) {
-        var _this = this;
-
-        $$$1(element).removeClass(ClassName.SHOW);
-
-        if (!$$$1(element).hasClass(ClassName.FADE)) {
-          this._destroyElement(element);
-
-          return;
-        }
-
-        var transitionDuration = Util.getTransitionDurationFromElement(element);
-        $$$1(element).one(Util.TRANSITION_END, function (event) {
-          return _this._destroyElement(element, event);
-        }).emulateTransitionEnd(transitionDuration);
-      };
-
-      _proto._destroyElement = function _destroyElement(element) {
-        $$$1(element).detach().trigger(Event.CLOSED).remove();
-      }; // Static
-
-
-      Alert._jQueryInterface = function _jQueryInterface(config) {
-        return this.each(function () {
-          var $element = $$$1(this);
-          var data = $element.data(DATA_KEY);
-
-          if (!data) {
-            data = new Alert(this);
-            $element.data(DATA_KEY, data);
-          }
-
-          if (config === 'close') {
-            data[config](this);
-          }
-        });
-      };
-
-      Alert._handleDismiss = function _handleDismiss(alertInstance) {
-        return function (event) {
-          if (event) {
-            event.preventDefault();
-          }
-
-          alertInstance.close(this);
-        };
-      };
-
-      _createClass(Alert, null, [{
-        key: "VERSION",
-        get: function get() {
-          return VERSION;
-        }
-      }]);
-
-      return Alert;
-    }();
-    /**
-     * ------------------------------------------------------------------------
-     * Data Api implementation
-     * ------------------------------------------------------------------------
-     */
-
-
-    $$$1(document).on(Event.CLICK_DATA_API, Selector.DISMISS, Alert._handleDismiss(new Alert()));
-    /**
-     * ------------------------------------------------------------------------
-     * jQuery
-     * ------------------------------------------------------------------------
-     */
-
-    $$$1.fn[NAME] = Alert._jQueryInterface;
-    $$$1.fn[NAME].Constructor = Alert;
-
-    $$$1.fn[NAME].noConflict = function () {
-      $$$1.fn[NAME] = JQUERY_NO_CONFLICT;
-      return Alert._jQueryInterface;
-    };
-
-    return Alert;
-  }($);
-
-  /**
-   * --------------------------------------------------------------------------
-   * Bootstrap (v4.1.3): button.js
-   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
-   * --------------------------------------------------------------------------
-   */
-
-  var Button = function ($$$1) {
-    /**
-     * ------------------------------------------------------------------------
-     * Constants
-     * ------------------------------------------------------------------------
-     */
-    var NAME = 'button';
-    var VERSION = '4.1.3';
-    var DATA_KEY = 'bs.button';
-    var EVENT_KEY = "." + DATA_KEY;
-    var DATA_API_KEY = '.data-api';
-    var JQUERY_NO_CONFLICT = $$$1.fn[NAME];
-    var ClassName = {
-      ACTIVE: 'active',
-      BUTTON: 'btn',
-      FOCUS: 'focus'
-    };
-    var Selector = {
-      DATA_TOGGLE_CARROT: '[data-toggle^="button"]',
-      DATA_TOGGLE: '[data-toggle="buttons"]',
-      INPUT: 'input',
-      ACTIVE: '.active',
-      BUTTON: '.btn'
-    };
-    var Event = {
-      CLICK_DATA_API: "click" + EVENT_KEY + DATA_API_KEY,
-      FOCUS_BLUR_DATA_API: "focus" + EVENT_KEY + DATA_API_KEY + " " + ("blur" + EVENT_KEY + DATA_API_KEY)
-      /**
-       * ------------------------------------------------------------------------
-       * Class Definition
-       * ------------------------------------------------------------------------
-       */
-
-    };
-
-    var Button =
-    /*#__PURE__*/
-    function () {
-      function Button(element) {
-        this._element = element;
-      } // Getters
-
-
-      var _proto = Button.prototype;
-
-      // Public
-      _proto.toggle = function toggle() {
-        var triggerChangeEvent = true;
-        var addAriaPressed = true;
-        var rootElement = $$$1(this._element).closest(Selector.DATA_TOGGLE)[0];
-
-        if (rootElement) {
-          var input = this._element.querySelector(Selector.INPUT);
-
-          if (input) {
-            if (input.type === 'radio') {
-              if (input.checked && this._element.classList.contains(ClassName.ACTIVE)) {
-                triggerChangeEvent = false;
-              } else {
-                var activeElement = rootElement.querySelector(Selector.ACTIVE);
-
-                if (activeElement) {
-                  $$$1(activeElement).removeClass(ClassName.ACTIVE);
-                }
-              }
-            }
-
-            if (triggerChangeEvent) {
-              if (input.hasAttribute('disabled') || rootElement.hasAttribute('disabled') || input.classList.contains('disabled') || rootElement.classList.contains('disabled')) {
-                return;
-              }
-
-              input.checked = !this._element.classList.contains(ClassName.ACTIVE);
-              $$$1(input).trigger('change');
-            }
-
-            input.focus();
-            addAriaPressed = false;
-          }
-        }
-
-        if (addAriaPressed) {
-          this._element.setAttribute('aria-pressed', !this._element.classList.contains(ClassName.ACTIVE));
-        }
-
-        if (triggerChangeEvent) {
-          $$$1(this._element).toggleClass(ClassName.ACTIVE);
-        }
-      };
-
-      _proto.dispose = function dispose() {
-        $$$1.removeData(this._element, DATA_KEY);
-        this._element = null;
-      }; // Static
-
-
-      Button._jQueryInterface = function _jQueryInterface(config) {
-        return this.each(function () {
-          var data = $$$1(this).data(DATA_KEY);
-
-          if (!data) {
-            data = new Button(this);
-            $$$1(this).data(DATA_KEY, data);
-          }
-
-          if (config === 'toggle') {
-            data[config]();
-          }
-        });
-      };
-
-      _createClass(Button, null, [{
-        key: "VERSION",
-        get: function get() {
-          return VERSION;
-        }
-      }]);
-
-      return Button;
-    }();
-    /**
-     * ------------------------------------------------------------------------
-     * Data Api implementation
-     * ------------------------------------------------------------------------
-     */
-
-
-    $$$1(document).on(Event.CLICK_DATA_API, Selector.DATA_TOGGLE_CARROT, function (event) {
-      event.preventDefault();
-      var button = event.target;
-
-      if (!$$$1(button).hasClass(ClassName.BUTTON)) {
-        button = $$$1(button).closest(Selector.BUTTON);
-      }
-
-      Button._jQueryInterface.call($$$1(button), 'toggle');
-    }).on(Event.FOCUS_BLUR_DATA_API, Selector.DATA_TOGGLE_CARROT, function (event) {
-      var button = $$$1(event.target).closest(Selector.BUTTON)[0];
-      $$$1(button).toggleClass(ClassName.FOCUS, /^focus(in)?$/.test(event.type));
-    });
-    /**
-     * ------------------------------------------------------------------------
-     * jQuery
-     * ------------------------------------------------------------------------
-     */
-
-    $$$1.fn[NAME] = Button._jQueryInterface;
-    $$$1.fn[NAME].Constructor = Button;
-
-    $$$1.fn[NAME].noConflict = function () {
-      $$$1.fn[NAME] = JQUERY_NO_CONFLICT;
-      return Button._jQueryInterface;
-    };
-
-    return Button;
-  }($);
-
-  /**
-   * --------------------------------------------------------------------------
-   * Bootstrap (v4.1.3): carousel.js
-   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
-   * --------------------------------------------------------------------------
-   */
-
-  var Carousel = function ($$$1) {
-    /**
-     * ------------------------------------------------------------------------
-     * Constants
-     * ------------------------------------------------------------------------
-     */
-    var NAME = 'carousel';
-    var VERSION = '4.1.3';
-    var DATA_KEY = 'bs.carousel';
-    var EVENT_KEY = "." + DATA_KEY;
-    var DATA_API_KEY = '.data-api';
-    var JQUERY_NO_CONFLICT = $$$1.fn[NAME];
-    var ARROW_LEFT_KEYCODE = 37; // KeyboardEvent.which value for left arrow key
-
-    var ARROW_RIGHT_KEYCODE = 39; // KeyboardEvent.which value for right arrow key
-
-    var TOUCHEVENT_COMPAT_WAIT = 500; // Time for mouse compat events to fire after touch
-
-    var Default = {
-      interval: 5000,
-      keyboard: true,
-      slide: false,
-      pause: 'hover',
-      wrap: true
-    };
-    var DefaultType = {
-      interval: '(number|boolean)',
-      keyboard: 'boolean',
-      slide: '(boolean|string)',
-      pause: '(string|boolean)',
-      wrap: 'boolean'
-    };
-    var Direction = {
-      NEXT: 'next',
-      PREV: 'prev',
-      LEFT: 'left',
-      RIGHT: 'right'
-    };
-    var Event = {
-      SLIDE: "slide" + EVENT_KEY,
-      SLID: "slid" + EVENT_KEY,
-      KEYDOWN: "keydown" + EVENT_KEY,
-      MOUSEENTER: "mouseenter" + EVENT_KEY,
-      MOUSELEAVE: "mouseleave" + EVENT_KEY,
-      TOUCHEND: "touchend" + EVENT_KEY,
-      LOAD_DATA_API: "load" + EVENT_KEY + DATA_API_KEY,
-      CLICK_DATA_API: "click" + EVENT_KEY + DATA_API_KEY
-    };
-    var ClassName = {
-      CAROUSEL: 'carousel',
-      ACTIVE: 'active',
-      SLIDE: 'slide',
-      RIGHT: 'carousel-item-right',
-      LEFT: 'carousel-item-left',
-      NEXT: 'carousel-item-next',
-      PREV: 'carousel-item-prev',
-      ITEM: 'carousel-item'
-    };
-    var Selector = {
-      ACTIVE: '.active',
-      ACTIVE_ITEM: '.active.carousel-item',
-      ITEM: '.carousel-item',
-      NEXT_PREV: '.carousel-item-next, .carousel-item-prev',
-      INDICATORS: '.carousel-indicators',
-      DATA_SLIDE: '[data-slide], [data-slide-to]',
-      DATA_RIDE: '[data-ride="carousel"]'
-      /**
-       * ------------------------------------------------------------------------
-       * Class Definition
-       * ------------------------------------------------------------------------
-       */
-
-    };
-
-    var Carousel =
-    /*#__PURE__*/
-    function () {
-      function Carousel(element, config) {
-        this._items = null;
-        this._interval = null;
-        this._activeElement = null;
-        this._isPaused = false;
-        this._isSliding = false;
-        this.touchTimeout = null;
-        this._config = this._getConfig(config);
-        this._element = $$$1(element)[0];
-        this._indicatorsElement = this._element.querySelector(Selector.INDICATORS);
-
-        this._addEventListeners();
-      } // Getters
-
-
-      var _proto = Carousel.prototype;
-
-      // Public
-      _proto.next = function next() {
-        if (!this._isSliding) {
-          this._slide(Direction.NEXT);
-        }
-      };
-
-      _proto.nextWhenVisible = function nextWhenVisible() {
-        // Don't call next when the page isn't visible
-        // or the carousel or its parent isn't visible
-        if (!document.hidden && $$$1(this._element).is(':visible') && $$$1(this._element).css('visibility') !== 'hidden') {
-          this.next();
-        }
-      };
-
-      _proto.prev = function prev() {
-        if (!this._isSliding) {
-          this._slide(Direction.PREV);
-        }
-      };
-
-      _proto.pause = function pause(event) {
-        if (!event) {
-          this._isPaused = true;
-        }
-
-        if (this._element.querySelector(Selector.NEXT_PREV)) {
-          Util.triggerTransitionEnd(this._element);
-          this.cycle(true);
-        }
-
-        clearInterval(this._interval);
-        this._interval = null;
-      };
-
-      _proto.cycle = function cycle(event) {
-        if (!event) {
-          this._isPaused = false;
-        }
-
-        if (this._interval) {
-          clearInterval(this._interval);
-          this._interval = null;
-        }
-
-        if (this._config.interval && !this._isPaused) {
-          this._interval = setInterval((document.visibilityState ? this.nextWhenVisible : this.next).bind(this), this._config.interval);
-        }
-      };
-
-      _proto.to = function to(index) {
-        var _this = this;
-
-        this._activeElement = this._element.querySelector(Selector.ACTIVE_ITEM);
-
-        var activeIndex = this._getItemIndex(this._activeElement);
-
-        if (index > this._items.length - 1 || index < 0) {
-          return;
-        }
-
-        if (this._isSliding) {
-          $$$1(this._element).one(Event.SLID, function () {
-            return _this.to(index);
-          });
-          return;
-        }
-
-        if (activeIndex === index) {
-          this.pause();
-          this.cycle();
-          return;
-        }
-
-        var direction = index > activeIndex ? Direction.NEXT : Direction.PREV;
-
-        this._slide(direction, this._items[index]);
-      };
-
-      _proto.dispose = function dispose() {
-        $$$1(this._element).off(EVENT_KEY);
-        $$$1.removeData(this._element, DATA_KEY);
-        this._items = null;
-        this._config = null;
-        this._element = null;
-        this._interval = null;
-        this._isPaused = null;
-        this._isSliding = null;
-        this._activeElement = null;
-        this._indicatorsElement = null;
-      }; // Private
-
-
-      _proto._getConfig = function _getConfig(config) {
-        config = _objectSpread({}, Default, config);
-        Util.typeCheckConfig(NAME, config, DefaultType);
-        return config;
-      };
-
-      _proto._addEventListeners = function _addEventListeners() {
-        var _this2 = this;
-
-        if (this._config.keyboard) {
-          $$$1(this._element).on(Event.KEYDOWN, function (event) {
-            return _this2._keydown(event);
-          });
-        }
-
-        if (this._config.pause === 'hover') {
-          $$$1(this._element).on(Event.MOUSEENTER, function (event) {
-            return _this2.pause(event);
-          }).on(Event.MOUSELEAVE, function (event) {
-            return _this2.cycle(event);
-          });
-
-          if ('ontouchstart' in document.documentElement) {
-            // If it's a touch-enabled device, mouseenter/leave are fired as
-            // part of the mouse compatibility events on first tap - the carousel
-            // would stop cycling until user tapped out of it;
-            // here, we listen for touchend, explicitly pause the carousel
-            // (as if it's the second time we tap on it, mouseenter compat event
-            // is NOT fired) and after a timeout (to allow for mouse compatibility
-            // events to fire) we explicitly restart cycling
-            $$$1(this._element).on(Event.TOUCHEND, function () {
-              _this2.pause();
-
-              if (_this2.touchTimeout) {
-                clearTimeout(_this2.touchTimeout);
-              }
-
-              _this2.touchTimeout = setTimeout(function (event) {
-                return _this2.cycle(event);
-              }, TOUCHEVENT_COMPAT_WAIT + _this2._config.interval);
-            });
-          }
-        }
-      };
-
-      _proto._keydown = function _keydown(event) {
-        if (/input|textarea/i.test(event.target.tagName)) {
-          return;
-        }
-
-        switch (event.which) {
-          case ARROW_LEFT_KEYCODE:
-            event.preventDefault();
-            this.prev();
-            break;
-
-          case ARROW_RIGHT_KEYCODE:
-            event.preventDefault();
-            this.next();
-            break;
-
-          default:
-        }
-      };
-
-      _proto._getItemIndex = function _getItemIndex(element) {
-        this._items = element && element.parentNode ? [].slice.call(element.parentNode.querySelectorAll(Selector.ITEM)) : [];
-        return this._items.indexOf(element);
-      };
-
-      _proto._getItemByDirection = function _getItemByDirection(direction, activeElement) {
-        var isNextDirection = direction === Direction.NEXT;
-        var isPrevDirection = direction === Direction.PREV;
-
-        var activeIndex = this._getItemIndex(activeElement);
-
-        var lastItemIndex = this._items.length - 1;
-        var isGoingToWrap = isPrevDirection && activeIndex === 0 || isNextDirection && activeIndex === lastItemIndex;
-
-        if (isGoingToWrap && !this._config.wrap) {
-          return activeElement;
-        }
-
-        var delta = direction === Direction.PREV ? -1 : 1;
-        var itemIndex = (activeIndex + delta) % this._items.length;
-        return itemIndex === -1 ? this._items[this._items.length - 1] : this._items[itemIndex];
-      };
-
-      _proto._triggerSlideEvent = function _triggerSlideEvent(relatedTarget, eventDirectionName) {
-        var targetIndex = this._getItemIndex(relatedTarget);
-
-        var fromIndex = this._getItemIndex(this._element.querySelector(Selector.ACTIVE_ITEM));
-
-        var slideEvent = $$$1.Event(Event.SLIDE, {
-          relatedTarget: relatedTarget,
-          direction: eventDirectionName,
-          from: fromIndex,
-          to: targetIndex
-        });
-        $$$1(this._element).trigger(slideEvent);
-        return slideEvent;
-      };
-
-      _proto._setActiveIndicatorElement = function _setActiveIndicatorElement(element) {
-        if (this._indicatorsElement) {
-          var indicators = [].slice.call(this._indicatorsElement.querySelectorAll(Selector.ACTIVE));
-          $$$1(indicators).removeClass(ClassName.ACTIVE);
-
-          var nextIndicator = this._indicatorsElement.children[this._getItemIndex(element)];
-
-          if (nextIndicator) {
-            $$$1(nextIndicator).addClass(ClassName.ACTIVE);
-          }
-        }
-      };
-
-      _proto._slide = function _slide(direction, element) {
-        var _this3 = this;
-
-        var activeElement = this._element.querySelector(Selector.ACTIVE_ITEM);
-
-        var activeElementIndex = this._getItemIndex(activeElement);
-
-        var nextElement = element || activeElement && this._getItemByDirection(direction, activeElement);
-
-        var nextElementIndex = this._getItemIndex(nextElement);
-
-        var isCycling = Boolean(this._interval);
-        var directionalClassName;
-        var orderClassName;
-        var eventDirectionName;
-
-        if (direction === Direction.NEXT) {
-          directionalClassName = ClassName.LEFT;
-          orderClassName = ClassName.NEXT;
-          eventDirectionName = Direction.LEFT;
-        } else {
-          directionalClassName = ClassName.RIGHT;
-          orderClassName = ClassName.PREV;
-          eventDirectionName = Direction.RIGHT;
-        }
-
-        if (nextElement && $$$1(nextElement).hasClass(ClassName.ACTIVE)) {
-          this._isSliding = false;
-          return;
-        }
-
-        var slideEvent = this._triggerSlideEvent(nextElement, eventDirectionName);
-
-        if (slideEvent.isDefaultPrevented()) {
-          return;
-        }
-
-        if (!activeElement || !nextElement) {
-          // Some weirdness is happening, so we bail
-          return;
-        }
-
-        this._isSliding = true;
-
-        if (isCycling) {
-          this.pause();
-        }
-
-        this._setActiveIndicatorElement(nextElement);
-
-        var slidEvent = $$$1.Event(Event.SLID, {
-          relatedTarget: nextElement,
-          direction: eventDirectionName,
-          from: activeElementIndex,
-          to: nextElementIndex
-        });
-
-        if ($$$1(this._element).hasClass(ClassName.SLIDE)) {
-          $$$1(nextElement).addClass(orderClassName);
-          Util.reflow(nextElement);
-          $$$1(activeElement).addClass(directionalClassName);
-          $$$1(nextElement).addClass(directionalClassName);
-          var transitionDuration = Util.getTransitionDurationFromElement(activeElement);
-          $$$1(activeElement).one(Util.TRANSITION_END, function () {
-            $$$1(nextElement).removeClass(directionalClassName + " " + orderClassName).addClass(ClassName.ACTIVE);
-            $$$1(activeElement).removeClass(ClassName.ACTIVE + " " + orderClassName + " " + directionalClassName);
-            _this3._isSliding = false;
-            setTimeout(function () {
-              return $$$1(_this3._element).trigger(slidEvent);
-            }, 0);
-          }).emulateTransitionEnd(transitionDuration);
-        } else {
-          $$$1(activeElement).removeClass(ClassName.ACTIVE);
-          $$$1(nextElement).addClass(ClassName.ACTIVE);
-          this._isSliding = false;
-          $$$1(this._element).trigger(slidEvent);
-        }
-
-        if (isCycling) {
-          this.cycle();
-        }
-      }; // Static
-
-
-      Carousel._jQueryInterface = function _jQueryInterface(config) {
-        return this.each(function () {
-          var data = $$$1(this).data(DATA_KEY);
-
-          var _config = _objectSpread({}, Default, $$$1(this).data());
-
-          if (typeof config === 'object') {
-            _config = _objectSpread({}, _config, config);
-          }
-
-          var action = typeof config === 'string' ? config : _config.slide;
-
-          if (!data) {
-            data = new Carousel(this, _config);
-            $$$1(this).data(DATA_KEY, data);
-          }
-
-          if (typeof config === 'number') {
-            data.to(config);
-          } else if (typeof action === 'string') {
-            if (typeof data[action] === 'undefined') {
-              throw new TypeError("No method named \"" + action + "\"");
-            }
-
-            data[action]();
-          } else if (_config.interval) {
-            data.pause();
-            data.cycle();
-          }
-        });
-      };
-
-      Carousel._dataApiClickHandler = function _dataApiClickHandler(event) {
-        var selector = Util.getSelectorFromElement(this);
-
-        if (!selector) {
-          return;
-        }
-
-        var target = $$$1(selector)[0];
-
-        if (!target || !$$$1(target).hasClass(ClassName.CAROUSEL)) {
-          return;
-        }
-
-        var config = _objectSpread({}, $$$1(target).data(), $$$1(this).data());
-
-        var slideIndex = this.getAttribute('data-slide-to');
-
-        if (slideIndex) {
-          config.interval = false;
-        }
-
-        Carousel._jQueryInterface.call($$$1(target), config);
-
-        if (slideIndex) {
-          $$$1(target).data(DATA_KEY).to(slideIndex);
-        }
-
-        event.preventDefault();
-      };
-
-      _createClass(Carousel, null, [{
-        key: "VERSION",
-        get: function get() {
-          return VERSION;
-        }
-      }, {
-        key: "Default",
-        get: function get() {
-          return Default;
-        }
-      }]);
-
-      return Carousel;
-    }();
-    /**
-     * ------------------------------------------------------------------------
-     * Data Api implementation
-     * ------------------------------------------------------------------------
-     */
-
-
-    $$$1(document).on(Event.CLICK_DATA_API, Selector.DATA_SLIDE, Carousel._dataApiClickHandler);
-    $$$1(window).on(Event.LOAD_DATA_API, function () {
-      var carousels = [].slice.call(document.querySelectorAll(Selector.DATA_RIDE));
-
-      for (var i = 0, len = carousels.length; i < len; i++) {
-        var $carousel = $$$1(carousels[i]);
-
-        Carousel._jQueryInterface.call($carousel, $carousel.data());
-      }
-    });
-    /**
-     * ------------------------------------------------------------------------
-     * jQuery
-     * ------------------------------------------------------------------------
-     */
-
-    $$$1.fn[NAME] = Carousel._jQueryInterface;
-    $$$1.fn[NAME].Constructor = Carousel;
-
-    $$$1.fn[NAME].noConflict = function () {
-      $$$1.fn[NAME] = JQUERY_NO_CONFLICT;
-      return Carousel._jQueryInterface;
-    };
-
-    return Carousel;
-  }($);
-
-  /**
-   * --------------------------------------------------------------------------
-   * Bootstrap (v4.1.3): collapse.js
-   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
-   * --------------------------------------------------------------------------
-   */
-
-  var Collapse = function ($$$1) {
-    /**
-     * ------------------------------------------------------------------------
-     * Constants
-     * ------------------------------------------------------------------------
-     */
-    var NAME = 'collapse';
-    var VERSION = '4.1.3';
-    var DATA_KEY = 'bs.collapse';
-    var EVENT_KEY = "." + DATA_KEY;
-    var DATA_API_KEY = '.data-api';
-    var JQUERY_NO_CONFLICT = $$$1.fn[NAME];
-    var Default = {
-      toggle: true,
-      parent: ''
-    };
-    var DefaultType = {
-      toggle: 'boolean',
-      parent: '(string|element)'
-    };
-    var Event = {
-      SHOW: "show" + EVENT_KEY,
-      SHOWN: "shown" + EVENT_KEY,
-      HIDE: "hide" + EVENT_KEY,
-      HIDDEN: "hidden" + EVENT_KEY,
-      CLICK_DATA_API: "click" + EVENT_KEY + DATA_API_KEY
-    };
-    var ClassName = {
-      SHOW: 'show',
-      COLLAPSE: 'collapse',
-      COLLAPSING: 'collapsing',
-      COLLAPSED: 'collapsed'
-    };
-    var Dimension = {
-      WIDTH: 'width',
-      HEIGHT: 'height'
-    };
-    var Selector = {
-      ACTIVES: '.show, .collapsing',
-      DATA_TOGGLE: '[data-toggle="collapse"]'
-      /**
-       * ------------------------------------------------------------------------
-       * Class Definition
-       * ------------------------------------------------------------------------
-       */
-
-    };
-
-    var Collapse =
-    /*#__PURE__*/
-    function () {
-      function Collapse(element, config) {
-        this._isTransitioning = false;
-        this._element = element;
-        this._config = this._getConfig(config);
-        this._triggerArray = $$$1.makeArray(document.querySelectorAll("[data-toggle=\"collapse\"][href=\"#" + element.id + "\"]," + ("[data-toggle=\"collapse\"][data-target=\"#" + element.id + "\"]")));
-        var toggleList = [].slice.call(document.querySelectorAll(Selector.DATA_TOGGLE));
-
-        for (var i = 0, len = toggleList.length; i < len; i++) {
-          var elem = toggleList[i];
-          var selector = Util.getSelectorFromElement(elem);
-          var filterElement = [].slice.call(document.querySelectorAll(selector)).filter(function (foundElem) {
-            return foundElem === element;
-          });
-
-          if (selector !== null && filterElement.length > 0) {
-            this._selector = selector;
-
-            this._triggerArray.push(elem);
-          }
-        }
-
-        this._parent = this._config.parent ? this._getParent() : null;
-
-        if (!this._config.parent) {
-          this._addAriaAndCollapsedClass(this._element, this._triggerArray);
-        }
-
-        if (this._config.toggle) {
-          this.toggle();
-        }
-      } // Getters
-
-
-      var _proto = Collapse.prototype;
-
-      // Public
-      _proto.toggle = function toggle() {
-        if ($$$1(this._element).hasClass(ClassName.SHOW)) {
-          this.hide();
-        } else {
-          this.show();
-        }
-      };
-
-      _proto.show = function show() {
-        var _this = this;
-
-        if (this._isTransitioning || $$$1(this._element).hasClass(ClassName.SHOW)) {
-          return;
-        }
-
-        var actives;
-        var activesData;
-
-        if (this._parent) {
-          actives = [].slice.call(this._parent.querySelectorAll(Selector.ACTIVES)).filter(function (elem) {
-            return elem.getAttribute('data-parent') === _this._config.parent;
-          });
-
-          if (actives.length === 0) {
-            actives = null;
-          }
-        }
-
-        if (actives) {
-          activesData = $$$1(actives).not(this._selector).data(DATA_KEY);
-
-          if (activesData && activesData._isTransitioning) {
-            return;
-          }
-        }
-
-        var startEvent = $$$1.Event(Event.SHOW);
-        $$$1(this._element).trigger(startEvent);
-
-        if (startEvent.isDefaultPrevented()) {
-          return;
-        }
-
-        if (actives) {
-          Collapse._jQueryInterface.call($$$1(actives).not(this._selector), 'hide');
-
-          if (!activesData) {
-            $$$1(actives).data(DATA_KEY, null);
-          }
-        }
-
-        var dimension = this._getDimension();
-
-        $$$1(this._element).removeClass(ClassName.COLLAPSE).addClass(ClassName.COLLAPSING);
-        this._element.style[dimension] = 0;
-
-        if (this._triggerArray.length) {
-          $$$1(this._triggerArray).removeClass(ClassName.COLLAPSED).attr('aria-expanded', true);
-        }
-
-        this.setTransitioning(true);
-
-        var complete = function complete() {
-          $$$1(_this._element).removeClass(ClassName.COLLAPSING).addClass(ClassName.COLLAPSE).addClass(ClassName.SHOW);
-          _this._element.style[dimension] = '';
-
-          _this.setTransitioning(false);
-
-          $$$1(_this._element).trigger(Event.SHOWN);
-        };
-
-        var capitalizedDimension = dimension[0].toUpperCase() + dimension.slice(1);
-        var scrollSize = "scroll" + capitalizedDimension;
-        var transitionDuration = Util.getTransitionDurationFromElement(this._element);
-        $$$1(this._element).one(Util.TRANSITION_END, complete).emulateTransitionEnd(transitionDuration);
-        this._element.style[dimension] = this._element[scrollSize] + "px";
-      };
-
-      _proto.hide = function hide() {
-        var _this2 = this;
-
-        if (this._isTransitioning || !$$$1(this._element).hasClass(ClassName.SHOW)) {
-          return;
-        }
-
-        var startEvent = $$$1.Event(Event.HIDE);
-        $$$1(this._element).trigger(startEvent);
-
-        if (startEvent.isDefaultPrevented()) {
-          return;
-        }
-
-        var dimension = this._getDimension();
-
-        this._element.style[dimension] = this._element.getBoundingClientRect()[dimension] + "px";
-        Util.reflow(this._element);
-        $$$1(this._element).addClass(ClassName.COLLAPSING).removeClass(ClassName.COLLAPSE).removeClass(ClassName.SHOW);
-        var triggerArrayLength = this._triggerArray.length;
-
-        if (triggerArrayLength > 0) {
-          for (var i = 0; i < triggerArrayLength; i++) {
-            var trigger = this._triggerArray[i];
-            var selector = Util.getSelectorFromElement(trigger);
-
-            if (selector !== null) {
-              var $elem = $$$1([].slice.call(document.querySelectorAll(selector)));
-
-              if (!$elem.hasClass(ClassName.SHOW)) {
-                $$$1(trigger).addClass(ClassName.COLLAPSED).attr('aria-expanded', false);
-              }
-            }
-          }
-        }
-
-        this.setTransitioning(true);
-
-        var complete = function complete() {
-          _this2.setTransitioning(false);
-
-          $$$1(_this2._element).removeClass(ClassName.COLLAPSING).addClass(ClassName.COLLAPSE).trigger(Event.HIDDEN);
-        };
-
-        this._element.style[dimension] = '';
-        var transitionDuration = Util.getTransitionDurationFromElement(this._element);
-        $$$1(this._element).one(Util.TRANSITION_END, complete).emulateTransitionEnd(transitionDuration);
-      };
-
-      _proto.setTransitioning = function setTransitioning(isTransitioning) {
-        this._isTransitioning = isTransitioning;
-      };
-
-      _proto.dispose = function dispose() {
-        $$$1.removeData(this._element, DATA_KEY);
-        this._config = null;
-        this._parent = null;
-        this._element = null;
-        this._triggerArray = null;
-        this._isTransitioning = null;
-      }; // Private
-
-
-      _proto._getConfig = function _getConfig(config) {
-        config = _objectSpread({}, Default, config);
-        config.toggle = Boolean(config.toggle); // Coerce string values
-
-        Util.typeCheckConfig(NAME, config, DefaultType);
-        return config;
-      };
-
-      _proto._getDimension = function _getDimension() {
-        var hasWidth = $$$1(this._element).hasClass(Dimension.WIDTH);
-        return hasWidth ? Dimension.WIDTH : Dimension.HEIGHT;
-      };
-
-      _proto._getParent = function _getParent() {
-        var _this3 = this;
-
-        var parent = null;
-
-        if (Util.isElement(this._config.parent)) {
-          parent = this._config.parent; // It's a jQuery object
-
-          if (typeof this._config.parent.jquery !== 'undefined') {
-            parent = this._config.parent[0];
-          }
-        } else {
-          parent = document.querySelector(this._config.parent);
-        }
-
-        var selector = "[data-toggle=\"collapse\"][data-parent=\"" + this._config.parent + "\"]";
-        var children = [].slice.call(parent.querySelectorAll(selector));
-        $$$1(children).each(function (i, element) {
-          _this3._addAriaAndCollapsedClass(Collapse._getTargetFromElement(element), [element]);
-        });
-        return parent;
-      };
-
-      _proto._addAriaAndCollapsedClass = function _addAriaAndCollapsedClass(element, triggerArray) {
-        if (element) {
-          var isOpen = $$$1(element).hasClass(ClassName.SHOW);
-
-          if (triggerArray.length) {
-            $$$1(triggerArray).toggleClass(ClassName.COLLAPSED, !isOpen).attr('aria-expanded', isOpen);
-          }
-        }
-      }; // Static
-
-
-      Collapse._getTargetFromElement = function _getTargetFromElement(element) {
-        var selector = Util.getSelectorFromElement(element);
-        return selector ? document.querySelector(selector) : null;
-      };
-
-      Collapse._jQueryInterface = function _jQueryInterface(config) {
-        return this.each(function () {
-          var $this = $$$1(this);
-          var data = $this.data(DATA_KEY);
-
-          var _config = _objectSpread({}, Default, $this.data(), typeof config === 'object' && config ? config : {});
-
-          if (!data && _config.toggle && /show|hide/.test(config)) {
-            _config.toggle = false;
-          }
-
-          if (!data) {
-            data = new Collapse(this, _config);
-            $this.data(DATA_KEY, data);
-          }
-
-          if (typeof config === 'string') {
-            if (typeof data[config] === 'undefined') {
-              throw new TypeError("No method named \"" + config + "\"");
-            }
-
-            data[config]();
-          }
-        });
-      };
-
-      _createClass(Collapse, null, [{
-        key: "VERSION",
-        get: function get() {
-          return VERSION;
-        }
-      }, {
-        key: "Default",
-        get: function get() {
-          return Default;
-        }
-      }]);
-
-      return Collapse;
-    }();
-    /**
-     * ------------------------------------------------------------------------
-     * Data Api implementation
-     * ------------------------------------------------------------------------
-     */
-
-
-    $$$1(document).on(Event.CLICK_DATA_API, Selector.DATA_TOGGLE, function (event) {
-      // preventDefault only for <a> elements (which change the URL) not inside the collapsible element
-      if (event.currentTarget.tagName === 'A') {
-        event.preventDefault();
-      }
-
-      var $trigger = $$$1(this);
-      var selector = Util.getSelectorFromElement(this);
-      var selectors = [].slice.call(document.querySelectorAll(selector));
-      $$$1(selectors).each(function () {
-        var $target = $$$1(this);
-        var data = $target.data(DATA_KEY);
-        var config = data ? 'toggle' : $trigger.data();
-
-        Collapse._jQueryInterface.call($target, config);
-      });
-    });
-    /**
-     * ------------------------------------------------------------------------
-     * jQuery
-     * ------------------------------------------------------------------------
-     */
-
-    $$$1.fn[NAME] = Collapse._jQueryInterface;
-    $$$1.fn[NAME].Constructor = Collapse;
-
-    $$$1.fn[NAME].noConflict = function () {
-      $$$1.fn[NAME] = JQUERY_NO_CONFLICT;
-      return Collapse._jQueryInterface;
-    };
-
-    return Collapse;
-  }($);
-
-  /**
-   * --------------------------------------------------------------------------
-   * Bootstrap (v4.1.3): dropdown.js
-   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
-   * --------------------------------------------------------------------------
-   */
-
-  var Dropdown = function ($$$1) {
-    /**
-     * ------------------------------------------------------------------------
-     * Constants
-     * ------------------------------------------------------------------------
-     */
-    var NAME = 'dropdown';
-    var VERSION = '4.1.3';
-    var DATA_KEY = 'bs.dropdown';
-    var EVENT_KEY = "." + DATA_KEY;
-    var DATA_API_KEY = '.data-api';
-    var JQUERY_NO_CONFLICT = $$$1.fn[NAME];
-    var ESCAPE_KEYCODE = 27; // KeyboardEvent.which value for Escape (Esc) key
-
-    var SPACE_KEYCODE = 32; // KeyboardEvent.which value for space key
-
-    var TAB_KEYCODE = 9; // KeyboardEvent.which value for tab key
-
-    var ARROW_UP_KEYCODE = 38; // KeyboardEvent.which value for up arrow key
-
-    var ARROW_DOWN_KEYCODE = 40; // KeyboardEvent.which value for down arrow key
-
-    var RIGHT_MOUSE_BUTTON_WHICH = 3; // MouseEvent.which value for the right button (assuming a right-handed mouse)
-
-    var REGEXP_KEYDOWN = new RegExp(ARROW_UP_KEYCODE + "|" + ARROW_DOWN_KEYCODE + "|" + ESCAPE_KEYCODE);
-    var Event = {
-      HIDE: "hide" + EVENT_KEY,
-      HIDDEN: "hidden" + EVENT_KEY,
-      SHOW: "show" + EVENT_KEY,
-      SHOWN: "shown" + EVENT_KEY,
-      CLICK: "click" + EVENT_KEY,
-      CLICK_DATA_API: "click" + EVENT_KEY + DATA_API_KEY,
-      KEYDOWN_DATA_API: "keydown" + EVENT_KEY + DATA_API_KEY,
-      KEYUP_DATA_API: "keyup" + EVENT_KEY + DATA_API_KEY
-    };
-    var ClassName = {
-      DISABLED: 'disabled',
-      SHOW: 'show',
-      DROPUP: 'dropup',
-      DROPRIGHT: 'dropright',
-      DROPLEFT: 'dropleft',
-      MENURIGHT: 'dropdown-menu-right',
-      MENULEFT: 'dropdown-menu-left',
-      POSITION_STATIC: 'position-static'
-    };
-    var Selector = {
-      DATA_TOGGLE: '[data-toggle="dropdown"]',
-      FORM_CHILD: '.dropdown form',
-      MENU: '.dropdown-menu',
-      NAVBAR_NAV: '.navbar-nav',
-      VISIBLE_ITEMS: '.dropdown-menu .dropdown-item:not(.disabled):not(:disabled)'
-    };
-    var AttachmentMap = {
-      TOP: 'top-start',
-      TOPEND: 'top-end',
-      BOTTOM: 'bottom-start',
-      BOTTOMEND: 'bottom-end',
-      RIGHT: 'right-start',
-      RIGHTEND: 'right-end',
-      LEFT: 'left-start',
-      LEFTEND: 'left-end'
-    };
-    var Default = {
-      offset: 0,
-      flip: true,
-      boundary: 'scrollParent',
-      reference: 'toggle',
-      display: 'dynamic'
-    };
-    var DefaultType = {
-      offset: '(number|string|function)',
-      flip: 'boolean',
-      boundary: '(string|element)',
-      reference: '(string|element)',
-      display: 'string'
-      /**
-       * ------------------------------------------------------------------------
-       * Class Definition
-       * ------------------------------------------------------------------------
-       */
-
-    };
-
-    var Dropdown =
-    /*#__PURE__*/
-    function () {
-      function Dropdown(element, config) {
-        this._element = element;
-        this._popper = null;
-        this._config = this._getConfig(config);
-        this._menu = this._getMenuElement();
-        this._inNavbar = this._detectNavbar();
-
-        this._addEventListeners();
-      } // Getters
-
-
-      var _proto = Dropdown.prototype;
-
-      // Public
-      _proto.toggle = function toggle() {
-        if (this._element.disabled || $$$1(this._element).hasClass(ClassName.DISABLED)) {
-          return;
-        }
-
-        var parent = Dropdown._getParentFromElement(this._element);
-
-        var isActive = $$$1(this._menu).hasClass(ClassName.SHOW);
-
-        Dropdown._clearMenus();
-
-        if (isActive) {
-          return;
-        }
-
-        var relatedTarget = {
-          relatedTarget: this._element
-        };
-        var showEvent = $$$1.Event(Event.SHOW, relatedTarget);
-        $$$1(parent).trigger(showEvent);
-
-        if (showEvent.isDefaultPrevented()) {
-          return;
-        } // Disable totally Popper.js for Dropdown in Navbar
-
-
-        if (!this._inNavbar) {
-          /**
-           * Check for Popper dependency
-           * Popper - https://popper.js.org
-           */
-          if (typeof Popper === 'undefined') {
-            throw new TypeError('Bootstrap dropdown require Popper.js (https://popper.js.org)');
-          }
-
-          var referenceElement = this._element;
-
-          if (this._config.reference === 'parent') {
-            referenceElement = parent;
-          } else if (Util.isElement(this._config.reference)) {
-            referenceElement = this._config.reference; // Check if it's jQuery element
-
-            if (typeof this._config.reference.jquery !== 'undefined') {
-              referenceElement = this._config.reference[0];
-            }
-          } // If boundary is not `scrollParent`, then set position to `static`
-          // to allow the menu to "escape" the scroll parent's boundaries
-          // https://github.com/twbs/bootstrap/issues/24251
-
-
-          if (this._config.boundary !== 'scrollParent') {
-            $$$1(parent).addClass(ClassName.POSITION_STATIC);
-          }
-
-          this._popper = new Popper(referenceElement, this._menu, this._getPopperConfig());
-        } // If this is a touch-enabled device we add extra
-        // empty mouseover listeners to the body's immediate children;
-        // only needed because of broken event delegation on iOS
-        // https://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.html
-
-
-        if ('ontouchstart' in document.documentElement && $$$1(parent).closest(Selector.NAVBAR_NAV).length === 0) {
-          $$$1(document.body).children().on('mouseover', null, $$$1.noop);
-        }
-
-        this._element.focus();
-
-        this._element.setAttribute('aria-expanded', true);
-
-        $$$1(this._menu).toggleClass(ClassName.SHOW);
-        $$$1(parent).toggleClass(ClassName.SHOW).trigger($$$1.Event(Event.SHOWN, relatedTarget));
-      };
-
-      _proto.dispose = function dispose() {
-        $$$1.removeData(this._element, DATA_KEY);
-        $$$1(this._element).off(EVENT_KEY);
-        this._element = null;
-        this._menu = null;
-
-        if (this._popper !== null) {
-          this._popper.destroy();
-
-          this._popper = null;
-        }
-      };
-
-      _proto.update = function update() {
-        this._inNavbar = this._detectNavbar();
-
-        if (this._popper !== null) {
-          this._popper.scheduleUpdate();
-        }
-      }; // Private
-
-
-      _proto._addEventListeners = function _addEventListeners() {
-        var _this = this;
-
-        $$$1(this._element).on(Event.CLICK, function (event) {
-          event.preventDefault();
-          event.stopPropagation();
-
-          _this.toggle();
-        });
-      };
-
-      _proto._getConfig = function _getConfig(config) {
-        config = _objectSpread({}, this.constructor.Default, $$$1(this._element).data(), config);
-        Util.typeCheckConfig(NAME, config, this.constructor.DefaultType);
-        return config;
-      };
-
-      _proto._getMenuElement = function _getMenuElement() {
-        if (!this._menu) {
-          var parent = Dropdown._getParentFromElement(this._element);
-
-          if (parent) {
-            this._menu = parent.querySelector(Selector.MENU);
-          }
-        }
-
-        return this._menu;
-      };
-
-      _proto._getPlacement = function _getPlacement() {
-        var $parentDropdown = $$$1(this._element.parentNode);
-        var placement = AttachmentMap.BOTTOM; // Handle dropup
-
-        if ($parentDropdown.hasClass(ClassName.DROPUP)) {
-          placement = AttachmentMap.TOP;
-
-          if ($$$1(this._menu).hasClass(ClassName.MENURIGHT)) {
-            placement = AttachmentMap.TOPEND;
-          }
-        } else if ($parentDropdown.hasClass(ClassName.DROPRIGHT)) {
-          placement = AttachmentMap.RIGHT;
-        } else if ($parentDropdown.hasClass(ClassName.DROPLEFT)) {
-          placement = AttachmentMap.LEFT;
-        } else if ($$$1(this._menu).hasClass(ClassName.MENURIGHT)) {
-          placement = AttachmentMap.BOTTOMEND;
-        }
-
-        return placement;
-      };
-
-      _proto._detectNavbar = function _detectNavbar() {
-        return $$$1(this._element).closest('.navbar').length > 0;
-      };
-
-      _proto._getPopperConfig = function _getPopperConfig() {
-        var _this2 = this;
-
-        var offsetConf = {};
-
-        if (typeof this._config.offset === 'function') {
-          offsetConf.fn = function (data) {
-            data.offsets = _objectSpread({}, data.offsets, _this2._config.offset(data.offsets) || {});
-            return data;
-          };
-        } else {
-          offsetConf.offset = this._config.offset;
-        }
-
-        var popperConfig = {
-          placement: this._getPlacement(),
-          modifiers: {
-            offset: offsetConf,
-            flip: {
-              enabled: this._config.flip
-            },
-            preventOverflow: {
-              boundariesElement: this._config.boundary
-            }
-          } // Disable Popper.js if we have a static display
-
-        };
-
-        if (this._config.display === 'static') {
-          popperConfig.modifiers.applyStyle = {
-            enabled: false
-          };
-        }
-
-        return popperConfig;
-      }; // Static
-
-
-      Dropdown._jQueryInterface = function _jQueryInterface(config) {
-        return this.each(function () {
-          var data = $$$1(this).data(DATA_KEY);
-
-          var _config = typeof config === 'object' ? config : null;
-
-          if (!data) {
-            data = new Dropdown(this, _config);
-            $$$1(this).data(DATA_KEY, data);
-          }
-
-          if (typeof config === 'string') {
-            if (typeof data[config] === 'undefined') {
-              throw new TypeError("No method named \"" + config + "\"");
-            }
-
-            data[config]();
-          }
-        });
-      };
-
-      Dropdown._clearMenus = function _clearMenus(event) {
-        if (event && (event.which === RIGHT_MOUSE_BUTTON_WHICH || event.type === 'keyup' && event.which !== TAB_KEYCODE)) {
-          return;
-        }
-
-        var toggles = [].slice.call(document.querySelectorAll(Selector.DATA_TOGGLE));
-
-        for (var i = 0, len = toggles.length; i < len; i++) {
-          var parent = Dropdown._getParentFromElement(toggles[i]);
-
-          var context = $$$1(toggles[i]).data(DATA_KEY);
-          var relatedTarget = {
-            relatedTarget: toggles[i]
-          };
-
-          if (event && event.type === 'click') {
-            relatedTarget.clickEvent = event;
-          }
-
-          if (!context) {
-            continue;
-          }
-
-          var dropdownMenu = context._menu;
-
-          if (!$$$1(parent).hasClass(ClassName.SHOW)) {
-            continue;
-          }
-
-          if (event && (event.type === 'click' && /input|textarea/i.test(event.target.tagName) || event.type === 'keyup' && event.which === TAB_KEYCODE) && $$$1.contains(parent, event.target)) {
-            continue;
-          }
-
-          var hideEvent = $$$1.Event(Event.HIDE, relatedTarget);
-          $$$1(parent).trigger(hideEvent);
-
-          if (hideEvent.isDefaultPrevented()) {
-            continue;
-          } // If this is a touch-enabled device we remove the extra
-          // empty mouseover listeners we added for iOS support
-
-
-          if ('ontouchstart' in document.documentElement) {
-            $$$1(document.body).children().off('mouseover', null, $$$1.noop);
-          }
-
-          toggles[i].setAttribute('aria-expanded', 'false');
-          $$$1(dropdownMenu).removeClass(ClassName.SHOW);
-          $$$1(parent).removeClass(ClassName.SHOW).trigger($$$1.Event(Event.HIDDEN, relatedTarget));
-        }
-      };
-
-      Dropdown._getParentFromElement = function _getParentFromElement(element) {
-        var parent;
-        var selector = Util.getSelectorFromElement(element);
-
-        if (selector) {
-          parent = document.querySelector(selector);
-        }
-
-        return parent || element.parentNode;
-      }; // eslint-disable-next-line complexity
-
-
-      Dropdown._dataApiKeydownHandler = function _dataApiKeydownHandler(event) {
-        // If not input/textarea:
-        //  - And not a key in REGEXP_KEYDOWN => not a dropdown command
-        // If input/textarea:
-        //  - If space key => not a dropdown command
-        //  - If key is other than escape
-        //    - If key is not up or down => not a dropdown command
-        //    - If trigger inside the menu => not a dropdown command
-        if (/input|textarea/i.test(event.target.tagName) ? event.which === SPACE_KEYCODE || event.which !== ESCAPE_KEYCODE && (event.which !== ARROW_DOWN_KEYCODE && event.which !== ARROW_UP_KEYCODE || $$$1(event.target).closest(Selector.MENU).length) : !REGEXP_KEYDOWN.test(event.which)) {
-          return;
-        }
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        if (this.disabled || $$$1(this).hasClass(ClassName.DISABLED)) {
-          return;
-        }
-
-        var parent = Dropdown._getParentFromElement(this);
-
-        var isActive = $$$1(parent).hasClass(ClassName.SHOW);
-
-        if (!isActive && (event.which !== ESCAPE_KEYCODE || event.which !== SPACE_KEYCODE) || isActive && (event.which === ESCAPE_KEYCODE || event.which === SPACE_KEYCODE)) {
-          if (event.which === ESCAPE_KEYCODE) {
-            var toggle = parent.querySelector(Selector.DATA_TOGGLE);
-            $$$1(toggle).trigger('focus');
-          }
-
-          $$$1(this).trigger('click');
-          return;
-        }
-
-        var items = [].slice.call(parent.querySelectorAll(Selector.VISIBLE_ITEMS));
-
-        if (items.length === 0) {
-          return;
-        }
-
-        var index = items.indexOf(event.target);
-
-        if (event.which === ARROW_UP_KEYCODE && index > 0) {
-          // Up
-          index--;
-        }
-
-        if (event.which === ARROW_DOWN_KEYCODE && index < items.length - 1) {
-          // Down
-          index++;
-        }
-
-        if (index < 0) {
-          index = 0;
-        }
-
-        items[index].focus();
-      };
-
-      _createClass(Dropdown, null, [{
-        key: "VERSION",
-        get: function get() {
-          return VERSION;
-        }
-      }, {
-        key: "Default",
-        get: function get() {
-          return Default;
-        }
-      }, {
-        key: "DefaultType",
-        get: function get() {
-          return DefaultType;
-        }
-      }]);
-
-      return Dropdown;
-    }();
-    /**
-     * ------------------------------------------------------------------------
-     * Data Api implementation
-     * ------------------------------------------------------------------------
-     */
-
-
-    $$$1(document).on(Event.KEYDOWN_DATA_API, Selector.DATA_TOGGLE, Dropdown._dataApiKeydownHandler).on(Event.KEYDOWN_DATA_API, Selector.MENU, Dropdown._dataApiKeydownHandler).on(Event.CLICK_DATA_API + " " + Event.KEYUP_DATA_API, Dropdown._clearMenus).on(Event.CLICK_DATA_API, Selector.DATA_TOGGLE, function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-
-      Dropdown._jQueryInterface.call($$$1(this), 'toggle');
-    }).on(Event.CLICK_DATA_API, Selector.FORM_CHILD, function (e) {
-      e.stopPropagation();
-    });
-    /**
-     * ------------------------------------------------------------------------
-     * jQuery
-     * ------------------------------------------------------------------------
-     */
-
-    $$$1.fn[NAME] = Dropdown._jQueryInterface;
-    $$$1.fn[NAME].Constructor = Dropdown;
-
-    $$$1.fn[NAME].noConflict = function () {
-      $$$1.fn[NAME] = JQUERY_NO_CONFLICT;
-      return Dropdown._jQueryInterface;
-    };
-
-    return Dropdown;
-  }($, Popper);
-
-  /**
-   * --------------------------------------------------------------------------
-   * Bootstrap (v4.1.3): modal.js
-   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
-   * --------------------------------------------------------------------------
-   */
-
-  var Modal = function ($$$1) {
-    /**
-     * ------------------------------------------------------------------------
-     * Constants
-     * ------------------------------------------------------------------------
-     */
-    var NAME = 'modal';
-    var VERSION = '4.1.3';
-    var DATA_KEY = 'bs.modal';
-    var EVENT_KEY = "." + DATA_KEY;
-    var DATA_API_KEY = '.data-api';
-    var JQUERY_NO_CONFLICT = $$$1.fn[NAME];
-    var ESCAPE_KEYCODE = 27; // KeyboardEvent.which value for Escape (Esc) key
-
-    var Default = {
-      backdrop: true,
-      keyboard: true,
-      focus: true,
-      show: true
-    };
-    var DefaultType = {
-      backdrop: '(boolean|string)',
-      keyboard: 'boolean',
-      focus: 'boolean',
-      show: 'boolean'
-    };
-    var Event = {
-      HIDE: "hide" + EVENT_KEY,
-      HIDDEN: "hidden" + EVENT_KEY,
-      SHOW: "show" + EVENT_KEY,
-      SHOWN: "shown" + EVENT_KEY,
-      FOCUSIN: "focusin" + EVENT_KEY,
-      RESIZE: "resize" + EVENT_KEY,
-      CLICK_DISMISS: "click.dismiss" + EVENT_KEY,
-      KEYDOWN_DISMISS: "keydown.dismiss" + EVENT_KEY,
-      MOUSEUP_DISMISS: "mouseup.dismiss" + EVENT_KEY,
-      MOUSEDOWN_DISMISS: "mousedown.dismiss" + EVENT_KEY,
-      CLICK_DATA_API: "click" + EVENT_KEY + DATA_API_KEY
-    };
-    var ClassName = {
-      SCROLLBAR_MEASURER: 'modal-scrollbar-measure',
-      BACKDROP: 'modal-backdrop',
-      OPEN: 'modal-open',
-      FADE: 'fade',
-      SHOW: 'show'
-    };
-    var Selector = {
-      DIALOG: '.modal-dialog',
-      DATA_TOGGLE: '[data-toggle="modal"]',
-      DATA_DISMISS: '[data-dismiss="modal"]',
-      FIXED_CONTENT: '.fixed-top, .fixed-bottom, .is-fixed, .sticky-top',
-      STICKY_CONTENT: '.sticky-top'
-      /**
-       * ------------------------------------------------------------------------
-       * Class Definition
-       * ------------------------------------------------------------------------
-       */
-
-    };
-
-    var Modal =
-    /*#__PURE__*/
-    function () {
-      function Modal(element, config) {
-        this._config = this._getConfig(config);
-        this._element = element;
-        this._dialog = element.querySelector(Selector.DIALOG);
-        this._backdrop = null;
-        this._isShown = false;
-        this._isBodyOverflowing = false;
-        this._ignoreBackdropClick = false;
-        this._scrollbarWidth = 0;
-      } // Getters
-
-
-      var _proto = Modal.prototype;
-
-      // Public
-      _proto.toggle = function toggle(relatedTarget) {
-        return this._isShown ? this.hide() : this.show(relatedTarget);
-      };
-
-      _proto.show = function show(relatedTarget) {
-        var _this = this;
-
-        if (this._isTransitioning || this._isShown) {
-          return;
-        }
-
-        if ($$$1(this._element).hasClass(ClassName.FADE)) {
-          this._isTransitioning = true;
-        }
-
-        var showEvent = $$$1.Event(Event.SHOW, {
-          relatedTarget: relatedTarget
-        });
-        $$$1(this._element).trigger(showEvent);
-
-        if (this._isShown || showEvent.isDefaultPrevented()) {
-          return;
-        }
-
-        this._isShown = true;
-
-        this._checkScrollbar();
-
-        this._setScrollbar();
-
-        this._adjustDialog();
-
-        $$$1(document.body).addClass(ClassName.OPEN);
-
-        this._setEscapeEvent();
-
-        this._setResizeEvent();
-
-        $$$1(this._element).on(Event.CLICK_DISMISS, Selector.DATA_DISMISS, function (event) {
-          return _this.hide(event);
-        });
-        $$$1(this._dialog).on(Event.MOUSEDOWN_DISMISS, function () {
-          $$$1(_this._element).one(Event.MOUSEUP_DISMISS, function (event) {
-            if ($$$1(event.target).is(_this._element)) {
-              _this._ignoreBackdropClick = true;
-            }
-          });
-        });
-
-        this._showBackdrop(function () {
-          return _this._showElement(relatedTarget);
-        });
-      };
-
-      _proto.hide = function hide(event) {
-        var _this2 = this;
-
+    Alert._handleDismiss = function _handleDismiss(alertInstance) {
+      return function (event) {
         if (event) {
           event.preventDefault();
         }
 
-        if (this._isTransitioning || !this._isShown) {
-          return;
-        }
-
-        var hideEvent = $$$1.Event(Event.HIDE);
-        $$$1(this._element).trigger(hideEvent);
-
-        if (!this._isShown || hideEvent.isDefaultPrevented()) {
-          return;
-        }
-
-        this._isShown = false;
-        var transition = $$$1(this._element).hasClass(ClassName.FADE);
-
-        if (transition) {
-          this._isTransitioning = true;
-        }
-
-        this._setEscapeEvent();
-
-        this._setResizeEvent();
-
-        $$$1(document).off(Event.FOCUSIN);
-        $$$1(this._element).removeClass(ClassName.SHOW);
-        $$$1(this._element).off(Event.CLICK_DISMISS);
-        $$$1(this._dialog).off(Event.MOUSEDOWN_DISMISS);
-
-        if (transition) {
-          var transitionDuration = Util.getTransitionDurationFromElement(this._element);
-          $$$1(this._element).one(Util.TRANSITION_END, function (event) {
-            return _this2._hideModal(event);
-          }).emulateTransitionEnd(transitionDuration);
-        } else {
-          this._hideModal();
-        }
+        alertInstance.close(this);
       };
-
-      _proto.dispose = function dispose() {
-        $$$1.removeData(this._element, DATA_KEY);
-        $$$1(window, document, this._element, this._backdrop).off(EVENT_KEY);
-        this._config = null;
-        this._element = null;
-        this._dialog = null;
-        this._backdrop = null;
-        this._isShown = null;
-        this._isBodyOverflowing = null;
-        this._ignoreBackdropClick = null;
-        this._scrollbarWidth = null;
-      };
-
-      _proto.handleUpdate = function handleUpdate() {
-        this._adjustDialog();
-      }; // Private
-
-
-      _proto._getConfig = function _getConfig(config) {
-        config = _objectSpread({}, Default, config);
-        Util.typeCheckConfig(NAME, config, DefaultType);
-        return config;
-      };
-
-      _proto._showElement = function _showElement(relatedTarget) {
-        var _this3 = this;
-
-        var transition = $$$1(this._element).hasClass(ClassName.FADE);
-
-        if (!this._element.parentNode || this._element.parentNode.nodeType !== Node.ELEMENT_NODE) {
-          // Don't move modal's DOM position
-          document.body.appendChild(this._element);
-        }
-
-        this._element.style.display = 'block';
-
-        this._element.removeAttribute('aria-hidden');
-
-        this._element.scrollTop = 0;
-
-        if (transition) {
-          Util.reflow(this._element);
-        }
-
-        $$$1(this._element).addClass(ClassName.SHOW);
-
-        if (this._config.focus) {
-          this._enforceFocus();
-        }
-
-        var shownEvent = $$$1.Event(Event.SHOWN, {
-          relatedTarget: relatedTarget
-        });
-
-        var transitionComplete = function transitionComplete() {
-          if (_this3._config.focus) {
-            _this3._element.focus();
-          }
-
-          _this3._isTransitioning = false;
-          $$$1(_this3._element).trigger(shownEvent);
-        };
-
-        if (transition) {
-          var transitionDuration = Util.getTransitionDurationFromElement(this._element);
-          $$$1(this._dialog).one(Util.TRANSITION_END, transitionComplete).emulateTransitionEnd(transitionDuration);
-        } else {
-          transitionComplete();
-        }
-      };
-
-      _proto._enforceFocus = function _enforceFocus() {
-        var _this4 = this;
-
-        $$$1(document).off(Event.FOCUSIN) // Guard against infinite focus loop
-        .on(Event.FOCUSIN, function (event) {
-          if (document !== event.target && _this4._element !== event.target && $$$1(_this4._element).has(event.target).length === 0) {
-            _this4._element.focus();
-          }
-        });
-      };
-
-      _proto._setEscapeEvent = function _setEscapeEvent() {
-        var _this5 = this;
-
-        if (this._isShown && this._config.keyboard) {
-          $$$1(this._element).on(Event.KEYDOWN_DISMISS, function (event) {
-            if (event.which === ESCAPE_KEYCODE) {
-              event.preventDefault();
-
-              _this5.hide();
-            }
-          });
-        } else if (!this._isShown) {
-          $$$1(this._element).off(Event.KEYDOWN_DISMISS);
-        }
-      };
-
-      _proto._setResizeEvent = function _setResizeEvent() {
-        var _this6 = this;
-
-        if (this._isShown) {
-          $$$1(window).on(Event.RESIZE, function (event) {
-            return _this6.handleUpdate(event);
-          });
-        } else {
-          $$$1(window).off(Event.RESIZE);
-        }
-      };
-
-      _proto._hideModal = function _hideModal() {
-        var _this7 = this;
-
-        this._element.style.display = 'none';
-
-        this._element.setAttribute('aria-hidden', true);
-
-        this._isTransitioning = false;
-
-        this._showBackdrop(function () {
-          $$$1(document.body).removeClass(ClassName.OPEN);
-
-          _this7._resetAdjustments();
-
-          _this7._resetScrollbar();
-
-          $$$1(_this7._element).trigger(Event.HIDDEN);
-        });
-      };
-
-      _proto._removeBackdrop = function _removeBackdrop() {
-        if (this._backdrop) {
-          $$$1(this._backdrop).remove();
-          this._backdrop = null;
-        }
-      };
-
-      _proto._showBackdrop = function _showBackdrop(callback) {
-        var _this8 = this;
-
-        var animate = $$$1(this._element).hasClass(ClassName.FADE) ? ClassName.FADE : '';
-
-        if (this._isShown && this._config.backdrop) {
-          this._backdrop = document.createElement('div');
-          this._backdrop.className = ClassName.BACKDROP;
-
-          if (animate) {
-            this._backdrop.classList.add(animate);
-          }
-
-          $$$1(this._backdrop).appendTo(document.body);
-          $$$1(this._element).on(Event.CLICK_DISMISS, function (event) {
-            if (_this8._ignoreBackdropClick) {
-              _this8._ignoreBackdropClick = false;
-              return;
-            }
-
-            if (event.target !== event.currentTarget) {
-              return;
-            }
-
-            if (_this8._config.backdrop === 'static') {
-              _this8._element.focus();
-            } else {
-              _this8.hide();
-            }
-          });
-
-          if (animate) {
-            Util.reflow(this._backdrop);
-          }
-
-          $$$1(this._backdrop).addClass(ClassName.SHOW);
-
-          if (!callback) {
-            return;
-          }
-
-          if (!animate) {
-            callback();
-            return;
-          }
-
-          var backdropTransitionDuration = Util.getTransitionDurationFromElement(this._backdrop);
-          $$$1(this._backdrop).one(Util.TRANSITION_END, callback).emulateTransitionEnd(backdropTransitionDuration);
-        } else if (!this._isShown && this._backdrop) {
-          $$$1(this._backdrop).removeClass(ClassName.SHOW);
-
-          var callbackRemove = function callbackRemove() {
-            _this8._removeBackdrop();
-
-            if (callback) {
-              callback();
-            }
-          };
-
-          if ($$$1(this._element).hasClass(ClassName.FADE)) {
-            var _backdropTransitionDuration = Util.getTransitionDurationFromElement(this._backdrop);
-
-            $$$1(this._backdrop).one(Util.TRANSITION_END, callbackRemove).emulateTransitionEnd(_backdropTransitionDuration);
-          } else {
-            callbackRemove();
-          }
-        } else if (callback) {
-          callback();
-        }
-      }; // ----------------------------------------------------------------------
-      // the following methods are used to handle overflowing modals
-      // todo (fat): these should probably be refactored out of modal.js
-      // ----------------------------------------------------------------------
-
-
-      _proto._adjustDialog = function _adjustDialog() {
-        var isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
-
-        if (!this._isBodyOverflowing && isModalOverflowing) {
-          this._element.style.paddingLeft = this._scrollbarWidth + "px";
-        }
-
-        if (this._isBodyOverflowing && !isModalOverflowing) {
-          this._element.style.paddingRight = this._scrollbarWidth + "px";
-        }
-      };
-
-      _proto._resetAdjustments = function _resetAdjustments() {
-        this._element.style.paddingLeft = '';
-        this._element.style.paddingRight = '';
-      };
-
-      _proto._checkScrollbar = function _checkScrollbar() {
-        var rect = document.body.getBoundingClientRect();
-        this._isBodyOverflowing = rect.left + rect.right < window.innerWidth;
-        this._scrollbarWidth = this._getScrollbarWidth();
-      };
-
-      _proto._setScrollbar = function _setScrollbar() {
-        var _this9 = this;
-
-        if (this._isBodyOverflowing) {
-          // Note: DOMNode.style.paddingRight returns the actual value or '' if not set
-          //   while $(DOMNode).css('padding-right') returns the calculated value or 0 if not set
-          var fixedContent = [].slice.call(document.querySelectorAll(Selector.FIXED_CONTENT));
-          var stickyContent = [].slice.call(document.querySelectorAll(Selector.STICKY_CONTENT)); // Adjust fixed content padding
-
-          $$$1(fixedContent).each(function (index, element) {
-            var actualPadding = element.style.paddingRight;
-            var calculatedPadding = $$$1(element).css('padding-right');
-            $$$1(element).data('padding-right', actualPadding).css('padding-right', parseFloat(calculatedPadding) + _this9._scrollbarWidth + "px");
-          }); // Adjust sticky content margin
-
-          $$$1(stickyContent).each(function (index, element) {
-            var actualMargin = element.style.marginRight;
-            var calculatedMargin = $$$1(element).css('margin-right');
-            $$$1(element).data('margin-right', actualMargin).css('margin-right', parseFloat(calculatedMargin) - _this9._scrollbarWidth + "px");
-          }); // Adjust body padding
-
-          var actualPadding = document.body.style.paddingRight;
-          var calculatedPadding = $$$1(document.body).css('padding-right');
-          $$$1(document.body).data('padding-right', actualPadding).css('padding-right', parseFloat(calculatedPadding) + this._scrollbarWidth + "px");
-        }
-      };
-
-      _proto._resetScrollbar = function _resetScrollbar() {
-        // Restore fixed content padding
-        var fixedContent = [].slice.call(document.querySelectorAll(Selector.FIXED_CONTENT));
-        $$$1(fixedContent).each(function (index, element) {
-          var padding = $$$1(element).data('padding-right');
-          $$$1(element).removeData('padding-right');
-          element.style.paddingRight = padding ? padding : '';
-        }); // Restore sticky content
-
-        var elements = [].slice.call(document.querySelectorAll("" + Selector.STICKY_CONTENT));
-        $$$1(elements).each(function (index, element) {
-          var margin = $$$1(element).data('margin-right');
-
-          if (typeof margin !== 'undefined') {
-            $$$1(element).css('margin-right', margin).removeData('margin-right');
-          }
-        }); // Restore body padding
-
-        var padding = $$$1(document.body).data('padding-right');
-        $$$1(document.body).removeData('padding-right');
-        document.body.style.paddingRight = padding ? padding : '';
-      };
-
-      _proto._getScrollbarWidth = function _getScrollbarWidth() {
-        // thx d.walsh
-        var scrollDiv = document.createElement('div');
-        scrollDiv.className = ClassName.SCROLLBAR_MEASURER;
-        document.body.appendChild(scrollDiv);
-        var scrollbarWidth = scrollDiv.getBoundingClientRect().width - scrollDiv.clientWidth;
-        document.body.removeChild(scrollDiv);
-        return scrollbarWidth;
-      }; // Static
-
-
-      Modal._jQueryInterface = function _jQueryInterface(config, relatedTarget) {
-        return this.each(function () {
-          var data = $$$1(this).data(DATA_KEY);
-
-          var _config = _objectSpread({}, Default, $$$1(this).data(), typeof config === 'object' && config ? config : {});
-
-          if (!data) {
-            data = new Modal(this, _config);
-            $$$1(this).data(DATA_KEY, data);
-          }
-
-          if (typeof config === 'string') {
-            if (typeof data[config] === 'undefined') {
-              throw new TypeError("No method named \"" + config + "\"");
-            }
-
-            data[config](relatedTarget);
-          } else if (_config.show) {
-            data.show(relatedTarget);
-          }
-        });
-      };
-
-      _createClass(Modal, null, [{
-        key: "VERSION",
-        get: function get() {
-          return VERSION;
-        }
-      }, {
-        key: "Default",
-        get: function get() {
-          return Default;
-        }
-      }]);
-
-      return Modal;
-    }();
-    /**
-     * ------------------------------------------------------------------------
-     * Data Api implementation
-     * ------------------------------------------------------------------------
-     */
-
-
-    $$$1(document).on(Event.CLICK_DATA_API, Selector.DATA_TOGGLE, function (event) {
-      var _this10 = this;
-
-      var target;
-      var selector = Util.getSelectorFromElement(this);
-
-      if (selector) {
-        target = document.querySelector(selector);
-      }
-
-      var config = $$$1(target).data(DATA_KEY) ? 'toggle' : _objectSpread({}, $$$1(target).data(), $$$1(this).data());
-
-      if (this.tagName === 'A' || this.tagName === 'AREA') {
-        event.preventDefault();
-      }
-
-      var $target = $$$1(target).one(Event.SHOW, function (showEvent) {
-        if (showEvent.isDefaultPrevented()) {
-          // Only register focus restorer if modal will actually get shown
-          return;
-        }
-
-        $target.one(Event.HIDDEN, function () {
-          if ($$$1(_this10).is(':visible')) {
-            _this10.focus();
-          }
-        });
-      });
-
-      Modal._jQueryInterface.call($$$1(target), config, this);
-    });
-    /**
-     * ------------------------------------------------------------------------
-     * jQuery
-     * ------------------------------------------------------------------------
-     */
-
-    $$$1.fn[NAME] = Modal._jQueryInterface;
-    $$$1.fn[NAME].Constructor = Modal;
-
-    $$$1.fn[NAME].noConflict = function () {
-      $$$1.fn[NAME] = JQUERY_NO_CONFLICT;
-      return Modal._jQueryInterface;
     };
 
-    return Modal;
-  }($);
+    _createClass(Alert, null, [{
+      key: "VERSION",
+      get: function get() {
+        return VERSION;
+      }
+    }]);
 
+    return Alert;
+  }();
   /**
-   * --------------------------------------------------------------------------
-   * Bootstrap (v4.1.3): tooltip.js
-   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
-   * --------------------------------------------------------------------------
+   * ------------------------------------------------------------------------
+   * Data Api implementation
+   * ------------------------------------------------------------------------
    */
 
-  var Tooltip = function ($$$1) {
+
+  $(document).on(Event.CLICK_DATA_API, Selector.DISMISS, Alert._handleDismiss(new Alert()));
+  /**
+   * ------------------------------------------------------------------------
+   * jQuery
+   * ------------------------------------------------------------------------
+   */
+
+  $.fn[NAME] = Alert._jQueryInterface;
+  $.fn[NAME].Constructor = Alert;
+
+  $.fn[NAME].noConflict = function () {
+    $.fn[NAME] = JQUERY_NO_CONFLICT;
+    return Alert._jQueryInterface;
+  };
+
+  /**
+   * ------------------------------------------------------------------------
+   * Constants
+   * ------------------------------------------------------------------------
+   */
+
+  var NAME$1 = 'button';
+  var VERSION$1 = '4.2.1';
+  var DATA_KEY$1 = 'bs.button';
+  var EVENT_KEY$1 = "." + DATA_KEY$1;
+  var DATA_API_KEY$1 = '.data-api';
+  var JQUERY_NO_CONFLICT$1 = $.fn[NAME$1];
+  var ClassName$1 = {
+    ACTIVE: 'active',
+    BUTTON: 'btn',
+    FOCUS: 'focus'
+  };
+  var Selector$1 = {
+    DATA_TOGGLE_CARROT: '[data-toggle^="button"]',
+    DATA_TOGGLE: '[data-toggle="buttons"]',
+    INPUT: 'input:not([type="hidden"])',
+    ACTIVE: '.active',
+    BUTTON: '.btn'
+  };
+  var Event$1 = {
+    CLICK_DATA_API: "click" + EVENT_KEY$1 + DATA_API_KEY$1,
+    FOCUS_BLUR_DATA_API: "focus" + EVENT_KEY$1 + DATA_API_KEY$1 + " " + ("blur" + EVENT_KEY$1 + DATA_API_KEY$1)
     /**
      * ------------------------------------------------------------------------
-     * Constants
+     * Class Definition
      * ------------------------------------------------------------------------
      */
-    var NAME = 'tooltip';
-    var VERSION = '4.1.3';
-    var DATA_KEY = 'bs.tooltip';
-    var EVENT_KEY = "." + DATA_KEY;
-    var JQUERY_NO_CONFLICT = $$$1.fn[NAME];
-    var CLASS_PREFIX = 'bs-tooltip';
-    var BSCLS_PREFIX_REGEX = new RegExp("(^|\\s)" + CLASS_PREFIX + "\\S+", 'g');
-    var DefaultType = {
-      animation: 'boolean',
-      template: 'string',
-      title: '(string|element|function)',
-      trigger: 'string',
-      delay: '(number|object)',
-      html: 'boolean',
-      selector: '(string|boolean)',
-      placement: '(string|function)',
-      offset: '(number|string)',
-      container: '(string|element|boolean)',
-      fallbackPlacement: '(string|array)',
-      boundary: '(string|element)'
-    };
-    var AttachmentMap = {
-      AUTO: 'auto',
-      TOP: 'top',
-      RIGHT: 'right',
-      BOTTOM: 'bottom',
-      LEFT: 'left'
-    };
-    var Default = {
-      animation: true,
-      template: '<div class="tooltip" role="tooltip">' + '<div class="arrow"></div>' + '<div class="tooltip-inner"></div></div>',
-      trigger: 'hover focus',
-      title: '',
-      delay: 0,
-      html: false,
-      selector: false,
-      placement: 'top',
-      offset: 0,
-      container: false,
-      fallbackPlacement: 'flip',
-      boundary: 'scrollParent'
-    };
-    var HoverState = {
-      SHOW: 'show',
-      OUT: 'out'
-    };
-    var Event = {
-      HIDE: "hide" + EVENT_KEY,
-      HIDDEN: "hidden" + EVENT_KEY,
-      SHOW: "show" + EVENT_KEY,
-      SHOWN: "shown" + EVENT_KEY,
-      INSERTED: "inserted" + EVENT_KEY,
-      CLICK: "click" + EVENT_KEY,
-      FOCUSIN: "focusin" + EVENT_KEY,
-      FOCUSOUT: "focusout" + EVENT_KEY,
-      MOUSEENTER: "mouseenter" + EVENT_KEY,
-      MOUSELEAVE: "mouseleave" + EVENT_KEY
-    };
-    var ClassName = {
-      FADE: 'fade',
-      SHOW: 'show'
-    };
-    var Selector = {
-      TOOLTIP: '.tooltip',
-      TOOLTIP_INNER: '.tooltip-inner',
-      ARROW: '.arrow'
-    };
-    var Trigger = {
-      HOVER: 'hover',
-      FOCUS: 'focus',
-      CLICK: 'click',
-      MANUAL: 'manual'
-      /**
-       * ------------------------------------------------------------------------
-       * Class Definition
-       * ------------------------------------------------------------------------
-       */
 
+  };
+
+  var Button =
+  /*#__PURE__*/
+  function () {
+    function Button(element) {
+      this._element = element;
+    } // Getters
+
+
+    var _proto = Button.prototype;
+
+    // Public
+    _proto.toggle = function toggle() {
+      var triggerChangeEvent = true;
+      var addAriaPressed = true;
+      var rootElement = $(this._element).closest(Selector$1.DATA_TOGGLE)[0];
+
+      if (rootElement) {
+        var input = this._element.querySelector(Selector$1.INPUT);
+
+        if (input) {
+          if (input.type === 'radio') {
+            if (input.checked && this._element.classList.contains(ClassName$1.ACTIVE)) {
+              triggerChangeEvent = false;
+            } else {
+              var activeElement = rootElement.querySelector(Selector$1.ACTIVE);
+
+              if (activeElement) {
+                $(activeElement).removeClass(ClassName$1.ACTIVE);
+              }
+            }
+          }
+
+          if (triggerChangeEvent) {
+            if (input.hasAttribute('disabled') || rootElement.hasAttribute('disabled') || input.classList.contains('disabled') || rootElement.classList.contains('disabled')) {
+              return;
+            }
+
+            input.checked = !this._element.classList.contains(ClassName$1.ACTIVE);
+            $(input).trigger('change');
+          }
+
+          input.focus();
+          addAriaPressed = false;
+        }
+      }
+
+      if (addAriaPressed) {
+        this._element.setAttribute('aria-pressed', !this._element.classList.contains(ClassName$1.ACTIVE));
+      }
+
+      if (triggerChangeEvent) {
+        $(this._element).toggleClass(ClassName$1.ACTIVE);
+      }
     };
 
-    var Tooltip =
-    /*#__PURE__*/
-    function () {
-      function Tooltip(element, config) {
+    _proto.dispose = function dispose() {
+      $.removeData(this._element, DATA_KEY$1);
+      this._element = null;
+    }; // Static
+
+
+    Button._jQueryInterface = function _jQueryInterface(config) {
+      return this.each(function () {
+        var data = $(this).data(DATA_KEY$1);
+
+        if (!data) {
+          data = new Button(this);
+          $(this).data(DATA_KEY$1, data);
+        }
+
+        if (config === 'toggle') {
+          data[config]();
+        }
+      });
+    };
+
+    _createClass(Button, null, [{
+      key: "VERSION",
+      get: function get() {
+        return VERSION$1;
+      }
+    }]);
+
+    return Button;
+  }();
+  /**
+   * ------------------------------------------------------------------------
+   * Data Api implementation
+   * ------------------------------------------------------------------------
+   */
+
+
+  $(document).on(Event$1.CLICK_DATA_API, Selector$1.DATA_TOGGLE_CARROT, function (event) {
+    event.preventDefault();
+    var button = event.target;
+
+    if (!$(button).hasClass(ClassName$1.BUTTON)) {
+      button = $(button).closest(Selector$1.BUTTON);
+    }
+
+    Button._jQueryInterface.call($(button), 'toggle');
+  }).on(Event$1.FOCUS_BLUR_DATA_API, Selector$1.DATA_TOGGLE_CARROT, function (event) {
+    var button = $(event.target).closest(Selector$1.BUTTON)[0];
+    $(button).toggleClass(ClassName$1.FOCUS, /^focus(in)?$/.test(event.type));
+  });
+  /**
+   * ------------------------------------------------------------------------
+   * jQuery
+   * ------------------------------------------------------------------------
+   */
+
+  $.fn[NAME$1] = Button._jQueryInterface;
+  $.fn[NAME$1].Constructor = Button;
+
+  $.fn[NAME$1].noConflict = function () {
+    $.fn[NAME$1] = JQUERY_NO_CONFLICT$1;
+    return Button._jQueryInterface;
+  };
+
+  /**
+   * ------------------------------------------------------------------------
+   * Constants
+   * ------------------------------------------------------------------------
+   */
+
+  var NAME$2 = 'carousel';
+  var VERSION$2 = '4.2.1';
+  var DATA_KEY$2 = 'bs.carousel';
+  var EVENT_KEY$2 = "." + DATA_KEY$2;
+  var DATA_API_KEY$2 = '.data-api';
+  var JQUERY_NO_CONFLICT$2 = $.fn[NAME$2];
+  var ARROW_LEFT_KEYCODE = 37; // KeyboardEvent.which value for left arrow key
+
+  var ARROW_RIGHT_KEYCODE = 39; // KeyboardEvent.which value for right arrow key
+
+  var TOUCHEVENT_COMPAT_WAIT = 500; // Time for mouse compat events to fire after touch
+
+  var SWIPE_THRESHOLD = 40;
+  var Default = {
+    interval: 5000,
+    keyboard: true,
+    slide: false,
+    pause: 'hover',
+    wrap: true,
+    touch: true
+  };
+  var DefaultType = {
+    interval: '(number|boolean)',
+    keyboard: 'boolean',
+    slide: '(boolean|string)',
+    pause: '(string|boolean)',
+    wrap: 'boolean',
+    touch: 'boolean'
+  };
+  var Direction = {
+    NEXT: 'next',
+    PREV: 'prev',
+    LEFT: 'left',
+    RIGHT: 'right'
+  };
+  var Event$2 = {
+    SLIDE: "slide" + EVENT_KEY$2,
+    SLID: "slid" + EVENT_KEY$2,
+    KEYDOWN: "keydown" + EVENT_KEY$2,
+    MOUSEENTER: "mouseenter" + EVENT_KEY$2,
+    MOUSELEAVE: "mouseleave" + EVENT_KEY$2,
+    TOUCHSTART: "touchstart" + EVENT_KEY$2,
+    TOUCHMOVE: "touchmove" + EVENT_KEY$2,
+    TOUCHEND: "touchend" + EVENT_KEY$2,
+    POINTERDOWN: "pointerdown" + EVENT_KEY$2,
+    POINTERUP: "pointerup" + EVENT_KEY$2,
+    DRAG_START: "dragstart" + EVENT_KEY$2,
+    LOAD_DATA_API: "load" + EVENT_KEY$2 + DATA_API_KEY$2,
+    CLICK_DATA_API: "click" + EVENT_KEY$2 + DATA_API_KEY$2
+  };
+  var ClassName$2 = {
+    CAROUSEL: 'carousel',
+    ACTIVE: 'active',
+    SLIDE: 'slide',
+    RIGHT: 'carousel-item-right',
+    LEFT: 'carousel-item-left',
+    NEXT: 'carousel-item-next',
+    PREV: 'carousel-item-prev',
+    ITEM: 'carousel-item',
+    POINTER_EVENT: 'pointer-event'
+  };
+  var Selector$2 = {
+    ACTIVE: '.active',
+    ACTIVE_ITEM: '.active.carousel-item',
+    ITEM: '.carousel-item',
+    ITEM_IMG: '.carousel-item img',
+    NEXT_PREV: '.carousel-item-next, .carousel-item-prev',
+    INDICATORS: '.carousel-indicators',
+    DATA_SLIDE: '[data-slide], [data-slide-to]',
+    DATA_RIDE: '[data-ride="carousel"]'
+  };
+  var PointerType = {
+    TOUCH: 'touch',
+    PEN: 'pen'
+    /**
+     * ------------------------------------------------------------------------
+     * Class Definition
+     * ------------------------------------------------------------------------
+     */
+
+  };
+
+  var Carousel =
+  /*#__PURE__*/
+  function () {
+    function Carousel(element, config) {
+      this._items = null;
+      this._interval = null;
+      this._activeElement = null;
+      this._isPaused = false;
+      this._isSliding = false;
+      this.touchTimeout = null;
+      this.touchStartX = 0;
+      this.touchDeltaX = 0;
+      this._config = this._getConfig(config);
+      this._element = element;
+      this._indicatorsElement = this._element.querySelector(Selector$2.INDICATORS);
+      this._touchSupported = 'ontouchstart' in document.documentElement || navigator.maxTouchPoints > 0;
+      this._pointerEvent = Boolean(window.PointerEvent || window.MSPointerEvent);
+
+      this._addEventListeners();
+    } // Getters
+
+
+    var _proto = Carousel.prototype;
+
+    // Public
+    _proto.next = function next() {
+      if (!this._isSliding) {
+        this._slide(Direction.NEXT);
+      }
+    };
+
+    _proto.nextWhenVisible = function nextWhenVisible() {
+      // Don't call next when the page isn't visible
+      // or the carousel or its parent isn't visible
+      if (!document.hidden && $(this._element).is(':visible') && $(this._element).css('visibility') !== 'hidden') {
+        this.next();
+      }
+    };
+
+    _proto.prev = function prev() {
+      if (!this._isSliding) {
+        this._slide(Direction.PREV);
+      }
+    };
+
+    _proto.pause = function pause(event) {
+      if (!event) {
+        this._isPaused = true;
+      }
+
+      if (this._element.querySelector(Selector$2.NEXT_PREV)) {
+        Util.triggerTransitionEnd(this._element);
+        this.cycle(true);
+      }
+
+      clearInterval(this._interval);
+      this._interval = null;
+    };
+
+    _proto.cycle = function cycle(event) {
+      if (!event) {
+        this._isPaused = false;
+      }
+
+      if (this._interval) {
+        clearInterval(this._interval);
+        this._interval = null;
+      }
+
+      if (this._config.interval && !this._isPaused) {
+        this._interval = setInterval((document.visibilityState ? this.nextWhenVisible : this.next).bind(this), this._config.interval);
+      }
+    };
+
+    _proto.to = function to(index) {
+      var _this = this;
+
+      this._activeElement = this._element.querySelector(Selector$2.ACTIVE_ITEM);
+
+      var activeIndex = this._getItemIndex(this._activeElement);
+
+      if (index > this._items.length - 1 || index < 0) {
+        return;
+      }
+
+      if (this._isSliding) {
+        $(this._element).one(Event$2.SLID, function () {
+          return _this.to(index);
+        });
+        return;
+      }
+
+      if (activeIndex === index) {
+        this.pause();
+        this.cycle();
+        return;
+      }
+
+      var direction = index > activeIndex ? Direction.NEXT : Direction.PREV;
+
+      this._slide(direction, this._items[index]);
+    };
+
+    _proto.dispose = function dispose() {
+      $(this._element).off(EVENT_KEY$2);
+      $.removeData(this._element, DATA_KEY$2);
+      this._items = null;
+      this._config = null;
+      this._element = null;
+      this._interval = null;
+      this._isPaused = null;
+      this._isSliding = null;
+      this._activeElement = null;
+      this._indicatorsElement = null;
+    }; // Private
+
+
+    _proto._getConfig = function _getConfig(config) {
+      config = _objectSpread({}, Default, config);
+      Util.typeCheckConfig(NAME$2, config, DefaultType);
+      return config;
+    };
+
+    _proto._handleSwipe = function _handleSwipe() {
+      var absDeltax = Math.abs(this.touchDeltaX);
+
+      if (absDeltax <= SWIPE_THRESHOLD) {
+        return;
+      }
+
+      var direction = absDeltax / this.touchDeltaX; // swipe left
+
+      if (direction > 0) {
+        this.prev();
+      } // swipe right
+
+
+      if (direction < 0) {
+        this.next();
+      }
+    };
+
+    _proto._addEventListeners = function _addEventListeners() {
+      var _this2 = this;
+
+      if (this._config.keyboard) {
+        $(this._element).on(Event$2.KEYDOWN, function (event) {
+          return _this2._keydown(event);
+        });
+      }
+
+      if (this._config.pause === 'hover') {
+        $(this._element).on(Event$2.MOUSEENTER, function (event) {
+          return _this2.pause(event);
+        }).on(Event$2.MOUSELEAVE, function (event) {
+          return _this2.cycle(event);
+        });
+      }
+
+      this._addTouchEventListeners();
+    };
+
+    _proto._addTouchEventListeners = function _addTouchEventListeners() {
+      var _this3 = this;
+
+      if (!this._touchSupported) {
+        return;
+      }
+
+      var start = function start(event) {
+        if (_this3._pointerEvent && PointerType[event.originalEvent.pointerType.toUpperCase()]) {
+          _this3.touchStartX = event.originalEvent.clientX;
+        } else if (!_this3._pointerEvent) {
+          _this3.touchStartX = event.originalEvent.touches[0].clientX;
+        }
+      };
+
+      var move = function move(event) {
+        // ensure swiping with one touch and not pinching
+        if (event.originalEvent.touches && event.originalEvent.touches.length > 1) {
+          _this3.touchDeltaX = 0;
+        } else {
+          _this3.touchDeltaX = event.originalEvent.touches[0].clientX - _this3.touchStartX;
+        }
+      };
+
+      var end = function end(event) {
+        if (_this3._pointerEvent && PointerType[event.originalEvent.pointerType.toUpperCase()]) {
+          _this3.touchDeltaX = event.originalEvent.clientX - _this3.touchStartX;
+        }
+
+        _this3._handleSwipe();
+
+        if (_this3._config.pause === 'hover') {
+          // If it's a touch-enabled device, mouseenter/leave are fired as
+          // part of the mouse compatibility events on first tap - the carousel
+          // would stop cycling until user tapped out of it;
+          // here, we listen for touchend, explicitly pause the carousel
+          // (as if it's the second time we tap on it, mouseenter compat event
+          // is NOT fired) and after a timeout (to allow for mouse compatibility
+          // events to fire) we explicitly restart cycling
+          _this3.pause();
+
+          if (_this3.touchTimeout) {
+            clearTimeout(_this3.touchTimeout);
+          }
+
+          _this3.touchTimeout = setTimeout(function (event) {
+            return _this3.cycle(event);
+          }, TOUCHEVENT_COMPAT_WAIT + _this3._config.interval);
+        }
+      };
+
+      $(this._element.querySelectorAll(Selector$2.ITEM_IMG)).on(Event$2.DRAG_START, function (e) {
+        return e.preventDefault();
+      });
+
+      if (this._pointerEvent) {
+        $(this._element).on(Event$2.POINTERDOWN, function (event) {
+          return start(event);
+        });
+        $(this._element).on(Event$2.POINTERUP, function (event) {
+          return end(event);
+        });
+
+        this._element.classList.add(ClassName$2.POINTER_EVENT);
+      } else {
+        $(this._element).on(Event$2.TOUCHSTART, function (event) {
+          return start(event);
+        });
+        $(this._element).on(Event$2.TOUCHMOVE, function (event) {
+          return move(event);
+        });
+        $(this._element).on(Event$2.TOUCHEND, function (event) {
+          return end(event);
+        });
+      }
+    };
+
+    _proto._keydown = function _keydown(event) {
+      if (/input|textarea/i.test(event.target.tagName)) {
+        return;
+      }
+
+      switch (event.which) {
+        case ARROW_LEFT_KEYCODE:
+          event.preventDefault();
+          this.prev();
+          break;
+
+        case ARROW_RIGHT_KEYCODE:
+          event.preventDefault();
+          this.next();
+          break;
+
+        default:
+      }
+    };
+
+    _proto._getItemIndex = function _getItemIndex(element) {
+      this._items = element && element.parentNode ? [].slice.call(element.parentNode.querySelectorAll(Selector$2.ITEM)) : [];
+      return this._items.indexOf(element);
+    };
+
+    _proto._getItemByDirection = function _getItemByDirection(direction, activeElement) {
+      var isNextDirection = direction === Direction.NEXT;
+      var isPrevDirection = direction === Direction.PREV;
+
+      var activeIndex = this._getItemIndex(activeElement);
+
+      var lastItemIndex = this._items.length - 1;
+      var isGoingToWrap = isPrevDirection && activeIndex === 0 || isNextDirection && activeIndex === lastItemIndex;
+
+      if (isGoingToWrap && !this._config.wrap) {
+        return activeElement;
+      }
+
+      var delta = direction === Direction.PREV ? -1 : 1;
+      var itemIndex = (activeIndex + delta) % this._items.length;
+      return itemIndex === -1 ? this._items[this._items.length - 1] : this._items[itemIndex];
+    };
+
+    _proto._triggerSlideEvent = function _triggerSlideEvent(relatedTarget, eventDirectionName) {
+      var targetIndex = this._getItemIndex(relatedTarget);
+
+      var fromIndex = this._getItemIndex(this._element.querySelector(Selector$2.ACTIVE_ITEM));
+
+      var slideEvent = $.Event(Event$2.SLIDE, {
+        relatedTarget: relatedTarget,
+        direction: eventDirectionName,
+        from: fromIndex,
+        to: targetIndex
+      });
+      $(this._element).trigger(slideEvent);
+      return slideEvent;
+    };
+
+    _proto._setActiveIndicatorElement = function _setActiveIndicatorElement(element) {
+      if (this._indicatorsElement) {
+        var indicators = [].slice.call(this._indicatorsElement.querySelectorAll(Selector$2.ACTIVE));
+        $(indicators).removeClass(ClassName$2.ACTIVE);
+
+        var nextIndicator = this._indicatorsElement.children[this._getItemIndex(element)];
+
+        if (nextIndicator) {
+          $(nextIndicator).addClass(ClassName$2.ACTIVE);
+        }
+      }
+    };
+
+    _proto._slide = function _slide(direction, element) {
+      var _this4 = this;
+
+      var activeElement = this._element.querySelector(Selector$2.ACTIVE_ITEM);
+
+      var activeElementIndex = this._getItemIndex(activeElement);
+
+      var nextElement = element || activeElement && this._getItemByDirection(direction, activeElement);
+
+      var nextElementIndex = this._getItemIndex(nextElement);
+
+      var isCycling = Boolean(this._interval);
+      var directionalClassName;
+      var orderClassName;
+      var eventDirectionName;
+
+      if (direction === Direction.NEXT) {
+        directionalClassName = ClassName$2.LEFT;
+        orderClassName = ClassName$2.NEXT;
+        eventDirectionName = Direction.LEFT;
+      } else {
+        directionalClassName = ClassName$2.RIGHT;
+        orderClassName = ClassName$2.PREV;
+        eventDirectionName = Direction.RIGHT;
+      }
+
+      if (nextElement && $(nextElement).hasClass(ClassName$2.ACTIVE)) {
+        this._isSliding = false;
+        return;
+      }
+
+      var slideEvent = this._triggerSlideEvent(nextElement, eventDirectionName);
+
+      if (slideEvent.isDefaultPrevented()) {
+        return;
+      }
+
+      if (!activeElement || !nextElement) {
+        // Some weirdness is happening, so we bail
+        return;
+      }
+
+      this._isSliding = true;
+
+      if (isCycling) {
+        this.pause();
+      }
+
+      this._setActiveIndicatorElement(nextElement);
+
+      var slidEvent = $.Event(Event$2.SLID, {
+        relatedTarget: nextElement,
+        direction: eventDirectionName,
+        from: activeElementIndex,
+        to: nextElementIndex
+      });
+
+      if ($(this._element).hasClass(ClassName$2.SLIDE)) {
+        $(nextElement).addClass(orderClassName);
+        Util.reflow(nextElement);
+        $(activeElement).addClass(directionalClassName);
+        $(nextElement).addClass(directionalClassName);
+        var nextElementInterval = parseInt(nextElement.getAttribute('data-interval'), 10);
+
+        if (nextElementInterval) {
+          this._config.defaultInterval = this._config.defaultInterval || this._config.interval;
+          this._config.interval = nextElementInterval;
+        } else {
+          this._config.interval = this._config.defaultInterval || this._config.interval;
+        }
+
+        var transitionDuration = Util.getTransitionDurationFromElement(activeElement);
+        $(activeElement).one(Util.TRANSITION_END, function () {
+          $(nextElement).removeClass(directionalClassName + " " + orderClassName).addClass(ClassName$2.ACTIVE);
+          $(activeElement).removeClass(ClassName$2.ACTIVE + " " + orderClassName + " " + directionalClassName);
+          _this4._isSliding = false;
+          setTimeout(function () {
+            return $(_this4._element).trigger(slidEvent);
+          }, 0);
+        }).emulateTransitionEnd(transitionDuration);
+      } else {
+        $(activeElement).removeClass(ClassName$2.ACTIVE);
+        $(nextElement).addClass(ClassName$2.ACTIVE);
+        this._isSliding = false;
+        $(this._element).trigger(slidEvent);
+      }
+
+      if (isCycling) {
+        this.cycle();
+      }
+    }; // Static
+
+
+    Carousel._jQueryInterface = function _jQueryInterface(config) {
+      return this.each(function () {
+        var data = $(this).data(DATA_KEY$2);
+
+        var _config = _objectSpread({}, Default, $(this).data());
+
+        if (typeof config === 'object') {
+          _config = _objectSpread({}, _config, config);
+        }
+
+        var action = typeof config === 'string' ? config : _config.slide;
+
+        if (!data) {
+          data = new Carousel(this, _config);
+          $(this).data(DATA_KEY$2, data);
+        }
+
+        if (typeof config === 'number') {
+          data.to(config);
+        } else if (typeof action === 'string') {
+          if (typeof data[action] === 'undefined') {
+            throw new TypeError("No method named \"" + action + "\"");
+          }
+
+          data[action]();
+        } else if (_config.interval) {
+          data.pause();
+          data.cycle();
+        }
+      });
+    };
+
+    Carousel._dataApiClickHandler = function _dataApiClickHandler(event) {
+      var selector = Util.getSelectorFromElement(this);
+
+      if (!selector) {
+        return;
+      }
+
+      var target = $(selector)[0];
+
+      if (!target || !$(target).hasClass(ClassName$2.CAROUSEL)) {
+        return;
+      }
+
+      var config = _objectSpread({}, $(target).data(), $(this).data());
+
+      var slideIndex = this.getAttribute('data-slide-to');
+
+      if (slideIndex) {
+        config.interval = false;
+      }
+
+      Carousel._jQueryInterface.call($(target), config);
+
+      if (slideIndex) {
+        $(target).data(DATA_KEY$2).to(slideIndex);
+      }
+
+      event.preventDefault();
+    };
+
+    _createClass(Carousel, null, [{
+      key: "VERSION",
+      get: function get() {
+        return VERSION$2;
+      }
+    }, {
+      key: "Default",
+      get: function get() {
+        return Default;
+      }
+    }]);
+
+    return Carousel;
+  }();
+  /**
+   * ------------------------------------------------------------------------
+   * Data Api implementation
+   * ------------------------------------------------------------------------
+   */
+
+
+  $(document).on(Event$2.CLICK_DATA_API, Selector$2.DATA_SLIDE, Carousel._dataApiClickHandler);
+  $(window).on(Event$2.LOAD_DATA_API, function () {
+    var carousels = [].slice.call(document.querySelectorAll(Selector$2.DATA_RIDE));
+
+    for (var i = 0, len = carousels.length; i < len; i++) {
+      var $carousel = $(carousels[i]);
+
+      Carousel._jQueryInterface.call($carousel, $carousel.data());
+    }
+  });
+  /**
+   * ------------------------------------------------------------------------
+   * jQuery
+   * ------------------------------------------------------------------------
+   */
+
+  $.fn[NAME$2] = Carousel._jQueryInterface;
+  $.fn[NAME$2].Constructor = Carousel;
+
+  $.fn[NAME$2].noConflict = function () {
+    $.fn[NAME$2] = JQUERY_NO_CONFLICT$2;
+    return Carousel._jQueryInterface;
+  };
+
+  /**
+   * ------------------------------------------------------------------------
+   * Constants
+   * ------------------------------------------------------------------------
+   */
+
+  var NAME$3 = 'collapse';
+  var VERSION$3 = '4.2.1';
+  var DATA_KEY$3 = 'bs.collapse';
+  var EVENT_KEY$3 = "." + DATA_KEY$3;
+  var DATA_API_KEY$3 = '.data-api';
+  var JQUERY_NO_CONFLICT$3 = $.fn[NAME$3];
+  var Default$1 = {
+    toggle: true,
+    parent: ''
+  };
+  var DefaultType$1 = {
+    toggle: 'boolean',
+    parent: '(string|element)'
+  };
+  var Event$3 = {
+    SHOW: "show" + EVENT_KEY$3,
+    SHOWN: "shown" + EVENT_KEY$3,
+    HIDE: "hide" + EVENT_KEY$3,
+    HIDDEN: "hidden" + EVENT_KEY$3,
+    CLICK_DATA_API: "click" + EVENT_KEY$3 + DATA_API_KEY$3
+  };
+  var ClassName$3 = {
+    SHOW: 'show',
+    COLLAPSE: 'collapse',
+    COLLAPSING: 'collapsing',
+    COLLAPSED: 'collapsed'
+  };
+  var Dimension = {
+    WIDTH: 'width',
+    HEIGHT: 'height'
+  };
+  var Selector$3 = {
+    ACTIVES: '.show, .collapsing',
+    DATA_TOGGLE: '[data-toggle="collapse"]'
+    /**
+     * ------------------------------------------------------------------------
+     * Class Definition
+     * ------------------------------------------------------------------------
+     */
+
+  };
+
+  var Collapse =
+  /*#__PURE__*/
+  function () {
+    function Collapse(element, config) {
+      this._isTransitioning = false;
+      this._element = element;
+      this._config = this._getConfig(config);
+      this._triggerArray = [].slice.call(document.querySelectorAll("[data-toggle=\"collapse\"][href=\"#" + element.id + "\"]," + ("[data-toggle=\"collapse\"][data-target=\"#" + element.id + "\"]")));
+      var toggleList = [].slice.call(document.querySelectorAll(Selector$3.DATA_TOGGLE));
+
+      for (var i = 0, len = toggleList.length; i < len; i++) {
+        var elem = toggleList[i];
+        var selector = Util.getSelectorFromElement(elem);
+        var filterElement = [].slice.call(document.querySelectorAll(selector)).filter(function (foundElem) {
+          return foundElem === element;
+        });
+
+        if (selector !== null && filterElement.length > 0) {
+          this._selector = selector;
+
+          this._triggerArray.push(elem);
+        }
+      }
+
+      this._parent = this._config.parent ? this._getParent() : null;
+
+      if (!this._config.parent) {
+        this._addAriaAndCollapsedClass(this._element, this._triggerArray);
+      }
+
+      if (this._config.toggle) {
+        this.toggle();
+      }
+    } // Getters
+
+
+    var _proto = Collapse.prototype;
+
+    // Public
+    _proto.toggle = function toggle() {
+      if ($(this._element).hasClass(ClassName$3.SHOW)) {
+        this.hide();
+      } else {
+        this.show();
+      }
+    };
+
+    _proto.show = function show() {
+      var _this = this;
+
+      if (this._isTransitioning || $(this._element).hasClass(ClassName$3.SHOW)) {
+        return;
+      }
+
+      var actives;
+      var activesData;
+
+      if (this._parent) {
+        actives = [].slice.call(this._parent.querySelectorAll(Selector$3.ACTIVES)).filter(function (elem) {
+          if (typeof _this._config.parent === 'string') {
+            return elem.getAttribute('data-parent') === _this._config.parent;
+          }
+
+          return elem.classList.contains(ClassName$3.COLLAPSE);
+        });
+
+        if (actives.length === 0) {
+          actives = null;
+        }
+      }
+
+      if (actives) {
+        activesData = $(actives).not(this._selector).data(DATA_KEY$3);
+
+        if (activesData && activesData._isTransitioning) {
+          return;
+        }
+      }
+
+      var startEvent = $.Event(Event$3.SHOW);
+      $(this._element).trigger(startEvent);
+
+      if (startEvent.isDefaultPrevented()) {
+        return;
+      }
+
+      if (actives) {
+        Collapse._jQueryInterface.call($(actives).not(this._selector), 'hide');
+
+        if (!activesData) {
+          $(actives).data(DATA_KEY$3, null);
+        }
+      }
+
+      var dimension = this._getDimension();
+
+      $(this._element).removeClass(ClassName$3.COLLAPSE).addClass(ClassName$3.COLLAPSING);
+      this._element.style[dimension] = 0;
+
+      if (this._triggerArray.length) {
+        $(this._triggerArray).removeClass(ClassName$3.COLLAPSED).attr('aria-expanded', true);
+      }
+
+      this.setTransitioning(true);
+
+      var complete = function complete() {
+        $(_this._element).removeClass(ClassName$3.COLLAPSING).addClass(ClassName$3.COLLAPSE).addClass(ClassName$3.SHOW);
+        _this._element.style[dimension] = '';
+
+        _this.setTransitioning(false);
+
+        $(_this._element).trigger(Event$3.SHOWN);
+      };
+
+      var capitalizedDimension = dimension[0].toUpperCase() + dimension.slice(1);
+      var scrollSize = "scroll" + capitalizedDimension;
+      var transitionDuration = Util.getTransitionDurationFromElement(this._element);
+      $(this._element).one(Util.TRANSITION_END, complete).emulateTransitionEnd(transitionDuration);
+      this._element.style[dimension] = this._element[scrollSize] + "px";
+    };
+
+    _proto.hide = function hide() {
+      var _this2 = this;
+
+      if (this._isTransitioning || !$(this._element).hasClass(ClassName$3.SHOW)) {
+        return;
+      }
+
+      var startEvent = $.Event(Event$3.HIDE);
+      $(this._element).trigger(startEvent);
+
+      if (startEvent.isDefaultPrevented()) {
+        return;
+      }
+
+      var dimension = this._getDimension();
+
+      this._element.style[dimension] = this._element.getBoundingClientRect()[dimension] + "px";
+      Util.reflow(this._element);
+      $(this._element).addClass(ClassName$3.COLLAPSING).removeClass(ClassName$3.COLLAPSE).removeClass(ClassName$3.SHOW);
+      var triggerArrayLength = this._triggerArray.length;
+
+      if (triggerArrayLength > 0) {
+        for (var i = 0; i < triggerArrayLength; i++) {
+          var trigger = this._triggerArray[i];
+          var selector = Util.getSelectorFromElement(trigger);
+
+          if (selector !== null) {
+            var $elem = $([].slice.call(document.querySelectorAll(selector)));
+
+            if (!$elem.hasClass(ClassName$3.SHOW)) {
+              $(trigger).addClass(ClassName$3.COLLAPSED).attr('aria-expanded', false);
+            }
+          }
+        }
+      }
+
+      this.setTransitioning(true);
+
+      var complete = function complete() {
+        _this2.setTransitioning(false);
+
+        $(_this2._element).removeClass(ClassName$3.COLLAPSING).addClass(ClassName$3.COLLAPSE).trigger(Event$3.HIDDEN);
+      };
+
+      this._element.style[dimension] = '';
+      var transitionDuration = Util.getTransitionDurationFromElement(this._element);
+      $(this._element).one(Util.TRANSITION_END, complete).emulateTransitionEnd(transitionDuration);
+    };
+
+    _proto.setTransitioning = function setTransitioning(isTransitioning) {
+      this._isTransitioning = isTransitioning;
+    };
+
+    _proto.dispose = function dispose() {
+      $.removeData(this._element, DATA_KEY$3);
+      this._config = null;
+      this._parent = null;
+      this._element = null;
+      this._triggerArray = null;
+      this._isTransitioning = null;
+    }; // Private
+
+
+    _proto._getConfig = function _getConfig(config) {
+      config = _objectSpread({}, Default$1, config);
+      config.toggle = Boolean(config.toggle); // Coerce string values
+
+      Util.typeCheckConfig(NAME$3, config, DefaultType$1);
+      return config;
+    };
+
+    _proto._getDimension = function _getDimension() {
+      var hasWidth = $(this._element).hasClass(Dimension.WIDTH);
+      return hasWidth ? Dimension.WIDTH : Dimension.HEIGHT;
+    };
+
+    _proto._getParent = function _getParent() {
+      var _this3 = this;
+
+      var parent;
+
+      if (Util.isElement(this._config.parent)) {
+        parent = this._config.parent; // It's a jQuery object
+
+        if (typeof this._config.parent.jquery !== 'undefined') {
+          parent = this._config.parent[0];
+        }
+      } else {
+        parent = document.querySelector(this._config.parent);
+      }
+
+      var selector = "[data-toggle=\"collapse\"][data-parent=\"" + this._config.parent + "\"]";
+      var children = [].slice.call(parent.querySelectorAll(selector));
+      $(children).each(function (i, element) {
+        _this3._addAriaAndCollapsedClass(Collapse._getTargetFromElement(element), [element]);
+      });
+      return parent;
+    };
+
+    _proto._addAriaAndCollapsedClass = function _addAriaAndCollapsedClass(element, triggerArray) {
+      var isOpen = $(element).hasClass(ClassName$3.SHOW);
+
+      if (triggerArray.length) {
+        $(triggerArray).toggleClass(ClassName$3.COLLAPSED, !isOpen).attr('aria-expanded', isOpen);
+      }
+    }; // Static
+
+
+    Collapse._getTargetFromElement = function _getTargetFromElement(element) {
+      var selector = Util.getSelectorFromElement(element);
+      return selector ? document.querySelector(selector) : null;
+    };
+
+    Collapse._jQueryInterface = function _jQueryInterface(config) {
+      return this.each(function () {
+        var $this = $(this);
+        var data = $this.data(DATA_KEY$3);
+
+        var _config = _objectSpread({}, Default$1, $this.data(), typeof config === 'object' && config ? config : {});
+
+        if (!data && _config.toggle && /show|hide/.test(config)) {
+          _config.toggle = false;
+        }
+
+        if (!data) {
+          data = new Collapse(this, _config);
+          $this.data(DATA_KEY$3, data);
+        }
+
+        if (typeof config === 'string') {
+          if (typeof data[config] === 'undefined') {
+            throw new TypeError("No method named \"" + config + "\"");
+          }
+
+          data[config]();
+        }
+      });
+    };
+
+    _createClass(Collapse, null, [{
+      key: "VERSION",
+      get: function get() {
+        return VERSION$3;
+      }
+    }, {
+      key: "Default",
+      get: function get() {
+        return Default$1;
+      }
+    }]);
+
+    return Collapse;
+  }();
+  /**
+   * ------------------------------------------------------------------------
+   * Data Api implementation
+   * ------------------------------------------------------------------------
+   */
+
+
+  $(document).on(Event$3.CLICK_DATA_API, Selector$3.DATA_TOGGLE, function (event) {
+    // preventDefault only for <a> elements (which change the URL) not inside the collapsible element
+    if (event.currentTarget.tagName === 'A') {
+      event.preventDefault();
+    }
+
+    var $trigger = $(this);
+    var selector = Util.getSelectorFromElement(this);
+    var selectors = [].slice.call(document.querySelectorAll(selector));
+    $(selectors).each(function () {
+      var $target = $(this);
+      var data = $target.data(DATA_KEY$3);
+      var config = data ? 'toggle' : $trigger.data();
+
+      Collapse._jQueryInterface.call($target, config);
+    });
+  });
+  /**
+   * ------------------------------------------------------------------------
+   * jQuery
+   * ------------------------------------------------------------------------
+   */
+
+  $.fn[NAME$3] = Collapse._jQueryInterface;
+  $.fn[NAME$3].Constructor = Collapse;
+
+  $.fn[NAME$3].noConflict = function () {
+    $.fn[NAME$3] = JQUERY_NO_CONFLICT$3;
+    return Collapse._jQueryInterface;
+  };
+
+  /**
+   * ------------------------------------------------------------------------
+   * Constants
+   * ------------------------------------------------------------------------
+   */
+
+  var NAME$4 = 'dropdown';
+  var VERSION$4 = '4.2.1';
+  var DATA_KEY$4 = 'bs.dropdown';
+  var EVENT_KEY$4 = "." + DATA_KEY$4;
+  var DATA_API_KEY$4 = '.data-api';
+  var JQUERY_NO_CONFLICT$4 = $.fn[NAME$4];
+  var ESCAPE_KEYCODE = 27; // KeyboardEvent.which value for Escape (Esc) key
+
+  var SPACE_KEYCODE = 32; // KeyboardEvent.which value for space key
+
+  var TAB_KEYCODE = 9; // KeyboardEvent.which value for tab key
+
+  var ARROW_UP_KEYCODE = 38; // KeyboardEvent.which value for up arrow key
+
+  var ARROW_DOWN_KEYCODE = 40; // KeyboardEvent.which value for down arrow key
+
+  var RIGHT_MOUSE_BUTTON_WHICH = 3; // MouseEvent.which value for the right button (assuming a right-handed mouse)
+
+  var REGEXP_KEYDOWN = new RegExp(ARROW_UP_KEYCODE + "|" + ARROW_DOWN_KEYCODE + "|" + ESCAPE_KEYCODE);
+  var Event$4 = {
+    HIDE: "hide" + EVENT_KEY$4,
+    HIDDEN: "hidden" + EVENT_KEY$4,
+    SHOW: "show" + EVENT_KEY$4,
+    SHOWN: "shown" + EVENT_KEY$4,
+    CLICK: "click" + EVENT_KEY$4,
+    CLICK_DATA_API: "click" + EVENT_KEY$4 + DATA_API_KEY$4,
+    KEYDOWN_DATA_API: "keydown" + EVENT_KEY$4 + DATA_API_KEY$4,
+    KEYUP_DATA_API: "keyup" + EVENT_KEY$4 + DATA_API_KEY$4
+  };
+  var ClassName$4 = {
+    DISABLED: 'disabled',
+    SHOW: 'show',
+    DROPUP: 'dropup',
+    DROPRIGHT: 'dropright',
+    DROPLEFT: 'dropleft',
+    MENURIGHT: 'dropdown-menu-right',
+    MENULEFT: 'dropdown-menu-left',
+    POSITION_STATIC: 'position-static'
+  };
+  var Selector$4 = {
+    DATA_TOGGLE: '[data-toggle="dropdown"]',
+    FORM_CHILD: '.dropdown form',
+    MENU: '.dropdown-menu',
+    NAVBAR_NAV: '.navbar-nav',
+    VISIBLE_ITEMS: '.dropdown-menu .dropdown-item:not(.disabled):not(:disabled)'
+  };
+  var AttachmentMap = {
+    TOP: 'top-start',
+    TOPEND: 'top-end',
+    BOTTOM: 'bottom-start',
+    BOTTOMEND: 'bottom-end',
+    RIGHT: 'right-start',
+    RIGHTEND: 'right-end',
+    LEFT: 'left-start',
+    LEFTEND: 'left-end'
+  };
+  var Default$2 = {
+    offset: 0,
+    flip: true,
+    boundary: 'scrollParent',
+    reference: 'toggle',
+    display: 'dynamic'
+  };
+  var DefaultType$2 = {
+    offset: '(number|string|function)',
+    flip: 'boolean',
+    boundary: '(string|element)',
+    reference: '(string|element)',
+    display: 'string'
+    /**
+     * ------------------------------------------------------------------------
+     * Class Definition
+     * ------------------------------------------------------------------------
+     */
+
+  };
+
+  var Dropdown =
+  /*#__PURE__*/
+  function () {
+    function Dropdown(element, config) {
+      this._element = element;
+      this._popper = null;
+      this._config = this._getConfig(config);
+      this._menu = this._getMenuElement();
+      this._inNavbar = this._detectNavbar();
+
+      this._addEventListeners();
+    } // Getters
+
+
+    var _proto = Dropdown.prototype;
+
+    // Public
+    _proto.toggle = function toggle() {
+      if (this._element.disabled || $(this._element).hasClass(ClassName$4.DISABLED)) {
+        return;
+      }
+
+      var parent = Dropdown._getParentFromElement(this._element);
+
+      var isActive = $(this._menu).hasClass(ClassName$4.SHOW);
+
+      Dropdown._clearMenus();
+
+      if (isActive) {
+        return;
+      }
+
+      var relatedTarget = {
+        relatedTarget: this._element
+      };
+      var showEvent = $.Event(Event$4.SHOW, relatedTarget);
+      $(parent).trigger(showEvent);
+
+      if (showEvent.isDefaultPrevented()) {
+        return;
+      } // Disable totally Popper.js for Dropdown in Navbar
+
+
+      if (!this._inNavbar) {
         /**
          * Check for Popper dependency
          * Popper - https://popper.js.org
          */
         if (typeof Popper === 'undefined') {
-          throw new TypeError('Bootstrap tooltips require Popper.js (https://popper.js.org)');
-        } // private
+          throw new TypeError('Bootstrap\'s dropdowns require Popper.js (https://popper.js.org/)');
+        }
+
+        var referenceElement = this._element;
+
+        if (this._config.reference === 'parent') {
+          referenceElement = parent;
+        } else if (Util.isElement(this._config.reference)) {
+          referenceElement = this._config.reference; // Check if it's jQuery element
+
+          if (typeof this._config.reference.jquery !== 'undefined') {
+            referenceElement = this._config.reference[0];
+          }
+        } // If boundary is not `scrollParent`, then set position to `static`
+        // to allow the menu to "escape" the scroll parent's boundaries
+        // https://github.com/twbs/bootstrap/issues/24251
 
 
-        this._isEnabled = true;
-        this._timeout = 0;
-        this._hoverState = '';
-        this._activeTrigger = {};
-        this._popper = null; // Protected
+        if (this._config.boundary !== 'scrollParent') {
+          $(parent).addClass(ClassName$4.POSITION_STATIC);
+        }
 
-        this.element = element;
-        this.config = this._getConfig(config);
-        this.tip = null;
-
-        this._setListeners();
-      } // Getters
+        this._popper = new Popper(referenceElement, this._menu, this._getPopperConfig());
+      } // If this is a touch-enabled device we add extra
+      // empty mouseover listeners to the body's immediate children;
+      // only needed because of broken event delegation on iOS
+      // https://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.html
 
 
-      var _proto = Tooltip.prototype;
+      if ('ontouchstart' in document.documentElement && $(parent).closest(Selector$4.NAVBAR_NAV).length === 0) {
+        $(document.body).children().on('mouseover', null, $.noop);
+      }
 
-      // Public
-      _proto.enable = function enable() {
-        this._isEnabled = true;
+      this._element.focus();
+
+      this._element.setAttribute('aria-expanded', true);
+
+      $(this._menu).toggleClass(ClassName$4.SHOW);
+      $(parent).toggleClass(ClassName$4.SHOW).trigger($.Event(Event$4.SHOWN, relatedTarget));
+    };
+
+    _proto.show = function show() {
+      if (this._element.disabled || $(this._element).hasClass(ClassName$4.DISABLED) || $(this._menu).hasClass(ClassName$4.SHOW)) {
+        return;
+      }
+
+      var relatedTarget = {
+        relatedTarget: this._element
+      };
+      var showEvent = $.Event(Event$4.SHOW, relatedTarget);
+
+      var parent = Dropdown._getParentFromElement(this._element);
+
+      $(parent).trigger(showEvent);
+
+      if (showEvent.isDefaultPrevented()) {
+        return;
+      }
+
+      $(this._menu).toggleClass(ClassName$4.SHOW);
+      $(parent).toggleClass(ClassName$4.SHOW).trigger($.Event(Event$4.SHOWN, relatedTarget));
+    };
+
+    _proto.hide = function hide() {
+      if (this._element.disabled || $(this._element).hasClass(ClassName$4.DISABLED) || !$(this._menu).hasClass(ClassName$4.SHOW)) {
+        return;
+      }
+
+      var relatedTarget = {
+        relatedTarget: this._element
+      };
+      var hideEvent = $.Event(Event$4.HIDE, relatedTarget);
+
+      var parent = Dropdown._getParentFromElement(this._element);
+
+      $(parent).trigger(hideEvent);
+
+      if (hideEvent.isDefaultPrevented()) {
+        return;
+      }
+
+      $(this._menu).toggleClass(ClassName$4.SHOW);
+      $(parent).toggleClass(ClassName$4.SHOW).trigger($.Event(Event$4.HIDDEN, relatedTarget));
+    };
+
+    _proto.dispose = function dispose() {
+      $.removeData(this._element, DATA_KEY$4);
+      $(this._element).off(EVENT_KEY$4);
+      this._element = null;
+      this._menu = null;
+
+      if (this._popper !== null) {
+        this._popper.destroy();
+
+        this._popper = null;
+      }
+    };
+
+    _proto.update = function update() {
+      this._inNavbar = this._detectNavbar();
+
+      if (this._popper !== null) {
+        this._popper.scheduleUpdate();
+      }
+    }; // Private
+
+
+    _proto._addEventListeners = function _addEventListeners() {
+      var _this = this;
+
+      $(this._element).on(Event$4.CLICK, function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        _this.toggle();
+      });
+    };
+
+    _proto._getConfig = function _getConfig(config) {
+      config = _objectSpread({}, this.constructor.Default, $(this._element).data(), config);
+      Util.typeCheckConfig(NAME$4, config, this.constructor.DefaultType);
+      return config;
+    };
+
+    _proto._getMenuElement = function _getMenuElement() {
+      if (!this._menu) {
+        var parent = Dropdown._getParentFromElement(this._element);
+
+        if (parent) {
+          this._menu = parent.querySelector(Selector$4.MENU);
+        }
+      }
+
+      return this._menu;
+    };
+
+    _proto._getPlacement = function _getPlacement() {
+      var $parentDropdown = $(this._element.parentNode);
+      var placement = AttachmentMap.BOTTOM; // Handle dropup
+
+      if ($parentDropdown.hasClass(ClassName$4.DROPUP)) {
+        placement = AttachmentMap.TOP;
+
+        if ($(this._menu).hasClass(ClassName$4.MENURIGHT)) {
+          placement = AttachmentMap.TOPEND;
+        }
+      } else if ($parentDropdown.hasClass(ClassName$4.DROPRIGHT)) {
+        placement = AttachmentMap.RIGHT;
+      } else if ($parentDropdown.hasClass(ClassName$4.DROPLEFT)) {
+        placement = AttachmentMap.LEFT;
+      } else if ($(this._menu).hasClass(ClassName$4.MENURIGHT)) {
+        placement = AttachmentMap.BOTTOMEND;
+      }
+
+      return placement;
+    };
+
+    _proto._detectNavbar = function _detectNavbar() {
+      return $(this._element).closest('.navbar').length > 0;
+    };
+
+    _proto._getPopperConfig = function _getPopperConfig() {
+      var _this2 = this;
+
+      var offsetConf = {};
+
+      if (typeof this._config.offset === 'function') {
+        offsetConf.fn = function (data) {
+          data.offsets = _objectSpread({}, data.offsets, _this2._config.offset(data.offsets) || {});
+          return data;
+        };
+      } else {
+        offsetConf.offset = this._config.offset;
+      }
+
+      var popperConfig = {
+        placement: this._getPlacement(),
+        modifiers: {
+          offset: offsetConf,
+          flip: {
+            enabled: this._config.flip
+          },
+          preventOverflow: {
+            boundariesElement: this._config.boundary
+          }
+        } // Disable Popper.js if we have a static display
+
       };
 
-      _proto.disable = function disable() {
-        this._isEnabled = false;
+      if (this._config.display === 'static') {
+        popperConfig.modifiers.applyStyle = {
+          enabled: false
+        };
+      }
+
+      return popperConfig;
+    }; // Static
+
+
+    Dropdown._jQueryInterface = function _jQueryInterface(config) {
+      return this.each(function () {
+        var data = $(this).data(DATA_KEY$4);
+
+        var _config = typeof config === 'object' ? config : null;
+
+        if (!data) {
+          data = new Dropdown(this, _config);
+          $(this).data(DATA_KEY$4, data);
+        }
+
+        if (typeof config === 'string') {
+          if (typeof data[config] === 'undefined') {
+            throw new TypeError("No method named \"" + config + "\"");
+          }
+
+          data[config]();
+        }
+      });
+    };
+
+    Dropdown._clearMenus = function _clearMenus(event) {
+      if (event && (event.which === RIGHT_MOUSE_BUTTON_WHICH || event.type === 'keyup' && event.which !== TAB_KEYCODE)) {
+        return;
+      }
+
+      var toggles = [].slice.call(document.querySelectorAll(Selector$4.DATA_TOGGLE));
+
+      for (var i = 0, len = toggles.length; i < len; i++) {
+        var parent = Dropdown._getParentFromElement(toggles[i]);
+
+        var context = $(toggles[i]).data(DATA_KEY$4);
+        var relatedTarget = {
+          relatedTarget: toggles[i]
+        };
+
+        if (event && event.type === 'click') {
+          relatedTarget.clickEvent = event;
+        }
+
+        if (!context) {
+          continue;
+        }
+
+        var dropdownMenu = context._menu;
+
+        if (!$(parent).hasClass(ClassName$4.SHOW)) {
+          continue;
+        }
+
+        if (event && (event.type === 'click' && /input|textarea/i.test(event.target.tagName) || event.type === 'keyup' && event.which === TAB_KEYCODE) && $.contains(parent, event.target)) {
+          continue;
+        }
+
+        var hideEvent = $.Event(Event$4.HIDE, relatedTarget);
+        $(parent).trigger(hideEvent);
+
+        if (hideEvent.isDefaultPrevented()) {
+          continue;
+        } // If this is a touch-enabled device we remove the extra
+        // empty mouseover listeners we added for iOS support
+
+
+        if ('ontouchstart' in document.documentElement) {
+          $(document.body).children().off('mouseover', null, $.noop);
+        }
+
+        toggles[i].setAttribute('aria-expanded', 'false');
+        $(dropdownMenu).removeClass(ClassName$4.SHOW);
+        $(parent).removeClass(ClassName$4.SHOW).trigger($.Event(Event$4.HIDDEN, relatedTarget));
+      }
+    };
+
+    Dropdown._getParentFromElement = function _getParentFromElement(element) {
+      var parent;
+      var selector = Util.getSelectorFromElement(element);
+
+      if (selector) {
+        parent = document.querySelector(selector);
+      }
+
+      return parent || element.parentNode;
+    }; // eslint-disable-next-line complexity
+
+
+    Dropdown._dataApiKeydownHandler = function _dataApiKeydownHandler(event) {
+      // If not input/textarea:
+      //  - And not a key in REGEXP_KEYDOWN => not a dropdown command
+      // If input/textarea:
+      //  - If space key => not a dropdown command
+      //  - If key is other than escape
+      //    - If key is not up or down => not a dropdown command
+      //    - If trigger inside the menu => not a dropdown command
+      if (/input|textarea/i.test(event.target.tagName) ? event.which === SPACE_KEYCODE || event.which !== ESCAPE_KEYCODE && (event.which !== ARROW_DOWN_KEYCODE && event.which !== ARROW_UP_KEYCODE || $(event.target).closest(Selector$4.MENU).length) : !REGEXP_KEYDOWN.test(event.which)) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (this.disabled || $(this).hasClass(ClassName$4.DISABLED)) {
+        return;
+      }
+
+      var parent = Dropdown._getParentFromElement(this);
+
+      var isActive = $(parent).hasClass(ClassName$4.SHOW);
+
+      if (!isActive || isActive && (event.which === ESCAPE_KEYCODE || event.which === SPACE_KEYCODE)) {
+        if (event.which === ESCAPE_KEYCODE) {
+          var toggle = parent.querySelector(Selector$4.DATA_TOGGLE);
+          $(toggle).trigger('focus');
+        }
+
+        $(this).trigger('click');
+        return;
+      }
+
+      var items = [].slice.call(parent.querySelectorAll(Selector$4.VISIBLE_ITEMS));
+
+      if (items.length === 0) {
+        return;
+      }
+
+      var index = items.indexOf(event.target);
+
+      if (event.which === ARROW_UP_KEYCODE && index > 0) {
+        // Up
+        index--;
+      }
+
+      if (event.which === ARROW_DOWN_KEYCODE && index < items.length - 1) {
+        // Down
+        index++;
+      }
+
+      if (index < 0) {
+        index = 0;
+      }
+
+      items[index].focus();
+    };
+
+    _createClass(Dropdown, null, [{
+      key: "VERSION",
+      get: function get() {
+        return VERSION$4;
+      }
+    }, {
+      key: "Default",
+      get: function get() {
+        return Default$2;
+      }
+    }, {
+      key: "DefaultType",
+      get: function get() {
+        return DefaultType$2;
+      }
+    }]);
+
+    return Dropdown;
+  }();
+  /**
+   * ------------------------------------------------------------------------
+   * Data Api implementation
+   * ------------------------------------------------------------------------
+   */
+
+
+  $(document).on(Event$4.KEYDOWN_DATA_API, Selector$4.DATA_TOGGLE, Dropdown._dataApiKeydownHandler).on(Event$4.KEYDOWN_DATA_API, Selector$4.MENU, Dropdown._dataApiKeydownHandler).on(Event$4.CLICK_DATA_API + " " + Event$4.KEYUP_DATA_API, Dropdown._clearMenus).on(Event$4.CLICK_DATA_API, Selector$4.DATA_TOGGLE, function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    Dropdown._jQueryInterface.call($(this), 'toggle');
+  }).on(Event$4.CLICK_DATA_API, Selector$4.FORM_CHILD, function (e) {
+    e.stopPropagation();
+  });
+  /**
+   * ------------------------------------------------------------------------
+   * jQuery
+   * ------------------------------------------------------------------------
+   */
+
+  $.fn[NAME$4] = Dropdown._jQueryInterface;
+  $.fn[NAME$4].Constructor = Dropdown;
+
+  $.fn[NAME$4].noConflict = function () {
+    $.fn[NAME$4] = JQUERY_NO_CONFLICT$4;
+    return Dropdown._jQueryInterface;
+  };
+
+  /**
+   * ------------------------------------------------------------------------
+   * Constants
+   * ------------------------------------------------------------------------
+   */
+
+  var NAME$5 = 'modal';
+  var VERSION$5 = '4.2.1';
+  var DATA_KEY$5 = 'bs.modal';
+  var EVENT_KEY$5 = "." + DATA_KEY$5;
+  var DATA_API_KEY$5 = '.data-api';
+  var JQUERY_NO_CONFLICT$5 = $.fn[NAME$5];
+  var ESCAPE_KEYCODE$1 = 27; // KeyboardEvent.which value for Escape (Esc) key
+
+  var Default$3 = {
+    backdrop: true,
+    keyboard: true,
+    focus: true,
+    show: true
+  };
+  var DefaultType$3 = {
+    backdrop: '(boolean|string)',
+    keyboard: 'boolean',
+    focus: 'boolean',
+    show: 'boolean'
+  };
+  var Event$5 = {
+    HIDE: "hide" + EVENT_KEY$5,
+    HIDDEN: "hidden" + EVENT_KEY$5,
+    SHOW: "show" + EVENT_KEY$5,
+    SHOWN: "shown" + EVENT_KEY$5,
+    FOCUSIN: "focusin" + EVENT_KEY$5,
+    RESIZE: "resize" + EVENT_KEY$5,
+    CLICK_DISMISS: "click.dismiss" + EVENT_KEY$5,
+    KEYDOWN_DISMISS: "keydown.dismiss" + EVENT_KEY$5,
+    MOUSEUP_DISMISS: "mouseup.dismiss" + EVENT_KEY$5,
+    MOUSEDOWN_DISMISS: "mousedown.dismiss" + EVENT_KEY$5,
+    CLICK_DATA_API: "click" + EVENT_KEY$5 + DATA_API_KEY$5
+  };
+  var ClassName$5 = {
+    SCROLLBAR_MEASURER: 'modal-scrollbar-measure',
+    BACKDROP: 'modal-backdrop',
+    OPEN: 'modal-open',
+    FADE: 'fade',
+    SHOW: 'show'
+  };
+  var Selector$5 = {
+    DIALOG: '.modal-dialog',
+    DATA_TOGGLE: '[data-toggle="modal"]',
+    DATA_DISMISS: '[data-dismiss="modal"]',
+    FIXED_CONTENT: '.fixed-top, .fixed-bottom, .is-fixed, .sticky-top',
+    STICKY_CONTENT: '.sticky-top'
+    /**
+     * ------------------------------------------------------------------------
+     * Class Definition
+     * ------------------------------------------------------------------------
+     */
+
+  };
+
+  var Modal =
+  /*#__PURE__*/
+  function () {
+    function Modal(element, config) {
+      this._config = this._getConfig(config);
+      this._element = element;
+      this._dialog = element.querySelector(Selector$5.DIALOG);
+      this._backdrop = null;
+      this._isShown = false;
+      this._isBodyOverflowing = false;
+      this._ignoreBackdropClick = false;
+      this._isTransitioning = false;
+      this._scrollbarWidth = 0;
+    } // Getters
+
+
+    var _proto = Modal.prototype;
+
+    // Public
+    _proto.toggle = function toggle(relatedTarget) {
+      return this._isShown ? this.hide() : this.show(relatedTarget);
+    };
+
+    _proto.show = function show(relatedTarget) {
+      var _this = this;
+
+      if (this._isShown || this._isTransitioning) {
+        return;
+      }
+
+      if ($(this._element).hasClass(ClassName$5.FADE)) {
+        this._isTransitioning = true;
+      }
+
+      var showEvent = $.Event(Event$5.SHOW, {
+        relatedTarget: relatedTarget
+      });
+      $(this._element).trigger(showEvent);
+
+      if (this._isShown || showEvent.isDefaultPrevented()) {
+        return;
+      }
+
+      this._isShown = true;
+
+      this._checkScrollbar();
+
+      this._setScrollbar();
+
+      this._adjustDialog();
+
+      this._setEscapeEvent();
+
+      this._setResizeEvent();
+
+      $(this._element).on(Event$5.CLICK_DISMISS, Selector$5.DATA_DISMISS, function (event) {
+        return _this.hide(event);
+      });
+      $(this._dialog).on(Event$5.MOUSEDOWN_DISMISS, function () {
+        $(_this._element).one(Event$5.MOUSEUP_DISMISS, function (event) {
+          if ($(event.target).is(_this._element)) {
+            _this._ignoreBackdropClick = true;
+          }
+        });
+      });
+
+      this._showBackdrop(function () {
+        return _this._showElement(relatedTarget);
+      });
+    };
+
+    _proto.hide = function hide(event) {
+      var _this2 = this;
+
+      if (event) {
+        event.preventDefault();
+      }
+
+      if (!this._isShown || this._isTransitioning) {
+        return;
+      }
+
+      var hideEvent = $.Event(Event$5.HIDE);
+      $(this._element).trigger(hideEvent);
+
+      if (!this._isShown || hideEvent.isDefaultPrevented()) {
+        return;
+      }
+
+      this._isShown = false;
+      var transition = $(this._element).hasClass(ClassName$5.FADE);
+
+      if (transition) {
+        this._isTransitioning = true;
+      }
+
+      this._setEscapeEvent();
+
+      this._setResizeEvent();
+
+      $(document).off(Event$5.FOCUSIN);
+      $(this._element).removeClass(ClassName$5.SHOW);
+      $(this._element).off(Event$5.CLICK_DISMISS);
+      $(this._dialog).off(Event$5.MOUSEDOWN_DISMISS);
+
+      if (transition) {
+        var transitionDuration = Util.getTransitionDurationFromElement(this._element);
+        $(this._element).one(Util.TRANSITION_END, function (event) {
+          return _this2._hideModal(event);
+        }).emulateTransitionEnd(transitionDuration);
+      } else {
+        this._hideModal();
+      }
+    };
+
+    _proto.dispose = function dispose() {
+      [window, this._element, this._dialog].forEach(function (htmlElement) {
+        return $(htmlElement).off(EVENT_KEY$5);
+      });
+      /**
+       * `document` has 2 events `Event.FOCUSIN` and `Event.CLICK_DATA_API`
+       * Do not move `document` in `htmlElements` array
+       * It will remove `Event.CLICK_DATA_API` event that should remain
+       */
+
+      $(document).off(Event$5.FOCUSIN);
+      $.removeData(this._element, DATA_KEY$5);
+      this._config = null;
+      this._element = null;
+      this._dialog = null;
+      this._backdrop = null;
+      this._isShown = null;
+      this._isBodyOverflowing = null;
+      this._ignoreBackdropClick = null;
+      this._isTransitioning = null;
+      this._scrollbarWidth = null;
+    };
+
+    _proto.handleUpdate = function handleUpdate() {
+      this._adjustDialog();
+    }; // Private
+
+
+    _proto._getConfig = function _getConfig(config) {
+      config = _objectSpread({}, Default$3, config);
+      Util.typeCheckConfig(NAME$5, config, DefaultType$3);
+      return config;
+    };
+
+    _proto._showElement = function _showElement(relatedTarget) {
+      var _this3 = this;
+
+      var transition = $(this._element).hasClass(ClassName$5.FADE);
+
+      if (!this._element.parentNode || this._element.parentNode.nodeType !== Node.ELEMENT_NODE) {
+        // Don't move modal's DOM position
+        document.body.appendChild(this._element);
+      }
+
+      this._element.style.display = 'block';
+
+      this._element.removeAttribute('aria-hidden');
+
+      this._element.setAttribute('aria-modal', true);
+
+      this._element.scrollTop = 0;
+
+      if (transition) {
+        Util.reflow(this._element);
+      }
+
+      $(this._element).addClass(ClassName$5.SHOW);
+
+      if (this._config.focus) {
+        this._enforceFocus();
+      }
+
+      var shownEvent = $.Event(Event$5.SHOWN, {
+        relatedTarget: relatedTarget
+      });
+
+      var transitionComplete = function transitionComplete() {
+        if (_this3._config.focus) {
+          _this3._element.focus();
+        }
+
+        _this3._isTransitioning = false;
+        $(_this3._element).trigger(shownEvent);
       };
 
-      _proto.toggleEnabled = function toggleEnabled() {
-        this._isEnabled = !this._isEnabled;
-      };
+      if (transition) {
+        var transitionDuration = Util.getTransitionDurationFromElement(this._dialog);
+        $(this._dialog).one(Util.TRANSITION_END, transitionComplete).emulateTransitionEnd(transitionDuration);
+      } else {
+        transitionComplete();
+      }
+    };
 
-      _proto.toggle = function toggle(event) {
-        if (!this._isEnabled) {
+    _proto._enforceFocus = function _enforceFocus() {
+      var _this4 = this;
+
+      $(document).off(Event$5.FOCUSIN) // Guard against infinite focus loop
+      .on(Event$5.FOCUSIN, function (event) {
+        if (document !== event.target && _this4._element !== event.target && $(_this4._element).has(event.target).length === 0) {
+          _this4._element.focus();
+        }
+      });
+    };
+
+    _proto._setEscapeEvent = function _setEscapeEvent() {
+      var _this5 = this;
+
+      if (this._isShown && this._config.keyboard) {
+        $(this._element).on(Event$5.KEYDOWN_DISMISS, function (event) {
+          if (event.which === ESCAPE_KEYCODE$1) {
+            event.preventDefault();
+
+            _this5.hide();
+          }
+        });
+      } else if (!this._isShown) {
+        $(this._element).off(Event$5.KEYDOWN_DISMISS);
+      }
+    };
+
+    _proto._setResizeEvent = function _setResizeEvent() {
+      var _this6 = this;
+
+      if (this._isShown) {
+        $(window).on(Event$5.RESIZE, function (event) {
+          return _this6.handleUpdate(event);
+        });
+      } else {
+        $(window).off(Event$5.RESIZE);
+      }
+    };
+
+    _proto._hideModal = function _hideModal() {
+      var _this7 = this;
+
+      this._element.style.display = 'none';
+
+      this._element.setAttribute('aria-hidden', true);
+
+      this._element.removeAttribute('aria-modal');
+
+      this._isTransitioning = false;
+
+      this._showBackdrop(function () {
+        $(document.body).removeClass(ClassName$5.OPEN);
+
+        _this7._resetAdjustments();
+
+        _this7._resetScrollbar();
+
+        $(_this7._element).trigger(Event$5.HIDDEN);
+      });
+    };
+
+    _proto._removeBackdrop = function _removeBackdrop() {
+      if (this._backdrop) {
+        $(this._backdrop).remove();
+        this._backdrop = null;
+      }
+    };
+
+    _proto._showBackdrop = function _showBackdrop(callback) {
+      var _this8 = this;
+
+      var animate = $(this._element).hasClass(ClassName$5.FADE) ? ClassName$5.FADE : '';
+
+      if (this._isShown && this._config.backdrop) {
+        this._backdrop = document.createElement('div');
+        this._backdrop.className = ClassName$5.BACKDROP;
+
+        if (animate) {
+          this._backdrop.classList.add(animate);
+        }
+
+        $(this._backdrop).appendTo(document.body);
+        $(this._element).on(Event$5.CLICK_DISMISS, function (event) {
+          if (_this8._ignoreBackdropClick) {
+            _this8._ignoreBackdropClick = false;
+            return;
+          }
+
+          if (event.target !== event.currentTarget) {
+            return;
+          }
+
+          if (_this8._config.backdrop === 'static') {
+            _this8._element.focus();
+          } else {
+            _this8.hide();
+          }
+        });
+
+        if (animate) {
+          Util.reflow(this._backdrop);
+        }
+
+        $(this._backdrop).addClass(ClassName$5.SHOW);
+
+        if (!callback) {
           return;
         }
 
-        if (event) {
-          var dataKey = this.constructor.DATA_KEY;
-          var context = $$$1(event.currentTarget).data(dataKey);
-
-          if (!context) {
-            context = new this.constructor(event.currentTarget, this._getDelegateConfig());
-            $$$1(event.currentTarget).data(dataKey, context);
-          }
-
-          context._activeTrigger.click = !context._activeTrigger.click;
-
-          if (context._isWithActiveTrigger()) {
-            context._enter(null, context);
-          } else {
-            context._leave(null, context);
-          }
-        } else {
-          if ($$$1(this.getTipElement()).hasClass(ClassName.SHOW)) {
-            this._leave(null, this);
-
-            return;
-          }
-
-          this._enter(null, this);
-        }
-      };
-
-      _proto.dispose = function dispose() {
-        clearTimeout(this._timeout);
-        $$$1.removeData(this.element, this.constructor.DATA_KEY);
-        $$$1(this.element).off(this.constructor.EVENT_KEY);
-        $$$1(this.element).closest('.modal').off('hide.bs.modal');
-
-        if (this.tip) {
-          $$$1(this.tip).remove();
+        if (!animate) {
+          callback();
+          return;
         }
 
-        this._isEnabled = null;
-        this._timeout = null;
-        this._hoverState = null;
-        this._activeTrigger = null;
+        var backdropTransitionDuration = Util.getTransitionDurationFromElement(this._backdrop);
+        $(this._backdrop).one(Util.TRANSITION_END, callback).emulateTransitionEnd(backdropTransitionDuration);
+      } else if (!this._isShown && this._backdrop) {
+        $(this._backdrop).removeClass(ClassName$5.SHOW);
 
-        if (this._popper !== null) {
-          this._popper.destroy();
-        }
-
-        this._popper = null;
-        this.element = null;
-        this.config = null;
-        this.tip = null;
-      };
-
-      _proto.show = function show() {
-        var _this = this;
-
-        if ($$$1(this.element).css('display') === 'none') {
-          throw new Error('Please use show on visible elements');
-        }
-
-        var showEvent = $$$1.Event(this.constructor.Event.SHOW);
-
-        if (this.isWithContent() && this._isEnabled) {
-          $$$1(this.element).trigger(showEvent);
-          var isInTheDom = $$$1.contains(this.element.ownerDocument.documentElement, this.element);
-
-          if (showEvent.isDefaultPrevented() || !isInTheDom) {
-            return;
-          }
-
-          var tip = this.getTipElement();
-          var tipId = Util.getUID(this.constructor.NAME);
-          tip.setAttribute('id', tipId);
-          this.element.setAttribute('aria-describedby', tipId);
-          this.setContent();
-
-          if (this.config.animation) {
-            $$$1(tip).addClass(ClassName.FADE);
-          }
-
-          var placement = typeof this.config.placement === 'function' ? this.config.placement.call(this, tip, this.element) : this.config.placement;
-
-          var attachment = this._getAttachment(placement);
-
-          this.addAttachmentClass(attachment);
-          var container = this.config.container === false ? document.body : $$$1(document).find(this.config.container);
-          $$$1(tip).data(this.constructor.DATA_KEY, this);
-
-          if (!$$$1.contains(this.element.ownerDocument.documentElement, this.tip)) {
-            $$$1(tip).appendTo(container);
-          }
-
-          $$$1(this.element).trigger(this.constructor.Event.INSERTED);
-          this._popper = new Popper(this.element, tip, {
-            placement: attachment,
-            modifiers: {
-              offset: {
-                offset: this.config.offset
-              },
-              flip: {
-                behavior: this.config.fallbackPlacement
-              },
-              arrow: {
-                element: Selector.ARROW
-              },
-              preventOverflow: {
-                boundariesElement: this.config.boundary
-              }
-            },
-            onCreate: function onCreate(data) {
-              if (data.originalPlacement !== data.placement) {
-                _this._handlePopperPlacementChange(data);
-              }
-            },
-            onUpdate: function onUpdate(data) {
-              _this._handlePopperPlacementChange(data);
-            }
-          });
-          $$$1(tip).addClass(ClassName.SHOW); // If this is a touch-enabled device we add extra
-          // empty mouseover listeners to the body's immediate children;
-          // only needed because of broken event delegation on iOS
-          // https://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.html
-
-          if ('ontouchstart' in document.documentElement) {
-            $$$1(document.body).children().on('mouseover', null, $$$1.noop);
-          }
-
-          var complete = function complete() {
-            if (_this.config.animation) {
-              _this._fixTransition();
-            }
-
-            var prevHoverState = _this._hoverState;
-            _this._hoverState = null;
-            $$$1(_this.element).trigger(_this.constructor.Event.SHOWN);
-
-            if (prevHoverState === HoverState.OUT) {
-              _this._leave(null, _this);
-            }
-          };
-
-          if ($$$1(this.tip).hasClass(ClassName.FADE)) {
-            var transitionDuration = Util.getTransitionDurationFromElement(this.tip);
-            $$$1(this.tip).one(Util.TRANSITION_END, complete).emulateTransitionEnd(transitionDuration);
-          } else {
-            complete();
-          }
-        }
-      };
-
-      _proto.hide = function hide(callback) {
-        var _this2 = this;
-
-        var tip = this.getTipElement();
-        var hideEvent = $$$1.Event(this.constructor.Event.HIDE);
-
-        var complete = function complete() {
-          if (_this2._hoverState !== HoverState.SHOW && tip.parentNode) {
-            tip.parentNode.removeChild(tip);
-          }
-
-          _this2._cleanTipClass();
-
-          _this2.element.removeAttribute('aria-describedby');
-
-          $$$1(_this2.element).trigger(_this2.constructor.Event.HIDDEN);
-
-          if (_this2._popper !== null) {
-            _this2._popper.destroy();
-          }
+        var callbackRemove = function callbackRemove() {
+          _this8._removeBackdrop();
 
           if (callback) {
             callback();
           }
         };
 
-        $$$1(this.element).trigger(hideEvent);
+        if ($(this._element).hasClass(ClassName$5.FADE)) {
+          var _backdropTransitionDuration = Util.getTransitionDurationFromElement(this._backdrop);
 
-        if (hideEvent.isDefaultPrevented()) {
-          return;
-        }
-
-        $$$1(tip).removeClass(ClassName.SHOW); // If this is a touch-enabled device we remove the extra
-        // empty mouseover listeners we added for iOS support
-
-        if ('ontouchstart' in document.documentElement) {
-          $$$1(document.body).children().off('mouseover', null, $$$1.noop);
-        }
-
-        this._activeTrigger[Trigger.CLICK] = false;
-        this._activeTrigger[Trigger.FOCUS] = false;
-        this._activeTrigger[Trigger.HOVER] = false;
-
-        if ($$$1(this.tip).hasClass(ClassName.FADE)) {
-          var transitionDuration = Util.getTransitionDurationFromElement(tip);
-          $$$1(tip).one(Util.TRANSITION_END, complete).emulateTransitionEnd(transitionDuration);
+          $(this._backdrop).one(Util.TRANSITION_END, callbackRemove).emulateTransitionEnd(_backdropTransitionDuration);
         } else {
-          complete();
+          callbackRemove();
+        }
+      } else if (callback) {
+        callback();
+      }
+    }; // ----------------------------------------------------------------------
+    // the following methods are used to handle overflowing modals
+    // todo (fat): these should probably be refactored out of modal.js
+    // ----------------------------------------------------------------------
+
+
+    _proto._adjustDialog = function _adjustDialog() {
+      var isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
+
+      if (!this._isBodyOverflowing && isModalOverflowing) {
+        this._element.style.paddingLeft = this._scrollbarWidth + "px";
+      }
+
+      if (this._isBodyOverflowing && !isModalOverflowing) {
+        this._element.style.paddingRight = this._scrollbarWidth + "px";
+      }
+    };
+
+    _proto._resetAdjustments = function _resetAdjustments() {
+      this._element.style.paddingLeft = '';
+      this._element.style.paddingRight = '';
+    };
+
+    _proto._checkScrollbar = function _checkScrollbar() {
+      var rect = document.body.getBoundingClientRect();
+      this._isBodyOverflowing = rect.left + rect.right < window.innerWidth;
+      this._scrollbarWidth = this._getScrollbarWidth();
+    };
+
+    _proto._setScrollbar = function _setScrollbar() {
+      var _this9 = this;
+
+      if (this._isBodyOverflowing) {
+        // Note: DOMNode.style.paddingRight returns the actual value or '' if not set
+        //   while $(DOMNode).css('padding-right') returns the calculated value or 0 if not set
+        var fixedContent = [].slice.call(document.querySelectorAll(Selector$5.FIXED_CONTENT));
+        var stickyContent = [].slice.call(document.querySelectorAll(Selector$5.STICKY_CONTENT)); // Adjust fixed content padding
+
+        $(fixedContent).each(function (index, element) {
+          var actualPadding = element.style.paddingRight;
+          var calculatedPadding = $(element).css('padding-right');
+          $(element).data('padding-right', actualPadding).css('padding-right', parseFloat(calculatedPadding) + _this9._scrollbarWidth + "px");
+        }); // Adjust sticky content margin
+
+        $(stickyContent).each(function (index, element) {
+          var actualMargin = element.style.marginRight;
+          var calculatedMargin = $(element).css('margin-right');
+          $(element).data('margin-right', actualMargin).css('margin-right', parseFloat(calculatedMargin) - _this9._scrollbarWidth + "px");
+        }); // Adjust body padding
+
+        var actualPadding = document.body.style.paddingRight;
+        var calculatedPadding = $(document.body).css('padding-right');
+        $(document.body).data('padding-right', actualPadding).css('padding-right', parseFloat(calculatedPadding) + this._scrollbarWidth + "px");
+      }
+
+      $(document.body).addClass(ClassName$5.OPEN);
+    };
+
+    _proto._resetScrollbar = function _resetScrollbar() {
+      // Restore fixed content padding
+      var fixedContent = [].slice.call(document.querySelectorAll(Selector$5.FIXED_CONTENT));
+      $(fixedContent).each(function (index, element) {
+        var padding = $(element).data('padding-right');
+        $(element).removeData('padding-right');
+        element.style.paddingRight = padding ? padding : '';
+      }); // Restore sticky content
+
+      var elements = [].slice.call(document.querySelectorAll("" + Selector$5.STICKY_CONTENT));
+      $(elements).each(function (index, element) {
+        var margin = $(element).data('margin-right');
+
+        if (typeof margin !== 'undefined') {
+          $(element).css('margin-right', margin).removeData('margin-right');
+        }
+      }); // Restore body padding
+
+      var padding = $(document.body).data('padding-right');
+      $(document.body).removeData('padding-right');
+      document.body.style.paddingRight = padding ? padding : '';
+    };
+
+    _proto._getScrollbarWidth = function _getScrollbarWidth() {
+      // thx d.walsh
+      var scrollDiv = document.createElement('div');
+      scrollDiv.className = ClassName$5.SCROLLBAR_MEASURER;
+      document.body.appendChild(scrollDiv);
+      var scrollbarWidth = scrollDiv.getBoundingClientRect().width - scrollDiv.clientWidth;
+      document.body.removeChild(scrollDiv);
+      return scrollbarWidth;
+    }; // Static
+
+
+    Modal._jQueryInterface = function _jQueryInterface(config, relatedTarget) {
+      return this.each(function () {
+        var data = $(this).data(DATA_KEY$5);
+
+        var _config = _objectSpread({}, Default$3, $(this).data(), typeof config === 'object' && config ? config : {});
+
+        if (!data) {
+          data = new Modal(this, _config);
+          $(this).data(DATA_KEY$5, data);
         }
 
-        this._hoverState = '';
-      };
-
-      _proto.update = function update() {
-        if (this._popper !== null) {
-          this._popper.scheduleUpdate();
-        }
-      }; // Protected
-
-
-      _proto.isWithContent = function isWithContent() {
-        return Boolean(this.getTitle());
-      };
-
-      _proto.addAttachmentClass = function addAttachmentClass(attachment) {
-        $$$1(this.getTipElement()).addClass(CLASS_PREFIX + "-" + attachment);
-      };
-
-      _proto.getTipElement = function getTipElement() {
-        this.tip = this.tip || $$$1(this.config.template)[0];
-        return this.tip;
-      };
-
-      _proto.setContent = function setContent() {
-        var tip = this.getTipElement();
-        this.setElementContent($$$1(tip.querySelectorAll(Selector.TOOLTIP_INNER)), this.getTitle());
-        $$$1(tip).removeClass(ClassName.FADE + " " + ClassName.SHOW);
-      };
-
-      _proto.setElementContent = function setElementContent($element, content) {
-        var html = this.config.html;
-
-        if (typeof content === 'object' && (content.nodeType || content.jquery)) {
-          // Content is a DOM node or a jQuery
-          if (html) {
-            if (!$$$1(content).parent().is($element)) {
-              $element.empty().append(content);
-            }
-          } else {
-            $element.text($$$1(content).text());
+        if (typeof config === 'string') {
+          if (typeof data[config] === 'undefined') {
+            throw new TypeError("No method named \"" + config + "\"");
           }
-        } else {
-          $element[html ? 'html' : 'text'](content);
+
+          data[config](relatedTarget);
+        } else if (_config.show) {
+          data.show(relatedTarget);
         }
-      };
+      });
+    };
 
-      _proto.getTitle = function getTitle() {
-        var title = this.element.getAttribute('data-original-title');
+    _createClass(Modal, null, [{
+      key: "VERSION",
+      get: function get() {
+        return VERSION$5;
+      }
+    }, {
+      key: "Default",
+      get: function get() {
+        return Default$3;
+      }
+    }]);
 
-        if (!title) {
-          title = typeof this.config.title === 'function' ? this.config.title.call(this.element) : this.config.title;
+    return Modal;
+  }();
+  /**
+   * ------------------------------------------------------------------------
+   * Data Api implementation
+   * ------------------------------------------------------------------------
+   */
+
+
+  $(document).on(Event$5.CLICK_DATA_API, Selector$5.DATA_TOGGLE, function (event) {
+    var _this10 = this;
+
+    var target;
+    var selector = Util.getSelectorFromElement(this);
+
+    if (selector) {
+      target = document.querySelector(selector);
+    }
+
+    var config = $(target).data(DATA_KEY$5) ? 'toggle' : _objectSpread({}, $(target).data(), $(this).data());
+
+    if (this.tagName === 'A' || this.tagName === 'AREA') {
+      event.preventDefault();
+    }
+
+    var $target = $(target).one(Event$5.SHOW, function (showEvent) {
+      if (showEvent.isDefaultPrevented()) {
+        // Only register focus restorer if modal will actually get shown
+        return;
+      }
+
+      $target.one(Event$5.HIDDEN, function () {
+        if ($(_this10).is(':visible')) {
+          _this10.focus();
         }
+      });
+    });
 
-        return title;
-      }; // Private
+    Modal._jQueryInterface.call($(target), config, this);
+  });
+  /**
+   * ------------------------------------------------------------------------
+   * jQuery
+   * ------------------------------------------------------------------------
+   */
+
+  $.fn[NAME$5] = Modal._jQueryInterface;
+  $.fn[NAME$5].Constructor = Modal;
+
+  $.fn[NAME$5].noConflict = function () {
+    $.fn[NAME$5] = JQUERY_NO_CONFLICT$5;
+    return Modal._jQueryInterface;
+  };
+
+  /**
+   * ------------------------------------------------------------------------
+   * Constants
+   * ------------------------------------------------------------------------
+   */
+
+  var NAME$6 = 'tooltip';
+  var VERSION$6 = '4.2.1';
+  var DATA_KEY$6 = 'bs.tooltip';
+  var EVENT_KEY$6 = "." + DATA_KEY$6;
+  var JQUERY_NO_CONFLICT$6 = $.fn[NAME$6];
+  var CLASS_PREFIX = 'bs-tooltip';
+  var BSCLS_PREFIX_REGEX = new RegExp("(^|\\s)" + CLASS_PREFIX + "\\S+", 'g');
+  var DefaultType$4 = {
+    animation: 'boolean',
+    template: 'string',
+    title: '(string|element|function)',
+    trigger: 'string',
+    delay: '(number|object)',
+    html: 'boolean',
+    selector: '(string|boolean)',
+    placement: '(string|function)',
+    offset: '(number|string)',
+    container: '(string|element|boolean)',
+    fallbackPlacement: '(string|array)',
+    boundary: '(string|element)'
+  };
+  var AttachmentMap$1 = {
+    AUTO: 'auto',
+    TOP: 'top',
+    RIGHT: 'right',
+    BOTTOM: 'bottom',
+    LEFT: 'left'
+  };
+  var Default$4 = {
+    animation: true,
+    template: '<div class="tooltip" role="tooltip">' + '<div class="arrow"></div>' + '<div class="tooltip-inner"></div></div>',
+    trigger: 'hover focus',
+    title: '',
+    delay: 0,
+    html: false,
+    selector: false,
+    placement: 'top',
+    offset: 0,
+    container: false,
+    fallbackPlacement: 'flip',
+    boundary: 'scrollParent'
+  };
+  var HoverState = {
+    SHOW: 'show',
+    OUT: 'out'
+  };
+  var Event$6 = {
+    HIDE: "hide" + EVENT_KEY$6,
+    HIDDEN: "hidden" + EVENT_KEY$6,
+    SHOW: "show" + EVENT_KEY$6,
+    SHOWN: "shown" + EVENT_KEY$6,
+    INSERTED: "inserted" + EVENT_KEY$6,
+    CLICK: "click" + EVENT_KEY$6,
+    FOCUSIN: "focusin" + EVENT_KEY$6,
+    FOCUSOUT: "focusout" + EVENT_KEY$6,
+    MOUSEENTER: "mouseenter" + EVENT_KEY$6,
+    MOUSELEAVE: "mouseleave" + EVENT_KEY$6
+  };
+  var ClassName$6 = {
+    FADE: 'fade',
+    SHOW: 'show'
+  };
+  var Selector$6 = {
+    TOOLTIP: '.tooltip',
+    TOOLTIP_INNER: '.tooltip-inner',
+    ARROW: '.arrow'
+  };
+  var Trigger = {
+    HOVER: 'hover',
+    FOCUS: 'focus',
+    CLICK: 'click',
+    MANUAL: 'manual'
+    /**
+     * ------------------------------------------------------------------------
+     * Class Definition
+     * ------------------------------------------------------------------------
+     */
+
+  };
+
+  var Tooltip =
+  /*#__PURE__*/
+  function () {
+    function Tooltip(element, config) {
+      /**
+       * Check for Popper dependency
+       * Popper - https://popper.js.org
+       */
+      if (typeof Popper === 'undefined') {
+        throw new TypeError('Bootstrap\'s tooltips require Popper.js (https://popper.js.org/)');
+      } // private
 
 
-      _proto._getAttachment = function _getAttachment(placement) {
-        return AttachmentMap[placement.toUpperCase()];
-      };
+      this._isEnabled = true;
+      this._timeout = 0;
+      this._hoverState = '';
+      this._activeTrigger = {};
+      this._popper = null; // Protected
 
-      _proto._setListeners = function _setListeners() {
-        var _this3 = this;
+      this.element = element;
+      this.config = this._getConfig(config);
+      this.tip = null;
 
-        var triggers = this.config.trigger.split(' ');
-        triggers.forEach(function (trigger) {
-          if (trigger === 'click') {
-            $$$1(_this3.element).on(_this3.constructor.Event.CLICK, _this3.config.selector, function (event) {
-              return _this3.toggle(event);
-            });
-          } else if (trigger !== Trigger.MANUAL) {
-            var eventIn = trigger === Trigger.HOVER ? _this3.constructor.Event.MOUSEENTER : _this3.constructor.Event.FOCUSIN;
-            var eventOut = trigger === Trigger.HOVER ? _this3.constructor.Event.MOUSELEAVE : _this3.constructor.Event.FOCUSOUT;
-            $$$1(_this3.element).on(eventIn, _this3.config.selector, function (event) {
-              return _this3._enter(event);
-            }).on(eventOut, _this3.config.selector, function (event) {
-              return _this3._leave(event);
-            });
-          }
+      this._setListeners();
+    } // Getters
 
-          $$$1(_this3.element).closest('.modal').on('hide.bs.modal', function () {
-            return _this3.hide();
-          });
-        });
 
-        if (this.config.selector) {
-          this.config = _objectSpread({}, this.config, {
-            trigger: 'manual',
-            selector: ''
-          });
-        } else {
-          this._fixTitle();
-        }
-      };
+    var _proto = Tooltip.prototype;
 
-      _proto._fixTitle = function _fixTitle() {
-        var titleType = typeof this.element.getAttribute('data-original-title');
+    // Public
+    _proto.enable = function enable() {
+      this._isEnabled = true;
+    };
 
-        if (this.element.getAttribute('title') || titleType !== 'string') {
-          this.element.setAttribute('data-original-title', this.element.getAttribute('title') || '');
-          this.element.setAttribute('title', '');
-        }
-      };
+    _proto.disable = function disable() {
+      this._isEnabled = false;
+    };
 
-      _proto._enter = function _enter(event, context) {
+    _proto.toggleEnabled = function toggleEnabled() {
+      this._isEnabled = !this._isEnabled;
+    };
+
+    _proto.toggle = function toggle(event) {
+      if (!this._isEnabled) {
+        return;
+      }
+
+      if (event) {
         var dataKey = this.constructor.DATA_KEY;
-        context = context || $$$1(event.currentTarget).data(dataKey);
+        var context = $(event.currentTarget).data(dataKey);
 
         if (!context) {
           context = new this.constructor(event.currentTarget, this._getDelegateConfig());
-          $$$1(event.currentTarget).data(dataKey, context);
+          $(event.currentTarget).data(dataKey, context);
         }
 
-        if (event) {
-          context._activeTrigger[event.type === 'focusin' ? Trigger.FOCUS : Trigger.HOVER] = true;
-        }
-
-        if ($$$1(context.getTipElement()).hasClass(ClassName.SHOW) || context._hoverState === HoverState.SHOW) {
-          context._hoverState = HoverState.SHOW;
-          return;
-        }
-
-        clearTimeout(context._timeout);
-        context._hoverState = HoverState.SHOW;
-
-        if (!context.config.delay || !context.config.delay.show) {
-          context.show();
-          return;
-        }
-
-        context._timeout = setTimeout(function () {
-          if (context._hoverState === HoverState.SHOW) {
-            context.show();
-          }
-        }, context.config.delay.show);
-      };
-
-      _proto._leave = function _leave(event, context) {
-        var dataKey = this.constructor.DATA_KEY;
-        context = context || $$$1(event.currentTarget).data(dataKey);
-
-        if (!context) {
-          context = new this.constructor(event.currentTarget, this._getDelegateConfig());
-          $$$1(event.currentTarget).data(dataKey, context);
-        }
-
-        if (event) {
-          context._activeTrigger[event.type === 'focusout' ? Trigger.FOCUS : Trigger.HOVER] = false;
-        }
+        context._activeTrigger.click = !context._activeTrigger.click;
 
         if (context._isWithActiveTrigger()) {
+          context._enter(null, context);
+        } else {
+          context._leave(null, context);
+        }
+      } else {
+        if ($(this.getTipElement()).hasClass(ClassName$6.SHOW)) {
+          this._leave(null, this);
+
           return;
         }
 
-        clearTimeout(context._timeout);
-        context._hoverState = HoverState.OUT;
+        this._enter(null, this);
+      }
+    };
 
-        if (!context.config.delay || !context.config.delay.hide) {
-          context.hide();
+    _proto.dispose = function dispose() {
+      clearTimeout(this._timeout);
+      $.removeData(this.element, this.constructor.DATA_KEY);
+      $(this.element).off(this.constructor.EVENT_KEY);
+      $(this.element).closest('.modal').off('hide.bs.modal');
+
+      if (this.tip) {
+        $(this.tip).remove();
+      }
+
+      this._isEnabled = null;
+      this._timeout = null;
+      this._hoverState = null;
+      this._activeTrigger = null;
+
+      if (this._popper !== null) {
+        this._popper.destroy();
+      }
+
+      this._popper = null;
+      this.element = null;
+      this.config = null;
+      this.tip = null;
+    };
+
+    _proto.show = function show() {
+      var _this = this;
+
+      if ($(this.element).css('display') === 'none') {
+        throw new Error('Please use show on visible elements');
+      }
+
+      var showEvent = $.Event(this.constructor.Event.SHOW);
+
+      if (this.isWithContent() && this._isEnabled) {
+        $(this.element).trigger(showEvent);
+        var shadowRoot = Util.findShadowRoot(this.element);
+        var isInTheDom = $.contains(shadowRoot !== null ? shadowRoot : this.element.ownerDocument.documentElement, this.element);
+
+        if (showEvent.isDefaultPrevented() || !isInTheDom) {
           return;
         }
 
-        context._timeout = setTimeout(function () {
-          if (context._hoverState === HoverState.OUT) {
-            context.hide();
-          }
-        }, context.config.delay.hide);
-      };
-
-      _proto._isWithActiveTrigger = function _isWithActiveTrigger() {
-        for (var trigger in this._activeTrigger) {
-          if (this._activeTrigger[trigger]) {
-            return true;
-          }
-        }
-
-        return false;
-      };
-
-      _proto._getConfig = function _getConfig(config) {
-        config = _objectSpread({}, this.constructor.Default, $$$1(this.element).data(), typeof config === 'object' && config ? config : {});
-
-        if (typeof config.delay === 'number') {
-          config.delay = {
-            show: config.delay,
-            hide: config.delay
-          };
-        }
-
-        if (typeof config.title === 'number') {
-          config.title = config.title.toString();
-        }
-
-        if (typeof config.content === 'number') {
-          config.content = config.content.toString();
-        }
-
-        Util.typeCheckConfig(NAME, config, this.constructor.DefaultType);
-        return config;
-      };
-
-      _proto._getDelegateConfig = function _getDelegateConfig() {
-        var config = {};
-
-        if (this.config) {
-          for (var key in this.config) {
-            if (this.constructor.Default[key] !== this.config[key]) {
-              config[key] = this.config[key];
-            }
-          }
-        }
-
-        return config;
-      };
-
-      _proto._cleanTipClass = function _cleanTipClass() {
-        var $tip = $$$1(this.getTipElement());
-        var tabClass = $tip.attr('class').match(BSCLS_PREFIX_REGEX);
-
-        if (tabClass !== null && tabClass.length) {
-          $tip.removeClass(tabClass.join(''));
-        }
-      };
-
-      _proto._handlePopperPlacementChange = function _handlePopperPlacementChange(popperData) {
-        var popperInstance = popperData.instance;
-        this.tip = popperInstance.popper;
-
-        this._cleanTipClass();
-
-        this.addAttachmentClass(this._getAttachment(popperData.placement));
-      };
-
-      _proto._fixTransition = function _fixTransition() {
         var tip = this.getTipElement();
-        var initConfigAnimation = this.config.animation;
+        var tipId = Util.getUID(this.constructor.NAME);
+        tip.setAttribute('id', tipId);
+        this.element.setAttribute('aria-describedby', tipId);
+        this.setContent();
 
-        if (tip.getAttribute('x-placement') !== null) {
-          return;
+        if (this.config.animation) {
+          $(tip).addClass(ClassName$6.FADE);
         }
 
-        $$$1(tip).removeClass(ClassName.FADE);
-        this.config.animation = false;
-        this.hide();
-        this.show();
-        this.config.animation = initConfigAnimation;
-      }; // Static
+        var placement = typeof this.config.placement === 'function' ? this.config.placement.call(this, tip, this.element) : this.config.placement;
 
+        var attachment = this._getAttachment(placement);
 
-      Tooltip._jQueryInterface = function _jQueryInterface(config) {
-        return this.each(function () {
-          var data = $$$1(this).data(DATA_KEY);
+        this.addAttachmentClass(attachment);
 
-          var _config = typeof config === 'object' && config;
+        var container = this._getContainer();
 
-          if (!data && /dispose|hide/.test(config)) {
-            return;
-          }
+        $(tip).data(this.constructor.DATA_KEY, this);
 
-          if (!data) {
-            data = new Tooltip(this, _config);
-            $$$1(this).data(DATA_KEY, data);
-          }
+        if (!$.contains(this.element.ownerDocument.documentElement, this.tip)) {
+          $(tip).appendTo(container);
+        }
 
-          if (typeof config === 'string') {
-            if (typeof data[config] === 'undefined') {
-              throw new TypeError("No method named \"" + config + "\"");
+        $(this.element).trigger(this.constructor.Event.INSERTED);
+        this._popper = new Popper(this.element, tip, {
+          placement: attachment,
+          modifiers: {
+            offset: {
+              offset: this.config.offset
+            },
+            flip: {
+              behavior: this.config.fallbackPlacement
+            },
+            arrow: {
+              element: Selector$6.ARROW
+            },
+            preventOverflow: {
+              boundariesElement: this.config.boundary
             }
-
-            data[config]();
-          }
-        });
-      };
-
-      _createClass(Tooltip, null, [{
-        key: "VERSION",
-        get: function get() {
-          return VERSION;
-        }
-      }, {
-        key: "Default",
-        get: function get() {
-          return Default;
-        }
-      }, {
-        key: "NAME",
-        get: function get() {
-          return NAME;
-        }
-      }, {
-        key: "DATA_KEY",
-        get: function get() {
-          return DATA_KEY;
-        }
-      }, {
-        key: "Event",
-        get: function get() {
-          return Event;
-        }
-      }, {
-        key: "EVENT_KEY",
-        get: function get() {
-          return EVENT_KEY;
-        }
-      }, {
-        key: "DefaultType",
-        get: function get() {
-          return DefaultType;
-        }
-      }]);
-
-      return Tooltip;
-    }();
-    /**
-     * ------------------------------------------------------------------------
-     * jQuery
-     * ------------------------------------------------------------------------
-     */
-
-
-    $$$1.fn[NAME] = Tooltip._jQueryInterface;
-    $$$1.fn[NAME].Constructor = Tooltip;
-
-    $$$1.fn[NAME].noConflict = function () {
-      $$$1.fn[NAME] = JQUERY_NO_CONFLICT;
-      return Tooltip._jQueryInterface;
-    };
-
-    return Tooltip;
-  }($, Popper);
-
-  /**
-   * --------------------------------------------------------------------------
-   * Bootstrap (v4.1.3): popover.js
-   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
-   * --------------------------------------------------------------------------
-   */
-
-  var Popover = function ($$$1) {
-    /**
-     * ------------------------------------------------------------------------
-     * Constants
-     * ------------------------------------------------------------------------
-     */
-    var NAME = 'popover';
-    var VERSION = '4.1.3';
-    var DATA_KEY = 'bs.popover';
-    var EVENT_KEY = "." + DATA_KEY;
-    var JQUERY_NO_CONFLICT = $$$1.fn[NAME];
-    var CLASS_PREFIX = 'bs-popover';
-    var BSCLS_PREFIX_REGEX = new RegExp("(^|\\s)" + CLASS_PREFIX + "\\S+", 'g');
-
-    var Default = _objectSpread({}, Tooltip.Default, {
-      placement: 'right',
-      trigger: 'click',
-      content: '',
-      template: '<div class="popover" role="tooltip">' + '<div class="arrow"></div>' + '<h3 class="popover-header"></h3>' + '<div class="popover-body"></div></div>'
-    });
-
-    var DefaultType = _objectSpread({}, Tooltip.DefaultType, {
-      content: '(string|element|function)'
-    });
-
-    var ClassName = {
-      FADE: 'fade',
-      SHOW: 'show'
-    };
-    var Selector = {
-      TITLE: '.popover-header',
-      CONTENT: '.popover-body'
-    };
-    var Event = {
-      HIDE: "hide" + EVENT_KEY,
-      HIDDEN: "hidden" + EVENT_KEY,
-      SHOW: "show" + EVENT_KEY,
-      SHOWN: "shown" + EVENT_KEY,
-      INSERTED: "inserted" + EVENT_KEY,
-      CLICK: "click" + EVENT_KEY,
-      FOCUSIN: "focusin" + EVENT_KEY,
-      FOCUSOUT: "focusout" + EVENT_KEY,
-      MOUSEENTER: "mouseenter" + EVENT_KEY,
-      MOUSELEAVE: "mouseleave" + EVENT_KEY
-      /**
-       * ------------------------------------------------------------------------
-       * Class Definition
-       * ------------------------------------------------------------------------
-       */
-
-    };
-
-    var Popover =
-    /*#__PURE__*/
-    function (_Tooltip) {
-      _inheritsLoose(Popover, _Tooltip);
-
-      function Popover() {
-        return _Tooltip.apply(this, arguments) || this;
-      }
-
-      var _proto = Popover.prototype;
-
-      // Overrides
-      _proto.isWithContent = function isWithContent() {
-        return this.getTitle() || this._getContent();
-      };
-
-      _proto.addAttachmentClass = function addAttachmentClass(attachment) {
-        $$$1(this.getTipElement()).addClass(CLASS_PREFIX + "-" + attachment);
-      };
-
-      _proto.getTipElement = function getTipElement() {
-        this.tip = this.tip || $$$1(this.config.template)[0];
-        return this.tip;
-      };
-
-      _proto.setContent = function setContent() {
-        var $tip = $$$1(this.getTipElement()); // We use append for html objects to maintain js events
-
-        this.setElementContent($tip.find(Selector.TITLE), this.getTitle());
-
-        var content = this._getContent();
-
-        if (typeof content === 'function') {
-          content = content.call(this.element);
-        }
-
-        this.setElementContent($tip.find(Selector.CONTENT), content);
-        $tip.removeClass(ClassName.FADE + " " + ClassName.SHOW);
-      }; // Private
-
-
-      _proto._getContent = function _getContent() {
-        return this.element.getAttribute('data-content') || this.config.content;
-      };
-
-      _proto._cleanTipClass = function _cleanTipClass() {
-        var $tip = $$$1(this.getTipElement());
-        var tabClass = $tip.attr('class').match(BSCLS_PREFIX_REGEX);
-
-        if (tabClass !== null && tabClass.length > 0) {
-          $tip.removeClass(tabClass.join(''));
-        }
-      }; // Static
-
-
-      Popover._jQueryInterface = function _jQueryInterface(config) {
-        return this.each(function () {
-          var data = $$$1(this).data(DATA_KEY);
-
-          var _config = typeof config === 'object' ? config : null;
-
-          if (!data && /destroy|hide/.test(config)) {
-            return;
-          }
-
-          if (!data) {
-            data = new Popover(this, _config);
-            $$$1(this).data(DATA_KEY, data);
-          }
-
-          if (typeof config === 'string') {
-            if (typeof data[config] === 'undefined') {
-              throw new TypeError("No method named \"" + config + "\"");
+          },
+          onCreate: function onCreate(data) {
+            if (data.originalPlacement !== data.placement) {
+              _this._handlePopperPlacementChange(data);
             }
-
-            data[config]();
+          },
+          onUpdate: function onUpdate(data) {
+            return _this._handlePopperPlacementChange(data);
           }
         });
-      };
+        $(tip).addClass(ClassName$6.SHOW); // If this is a touch-enabled device we add extra
+        // empty mouseover listeners to the body's immediate children;
+        // only needed because of broken event delegation on iOS
+        // https://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.html
 
-      _createClass(Popover, null, [{
-        key: "VERSION",
-        // Getters
-        get: function get() {
-          return VERSION;
+        if ('ontouchstart' in document.documentElement) {
+          $(document.body).children().on('mouseover', null, $.noop);
         }
-      }, {
-        key: "Default",
-        get: function get() {
-          return Default;
-        }
-      }, {
-        key: "NAME",
-        get: function get() {
-          return NAME;
-        }
-      }, {
-        key: "DATA_KEY",
-        get: function get() {
-          return DATA_KEY;
-        }
-      }, {
-        key: "Event",
-        get: function get() {
-          return Event;
-        }
-      }, {
-        key: "EVENT_KEY",
-        get: function get() {
-          return EVENT_KEY;
-        }
-      }, {
-        key: "DefaultType",
-        get: function get() {
-          return DefaultType;
-        }
-      }]);
-
-      return Popover;
-    }(Tooltip);
-    /**
-     * ------------------------------------------------------------------------
-     * jQuery
-     * ------------------------------------------------------------------------
-     */
-
-
-    $$$1.fn[NAME] = Popover._jQueryInterface;
-    $$$1.fn[NAME].Constructor = Popover;
-
-    $$$1.fn[NAME].noConflict = function () {
-      $$$1.fn[NAME] = JQUERY_NO_CONFLICT;
-      return Popover._jQueryInterface;
-    };
-
-    return Popover;
-  }($);
-
-  /**
-   * --------------------------------------------------------------------------
-   * Bootstrap (v4.1.3): scrollspy.js
-   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
-   * --------------------------------------------------------------------------
-   */
-
-  var ScrollSpy = function ($$$1) {
-    /**
-     * ------------------------------------------------------------------------
-     * Constants
-     * ------------------------------------------------------------------------
-     */
-    var NAME = 'scrollspy';
-    var VERSION = '4.1.3';
-    var DATA_KEY = 'bs.scrollspy';
-    var EVENT_KEY = "." + DATA_KEY;
-    var DATA_API_KEY = '.data-api';
-    var JQUERY_NO_CONFLICT = $$$1.fn[NAME];
-    var Default = {
-      offset: 10,
-      method: 'auto',
-      target: ''
-    };
-    var DefaultType = {
-      offset: 'number',
-      method: 'string',
-      target: '(string|element)'
-    };
-    var Event = {
-      ACTIVATE: "activate" + EVENT_KEY,
-      SCROLL: "scroll" + EVENT_KEY,
-      LOAD_DATA_API: "load" + EVENT_KEY + DATA_API_KEY
-    };
-    var ClassName = {
-      DROPDOWN_ITEM: 'dropdown-item',
-      DROPDOWN_MENU: 'dropdown-menu',
-      ACTIVE: 'active'
-    };
-    var Selector = {
-      DATA_SPY: '[data-spy="scroll"]',
-      ACTIVE: '.active',
-      NAV_LIST_GROUP: '.nav, .list-group',
-      NAV_LINKS: '.nav-link',
-      NAV_ITEMS: '.nav-item',
-      LIST_ITEMS: '.list-group-item',
-      DROPDOWN: '.dropdown',
-      DROPDOWN_ITEMS: '.dropdown-item',
-      DROPDOWN_TOGGLE: '.dropdown-toggle'
-    };
-    var OffsetMethod = {
-      OFFSET: 'offset',
-      POSITION: 'position'
-      /**
-       * ------------------------------------------------------------------------
-       * Class Definition
-       * ------------------------------------------------------------------------
-       */
-
-    };
-
-    var ScrollSpy =
-    /*#__PURE__*/
-    function () {
-      function ScrollSpy(element, config) {
-        var _this = this;
-
-        this._element = element;
-        this._scrollElement = element.tagName === 'BODY' ? window : element;
-        this._config = this._getConfig(config);
-        this._selector = this._config.target + " " + Selector.NAV_LINKS + "," + (this._config.target + " " + Selector.LIST_ITEMS + ",") + (this._config.target + " " + Selector.DROPDOWN_ITEMS);
-        this._offsets = [];
-        this._targets = [];
-        this._activeTarget = null;
-        this._scrollHeight = 0;
-        $$$1(this._scrollElement).on(Event.SCROLL, function (event) {
-          return _this._process(event);
-        });
-        this.refresh();
-
-        this._process();
-      } // Getters
-
-
-      var _proto = ScrollSpy.prototype;
-
-      // Public
-      _proto.refresh = function refresh() {
-        var _this2 = this;
-
-        var autoMethod = this._scrollElement === this._scrollElement.window ? OffsetMethod.OFFSET : OffsetMethod.POSITION;
-        var offsetMethod = this._config.method === 'auto' ? autoMethod : this._config.method;
-        var offsetBase = offsetMethod === OffsetMethod.POSITION ? this._getScrollTop() : 0;
-        this._offsets = [];
-        this._targets = [];
-        this._scrollHeight = this._getScrollHeight();
-        var targets = [].slice.call(document.querySelectorAll(this._selector));
-        targets.map(function (element) {
-          var target;
-          var targetSelector = Util.getSelectorFromElement(element);
-
-          if (targetSelector) {
-            target = document.querySelector(targetSelector);
-          }
-
-          if (target) {
-            var targetBCR = target.getBoundingClientRect();
-
-            if (targetBCR.width || targetBCR.height) {
-              // TODO (fat): remove sketch reliance on jQuery position/offset
-              return [$$$1(target)[offsetMethod]().top + offsetBase, targetSelector];
-            }
-          }
-
-          return null;
-        }).filter(function (item) {
-          return item;
-        }).sort(function (a, b) {
-          return a[0] - b[0];
-        }).forEach(function (item) {
-          _this2._offsets.push(item[0]);
-
-          _this2._targets.push(item[1]);
-        });
-      };
-
-      _proto.dispose = function dispose() {
-        $$$1.removeData(this._element, DATA_KEY);
-        $$$1(this._scrollElement).off(EVENT_KEY);
-        this._element = null;
-        this._scrollElement = null;
-        this._config = null;
-        this._selector = null;
-        this._offsets = null;
-        this._targets = null;
-        this._activeTarget = null;
-        this._scrollHeight = null;
-      }; // Private
-
-
-      _proto._getConfig = function _getConfig(config) {
-        config = _objectSpread({}, Default, typeof config === 'object' && config ? config : {});
-
-        if (typeof config.target !== 'string') {
-          var id = $$$1(config.target).attr('id');
-
-          if (!id) {
-            id = Util.getUID(NAME);
-            $$$1(config.target).attr('id', id);
-          }
-
-          config.target = "#" + id;
-        }
-
-        Util.typeCheckConfig(NAME, config, DefaultType);
-        return config;
-      };
-
-      _proto._getScrollTop = function _getScrollTop() {
-        return this._scrollElement === window ? this._scrollElement.pageYOffset : this._scrollElement.scrollTop;
-      };
-
-      _proto._getScrollHeight = function _getScrollHeight() {
-        return this._scrollElement.scrollHeight || Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
-      };
-
-      _proto._getOffsetHeight = function _getOffsetHeight() {
-        return this._scrollElement === window ? window.innerHeight : this._scrollElement.getBoundingClientRect().height;
-      };
-
-      _proto._process = function _process() {
-        var scrollTop = this._getScrollTop() + this._config.offset;
-
-        var scrollHeight = this._getScrollHeight();
-
-        var maxScroll = this._config.offset + scrollHeight - this._getOffsetHeight();
-
-        if (this._scrollHeight !== scrollHeight) {
-          this.refresh();
-        }
-
-        if (scrollTop >= maxScroll) {
-          var target = this._targets[this._targets.length - 1];
-
-          if (this._activeTarget !== target) {
-            this._activate(target);
-          }
-
-          return;
-        }
-
-        if (this._activeTarget && scrollTop < this._offsets[0] && this._offsets[0] > 0) {
-          this._activeTarget = null;
-
-          this._clear();
-
-          return;
-        }
-
-        var offsetLength = this._offsets.length;
-
-        for (var i = offsetLength; i--;) {
-          var isActiveTarget = this._activeTarget !== this._targets[i] && scrollTop >= this._offsets[i] && (typeof this._offsets[i + 1] === 'undefined' || scrollTop < this._offsets[i + 1]);
-
-          if (isActiveTarget) {
-            this._activate(this._targets[i]);
-          }
-        }
-      };
-
-      _proto._activate = function _activate(target) {
-        this._activeTarget = target;
-
-        this._clear();
-
-        var queries = this._selector.split(','); // eslint-disable-next-line arrow-body-style
-
-
-        queries = queries.map(function (selector) {
-          return selector + "[data-target=\"" + target + "\"]," + (selector + "[href=\"" + target + "\"]");
-        });
-        var $link = $$$1([].slice.call(document.querySelectorAll(queries.join(','))));
-
-        if ($link.hasClass(ClassName.DROPDOWN_ITEM)) {
-          $link.closest(Selector.DROPDOWN).find(Selector.DROPDOWN_TOGGLE).addClass(ClassName.ACTIVE);
-          $link.addClass(ClassName.ACTIVE);
-        } else {
-          // Set triggered link as active
-          $link.addClass(ClassName.ACTIVE); // Set triggered links parents as active
-          // With both <ul> and <nav> markup a parent is the previous sibling of any nav ancestor
-
-          $link.parents(Selector.NAV_LIST_GROUP).prev(Selector.NAV_LINKS + ", " + Selector.LIST_ITEMS).addClass(ClassName.ACTIVE); // Handle special case when .nav-link is inside .nav-item
-
-          $link.parents(Selector.NAV_LIST_GROUP).prev(Selector.NAV_ITEMS).children(Selector.NAV_LINKS).addClass(ClassName.ACTIVE);
-        }
-
-        $$$1(this._scrollElement).trigger(Event.ACTIVATE, {
-          relatedTarget: target
-        });
-      };
-
-      _proto._clear = function _clear() {
-        var nodes = [].slice.call(document.querySelectorAll(this._selector));
-        $$$1(nodes).filter(Selector.ACTIVE).removeClass(ClassName.ACTIVE);
-      }; // Static
-
-
-      ScrollSpy._jQueryInterface = function _jQueryInterface(config) {
-        return this.each(function () {
-          var data = $$$1(this).data(DATA_KEY);
-
-          var _config = typeof config === 'object' && config;
-
-          if (!data) {
-            data = new ScrollSpy(this, _config);
-            $$$1(this).data(DATA_KEY, data);
-          }
-
-          if (typeof config === 'string') {
-            if (typeof data[config] === 'undefined') {
-              throw new TypeError("No method named \"" + config + "\"");
-            }
-
-            data[config]();
-          }
-        });
-      };
-
-      _createClass(ScrollSpy, null, [{
-        key: "VERSION",
-        get: function get() {
-          return VERSION;
-        }
-      }, {
-        key: "Default",
-        get: function get() {
-          return Default;
-        }
-      }]);
-
-      return ScrollSpy;
-    }();
-    /**
-     * ------------------------------------------------------------------------
-     * Data Api implementation
-     * ------------------------------------------------------------------------
-     */
-
-
-    $$$1(window).on(Event.LOAD_DATA_API, function () {
-      var scrollSpys = [].slice.call(document.querySelectorAll(Selector.DATA_SPY));
-      var scrollSpysLength = scrollSpys.length;
-
-      for (var i = scrollSpysLength; i--;) {
-        var $spy = $$$1(scrollSpys[i]);
-
-        ScrollSpy._jQueryInterface.call($spy, $spy.data());
-      }
-    });
-    /**
-     * ------------------------------------------------------------------------
-     * jQuery
-     * ------------------------------------------------------------------------
-     */
-
-    $$$1.fn[NAME] = ScrollSpy._jQueryInterface;
-    $$$1.fn[NAME].Constructor = ScrollSpy;
-
-    $$$1.fn[NAME].noConflict = function () {
-      $$$1.fn[NAME] = JQUERY_NO_CONFLICT;
-      return ScrollSpy._jQueryInterface;
-    };
-
-    return ScrollSpy;
-  }($);
-
-  /**
-   * --------------------------------------------------------------------------
-   * Bootstrap (v4.1.3): tab.js
-   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
-   * --------------------------------------------------------------------------
-   */
-
-  var Tab = function ($$$1) {
-    /**
-     * ------------------------------------------------------------------------
-     * Constants
-     * ------------------------------------------------------------------------
-     */
-    var NAME = 'tab';
-    var VERSION = '4.1.3';
-    var DATA_KEY = 'bs.tab';
-    var EVENT_KEY = "." + DATA_KEY;
-    var DATA_API_KEY = '.data-api';
-    var JQUERY_NO_CONFLICT = $$$1.fn[NAME];
-    var Event = {
-      HIDE: "hide" + EVENT_KEY,
-      HIDDEN: "hidden" + EVENT_KEY,
-      SHOW: "show" + EVENT_KEY,
-      SHOWN: "shown" + EVENT_KEY,
-      CLICK_DATA_API: "click" + EVENT_KEY + DATA_API_KEY
-    };
-    var ClassName = {
-      DROPDOWN_MENU: 'dropdown-menu',
-      ACTIVE: 'active',
-      DISABLED: 'disabled',
-      FADE: 'fade',
-      SHOW: 'show'
-    };
-    var Selector = {
-      DROPDOWN: '.dropdown',
-      NAV_LIST_GROUP: '.nav, .list-group',
-      ACTIVE: '.active',
-      ACTIVE_UL: '> li > .active',
-      DATA_TOGGLE: '[data-toggle="tab"], [data-toggle="pill"], [data-toggle="list"]',
-      DROPDOWN_TOGGLE: '.dropdown-toggle',
-      DROPDOWN_ACTIVE_CHILD: '> .dropdown-menu .active'
-      /**
-       * ------------------------------------------------------------------------
-       * Class Definition
-       * ------------------------------------------------------------------------
-       */
-
-    };
-
-    var Tab =
-    /*#__PURE__*/
-    function () {
-      function Tab(element) {
-        this._element = element;
-      } // Getters
-
-
-      var _proto = Tab.prototype;
-
-      // Public
-      _proto.show = function show() {
-        var _this = this;
-
-        if (this._element.parentNode && this._element.parentNode.nodeType === Node.ELEMENT_NODE && $$$1(this._element).hasClass(ClassName.ACTIVE) || $$$1(this._element).hasClass(ClassName.DISABLED)) {
-          return;
-        }
-
-        var target;
-        var previous;
-        var listElement = $$$1(this._element).closest(Selector.NAV_LIST_GROUP)[0];
-        var selector = Util.getSelectorFromElement(this._element);
-
-        if (listElement) {
-          var itemSelector = listElement.nodeName === 'UL' ? Selector.ACTIVE_UL : Selector.ACTIVE;
-          previous = $$$1.makeArray($$$1(listElement).find(itemSelector));
-          previous = previous[previous.length - 1];
-        }
-
-        var hideEvent = $$$1.Event(Event.HIDE, {
-          relatedTarget: this._element
-        });
-        var showEvent = $$$1.Event(Event.SHOW, {
-          relatedTarget: previous
-        });
-
-        if (previous) {
-          $$$1(previous).trigger(hideEvent);
-        }
-
-        $$$1(this._element).trigger(showEvent);
-
-        if (showEvent.isDefaultPrevented() || hideEvent.isDefaultPrevented()) {
-          return;
-        }
-
-        if (selector) {
-          target = document.querySelector(selector);
-        }
-
-        this._activate(this._element, listElement);
 
         var complete = function complete() {
-          var hiddenEvent = $$$1.Event(Event.HIDDEN, {
-            relatedTarget: _this._element
-          });
-          var shownEvent = $$$1.Event(Event.SHOWN, {
-            relatedTarget: previous
-          });
-          $$$1(previous).trigger(hiddenEvent);
-          $$$1(_this._element).trigger(shownEvent);
+          if (_this.config.animation) {
+            _this._fixTransition();
+          }
+
+          var prevHoverState = _this._hoverState;
+          _this._hoverState = null;
+          $(_this.element).trigger(_this.constructor.Event.SHOWN);
+
+          if (prevHoverState === HoverState.OUT) {
+            _this._leave(null, _this);
+          }
         };
 
-        if (target) {
-          this._activate(target, target.parentNode, complete);
+        if ($(this.tip).hasClass(ClassName$6.FADE)) {
+          var transitionDuration = Util.getTransitionDurationFromElement(this.tip);
+          $(this.tip).one(Util.TRANSITION_END, complete).emulateTransitionEnd(transitionDuration);
         } else {
           complete();
         }
-      };
+      }
+    };
 
-      _proto.dispose = function dispose() {
-        $$$1.removeData(this._element, DATA_KEY);
-        this._element = null;
-      }; // Private
+    _proto.hide = function hide(callback) {
+      var _this2 = this;
 
+      var tip = this.getTipElement();
+      var hideEvent = $.Event(this.constructor.Event.HIDE);
 
-      _proto._activate = function _activate(element, container, callback) {
-        var _this2 = this;
-
-        var activeElements;
-
-        if (container.nodeName === 'UL') {
-          activeElements = $$$1(container).find(Selector.ACTIVE_UL);
-        } else {
-          activeElements = $$$1(container).children(Selector.ACTIVE);
+      var complete = function complete() {
+        if (_this2._hoverState !== HoverState.SHOW && tip.parentNode) {
+          tip.parentNode.removeChild(tip);
         }
 
-        var active = activeElements[0];
-        var isTransitioning = callback && active && $$$1(active).hasClass(ClassName.FADE);
+        _this2._cleanTipClass();
 
-        var complete = function complete() {
-          return _this2._transitionComplete(element, active, callback);
-        };
+        _this2.element.removeAttribute('aria-describedby');
 
-        if (active && isTransitioning) {
-          var transitionDuration = Util.getTransitionDurationFromElement(active);
-          $$$1(active).one(Util.TRANSITION_END, complete).emulateTransitionEnd(transitionDuration);
-        } else {
-          complete();
-        }
-      };
+        $(_this2.element).trigger(_this2.constructor.Event.HIDDEN);
 
-      _proto._transitionComplete = function _transitionComplete(element, active, callback) {
-        if (active) {
-          $$$1(active).removeClass(ClassName.SHOW + " " + ClassName.ACTIVE);
-          var dropdownChild = $$$1(active.parentNode).find(Selector.DROPDOWN_ACTIVE_CHILD)[0];
-
-          if (dropdownChild) {
-            $$$1(dropdownChild).removeClass(ClassName.ACTIVE);
-          }
-
-          if (active.getAttribute('role') === 'tab') {
-            active.setAttribute('aria-selected', false);
-          }
-        }
-
-        $$$1(element).addClass(ClassName.ACTIVE);
-
-        if (element.getAttribute('role') === 'tab') {
-          element.setAttribute('aria-selected', true);
-        }
-
-        Util.reflow(element);
-        $$$1(element).addClass(ClassName.SHOW);
-
-        if (element.parentNode && $$$1(element.parentNode).hasClass(ClassName.DROPDOWN_MENU)) {
-          var dropdownElement = $$$1(element).closest(Selector.DROPDOWN)[0];
-
-          if (dropdownElement) {
-            var dropdownToggleList = [].slice.call(dropdownElement.querySelectorAll(Selector.DROPDOWN_TOGGLE));
-            $$$1(dropdownToggleList).addClass(ClassName.ACTIVE);
-          }
-
-          element.setAttribute('aria-expanded', true);
+        if (_this2._popper !== null) {
+          _this2._popper.destroy();
         }
 
         if (callback) {
           callback();
         }
-      }; // Static
-
-
-      Tab._jQueryInterface = function _jQueryInterface(config) {
-        return this.each(function () {
-          var $this = $$$1(this);
-          var data = $this.data(DATA_KEY);
-
-          if (!data) {
-            data = new Tab(this);
-            $this.data(DATA_KEY, data);
-          }
-
-          if (typeof config === 'string') {
-            if (typeof data[config] === 'undefined') {
-              throw new TypeError("No method named \"" + config + "\"");
-            }
-
-            data[config]();
-          }
-        });
       };
 
-      _createClass(Tab, null, [{
-        key: "VERSION",
-        get: function get() {
-          return VERSION;
-        }
-      }]);
+      $(this.element).trigger(hideEvent);
 
-      return Tab;
-    }();
-    /**
-     * ------------------------------------------------------------------------
-     * Data Api implementation
-     * ------------------------------------------------------------------------
-     */
+      if (hideEvent.isDefaultPrevented()) {
+        return;
+      }
 
+      $(tip).removeClass(ClassName$6.SHOW); // If this is a touch-enabled device we remove the extra
+      // empty mouseover listeners we added for iOS support
 
-    $$$1(document).on(Event.CLICK_DATA_API, Selector.DATA_TOGGLE, function (event) {
-      event.preventDefault();
+      if ('ontouchstart' in document.documentElement) {
+        $(document.body).children().off('mouseover', null, $.noop);
+      }
 
-      Tab._jQueryInterface.call($$$1(this), 'show');
-    });
-    /**
-     * ------------------------------------------------------------------------
-     * jQuery
-     * ------------------------------------------------------------------------
-     */
+      this._activeTrigger[Trigger.CLICK] = false;
+      this._activeTrigger[Trigger.FOCUS] = false;
+      this._activeTrigger[Trigger.HOVER] = false;
 
-    $$$1.fn[NAME] = Tab._jQueryInterface;
-    $$$1.fn[NAME].Constructor = Tab;
+      if ($(this.tip).hasClass(ClassName$6.FADE)) {
+        var transitionDuration = Util.getTransitionDurationFromElement(tip);
+        $(tip).one(Util.TRANSITION_END, complete).emulateTransitionEnd(transitionDuration);
+      } else {
+        complete();
+      }
 
-    $$$1.fn[NAME].noConflict = function () {
-      $$$1.fn[NAME] = JQUERY_NO_CONFLICT;
-      return Tab._jQueryInterface;
+      this._hoverState = '';
     };
 
+    _proto.update = function update() {
+      if (this._popper !== null) {
+        this._popper.scheduleUpdate();
+      }
+    }; // Protected
+
+
+    _proto.isWithContent = function isWithContent() {
+      return Boolean(this.getTitle());
+    };
+
+    _proto.addAttachmentClass = function addAttachmentClass(attachment) {
+      $(this.getTipElement()).addClass(CLASS_PREFIX + "-" + attachment);
+    };
+
+    _proto.getTipElement = function getTipElement() {
+      this.tip = this.tip || $(this.config.template)[0];
+      return this.tip;
+    };
+
+    _proto.setContent = function setContent() {
+      var tip = this.getTipElement();
+      this.setElementContent($(tip.querySelectorAll(Selector$6.TOOLTIP_INNER)), this.getTitle());
+      $(tip).removeClass(ClassName$6.FADE + " " + ClassName$6.SHOW);
+    };
+
+    _proto.setElementContent = function setElementContent($element, content) {
+      var html = this.config.html;
+
+      if (typeof content === 'object' && (content.nodeType || content.jquery)) {
+        // Content is a DOM node or a jQuery
+        if (html) {
+          if (!$(content).parent().is($element)) {
+            $element.empty().append(content);
+          }
+        } else {
+          $element.text($(content).text());
+        }
+      } else {
+        $element[html ? 'html' : 'text'](content);
+      }
+    };
+
+    _proto.getTitle = function getTitle() {
+      var title = this.element.getAttribute('data-original-title');
+
+      if (!title) {
+        title = typeof this.config.title === 'function' ? this.config.title.call(this.element) : this.config.title;
+      }
+
+      return title;
+    }; // Private
+
+
+    _proto._getContainer = function _getContainer() {
+      if (this.config.container === false) {
+        return document.body;
+      }
+
+      if (Util.isElement(this.config.container)) {
+        return $(this.config.container);
+      }
+
+      return $(document).find(this.config.container);
+    };
+
+    _proto._getAttachment = function _getAttachment(placement) {
+      return AttachmentMap$1[placement.toUpperCase()];
+    };
+
+    _proto._setListeners = function _setListeners() {
+      var _this3 = this;
+
+      var triggers = this.config.trigger.split(' ');
+      triggers.forEach(function (trigger) {
+        if (trigger === 'click') {
+          $(_this3.element).on(_this3.constructor.Event.CLICK, _this3.config.selector, function (event) {
+            return _this3.toggle(event);
+          });
+        } else if (trigger !== Trigger.MANUAL) {
+          var eventIn = trigger === Trigger.HOVER ? _this3.constructor.Event.MOUSEENTER : _this3.constructor.Event.FOCUSIN;
+          var eventOut = trigger === Trigger.HOVER ? _this3.constructor.Event.MOUSELEAVE : _this3.constructor.Event.FOCUSOUT;
+          $(_this3.element).on(eventIn, _this3.config.selector, function (event) {
+            return _this3._enter(event);
+          }).on(eventOut, _this3.config.selector, function (event) {
+            return _this3._leave(event);
+          });
+        }
+      });
+      $(this.element).closest('.modal').on('hide.bs.modal', function () {
+        if (_this3.element) {
+          _this3.hide();
+        }
+      });
+
+      if (this.config.selector) {
+        this.config = _objectSpread({}, this.config, {
+          trigger: 'manual',
+          selector: ''
+        });
+      } else {
+        this._fixTitle();
+      }
+    };
+
+    _proto._fixTitle = function _fixTitle() {
+      var titleType = typeof this.element.getAttribute('data-original-title');
+
+      if (this.element.getAttribute('title') || titleType !== 'string') {
+        this.element.setAttribute('data-original-title', this.element.getAttribute('title') || '');
+        this.element.setAttribute('title', '');
+      }
+    };
+
+    _proto._enter = function _enter(event, context) {
+      var dataKey = this.constructor.DATA_KEY;
+      context = context || $(event.currentTarget).data(dataKey);
+
+      if (!context) {
+        context = new this.constructor(event.currentTarget, this._getDelegateConfig());
+        $(event.currentTarget).data(dataKey, context);
+      }
+
+      if (event) {
+        context._activeTrigger[event.type === 'focusin' ? Trigger.FOCUS : Trigger.HOVER] = true;
+      }
+
+      if ($(context.getTipElement()).hasClass(ClassName$6.SHOW) || context._hoverState === HoverState.SHOW) {
+        context._hoverState = HoverState.SHOW;
+        return;
+      }
+
+      clearTimeout(context._timeout);
+      context._hoverState = HoverState.SHOW;
+
+      if (!context.config.delay || !context.config.delay.show) {
+        context.show();
+        return;
+      }
+
+      context._timeout = setTimeout(function () {
+        if (context._hoverState === HoverState.SHOW) {
+          context.show();
+        }
+      }, context.config.delay.show);
+    };
+
+    _proto._leave = function _leave(event, context) {
+      var dataKey = this.constructor.DATA_KEY;
+      context = context || $(event.currentTarget).data(dataKey);
+
+      if (!context) {
+        context = new this.constructor(event.currentTarget, this._getDelegateConfig());
+        $(event.currentTarget).data(dataKey, context);
+      }
+
+      if (event) {
+        context._activeTrigger[event.type === 'focusout' ? Trigger.FOCUS : Trigger.HOVER] = false;
+      }
+
+      if (context._isWithActiveTrigger()) {
+        return;
+      }
+
+      clearTimeout(context._timeout);
+      context._hoverState = HoverState.OUT;
+
+      if (!context.config.delay || !context.config.delay.hide) {
+        context.hide();
+        return;
+      }
+
+      context._timeout = setTimeout(function () {
+        if (context._hoverState === HoverState.OUT) {
+          context.hide();
+        }
+      }, context.config.delay.hide);
+    };
+
+    _proto._isWithActiveTrigger = function _isWithActiveTrigger() {
+      for (var trigger in this._activeTrigger) {
+        if (this._activeTrigger[trigger]) {
+          return true;
+        }
+      }
+
+      return false;
+    };
+
+    _proto._getConfig = function _getConfig(config) {
+      config = _objectSpread({}, this.constructor.Default, $(this.element).data(), typeof config === 'object' && config ? config : {});
+
+      if (typeof config.delay === 'number') {
+        config.delay = {
+          show: config.delay,
+          hide: config.delay
+        };
+      }
+
+      if (typeof config.title === 'number') {
+        config.title = config.title.toString();
+      }
+
+      if (typeof config.content === 'number') {
+        config.content = config.content.toString();
+      }
+
+      Util.typeCheckConfig(NAME$6, config, this.constructor.DefaultType);
+      return config;
+    };
+
+    _proto._getDelegateConfig = function _getDelegateConfig() {
+      var config = {};
+
+      if (this.config) {
+        for (var key in this.config) {
+          if (this.constructor.Default[key] !== this.config[key]) {
+            config[key] = this.config[key];
+          }
+        }
+      }
+
+      return config;
+    };
+
+    _proto._cleanTipClass = function _cleanTipClass() {
+      var $tip = $(this.getTipElement());
+      var tabClass = $tip.attr('class').match(BSCLS_PREFIX_REGEX);
+
+      if (tabClass !== null && tabClass.length) {
+        $tip.removeClass(tabClass.join(''));
+      }
+    };
+
+    _proto._handlePopperPlacementChange = function _handlePopperPlacementChange(popperData) {
+      var popperInstance = popperData.instance;
+      this.tip = popperInstance.popper;
+
+      this._cleanTipClass();
+
+      this.addAttachmentClass(this._getAttachment(popperData.placement));
+    };
+
+    _proto._fixTransition = function _fixTransition() {
+      var tip = this.getTipElement();
+      var initConfigAnimation = this.config.animation;
+
+      if (tip.getAttribute('x-placement') !== null) {
+        return;
+      }
+
+      $(tip).removeClass(ClassName$6.FADE);
+      this.config.animation = false;
+      this.hide();
+      this.show();
+      this.config.animation = initConfigAnimation;
+    }; // Static
+
+
+    Tooltip._jQueryInterface = function _jQueryInterface(config) {
+      return this.each(function () {
+        var data = $(this).data(DATA_KEY$6);
+
+        var _config = typeof config === 'object' && config;
+
+        if (!data && /dispose|hide/.test(config)) {
+          return;
+        }
+
+        if (!data) {
+          data = new Tooltip(this, _config);
+          $(this).data(DATA_KEY$6, data);
+        }
+
+        if (typeof config === 'string') {
+          if (typeof data[config] === 'undefined') {
+            throw new TypeError("No method named \"" + config + "\"");
+          }
+
+          data[config]();
+        }
+      });
+    };
+
+    _createClass(Tooltip, null, [{
+      key: "VERSION",
+      get: function get() {
+        return VERSION$6;
+      }
+    }, {
+      key: "Default",
+      get: function get() {
+        return Default$4;
+      }
+    }, {
+      key: "NAME",
+      get: function get() {
+        return NAME$6;
+      }
+    }, {
+      key: "DATA_KEY",
+      get: function get() {
+        return DATA_KEY$6;
+      }
+    }, {
+      key: "Event",
+      get: function get() {
+        return Event$6;
+      }
+    }, {
+      key: "EVENT_KEY",
+      get: function get() {
+        return EVENT_KEY$6;
+      }
+    }, {
+      key: "DefaultType",
+      get: function get() {
+        return DefaultType$4;
+      }
+    }]);
+
+    return Tooltip;
+  }();
+  /**
+   * ------------------------------------------------------------------------
+   * jQuery
+   * ------------------------------------------------------------------------
+   */
+
+
+  $.fn[NAME$6] = Tooltip._jQueryInterface;
+  $.fn[NAME$6].Constructor = Tooltip;
+
+  $.fn[NAME$6].noConflict = function () {
+    $.fn[NAME$6] = JQUERY_NO_CONFLICT$6;
+    return Tooltip._jQueryInterface;
+  };
+
+  /**
+   * ------------------------------------------------------------------------
+   * Constants
+   * ------------------------------------------------------------------------
+   */
+
+  var NAME$7 = 'popover';
+  var VERSION$7 = '4.2.1';
+  var DATA_KEY$7 = 'bs.popover';
+  var EVENT_KEY$7 = "." + DATA_KEY$7;
+  var JQUERY_NO_CONFLICT$7 = $.fn[NAME$7];
+  var CLASS_PREFIX$1 = 'bs-popover';
+  var BSCLS_PREFIX_REGEX$1 = new RegExp("(^|\\s)" + CLASS_PREFIX$1 + "\\S+", 'g');
+
+  var Default$5 = _objectSpread({}, Tooltip.Default, {
+    placement: 'right',
+    trigger: 'click',
+    content: '',
+    template: '<div class="popover" role="tooltip">' + '<div class="arrow"></div>' + '<h3 class="popover-header"></h3>' + '<div class="popover-body"></div></div>'
+  });
+
+  var DefaultType$5 = _objectSpread({}, Tooltip.DefaultType, {
+    content: '(string|element|function)'
+  });
+
+  var ClassName$7 = {
+    FADE: 'fade',
+    SHOW: 'show'
+  };
+  var Selector$7 = {
+    TITLE: '.popover-header',
+    CONTENT: '.popover-body'
+  };
+  var Event$7 = {
+    HIDE: "hide" + EVENT_KEY$7,
+    HIDDEN: "hidden" + EVENT_KEY$7,
+    SHOW: "show" + EVENT_KEY$7,
+    SHOWN: "shown" + EVENT_KEY$7,
+    INSERTED: "inserted" + EVENT_KEY$7,
+    CLICK: "click" + EVENT_KEY$7,
+    FOCUSIN: "focusin" + EVENT_KEY$7,
+    FOCUSOUT: "focusout" + EVENT_KEY$7,
+    MOUSEENTER: "mouseenter" + EVENT_KEY$7,
+    MOUSELEAVE: "mouseleave" + EVENT_KEY$7
+    /**
+     * ------------------------------------------------------------------------
+     * Class Definition
+     * ------------------------------------------------------------------------
+     */
+
+  };
+
+  var Popover =
+  /*#__PURE__*/
+  function (_Tooltip) {
+    _inheritsLoose(Popover, _Tooltip);
+
+    function Popover() {
+      return _Tooltip.apply(this, arguments) || this;
+    }
+
+    var _proto = Popover.prototype;
+
+    // Overrides
+    _proto.isWithContent = function isWithContent() {
+      return this.getTitle() || this._getContent();
+    };
+
+    _proto.addAttachmentClass = function addAttachmentClass(attachment) {
+      $(this.getTipElement()).addClass(CLASS_PREFIX$1 + "-" + attachment);
+    };
+
+    _proto.getTipElement = function getTipElement() {
+      this.tip = this.tip || $(this.config.template)[0];
+      return this.tip;
+    };
+
+    _proto.setContent = function setContent() {
+      var $tip = $(this.getTipElement()); // We use append for html objects to maintain js events
+
+      this.setElementContent($tip.find(Selector$7.TITLE), this.getTitle());
+
+      var content = this._getContent();
+
+      if (typeof content === 'function') {
+        content = content.call(this.element);
+      }
+
+      this.setElementContent($tip.find(Selector$7.CONTENT), content);
+      $tip.removeClass(ClassName$7.FADE + " " + ClassName$7.SHOW);
+    }; // Private
+
+
+    _proto._getContent = function _getContent() {
+      return this.element.getAttribute('data-content') || this.config.content;
+    };
+
+    _proto._cleanTipClass = function _cleanTipClass() {
+      var $tip = $(this.getTipElement());
+      var tabClass = $tip.attr('class').match(BSCLS_PREFIX_REGEX$1);
+
+      if (tabClass !== null && tabClass.length > 0) {
+        $tip.removeClass(tabClass.join(''));
+      }
+    }; // Static
+
+
+    Popover._jQueryInterface = function _jQueryInterface(config) {
+      return this.each(function () {
+        var data = $(this).data(DATA_KEY$7);
+
+        var _config = typeof config === 'object' ? config : null;
+
+        if (!data && /dispose|hide/.test(config)) {
+          return;
+        }
+
+        if (!data) {
+          data = new Popover(this, _config);
+          $(this).data(DATA_KEY$7, data);
+        }
+
+        if (typeof config === 'string') {
+          if (typeof data[config] === 'undefined') {
+            throw new TypeError("No method named \"" + config + "\"");
+          }
+
+          data[config]();
+        }
+      });
+    };
+
+    _createClass(Popover, null, [{
+      key: "VERSION",
+      // Getters
+      get: function get() {
+        return VERSION$7;
+      }
+    }, {
+      key: "Default",
+      get: function get() {
+        return Default$5;
+      }
+    }, {
+      key: "NAME",
+      get: function get() {
+        return NAME$7;
+      }
+    }, {
+      key: "DATA_KEY",
+      get: function get() {
+        return DATA_KEY$7;
+      }
+    }, {
+      key: "Event",
+      get: function get() {
+        return Event$7;
+      }
+    }, {
+      key: "EVENT_KEY",
+      get: function get() {
+        return EVENT_KEY$7;
+      }
+    }, {
+      key: "DefaultType",
+      get: function get() {
+        return DefaultType$5;
+      }
+    }]);
+
+    return Popover;
+  }(Tooltip);
+  /**
+   * ------------------------------------------------------------------------
+   * jQuery
+   * ------------------------------------------------------------------------
+   */
+
+
+  $.fn[NAME$7] = Popover._jQueryInterface;
+  $.fn[NAME$7].Constructor = Popover;
+
+  $.fn[NAME$7].noConflict = function () {
+    $.fn[NAME$7] = JQUERY_NO_CONFLICT$7;
+    return Popover._jQueryInterface;
+  };
+
+  /**
+   * ------------------------------------------------------------------------
+   * Constants
+   * ------------------------------------------------------------------------
+   */
+
+  var NAME$8 = 'scrollspy';
+  var VERSION$8 = '4.2.1';
+  var DATA_KEY$8 = 'bs.scrollspy';
+  var EVENT_KEY$8 = "." + DATA_KEY$8;
+  var DATA_API_KEY$6 = '.data-api';
+  var JQUERY_NO_CONFLICT$8 = $.fn[NAME$8];
+  var Default$6 = {
+    offset: 10,
+    method: 'auto',
+    target: ''
+  };
+  var DefaultType$6 = {
+    offset: 'number',
+    method: 'string',
+    target: '(string|element)'
+  };
+  var Event$8 = {
+    ACTIVATE: "activate" + EVENT_KEY$8,
+    SCROLL: "scroll" + EVENT_KEY$8,
+    LOAD_DATA_API: "load" + EVENT_KEY$8 + DATA_API_KEY$6
+  };
+  var ClassName$8 = {
+    DROPDOWN_ITEM: 'dropdown-item',
+    DROPDOWN_MENU: 'dropdown-menu',
+    ACTIVE: 'active'
+  };
+  var Selector$8 = {
+    DATA_SPY: '[data-spy="scroll"]',
+    ACTIVE: '.active',
+    NAV_LIST_GROUP: '.nav, .list-group',
+    NAV_LINKS: '.nav-link',
+    NAV_ITEMS: '.nav-item',
+    LIST_ITEMS: '.list-group-item',
+    DROPDOWN: '.dropdown',
+    DROPDOWN_ITEMS: '.dropdown-item',
+    DROPDOWN_TOGGLE: '.dropdown-toggle'
+  };
+  var OffsetMethod = {
+    OFFSET: 'offset',
+    POSITION: 'position'
+    /**
+     * ------------------------------------------------------------------------
+     * Class Definition
+     * ------------------------------------------------------------------------
+     */
+
+  };
+
+  var ScrollSpy =
+  /*#__PURE__*/
+  function () {
+    function ScrollSpy(element, config) {
+      var _this = this;
+
+      this._element = element;
+      this._scrollElement = element.tagName === 'BODY' ? window : element;
+      this._config = this._getConfig(config);
+      this._selector = this._config.target + " " + Selector$8.NAV_LINKS + "," + (this._config.target + " " + Selector$8.LIST_ITEMS + ",") + (this._config.target + " " + Selector$8.DROPDOWN_ITEMS);
+      this._offsets = [];
+      this._targets = [];
+      this._activeTarget = null;
+      this._scrollHeight = 0;
+      $(this._scrollElement).on(Event$8.SCROLL, function (event) {
+        return _this._process(event);
+      });
+      this.refresh();
+
+      this._process();
+    } // Getters
+
+
+    var _proto = ScrollSpy.prototype;
+
+    // Public
+    _proto.refresh = function refresh() {
+      var _this2 = this;
+
+      var autoMethod = this._scrollElement === this._scrollElement.window ? OffsetMethod.OFFSET : OffsetMethod.POSITION;
+      var offsetMethod = this._config.method === 'auto' ? autoMethod : this._config.method;
+      var offsetBase = offsetMethod === OffsetMethod.POSITION ? this._getScrollTop() : 0;
+      this._offsets = [];
+      this._targets = [];
+      this._scrollHeight = this._getScrollHeight();
+      var targets = [].slice.call(document.querySelectorAll(this._selector));
+      targets.map(function (element) {
+        var target;
+        var targetSelector = Util.getSelectorFromElement(element);
+
+        if (targetSelector) {
+          target = document.querySelector(targetSelector);
+        }
+
+        if (target) {
+          var targetBCR = target.getBoundingClientRect();
+
+          if (targetBCR.width || targetBCR.height) {
+            // TODO (fat): remove sketch reliance on jQuery position/offset
+            return [$(target)[offsetMethod]().top + offsetBase, targetSelector];
+          }
+        }
+
+        return null;
+      }).filter(function (item) {
+        return item;
+      }).sort(function (a, b) {
+        return a[0] - b[0];
+      }).forEach(function (item) {
+        _this2._offsets.push(item[0]);
+
+        _this2._targets.push(item[1]);
+      });
+    };
+
+    _proto.dispose = function dispose() {
+      $.removeData(this._element, DATA_KEY$8);
+      $(this._scrollElement).off(EVENT_KEY$8);
+      this._element = null;
+      this._scrollElement = null;
+      this._config = null;
+      this._selector = null;
+      this._offsets = null;
+      this._targets = null;
+      this._activeTarget = null;
+      this._scrollHeight = null;
+    }; // Private
+
+
+    _proto._getConfig = function _getConfig(config) {
+      config = _objectSpread({}, Default$6, typeof config === 'object' && config ? config : {});
+
+      if (typeof config.target !== 'string') {
+        var id = $(config.target).attr('id');
+
+        if (!id) {
+          id = Util.getUID(NAME$8);
+          $(config.target).attr('id', id);
+        }
+
+        config.target = "#" + id;
+      }
+
+      Util.typeCheckConfig(NAME$8, config, DefaultType$6);
+      return config;
+    };
+
+    _proto._getScrollTop = function _getScrollTop() {
+      return this._scrollElement === window ? this._scrollElement.pageYOffset : this._scrollElement.scrollTop;
+    };
+
+    _proto._getScrollHeight = function _getScrollHeight() {
+      return this._scrollElement.scrollHeight || Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    };
+
+    _proto._getOffsetHeight = function _getOffsetHeight() {
+      return this._scrollElement === window ? window.innerHeight : this._scrollElement.getBoundingClientRect().height;
+    };
+
+    _proto._process = function _process() {
+      var scrollTop = this._getScrollTop() + this._config.offset;
+
+      var scrollHeight = this._getScrollHeight();
+
+      var maxScroll = this._config.offset + scrollHeight - this._getOffsetHeight();
+
+      if (this._scrollHeight !== scrollHeight) {
+        this.refresh();
+      }
+
+      if (scrollTop >= maxScroll) {
+        var target = this._targets[this._targets.length - 1];
+
+        if (this._activeTarget !== target) {
+          this._activate(target);
+        }
+
+        return;
+      }
+
+      if (this._activeTarget && scrollTop < this._offsets[0] && this._offsets[0] > 0) {
+        this._activeTarget = null;
+
+        this._clear();
+
+        return;
+      }
+
+      var offsetLength = this._offsets.length;
+
+      for (var i = offsetLength; i--;) {
+        var isActiveTarget = this._activeTarget !== this._targets[i] && scrollTop >= this._offsets[i] && (typeof this._offsets[i + 1] === 'undefined' || scrollTop < this._offsets[i + 1]);
+
+        if (isActiveTarget) {
+          this._activate(this._targets[i]);
+        }
+      }
+    };
+
+    _proto._activate = function _activate(target) {
+      this._activeTarget = target;
+
+      this._clear();
+
+      var queries = this._selector.split(',').map(function (selector) {
+        return selector + "[data-target=\"" + target + "\"]," + selector + "[href=\"" + target + "\"]";
+      });
+
+      var $link = $([].slice.call(document.querySelectorAll(queries.join(','))));
+
+      if ($link.hasClass(ClassName$8.DROPDOWN_ITEM)) {
+        $link.closest(Selector$8.DROPDOWN).find(Selector$8.DROPDOWN_TOGGLE).addClass(ClassName$8.ACTIVE);
+        $link.addClass(ClassName$8.ACTIVE);
+      } else {
+        // Set triggered link as active
+        $link.addClass(ClassName$8.ACTIVE); // Set triggered links parents as active
+        // With both <ul> and <nav> markup a parent is the previous sibling of any nav ancestor
+
+        $link.parents(Selector$8.NAV_LIST_GROUP).prev(Selector$8.NAV_LINKS + ", " + Selector$8.LIST_ITEMS).addClass(ClassName$8.ACTIVE); // Handle special case when .nav-link is inside .nav-item
+
+        $link.parents(Selector$8.NAV_LIST_GROUP).prev(Selector$8.NAV_ITEMS).children(Selector$8.NAV_LINKS).addClass(ClassName$8.ACTIVE);
+      }
+
+      $(this._scrollElement).trigger(Event$8.ACTIVATE, {
+        relatedTarget: target
+      });
+    };
+
+    _proto._clear = function _clear() {
+      [].slice.call(document.querySelectorAll(this._selector)).filter(function (node) {
+        return node.classList.contains(ClassName$8.ACTIVE);
+      }).forEach(function (node) {
+        return node.classList.remove(ClassName$8.ACTIVE);
+      });
+    }; // Static
+
+
+    ScrollSpy._jQueryInterface = function _jQueryInterface(config) {
+      return this.each(function () {
+        var data = $(this).data(DATA_KEY$8);
+
+        var _config = typeof config === 'object' && config;
+
+        if (!data) {
+          data = new ScrollSpy(this, _config);
+          $(this).data(DATA_KEY$8, data);
+        }
+
+        if (typeof config === 'string') {
+          if (typeof data[config] === 'undefined') {
+            throw new TypeError("No method named \"" + config + "\"");
+          }
+
+          data[config]();
+        }
+      });
+    };
+
+    _createClass(ScrollSpy, null, [{
+      key: "VERSION",
+      get: function get() {
+        return VERSION$8;
+      }
+    }, {
+      key: "Default",
+      get: function get() {
+        return Default$6;
+      }
+    }]);
+
+    return ScrollSpy;
+  }();
+  /**
+   * ------------------------------------------------------------------------
+   * Data Api implementation
+   * ------------------------------------------------------------------------
+   */
+
+
+  $(window).on(Event$8.LOAD_DATA_API, function () {
+    var scrollSpys = [].slice.call(document.querySelectorAll(Selector$8.DATA_SPY));
+    var scrollSpysLength = scrollSpys.length;
+
+    for (var i = scrollSpysLength; i--;) {
+      var $spy = $(scrollSpys[i]);
+
+      ScrollSpy._jQueryInterface.call($spy, $spy.data());
+    }
+  });
+  /**
+   * ------------------------------------------------------------------------
+   * jQuery
+   * ------------------------------------------------------------------------
+   */
+
+  $.fn[NAME$8] = ScrollSpy._jQueryInterface;
+  $.fn[NAME$8].Constructor = ScrollSpy;
+
+  $.fn[NAME$8].noConflict = function () {
+    $.fn[NAME$8] = JQUERY_NO_CONFLICT$8;
+    return ScrollSpy._jQueryInterface;
+  };
+
+  /**
+   * ------------------------------------------------------------------------
+   * Constants
+   * ------------------------------------------------------------------------
+   */
+
+  var NAME$9 = 'tab';
+  var VERSION$9 = '4.2.1';
+  var DATA_KEY$9 = 'bs.tab';
+  var EVENT_KEY$9 = "." + DATA_KEY$9;
+  var DATA_API_KEY$7 = '.data-api';
+  var JQUERY_NO_CONFLICT$9 = $.fn[NAME$9];
+  var Event$9 = {
+    HIDE: "hide" + EVENT_KEY$9,
+    HIDDEN: "hidden" + EVENT_KEY$9,
+    SHOW: "show" + EVENT_KEY$9,
+    SHOWN: "shown" + EVENT_KEY$9,
+    CLICK_DATA_API: "click" + EVENT_KEY$9 + DATA_API_KEY$7
+  };
+  var ClassName$9 = {
+    DROPDOWN_MENU: 'dropdown-menu',
+    ACTIVE: 'active',
+    DISABLED: 'disabled',
+    FADE: 'fade',
+    SHOW: 'show'
+  };
+  var Selector$9 = {
+    DROPDOWN: '.dropdown',
+    NAV_LIST_GROUP: '.nav, .list-group',
+    ACTIVE: '.active',
+    ACTIVE_UL: '> li > .active',
+    DATA_TOGGLE: '[data-toggle="tab"], [data-toggle="pill"], [data-toggle="list"]',
+    DROPDOWN_TOGGLE: '.dropdown-toggle',
+    DROPDOWN_ACTIVE_CHILD: '> .dropdown-menu .active'
+    /**
+     * ------------------------------------------------------------------------
+     * Class Definition
+     * ------------------------------------------------------------------------
+     */
+
+  };
+
+  var Tab =
+  /*#__PURE__*/
+  function () {
+    function Tab(element) {
+      this._element = element;
+    } // Getters
+
+
+    var _proto = Tab.prototype;
+
+    // Public
+    _proto.show = function show() {
+      var _this = this;
+
+      if (this._element.parentNode && this._element.parentNode.nodeType === Node.ELEMENT_NODE && $(this._element).hasClass(ClassName$9.ACTIVE) || $(this._element).hasClass(ClassName$9.DISABLED)) {
+        return;
+      }
+
+      var target;
+      var previous;
+      var listElement = $(this._element).closest(Selector$9.NAV_LIST_GROUP)[0];
+      var selector = Util.getSelectorFromElement(this._element);
+
+      if (listElement) {
+        var itemSelector = listElement.nodeName === 'UL' || listElement.nodeName === 'OL' ? Selector$9.ACTIVE_UL : Selector$9.ACTIVE;
+        previous = $.makeArray($(listElement).find(itemSelector));
+        previous = previous[previous.length - 1];
+      }
+
+      var hideEvent = $.Event(Event$9.HIDE, {
+        relatedTarget: this._element
+      });
+      var showEvent = $.Event(Event$9.SHOW, {
+        relatedTarget: previous
+      });
+
+      if (previous) {
+        $(previous).trigger(hideEvent);
+      }
+
+      $(this._element).trigger(showEvent);
+
+      if (showEvent.isDefaultPrevented() || hideEvent.isDefaultPrevented()) {
+        return;
+      }
+
+      if (selector) {
+        target = document.querySelector(selector);
+      }
+
+      this._activate(this._element, listElement);
+
+      var complete = function complete() {
+        var hiddenEvent = $.Event(Event$9.HIDDEN, {
+          relatedTarget: _this._element
+        });
+        var shownEvent = $.Event(Event$9.SHOWN, {
+          relatedTarget: previous
+        });
+        $(previous).trigger(hiddenEvent);
+        $(_this._element).trigger(shownEvent);
+      };
+
+      if (target) {
+        this._activate(target, target.parentNode, complete);
+      } else {
+        complete();
+      }
+    };
+
+    _proto.dispose = function dispose() {
+      $.removeData(this._element, DATA_KEY$9);
+      this._element = null;
+    }; // Private
+
+
+    _proto._activate = function _activate(element, container, callback) {
+      var _this2 = this;
+
+      var activeElements = container && (container.nodeName === 'UL' || container.nodeName === 'OL') ? $(container).find(Selector$9.ACTIVE_UL) : $(container).children(Selector$9.ACTIVE);
+      var active = activeElements[0];
+      var isTransitioning = callback && active && $(active).hasClass(ClassName$9.FADE);
+
+      var complete = function complete() {
+        return _this2._transitionComplete(element, active, callback);
+      };
+
+      if (active && isTransitioning) {
+        var transitionDuration = Util.getTransitionDurationFromElement(active);
+        $(active).removeClass(ClassName$9.SHOW).one(Util.TRANSITION_END, complete).emulateTransitionEnd(transitionDuration);
+      } else {
+        complete();
+      }
+    };
+
+    _proto._transitionComplete = function _transitionComplete(element, active, callback) {
+      if (active) {
+        $(active).removeClass(ClassName$9.ACTIVE);
+        var dropdownChild = $(active.parentNode).find(Selector$9.DROPDOWN_ACTIVE_CHILD)[0];
+
+        if (dropdownChild) {
+          $(dropdownChild).removeClass(ClassName$9.ACTIVE);
+        }
+
+        if (active.getAttribute('role') === 'tab') {
+          active.setAttribute('aria-selected', false);
+        }
+      }
+
+      $(element).addClass(ClassName$9.ACTIVE);
+
+      if (element.getAttribute('role') === 'tab') {
+        element.setAttribute('aria-selected', true);
+      }
+
+      Util.reflow(element);
+      $(element).addClass(ClassName$9.SHOW);
+
+      if (element.parentNode && $(element.parentNode).hasClass(ClassName$9.DROPDOWN_MENU)) {
+        var dropdownElement = $(element).closest(Selector$9.DROPDOWN)[0];
+
+        if (dropdownElement) {
+          var dropdownToggleList = [].slice.call(dropdownElement.querySelectorAll(Selector$9.DROPDOWN_TOGGLE));
+          $(dropdownToggleList).addClass(ClassName$9.ACTIVE);
+        }
+
+        element.setAttribute('aria-expanded', true);
+      }
+
+      if (callback) {
+        callback();
+      }
+    }; // Static
+
+
+    Tab._jQueryInterface = function _jQueryInterface(config) {
+      return this.each(function () {
+        var $this = $(this);
+        var data = $this.data(DATA_KEY$9);
+
+        if (!data) {
+          data = new Tab(this);
+          $this.data(DATA_KEY$9, data);
+        }
+
+        if (typeof config === 'string') {
+          if (typeof data[config] === 'undefined') {
+            throw new TypeError("No method named \"" + config + "\"");
+          }
+
+          data[config]();
+        }
+      });
+    };
+
+    _createClass(Tab, null, [{
+      key: "VERSION",
+      get: function get() {
+        return VERSION$9;
+      }
+    }]);
+
     return Tab;
-  }($);
+  }();
+  /**
+   * ------------------------------------------------------------------------
+   * Data Api implementation
+   * ------------------------------------------------------------------------
+   */
+
+
+  $(document).on(Event$9.CLICK_DATA_API, Selector$9.DATA_TOGGLE, function (event) {
+    event.preventDefault();
+
+    Tab._jQueryInterface.call($(this), 'show');
+  });
+  /**
+   * ------------------------------------------------------------------------
+   * jQuery
+   * ------------------------------------------------------------------------
+   */
+
+  $.fn[NAME$9] = Tab._jQueryInterface;
+  $.fn[NAME$9].Constructor = Tab;
+
+  $.fn[NAME$9].noConflict = function () {
+    $.fn[NAME$9] = JQUERY_NO_CONFLICT$9;
+    return Tab._jQueryInterface;
+  };
+
+  /**
+   * ------------------------------------------------------------------------
+   * Constants
+   * ------------------------------------------------------------------------
+   */
+
+  var NAME$a = 'toast';
+  var VERSION$a = '4.2.1';
+  var DATA_KEY$a = 'bs.toast';
+  var EVENT_KEY$a = "." + DATA_KEY$a;
+  var JQUERY_NO_CONFLICT$a = $.fn[NAME$a];
+  var Event$a = {
+    CLICK_DISMISS: "click.dismiss" + EVENT_KEY$a,
+    HIDE: "hide" + EVENT_KEY$a,
+    HIDDEN: "hidden" + EVENT_KEY$a,
+    SHOW: "show" + EVENT_KEY$a,
+    SHOWN: "shown" + EVENT_KEY$a
+  };
+  var ClassName$a = {
+    FADE: 'fade',
+    HIDE: 'hide',
+    SHOW: 'show',
+    SHOWING: 'showing'
+  };
+  var DefaultType$7 = {
+    animation: 'boolean',
+    autohide: 'boolean',
+    delay: 'number'
+  };
+  var Default$7 = {
+    animation: true,
+    autohide: true,
+    delay: 500
+  };
+  var Selector$a = {
+    DATA_DISMISS: '[data-dismiss="toast"]'
+    /**
+     * ------------------------------------------------------------------------
+     * Class Definition
+     * ------------------------------------------------------------------------
+     */
+
+  };
+
+  var Toast =
+  /*#__PURE__*/
+  function () {
+    function Toast(element, config) {
+      this._element = element;
+      this._config = this._getConfig(config);
+      this._timeout = null;
+
+      this._setListeners();
+    } // Getters
+
+
+    var _proto = Toast.prototype;
+
+    // Public
+    _proto.show = function show() {
+      var _this = this;
+
+      $(this._element).trigger(Event$a.SHOW);
+
+      if (this._config.animation) {
+        this._element.classList.add(ClassName$a.FADE);
+      }
+
+      var complete = function complete() {
+        _this._element.classList.remove(ClassName$a.SHOWING);
+
+        _this._element.classList.add(ClassName$a.SHOW);
+
+        $(_this._element).trigger(Event$a.SHOWN);
+
+        if (_this._config.autohide) {
+          _this.hide();
+        }
+      };
+
+      this._element.classList.remove(ClassName$a.HIDE);
+
+      this._element.classList.add(ClassName$a.SHOWING);
+
+      if (this._config.animation) {
+        var transitionDuration = Util.getTransitionDurationFromElement(this._element);
+        $(this._element).one(Util.TRANSITION_END, complete).emulateTransitionEnd(transitionDuration);
+      } else {
+        complete();
+      }
+    };
+
+    _proto.hide = function hide(withoutTimeout) {
+      var _this2 = this;
+
+      if (!this._element.classList.contains(ClassName$a.SHOW)) {
+        return;
+      }
+
+      $(this._element).trigger(Event$a.HIDE);
+
+      if (withoutTimeout) {
+        this._close();
+      } else {
+        this._timeout = setTimeout(function () {
+          _this2._close();
+        }, this._config.delay);
+      }
+    };
+
+    _proto.dispose = function dispose() {
+      clearTimeout(this._timeout);
+      this._timeout = null;
+
+      if (this._element.classList.contains(ClassName$a.SHOW)) {
+        this._element.classList.remove(ClassName$a.SHOW);
+      }
+
+      $(this._element).off(Event$a.CLICK_DISMISS);
+      $.removeData(this._element, DATA_KEY$a);
+      this._element = null;
+      this._config = null;
+    }; // Private
+
+
+    _proto._getConfig = function _getConfig(config) {
+      config = _objectSpread({}, Default$7, $(this._element).data(), typeof config === 'object' && config ? config : {});
+      Util.typeCheckConfig(NAME$a, config, this.constructor.DefaultType);
+      return config;
+    };
+
+    _proto._setListeners = function _setListeners() {
+      var _this3 = this;
+
+      $(this._element).on(Event$a.CLICK_DISMISS, Selector$a.DATA_DISMISS, function () {
+        return _this3.hide(true);
+      });
+    };
+
+    _proto._close = function _close() {
+      var _this4 = this;
+
+      var complete = function complete() {
+        _this4._element.classList.add(ClassName$a.HIDE);
+
+        $(_this4._element).trigger(Event$a.HIDDEN);
+      };
+
+      this._element.classList.remove(ClassName$a.SHOW);
+
+      if (this._config.animation) {
+        var transitionDuration = Util.getTransitionDurationFromElement(this._element);
+        $(this._element).one(Util.TRANSITION_END, complete).emulateTransitionEnd(transitionDuration);
+      } else {
+        complete();
+      }
+    }; // Static
+
+
+    Toast._jQueryInterface = function _jQueryInterface(config) {
+      return this.each(function () {
+        var $element = $(this);
+        var data = $element.data(DATA_KEY$a);
+
+        var _config = typeof config === 'object' && config;
+
+        if (!data) {
+          data = new Toast(this, _config);
+          $element.data(DATA_KEY$a, data);
+        }
+
+        if (typeof config === 'string') {
+          if (typeof data[config] === 'undefined') {
+            throw new TypeError("No method named \"" + config + "\"");
+          }
+
+          data[config](this);
+        }
+      });
+    };
+
+    _createClass(Toast, null, [{
+      key: "VERSION",
+      get: function get() {
+        return VERSION$a;
+      }
+    }, {
+      key: "DefaultType",
+      get: function get() {
+        return DefaultType$7;
+      }
+    }]);
+
+    return Toast;
+  }();
+  /**
+   * ------------------------------------------------------------------------
+   * jQuery
+   * ------------------------------------------------------------------------
+   */
+
+
+  $.fn[NAME$a] = Toast._jQueryInterface;
+  $.fn[NAME$a].Constructor = Toast;
+
+  $.fn[NAME$a].noConflict = function () {
+    $.fn[NAME$a] = JQUERY_NO_CONFLICT$a;
+    return Toast._jQueryInterface;
+  };
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v4.1.3): index.js
+   * Bootstrap (v4.2.1): index.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
    * --------------------------------------------------------------------------
    */
 
-  (function ($$$1) {
-    if (typeof $$$1 === 'undefined') {
+  (function () {
+    if (typeof $ === 'undefined') {
       throw new TypeError('Bootstrap\'s JavaScript requires jQuery. jQuery must be included before Bootstrap\'s JavaScript.');
     }
 
-    var version = $$$1.fn.jquery.split(' ')[0].split('.');
+    var version = $.fn.jquery.split(' ')[0].split('.');
     var minMajor = 1;
     var ltMajor = 2;
     var minMinor = 9;
@@ -37075,7 +37417,7 @@ module.exports = function(module) {
     if (version[0] < ltMajor && version[1] < minMinor || version[0] === minMajor && version[1] === minMinor && version[2] < minPatch || version[0] >= maxMajor) {
       throw new Error('Bootstrap\'s JavaScript requires at least jQuery v1.9.1 but less than v4.0.0');
     }
-  })($);
+  })();
 
   exports.Util = Util;
   exports.Alert = Alert;
@@ -37087,6 +37429,7 @@ module.exports = function(module) {
   exports.Popover = Popover;
   exports.Scrollspy = ScrollSpy;
   exports.Tab = Tab;
+  exports.Toast = Toast;
   exports.Tooltip = Tooltip;
 
   Object.defineProperty(exports, '__esModule', { value: true });
@@ -40839,7 +41182,7 @@ module.exports = __webpack_require__(63);
 var utils = __webpack_require__(1);
 var bind = __webpack_require__(25);
 var Axios = __webpack_require__(65);
-var defaults = __webpack_require__(16);
+var defaults = __webpack_require__(17);
 
 /**
  * Create an instance of Axios
@@ -40922,7 +41265,7 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(16);
+var defaults = __webpack_require__(17);
 var utils = __webpack_require__(1);
 var InterceptorManager = __webpack_require__(75);
 var dispatchRequest = __webpack_require__(76);
@@ -41651,7 +41994,7 @@ module.exports = InterceptorManager;
 var utils = __webpack_require__(1);
 var transformData = __webpack_require__(77);
 var isCancel = __webpack_require__(28);
-var defaults = __webpack_require__(16);
+var defaults = __webpack_require__(17);
 var isAbsoluteURL = __webpack_require__(78);
 var combineURLs = __webpack_require__(79);
 
@@ -48073,321 +48416,801 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 /* 89 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-/**
- * @author zhixin wen <wenzhixin2010@gmail.com>
- * version: 1.12.1
- * https://github.com/wenzhixin/bootstrap-table/
- */
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else if (typeof exports !== "undefined") {
+    factory();
+  } else {
+    var mod = {
+      exports: {}
+    };
+    factory();
+    global.bootstrapTable = mod.exports;
+  }
+})(this, function () {
+  'use strict';
 
-(function ($) {
-    'use strict';
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
 
+  var _createClass = function () {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+
+    return function (Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
+
+  var _slicedToArray = function () {
+    function sliceIterator(arr, i) {
+      var _arr = [];
+      var _n = true;
+      var _d = false;
+      var _e = undefined;
+
+      try {
+        for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+          _arr.push(_s.value);
+
+          if (i && _arr.length === i) break;
+        }
+      } catch (err) {
+        _d = true;
+        _e = err;
+      } finally {
+        try {
+          if (!_n && _i["return"]) _i["return"]();
+        } finally {
+          if (_d) throw _e;
+        }
+      }
+
+      return _arr;
+    }
+
+    return function (arr, i) {
+      if (Array.isArray(arr)) {
+        return arr;
+      } else if (Symbol.iterator in Object(arr)) {
+        return sliceIterator(arr, i);
+      } else {
+        throw new TypeError("Invalid attempt to destructure non-iterable instance");
+      }
+    };
+  }();
+
+  function _toConsumableArray(arr) {
+    if (Array.isArray(arr)) {
+      for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+        arr2[i] = arr[i];
+      }
+
+      return arr2;
+    } else {
+      return Array.from(arr);
+    }
+  }
+
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  };
+
+  /**
+   * @author zhixin wen <wenzhixin2010@gmail.com>
+   * version: 1.13.1
+   * https://github.com/wenzhixin/bootstrap-table/
+   */
+
+  (function ($) {
     // TOOLS DEFINITION
     // ======================
 
     var bootstrapVersion = 3;
     try {
-        bootstrapVersion = parseInt($.fn.dropdown.Constructor.VERSION, 10);
-    } catch (e) {}
-    var bs = {
-        3: {
-            buttonsClass: 'default',
-            iconsPrefix: 'glyphicon',
-            icons: {
-                paginationSwitchDown: 'glyphicon-collapse-down icon-chevron-down',
-                paginationSwitchUp: 'glyphicon-collapse-up icon-chevron-up',
-                refresh: 'glyphicon-refresh icon-refresh',
-                toggleOff: 'glyphicon-list-alt icon-list-alt',
-                toggleOn: 'glyphicon-list-alt icon-list-alt',
-                columns: 'glyphicon-th icon-th',
-                detailOpen: 'glyphicon-plus icon-plus',
-                detailClose: 'glyphicon-minus icon-minus',
-                fullscreen: 'glyphicon-fullscreen'
-            },
-            pullClass: 'pull',
-            toobarDropdowHtml: ['<ul class="dropdown-menu" role="menu">', '</ul>'],
-            toobarDropdowItemHtml: '<li role="menuitem"><label>%s</label></li>',
-            pageDropdownHtml: ['<ul class="dropdown-menu" role="menu">', '</ul>'],
-            pageDropdownItemHtml: '<li role="menuitem" class="%s"><a href="#">%s</a></li>'
+      var rawVersion = $.fn.dropdown.Constructor.VERSION;
+
+      // Only try to parse VERSION if is is defined.
+      // It is undefined in older versions of Bootstrap (tested with 3.1.1).
+      if (rawVersion !== undefined) {
+        bootstrapVersion = parseInt(rawVersion, 10);
+      }
+    } catch (e) {
+      // ignore
+    }
+
+    var bootstrap = {
+      3: {
+        iconsPrefix: 'glyphicon',
+        icons: {
+          paginationSwitchDown: 'glyphicon-collapse-down icon-chevron-down',
+          paginationSwitchUp: 'glyphicon-collapse-up icon-chevron-up',
+          refresh: 'glyphicon-refresh icon-refresh',
+          toggleOff: 'glyphicon-list-alt icon-list-alt',
+          toggleOn: 'glyphicon-list-alt icon-list-alt',
+          columns: 'glyphicon-th icon-th',
+          detailOpen: 'glyphicon-plus icon-plus',
+          detailClose: 'glyphicon-minus icon-minus',
+          fullscreen: 'glyphicon-fullscreen'
         },
-        4: {
-            buttonsClass: 'secondary',
-            iconsPrefix: 'fa',
-            icons: {
-                paginationSwitchDown: 'fa-toggle-down',
-                paginationSwitchUp: 'fa-toggle-up',
-                refresh: 'fa-refresh',
-                toggleOff: 'fa-toggle-off',
-                toggleOn: 'fa-toggle-on',
-                columns: 'fa-th-list',
-                detailOpen: 'fa-plus',
-                detailClose: 'fa-minus',
-                fullscreen: 'fa-arrows-alt'
-            },
-            pullClass: 'float',
-            toobarDropdowHtml: ['<div class="dropdown-menu dropdown-menu-right">', '</div>'],
-            toobarDropdowItemHtml: '<label class="dropdown-item">%s</label>',
-            pageDropdownHtml: ['<div class="dropdown-menu">', '</div>'],
-            pageDropdownItemHtml: '<a class="dropdown-item %s" href="#">%s</a>'
+        classes: {
+          buttons: 'default',
+          pull: 'pull'
+        },
+        html: {
+          toobarDropdow: ['<ul class="dropdown-menu" role="menu">', '</ul>'],
+          toobarDropdowItem: '<li role="menuitem"><label>%s</label></li>',
+          pageDropdown: ['<ul class="dropdown-menu" role="menu">', '</ul>'],
+          pageDropdownItem: '<li role="menuitem" class="%s"><a href="#">%s</a></li>'
         }
+      },
+      4: {
+        iconsPrefix: 'fa',
+        icons: {
+          paginationSwitchDown: 'fa-caret-square-down',
+          paginationSwitchUp: 'fa-caret-square-up',
+          refresh: 'fa-sync',
+          toggleOff: 'fa-toggle-off',
+          toggleOn: 'fa-toggle-on',
+          columns: 'fa-th-list',
+          detailOpen: 'fa-plus',
+          detailClose: 'fa-minus',
+          fullscreen: 'fa-arrows-alt'
+        },
+        classes: {
+          buttons: 'secondary',
+          pull: 'float'
+        },
+        html: {
+          toobarDropdow: ['<div class="dropdown-menu dropdown-menu-right">', '</div>'],
+          toobarDropdowItem: '<label class="dropdown-item">%s</label>',
+          pageDropdown: ['<div class="dropdown-menu">', '</div>'],
+          pageDropdownItem: '<a class="dropdown-item %s" href="#">%s</a>'
+        }
+      }
     }[bootstrapVersion];
 
-    var cachedWidth = null;
+    var Utils = {
+      bootstrapVersion: bootstrapVersion,
 
-    // it only does '%s', and return '' when arguments are undefined
-    var sprintf = function (str) {
-        var args = arguments,
-            flag = true,
-            i = 1;
+      sprintf: function sprintf(_str) {
+        for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+          args[_key - 1] = arguments[_key];
+        }
 
-        str = str.replace(/%s/g, function () {
-            var arg = args[i++];
+        var flag = true;
+        var i = 0;
 
-            if (typeof arg === 'undefined') {
-                flag = false;
-                return '';
-            }
-            return arg;
+        var str = _str.replace(/%s/g, function () {
+          var arg = args[i++];
+
+          if (typeof arg === 'undefined') {
+            flag = false;
+            return '';
+          }
+          return arg;
         });
         return flag ? str : '';
-    };
+      },
+      getFieldTitle: function getFieldTitle(list, value) {
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
 
-    var getPropertyFromOther = function (list, from, to, value) {
-        var result = '';
-        $.each(list, function (i, item) {
-            if (item[from] === value) {
-                result = item[to];
-                return false;
+        try {
+          for (var _iterator = list[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var item = _step.value;
+
+            if (item.field === value) {
+              return item.title;
             }
-            return true;
-        });
-        return result;
-    };
-
-    // http://jsfiddle.net/wenyi/47nz7ez9/3/
-    var setFieldIndex = function (columns) {
-        var i, j, k,
-            totalCol = 0,
-            flag = [];
-
-        for (i = 0; i < columns[0].length; i++) {
-            totalCol += columns[0][i].colspan || 1;
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator.return) {
+              _iterator.return();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
         }
 
-        for (i = 0; i < columns.length; i++) {
-            flag[i] = [];
-            for (j = 0; j < totalCol; j++) {
-                flag[i][j] = false;
+        return '';
+      },
+      setFieldIndex: function setFieldIndex(columns) {
+        var totalCol = 0;
+        var flag = [];
+
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+
+        try {
+          for (var _iterator2 = columns[0][Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            var column = _step2.value;
+
+            totalCol += column.colspan || 1;
+          }
+        } catch (err) {
+          _didIteratorError2 = true;
+          _iteratorError2 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+              _iterator2.return();
             }
+          } finally {
+            if (_didIteratorError2) {
+              throw _iteratorError2;
+            }
+          }
         }
 
-        for (i = 0; i < columns.length; i++) {
-            for (j = 0; j < columns[i].length; j++) {
-                var r = columns[i][j],
-                    rowspan = r.rowspan || 1,
-                    colspan = r.colspan || 1,
-                    index = $.inArray(false, flag[i]);
+        for (var i = 0; i < columns.length; i++) {
+          flag[i] = [];
+          for (var j = 0; j < totalCol; j++) {
+            flag[i][j] = false;
+          }
+        }
 
-                if (colspan === 1) {
-                    r.fieldIndex = index;
-                    // when field is undefined, use index instead
-                    if (typeof r.field === 'undefined') {
-                        r.field = index;
-                    }
+        for (var _i = 0; _i < columns.length; _i++) {
+          var _iteratorNormalCompletion3 = true;
+          var _didIteratorError3 = false;
+          var _iteratorError3 = undefined;
+
+          try {
+            for (var _iterator3 = columns[_i][Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+              var r = _step3.value;
+
+              var rowspan = r.rowspan || 1;
+              var colspan = r.colspan || 1;
+              var index = flag[_i].indexOf(false);
+
+              if (colspan === 1) {
+                r.fieldIndex = index;
+                // when field is undefined, use index instead
+                if (typeof r.field === 'undefined') {
+                  r.field = index;
                 }
+              }
 
-                for (k = 0; k < rowspan; k++) {
-                    flag[i + k][index] = true;
-                }
-                for (k = 0; k < colspan; k++) {
-                    flag[i][index + k] = true;
-                }
+              for (var k = 0; k < rowspan; k++) {
+                flag[_i + k][index] = true;
+              }
+              for (var _k = 0; _k < colspan; _k++) {
+                flag[_i][index + _k] = true;
+              }
             }
-        }
-    };
-
-    var getScrollBarWidth = function () {
-        if (cachedWidth === null) {
-            var inner = $('<p/>').addClass('fixed-table-scroll-inner'),
-                outer = $('<div/>').addClass('fixed-table-scroll-outer'),
-                w1, w2;
-
-            outer.append(inner);
-            $('body').append(outer);
-
-            w1 = inner[0].offsetWidth;
-            outer.css('overflow', 'scroll');
-            w2 = inner[0].offsetWidth;
-
-            if (w1 === w2) {
-                w2 = outer[0].clientWidth;
+          } catch (err) {
+            _didIteratorError3 = true;
+            _iteratorError3 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                _iterator3.return();
+              }
+            } finally {
+              if (_didIteratorError3) {
+                throw _iteratorError3;
+              }
             }
-
-            outer.remove();
-            cachedWidth = w1 - w2;
+          }
         }
-        return cachedWidth;
-    };
+      },
+      getScrollBarWidth: function getScrollBarWidth() {
+        if (this.cachedWidth === null) {
+          var $inner = $('<div/>').addClass('fixed-table-scroll-inner');
+          var $outer = $('<div/>').addClass('fixed-table-scroll-outer');
 
-    var calculateObjectValue = function (self, name, args, defaultValue) {
+          $outer.append($inner);
+          $('body').append($outer);
+
+          var w1 = $inner[0].offsetWidth;
+          $outer.css('overflow', 'scroll');
+          var w2 = $inner[0].offsetWidth;
+
+          if (w1 === w2) {
+            w2 = $outer[0].clientWidth;
+          }
+
+          $outer.remove();
+          this.cachedWidth = w1 - w2;
+        }
+        return this.cachedWidth;
+      },
+      calculateObjectValue: function calculateObjectValue(self, name, args, defaultValue) {
         var func = name;
 
         if (typeof name === 'string') {
-            // support obj.func1.func2
-            var names = name.split('.');
+          // support obj.func1.func2
+          var names = name.split('.');
 
-            if (names.length > 1) {
-                func = window;
-                $.each(names, function (i, f) {
-                    func = func[f];
-                });
-            } else {
-                func = window[name];
+          if (names.length > 1) {
+            func = window;
+            var _iteratorNormalCompletion4 = true;
+            var _didIteratorError4 = false;
+            var _iteratorError4 = undefined;
+
+            try {
+              for (var _iterator4 = names[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                var f = _step4.value;
+
+                func = func[f];
+              }
+            } catch (err) {
+              _didIteratorError4 = true;
+              _iteratorError4 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                  _iterator4.return();
+                }
+              } finally {
+                if (_didIteratorError4) {
+                  throw _iteratorError4;
+                }
+              }
             }
+          } else {
+            func = window[name];
+          }
         }
-        if (typeof func === 'object') {
-            return func;
+
+        if (func !== null && (typeof func === 'undefined' ? 'undefined' : _typeof(func)) === 'object') {
+          return func;
         }
+
         if (typeof func === 'function') {
-            return func.apply(self, args || []);
+          return func.apply(self, args || []);
         }
-        if (!func && typeof name === 'string' && sprintf.apply(this, [name].concat(args))) {
-            return sprintf.apply(this, [name].concat(args));
+
+        if (!func && typeof name === 'string' && this.sprintf.apply(this, [name].concat(_toConsumableArray(args)))) {
+          return this.sprintf.apply(this, [name].concat(_toConsumableArray(args)));
         }
+
         return defaultValue;
-    };
+      },
+      compareObjects: function compareObjects(objectA, objectB, compareLength) {
+        var aKeys = Object.keys(objectA);
+        var bKeys = Object.keys(objectB);
 
-    var compareObjects = function (objectA, objectB, compareLength) {
-        // Create arrays of property names
-        var getOwnPropertyNames = Object.getOwnPropertyNames || function (obj) {
-            var arr = [];
-            for (var k in obj) {
-                if (obj.hasOwnProperty(k)) {
-                    arr.push(k);
-                }
-            }
-            return arr;
-        };
-        var objectAProperties = getOwnPropertyNames(objectA),
-            objectBProperties = getOwnPropertyNames(objectB),
-            propName = '';
-
-        if (compareLength) {
-            // If number of properties is different, objects are not equivalent
-            if (objectAProperties.length !== objectBProperties.length) {
-                return false;
-            }
+        if (compareLength && aKeys.length !== bKeys.length) {
+          return false;
         }
 
-        for (var i = 0; i < objectAProperties.length; i++) {
-            propName = objectAProperties[i];
+        var _iteratorNormalCompletion5 = true;
+        var _didIteratorError5 = false;
+        var _iteratorError5 = undefined;
 
-            // If the property is not in the object B properties, continue with the next property
-            if ($.inArray(propName, objectBProperties) > -1) {
-                // If values of same property are not equal, objects are not equivalent
-                if (objectA[propName] !== objectB[propName]) {
-                    return false;
-                }
+        try {
+          for (var _iterator5 = aKeys[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+            var key = _step5.value;
+
+            if (bKeys.includes(key) && objectA[key] !== objectB[key]) {
+              return false;
             }
+          }
+        } catch (err) {
+          _didIteratorError5 = true;
+          _iteratorError5 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion5 && _iterator5.return) {
+              _iterator5.return();
+            }
+          } finally {
+            if (_didIteratorError5) {
+              throw _iteratorError5;
+            }
+          }
         }
 
-        // If we made it this far, objects are considered equivalent
         return true;
-    };
-
-    var escapeHTML = function (text) {
+      },
+      escapeHTML: function escapeHTML(text) {
         if (typeof text === 'string') {
-            return text
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;')
-                .replace(/`/g, '&#x60;');
+          return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;').replace(/`/g, '&#x60;');
         }
         return text;
-    };
+      },
+      getRealDataAttr: function getRealDataAttr(dataAttr) {
+        var _iteratorNormalCompletion6 = true;
+        var _didIteratorError6 = false;
+        var _iteratorError6 = undefined;
 
-    var getRealDataAttr = function (dataAttr) {
-        for (var attr in dataAttr) {
+        try {
+          for (var _iterator6 = Object.entries(dataAttr)[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+            var _ref = _step6.value;
+
+            var _ref2 = _slicedToArray(_ref, 2);
+
+            var attr = _ref2[0];
+            var value = _ref2[1];
+
             var auxAttr = attr.split(/(?=[A-Z])/).join('-').toLowerCase();
             if (auxAttr !== attr) {
-                dataAttr[auxAttr] = dataAttr[attr];
-                delete dataAttr[attr];
+              dataAttr[auxAttr] = value;
+              delete dataAttr[attr];
             }
+          }
+        } catch (err) {
+          _didIteratorError6 = true;
+          _iteratorError6 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion6 && _iterator6.return) {
+              _iterator6.return();
+            }
+          } finally {
+            if (_didIteratorError6) {
+              throw _iteratorError6;
+            }
+          }
         }
 
         return dataAttr;
-    };
-
-    var getItemField = function (item, field, escape) {
+      },
+      getItemField: function getItemField(item, field, escape) {
         var value = item;
 
         if (typeof field !== 'string' || item.hasOwnProperty(field)) {
-            return escape ? escapeHTML(item[field]) : item[field];
+          return escape ? this.escapeHTML(item[field]) : item[field];
         }
+
         var props = field.split('.');
-        for (var p in props) {
-            if (props.hasOwnProperty(p)) {
-                value = value && value[props[p]];
+        var _iteratorNormalCompletion7 = true;
+        var _didIteratorError7 = false;
+        var _iteratorError7 = undefined;
+
+        try {
+          for (var _iterator7 = props[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+            var p = _step7.value;
+
+            value = value && value[p];
+          }
+        } catch (err) {
+          _didIteratorError7 = true;
+          _iteratorError7 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion7 && _iterator7.return) {
+              _iterator7.return();
             }
+          } finally {
+            if (_didIteratorError7) {
+              throw _iteratorError7;
+            }
+          }
         }
-        return escape ? escapeHTML(value) : value;
-    };
 
-    var isIEBrowser = function () {
-        return !!(navigator.userAgent.indexOf("MSIE ") > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./));
-    };
-
-    var objectKeys = function () {
-        // From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
-        if (!Object.keys) {
-            Object.keys = (function() {
-                var hasOwnProperty = Object.prototype.hasOwnProperty,
-                    hasDontEnumBug = !({ toString: null }).propertyIsEnumerable('toString'),
-                    dontEnums = [
-                        'toString',
-                        'toLocaleString',
-                        'valueOf',
-                        'hasOwnProperty',
-                        'isPrototypeOf',
-                        'propertyIsEnumerable',
-                        'constructor'
-                    ],
-                    dontEnumsLength = dontEnums.length;
-
-                return function(obj) {
-                    if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
-                        throw new TypeError('Object.keys called on non-object');
-                    }
-
-                    var result = [], prop, i;
-
-                    for (prop in obj) {
-                        if (hasOwnProperty.call(obj, prop)) {
-                            result.push(prop);
-                        }
-                    }
-
-                    if (hasDontEnumBug) {
-                        for (i = 0; i < dontEnumsLength; i++) {
-                            if (hasOwnProperty.call(obj, dontEnums[i])) {
-                                result.push(dontEnums[i]);
-                            }
-                        }
-                    }
-                    return result;
-                };
-            }());
-        }
+        return escape ? this.escapeHTML(value) : value;
+      },
+      isIEBrowser: function isIEBrowser() {
+        return navigator.userAgent.includes('MSIE ') || /Trident.*rv:11\./.test(navigator.userAgent);
+      }
     };
 
     // BOOTSTRAP TABLE CLASS DEFINITION
     // ======================
 
-    var BootstrapTable = function (el, options) {
+    var DEFAULTS = {
+      classes: 'table table-hover',
+      theadClasses: '',
+      sortClass: undefined,
+      locale: undefined,
+      height: undefined,
+      undefinedText: '-',
+      sortName: undefined,
+      sortOrder: 'asc',
+      sortStable: false,
+      rememberOrder: false,
+      striped: false,
+      columns: [[]],
+      data: [],
+      totalField: 'total',
+      dataField: 'rows',
+      method: 'get',
+      url: undefined,
+      ajax: undefined,
+      cache: true,
+      contentType: 'application/json',
+      dataType: 'json',
+      ajaxOptions: {},
+      queryParams: function queryParams(params) {
+        return params;
+      },
+
+      queryParamsType: 'limit', responseHandler: function responseHandler(res) {
+        return res;
+      },
+
+      pagination: false,
+      onlyInfoPagination: false,
+      paginationLoop: true,
+      sidePagination: 'client', // client or server
+      totalRows: 0, // server side need to set
+      pageNumber: 1,
+      pageSize: 10,
+      pageList: [10, 25, 50, 100],
+      paginationHAlign: 'right', // right, left
+      paginationVAlign: 'bottom', // bottom, top, both
+      paginationDetailHAlign: 'left', // right, left
+      paginationPreText: '&lsaquo;',
+      paginationNextText: '&rsaquo;',
+      search: false,
+      searchOnEnterKey: false,
+      strictSearch: false,
+      searchAlign: 'right',
+      selectItemName: 'btSelectItem',
+      showHeader: true,
+      showFooter: false,
+      showColumns: false,
+      showPaginationSwitch: false,
+      showRefresh: false,
+      showToggle: false,
+      showFullscreen: false,
+      smartDisplay: true,
+      escape: false,
+      minimumCountColumns: 1,
+      idField: undefined,
+      uniqueId: undefined,
+      cardView: false,
+      detailView: false,
+      detailFormatter: function detailFormatter(index, row) {
+        return '';
+      },
+      detailFilter: function detailFilter(index, row) {
+        return true;
+      },
+
+      trimOnSearch: true,
+      clickToSelect: false,
+      singleSelect: false,
+      toolbar: undefined,
+      toolbarAlign: 'left',
+      buttonsToolbar: undefined,
+      buttonsAlign: 'right',
+      checkboxHeader: true,
+      sortable: true,
+      silentSort: true,
+      maintainSelected: false,
+      searchTimeOut: 500,
+      searchText: '',
+      iconSize: undefined,
+      buttonsClass: bootstrap.classes.buttons,
+      iconsPrefix: bootstrap.iconsPrefix, // glyphicon or fa(font-awesome)
+      icons: bootstrap.icons,
+      customSearch: $.noop,
+      customSort: $.noop,
+      ignoreClickToSelectOn: function ignoreClickToSelectOn(_ref3) {
+        var tagName = _ref3.tagName;
+
+        return ['A', 'BUTTON'].includes(tagName);
+      },
+      rowStyle: function rowStyle(row, index) {
+        return {};
+      },
+      rowAttributes: function rowAttributes(row, index) {
+        return {};
+      },
+      footerStyle: function footerStyle(row, index) {
+        return {};
+      },
+      onAll: function onAll(name, args) {
+        return false;
+      },
+      onClickCell: function onClickCell(field, value, row, $element) {
+        return false;
+      },
+      onDblClickCell: function onDblClickCell(field, value, row, $element) {
+        return false;
+      },
+      onClickRow: function onClickRow(item, $element) {
+        return false;
+      },
+      onDblClickRow: function onDblClickRow(item, $element) {
+        return false;
+      },
+      onSort: function onSort(name, order) {
+        return false;
+      },
+      onCheck: function onCheck(row) {
+        return false;
+      },
+      onUncheck: function onUncheck(row) {
+        return false;
+      },
+      onCheckAll: function onCheckAll(rows) {
+        return false;
+      },
+      onUncheckAll: function onUncheckAll(rows) {
+        return false;
+      },
+      onCheckSome: function onCheckSome(rows) {
+        return false;
+      },
+      onUncheckSome: function onUncheckSome(rows) {
+        return false;
+      },
+      onLoadSuccess: function onLoadSuccess(data) {
+        return false;
+      },
+      onLoadError: function onLoadError(status) {
+        return false;
+      },
+      onColumnSwitch: function onColumnSwitch(field, checked) {
+        return false;
+      },
+      onPageChange: function onPageChange(number, size) {
+        return false;
+      },
+      onSearch: function onSearch(text) {
+        return false;
+      },
+      onToggle: function onToggle(cardView) {
+        return false;
+      },
+      onPreBody: function onPreBody(data) {
+        return false;
+      },
+      onPostBody: function onPostBody() {
+        return false;
+      },
+      onPostHeader: function onPostHeader() {
+        return false;
+      },
+      onExpandRow: function onExpandRow(index, row, $detail) {
+        return false;
+      },
+      onCollapseRow: function onCollapseRow(index, row) {
+        return false;
+      },
+      onRefreshOptions: function onRefreshOptions(options) {
+        return false;
+      },
+      onRefresh: function onRefresh(params) {
+        return false;
+      },
+      onResetView: function onResetView() {
+        return false;
+      },
+      onScrollBody: function onScrollBody() {
+        return false;
+      }
+    };
+
+    var LOCALES = {};
+    LOCALES['en-US'] = LOCALES.en = {
+      formatLoadingMessage: function formatLoadingMessage() {
+        return 'Loading, please wait...';
+      },
+      formatRecordsPerPage: function formatRecordsPerPage(pageNumber) {
+        return Utils.sprintf('%s rows per page', pageNumber);
+      },
+      formatShowingRows: function formatShowingRows(pageFrom, pageTo, totalRows) {
+        return Utils.sprintf('Showing %s to %s of %s rows', pageFrom, pageTo, totalRows);
+      },
+      formatDetailPagination: function formatDetailPagination(totalRows) {
+        return Utils.sprintf('Showing %s rows', totalRows);
+      },
+      formatSearch: function formatSearch() {
+        return 'Search';
+      },
+      formatNoMatches: function formatNoMatches() {
+        return 'No matching records found';
+      },
+      formatPaginationSwitch: function formatPaginationSwitch() {
+        return 'Hide/Show pagination';
+      },
+      formatRefresh: function formatRefresh() {
+        return 'Refresh';
+      },
+      formatToggle: function formatToggle() {
+        return 'Toggle';
+      },
+      formatFullscreen: function formatFullscreen() {
+        return 'Fullscreen';
+      },
+      formatColumns: function formatColumns() {
+        return 'Columns';
+      },
+      formatAllRows: function formatAllRows() {
+        return 'All';
+      }
+    };
+
+    $.extend(DEFAULTS, LOCALES['en-US']);
+
+    var COLUMN_DEFAULTS = {
+      radio: false,
+      checkbox: false,
+      checkboxEnabled: true,
+      field: undefined,
+      title: undefined,
+      titleTooltip: undefined,
+      'class': undefined,
+      align: undefined, // left, right, center
+      halign: undefined, // left, right, center
+      falign: undefined, // left, right, center
+      valign: undefined, // top, middle, bottom
+      width: undefined,
+      sortable: false,
+      order: 'asc', // asc, desc
+      visible: true,
+      switchable: true,
+      clickToSelect: true,
+      formatter: undefined,
+      footerFormatter: undefined,
+      events: undefined,
+      sorter: undefined,
+      sortName: undefined,
+      cellStyle: undefined,
+      searchable: true,
+      searchFormatter: true,
+      cardVisible: true,
+      escape: false,
+      showSelectTitle: false
+    };
+
+    var EVENTS = {
+      'all.bs.table': 'onAll',
+      'click-cell.bs.table': 'onClickCell',
+      'dbl-click-cell.bs.table': 'onDblClickCell',
+      'click-row.bs.table': 'onClickRow',
+      'dbl-click-row.bs.table': 'onDblClickRow',
+      'sort.bs.table': 'onSort',
+      'check.bs.table': 'onCheck',
+      'uncheck.bs.table': 'onUncheck',
+      'check-all.bs.table': 'onCheckAll',
+      'uncheck-all.bs.table': 'onUncheckAll',
+      'check-some.bs.table': 'onCheckSome',
+      'uncheck-some.bs.table': 'onUncheckSome',
+      'load-success.bs.table': 'onLoadSuccess',
+      'load-error.bs.table': 'onLoadError',
+      'column-switch.bs.table': 'onColumnSwitch',
+      'page-change.bs.table': 'onPageChange',
+      'search.bs.table': 'onSearch',
+      'toggle.bs.table': 'onToggle',
+      'pre-body.bs.table': 'onPreBody',
+      'post-body.bs.table': 'onPostBody',
+      'post-header.bs.table': 'onPostHeader',
+      'expand-row.bs.table': 'onExpandRow',
+      'collapse-row.bs.table': 'onCollapseRow',
+      'refresh-options.bs.table': 'onRefreshOptions',
+      'reset-view.bs.table': 'onResetView',
+      'refresh.bs.table': 'onRefresh',
+      'scroll-body.bs.table': 'onScrollBody'
+    };
+
+    var BootstrapTable = function () {
+      function BootstrapTable(el, options) {
+        _classCallCheck(this, BootstrapTable);
+
         this.options = options;
         this.$el = $(el);
         this.$el_ = this.$el.clone();
@@ -48395,487 +49218,195 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         this.timeoutFooter_ = 0;
 
         this.init();
-    };
+      }
 
-    BootstrapTable.DEFAULTS = {
-        classes: 'table table-hover',
-        sortClass: undefined,
-        locale: undefined,
-        height: undefined,
-        undefinedText: '-',
-        sortName: undefined,
-        sortOrder: 'asc',
-        sortStable: false,
-        rememberOrder: false,
-        striped: false,
-        columns: [[]],
-        data: [],
-        totalField: 'total',
-        dataField: 'rows',
-        method: 'get',
-        url: undefined,
-        ajax: undefined,
-        cache: true,
-        contentType: 'application/json',
-        dataType: 'json',
-        ajaxOptions: {},
-        queryParams: function (params) {
-            return params;
-        },
-        queryParamsType: 'limit', // undefined
-        responseHandler: function (res) {
-            return res;
-        },
-        pagination: false,
-        onlyInfoPagination: false,
-        paginationLoop: true,
-        sidePagination: 'client', // client or server
-        totalRows: 0, // server side need to set
-        pageNumber: 1,
-        pageSize: 10,
-        pageList: [10, 25, 50, 100],
-        paginationHAlign: 'right', //right, left
-        paginationVAlign: 'bottom', //bottom, top, both
-        paginationDetailHAlign: 'left', //right, left
-        paginationPreText: '&lsaquo;',
-        paginationNextText: '&rsaquo;',
-        search: false,
-        searchOnEnterKey: false,
-        strictSearch: false,
-        searchAlign: 'right',
-        selectItemName: 'btSelectItem',
-        showHeader: true,
-        showFooter: false,
-        showColumns: false,
-        showPaginationSwitch: false,
-        showRefresh: false,
-        showToggle: false,
-        showFullscreen: false,
-        smartDisplay: true,
-        escape: false,
-        minimumCountColumns: 1,
-        idField: undefined,
-        uniqueId: undefined,
-        cardView: false,
-        detailView: false,
-        detailFormatter: function (index, row) {
-            return '';
-        },
-        detailFilter: function (index, row) {
-            return true;
-        },
-        trimOnSearch: true,
-        clickToSelect: false,
-        singleSelect: false,
-        toolbar: undefined,
-        toolbarAlign: 'left',
-        buttonsToolbar: undefined,
-        buttonsAlign: 'right',
-        checkboxHeader: true,
-        sortable: true,
-        silentSort: true,
-        maintainSelected: false,
-        searchTimeOut: 500,
-        searchText: '',
-        iconSize: undefined,
-        buttonsClass: bs.buttonsClass,
-        iconsPrefix: bs.iconsPrefix, // glyphicon or fa (font awesome)
-        icons: bs.icons,
-
-        customSearch: $.noop,
-
-        customSort: $.noop,
-
-        ignoreClickToSelectOn: function (element) {
-            return $.inArray(element.tagName, ['A', 'BUTTON']);
-        },
-
-        rowStyle: function (row, index) {
-            return {};
-        },
-
-        rowAttributes: function (row, index) {
-            return {};
-        },
-
-        footerStyle: function (row, index) {
-            return {};
-        },
-
-        onAll: function (name, args) {
-            return false;
-        },
-        onClickCell: function (field, value, row, $element) {
-            return false;
-        },
-        onDblClickCell: function (field, value, row, $element) {
-            return false;
-        },
-        onClickRow: function (item, $element) {
-            return false;
-        },
-        onDblClickRow: function (item, $element) {
-            return false;
-        },
-        onSort: function (name, order) {
-            return false;
-        },
-        onCheck: function (row) {
-            return false;
-        },
-        onUncheck: function (row) {
-            return false;
-        },
-        onCheckAll: function (rows) {
-            return false;
-        },
-        onUncheckAll: function (rows) {
-            return false;
-        },
-        onCheckSome: function (rows) {
-            return false;
-        },
-        onUncheckSome: function (rows) {
-            return false;
-        },
-        onLoadSuccess: function (data) {
-            return false;
-        },
-        onLoadError: function (status) {
-            return false;
-        },
-        onColumnSwitch: function (field, checked) {
-            return false;
-        },
-        onPageChange: function (number, size) {
-            return false;
-        },
-        onSearch: function (text) {
-            return false;
-        },
-        onToggle: function (cardView) {
-            return false;
-        },
-        onPreBody: function (data) {
-            return false;
-        },
-        onPostBody: function () {
-            return false;
-        },
-        onPostHeader: function () {
-            return false;
-        },
-        onExpandRow: function (index, row, $detail) {
-            return false;
-        },
-        onCollapseRow: function (index, row) {
-            return false;
-        },
-        onRefreshOptions: function (options) {
-            return false;
-        },
-        onRefresh: function (params) {
-          return false;
-        },
-        onResetView: function () {
-            return false;
-        },
-        onScrollBody: function () {
-            return false;
+      _createClass(BootstrapTable, [{
+        key: 'init',
+        value: function init() {
+          this.initLocale();
+          this.initContainer();
+          this.initTable();
+          this.initHeader();
+          this.initData();
+          this.initHiddenRows();
+          this.initFooter();
+          this.initToolbar();
+          this.initPagination();
+          this.initBody();
+          this.initSearchText();
+          this.initServer();
         }
-    };
-
-    BootstrapTable.LOCALES = {};
-
-    BootstrapTable.LOCALES['en-US'] = BootstrapTable.LOCALES.en = {
-        formatLoadingMessage: function () {
-            return 'Loading, please wait...';
-        },
-        formatRecordsPerPage: function (pageNumber) {
-            return sprintf('%s rows per page', pageNumber);
-        },
-        formatShowingRows: function (pageFrom, pageTo, totalRows) {
-            return sprintf('Showing %s to %s of %s rows', pageFrom, pageTo, totalRows);
-        },
-        formatDetailPagination: function (totalRows) {
-            return sprintf('Showing %s rows', totalRows);
-        },
-        formatSearch: function () {
-            return 'Search';
-        },
-        formatNoMatches: function () {
-            return 'No matching records found';
-        },
-        formatPaginationSwitch: function () {
-            return 'Hide/Show pagination';
-        },
-        formatRefresh: function () {
-            return 'Refresh';
-        },
-        formatToggle: function () {
-            return 'Toggle';
-        },
-        formatFullscreen: function () {
-            return 'Fullscreen';
-        },
-        formatColumns: function () {
-            return 'Columns';
-        },
-        formatAllRows: function () {
-            return 'All';
-        }
-    };
-
-    $.extend(BootstrapTable.DEFAULTS, BootstrapTable.LOCALES['en-US']);
-
-    BootstrapTable.COLUMN_DEFAULTS = {
-        radio: false,
-        checkbox: false,
-        checkboxEnabled: true,
-        field: undefined,
-        title: undefined,
-        titleTooltip: undefined,
-        'class': undefined,
-        align: undefined, // left, right, center
-        halign: undefined, // left, right, center
-        falign: undefined, // left, right, center
-        valign: undefined, // top, middle, bottom
-        width: undefined,
-        sortable: false,
-        order: 'asc', // asc, desc
-        visible: true,
-        switchable: true,
-        clickToSelect: true,
-        formatter: undefined,
-        footerFormatter: undefined,
-        events: undefined,
-        sorter: undefined,
-        sortName: undefined,
-        cellStyle: undefined,
-        searchable: true,
-        searchFormatter: true,
-        cardVisible: true,
-        escape: false,
-        showSelectTitle: false
-    };
-
-    BootstrapTable.EVENTS = {
-        'all.bs.table': 'onAll',
-        'click-cell.bs.table': 'onClickCell',
-        'dbl-click-cell.bs.table': 'onDblClickCell',
-        'click-row.bs.table': 'onClickRow',
-        'dbl-click-row.bs.table': 'onDblClickRow',
-        'sort.bs.table': 'onSort',
-        'check.bs.table': 'onCheck',
-        'uncheck.bs.table': 'onUncheck',
-        'check-all.bs.table': 'onCheckAll',
-        'uncheck-all.bs.table': 'onUncheckAll',
-        'check-some.bs.table': 'onCheckSome',
-        'uncheck-some.bs.table': 'onUncheckSome',
-        'load-success.bs.table': 'onLoadSuccess',
-        'load-error.bs.table': 'onLoadError',
-        'column-switch.bs.table': 'onColumnSwitch',
-        'page-change.bs.table': 'onPageChange',
-        'search.bs.table': 'onSearch',
-        'toggle.bs.table': 'onToggle',
-        'pre-body.bs.table': 'onPreBody',
-        'post-body.bs.table': 'onPostBody',
-        'post-header.bs.table': 'onPostHeader',
-        'expand-row.bs.table': 'onExpandRow',
-        'collapse-row.bs.table': 'onCollapseRow',
-        'refresh-options.bs.table': 'onRefreshOptions',
-        'reset-view.bs.table': 'onResetView',
-        'refresh.bs.table': 'onRefresh',
-        'scroll-body.bs.table': 'onScrollBody'
-    };
-
-    BootstrapTable.prototype.init = function () {
-        this.initLocale();
-        this.initContainer();
-        this.initTable();
-        this.initHeader();
-        this.initData();
-        this.initHiddenRows();
-        this.initFooter();
-        this.initToolbar();
-        this.initPagination();
-        this.initBody();
-        this.initSearchText();
-        this.initServer();
-    };
-
-    BootstrapTable.prototype.initLocale = function () {
-        if (this.options.locale) {
+      }, {
+        key: 'initLocale',
+        value: function initLocale() {
+          if (this.options.locale) {
+            var locales = $.fn.bootstrapTable.locales;
             var parts = this.options.locale.split(/-|_/);
             parts[0].toLowerCase();
             if (parts[1]) {
-                parts[1].toUpperCase();
+              parts[1].toUpperCase();
             }
-            if ($.fn.bootstrapTable.locales[this.options.locale]) {
-                // locale as requested
-                $.extend(this.options, $.fn.bootstrapTable.locales[this.options.locale]);
+            if (locales[this.options.locale]) {
+              // locale as requested
+              $.extend(this.options, locales[this.options.locale]);
             } else if ($.fn.bootstrapTable.locales[parts.join('-')]) {
-                // locale with sep set to - (in case original was specified with _)
-                $.extend(this.options, $.fn.bootstrapTable.locales[parts.join('-')]);
+              // locale with sep set to - (in case original was specified with _)
+              $.extend(this.options, locales[parts.join('-')]);
             } else if ($.fn.bootstrapTable.locales[parts[0]]) {
-                // short locale language code (i.e. 'en')
-                $.extend(this.options, $.fn.bootstrapTable.locales[parts[0]]);
+              // short locale language code (i.e. 'en')
+              $.extend(this.options, locales[parts[0]]);
             }
+          }
         }
-    };
+      }, {
+        key: 'initContainer',
+        value: function initContainer() {
+          var topPagination = ['top', 'both'].includes(this.options.paginationVAlign) ? '<div class="fixed-table-pagination clearfix"></div>' : '';
+          var bottomPagination = ['bottom', 'both'].includes(this.options.paginationVAlign) ? '<div class="fixed-table-pagination"></div>' : '';
 
-    BootstrapTable.prototype.initContainer = function () {
-        this.$container = $([
-            '<div class="bootstrap-table">',
-            '<div class="fixed-table-toolbar"></div>',
-            this.options.paginationVAlign === 'top' || this.options.paginationVAlign === 'both' ?
-                '<div class="fixed-table-pagination" style="clear: both;"></div>' :
-                '',
-            '<div class="fixed-table-container">',
-            '<div class="fixed-table-header"><table></table></div>',
-            '<div class="fixed-table-body">',
-            '<div class="fixed-table-loading">',
-            this.options.formatLoadingMessage(),
-            '</div>',
-            '</div>',
-            '<div class="fixed-table-footer"><table><tr></tr></table></div>',
-            '</div>',
-            this.options.paginationVAlign === 'bottom' || this.options.paginationVAlign === 'both' ?
-                '<div class="fixed-table-pagination"></div>' :
-                '',
-            '</div>'
-        ].join(''));
+          this.$container = $('\n        <div class="bootstrap-table">\n        <div class="fixed-table-toolbar"></div>\n        ' + topPagination + '\n        <div class="fixed-table-container">\n        <div class="fixed-table-header"><table></table></div>\n        <div class="fixed-table-body">\n        <div class="fixed-table-loading">\n        ' + this.options.formatLoadingMessage() + '\n        </div>\n        </div>\n        <div class="fixed-table-footer"><table><tr></tr></table></div>\n        </div>\n        ' + bottomPagination + '\n        </div>\n      ');
 
-        this.$container.insertAfter(this.$el);
-        this.$tableContainer = this.$container.find('.fixed-table-container');
-        this.$tableHeader = this.$container.find('.fixed-table-header');
-        this.$tableBody = this.$container.find('.fixed-table-body');
-        this.$tableLoading = this.$container.find('.fixed-table-loading');
-        this.$tableFooter = this.$container.find('.fixed-table-footer');
-        // checking if custom table-toolbar exists or not
-        if (this.options.buttonsToolbar) {
+          this.$container.insertAfter(this.$el);
+          this.$tableContainer = this.$container.find('.fixed-table-container');
+          this.$tableHeader = this.$container.find('.fixed-table-header');
+          this.$tableBody = this.$container.find('.fixed-table-body');
+          this.$tableLoading = this.$container.find('.fixed-table-loading');
+          this.$tableFooter = this.$container.find('.fixed-table-footer');
+          // checking if custom table-toolbar exists or not
+          if (this.options.buttonsToolbar) {
             this.$toolbar = $('body').find(this.options.buttonsToolbar);
-        } else {
+          } else {
             this.$toolbar = this.$container.find('.fixed-table-toolbar');
-        }
-        this.$pagination = this.$container.find('.fixed-table-pagination');
+          }
+          this.$pagination = this.$container.find('.fixed-table-pagination');
 
-        this.$tableBody.append(this.$el);
-        this.$container.after('<div class="clearfix"></div>');
+          this.$tableBody.append(this.$el);
+          this.$container.after('<div class="clearfix"></div>');
 
-        this.$el.addClass(this.options.classes);
-        if (this.options.striped) {
+          this.$el.addClass(this.options.classes);
+          if (this.options.striped) {
             this.$el.addClass('table-striped');
-        }
-        if ($.inArray('table-no-bordered', this.options.classes.split(' ')) !== -1) {
+          }
+          if (this.options.classes.split(' ').includes('table-no-bordered')) {
             this.$tableContainer.addClass('table-no-bordered');
+          }
         }
-    };
+      }, {
+        key: 'initTable',
+        value: function initTable() {
+          var _this = this;
 
-    BootstrapTable.prototype.initTable = function () {
-        var that = this,
-            columns = [],
-            data = [];
+          var columns = [];
+          var data = [];
 
-        this.$header = this.$el.find('>thead');
-        if (!this.$header.length) {
-            this.$header = $('<thead></thead>').appendTo(this.$el);
-        }
-        this.$header.find('tr').each(function () {
+          this.$header = this.$el.find('>thead');
+          if (!this.$header.length) {
+            this.$header = $('<thead class="' + this.options.theadClasses + '"></thead>').appendTo(this.$el);
+          }
+          this.$header.find('tr').each(function (i, el) {
             var column = [];
 
-            $(this).find('th').each(function () {
-                // Fix #2014 - getFieldIndex and elsewhere assume this is string, causes issues if not
-                if (typeof $(this).data('field') !== 'undefined') {
-                    $(this).data('field', $(this).data('field') + '');
-                }
-                column.push($.extend({}, {
-                    title: $(this).html(),
-                    'class': $(this).attr('class'),
-                    titleTooltip: $(this).attr('title'),
-                    rowspan: $(this).attr('rowspan') ? +$(this).attr('rowspan') : undefined,
-                    colspan: $(this).attr('colspan') ? +$(this).attr('colspan') : undefined
-                }, $(this).data()));
+            $(el).find('th').each(function (i, el) {
+              // #2014: getFieldIndex and elsewhere assume this is string, causes issues if not
+              if (typeof $(el).data('field') !== 'undefined') {
+                $(el).data('field', '' + $(el).data('field'));
+              }
+              column.push($.extend({}, {
+                title: $(el).html(),
+                'class': $(el).attr('class'),
+                titleTooltip: $(el).attr('title'),
+                rowspan: $(el).attr('rowspan') ? +$(el).attr('rowspan') : undefined,
+                colspan: $(el).attr('colspan') ? +$(el).attr('colspan') : undefined
+              }, $(el).data()));
             });
             columns.push(column);
-        });
-        if (!$.isArray(this.options.columns[0])) {
+          });
+
+          if (!Array.isArray(this.options.columns[0])) {
             this.options.columns = [this.options.columns];
-        }
-        this.options.columns = $.extend(true, [], columns, this.options.columns);
-        this.columns = [];
-        this.fieldsColumnsIndex = [];
+          }
 
-        setFieldIndex(this.options.columns);
-        $.each(this.options.columns, function (i, columns) {
-            $.each(columns, function (j, column) {
-                column = $.extend({}, BootstrapTable.COLUMN_DEFAULTS, column);
+          this.options.columns = $.extend(true, [], columns, this.options.columns);
+          this.columns = [];
+          this.fieldsColumnsIndex = [];
 
-                if (typeof column.fieldIndex !== 'undefined') {
-                    that.columns[column.fieldIndex] = column;
-                    that.fieldsColumnsIndex[column.field] = column.fieldIndex;
-                }
+          Utils.setFieldIndex(this.options.columns);
 
-                that.options.columns[i][j] = column;
+          this.options.columns.forEach(function (columns, i) {
+            columns.forEach(function (_column, j) {
+              var column = $.extend({}, BootstrapTable.COLUMN_DEFAULTS, _column);
+
+              if (typeof column.fieldIndex !== 'undefined') {
+                _this.columns[column.fieldIndex] = column;
+                _this.fieldsColumnsIndex[column.field] = column.fieldIndex;
+              }
+
+              _this.options.columns[i][j] = column;
             });
-        });
+          });
 
-        // if options.data is setting, do not process tbody data
-        if (this.options.data.length) {
+          // if options.data is setting, do not process tbody data
+          if (this.options.data.length) {
             return;
-        }
+          }
 
-        var m = [];
-        this.$el.find('>tbody>tr').each(function (y) {
+          var m = [];
+          this.$el.find('>tbody>tr').each(function (y, el) {
             var row = {};
 
             // save tr's id, class and data-* attributes
-            row._id = $(this).attr('id');
-            row._class = $(this).attr('class');
-            row._data = getRealDataAttr($(this).data());
+            row._id = $(el).attr('id');
+            row._class = $(el).attr('class');
+            row._data = Utils.getRealDataAttr($(el).data());
 
-            $(this).find('>td').each(function (x) {
-                var $this = $(this),
-                    cspan = +$this.attr('colspan') || 1,
-                    rspan = +$this.attr('rowspan') || 1,
-                    tx,
-                    ty;
+            $(el).find('>td').each(function (_x, el) {
+              var cspan = +$(el).attr('colspan') || 1;
+              var rspan = +$(el).attr('rowspan') || 1;
+              var x = _x;
 
-                // skip already occupied cells in current row
-                for (; m[y] && m[y][x]; x++);
+              // skip already occupied cells in current row
+              for (; m[y] && m[y][x]; x++) {}
+              // ignore
 
-                for (tx = x; tx < x + cspan; tx++) { //mark matrix elements occupied by current cell with true
-                    for (ty = y; ty < y + rspan; ty++) {
-                        if (!m[ty]) { //fill missing rows
-                            m[ty] = [];
-                        }
-                        m[ty][tx] = true;
-                    }
+
+              // mark matrix elements occupied by current cell with true
+              for (var tx = x; tx < x + cspan; tx++) {
+                for (var ty = y; ty < y + rspan; ty++) {
+                  if (!m[ty]) {
+                    // fill missing rows
+                    m[ty] = [];
+                  }
+                  m[ty][tx] = true;
                 }
+              }
 
-                var field = that.columns[x].field;
+              var field = _this.columns[x].field;
 
-                row[field] = $(this).html();
-                // save td's id, class and data-* attributes
-                row['_' + field + '_id'] = $(this).attr('id');
-                row['_' + field + '_class'] = $(this).attr('class');
-                row['_' + field + '_rowspan'] = $(this).attr('rowspan');
-                row['_' + field + '_colspan'] = $(this).attr('colspan');
-                row['_' + field + '_title'] = $(this).attr('title');
-                row['_' + field + '_data'] = getRealDataAttr($(this).data());
+              row[field] = $(el).html();
+              // save td's id, class and data-* attributes
+              row['_' + field + '_id'] = $(el).attr('id');
+              row['_' + field + '_class'] = $(el).attr('class');
+              row['_' + field + '_rowspan'] = $(el).attr('rowspan');
+              row['_' + field + '_colspan'] = $(el).attr('colspan');
+              row['_' + field + '_title'] = $(el).attr('title');
+              row['_' + field + '_data'] = Utils.getRealDataAttr($(el).data());
             });
             data.push(row);
-        });
-        this.options.data = data;
-        if (data.length) this.fromHtml = true;
-    };
+          });
+          this.options.data = data;
+          if (data.length) {
+            this.fromHtml = true;
+          }
+        }
+      }, {
+        key: 'initHeader',
+        value: function initHeader() {
+          var _this2 = this;
 
-    BootstrapTable.prototype.initHeader = function () {
-        var that = this,
-            visibleColumns = {},
-            html = [];
+          var visibleColumns = {};
+          var html = [];
 
-        this.header = {
+          this.header = {
             fields: [],
             styles: [],
             classes: [],
@@ -48885,2467 +49416,2776 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             sortNames: [],
             cellStyles: [],
             searchables: []
-        };
+          };
 
-        $.each(this.options.columns, function (i, columns) {
+          this.options.columns.forEach(function (columns, i) {
             html.push('<tr>');
 
-            if (i === 0 && !that.options.cardView && that.options.detailView) {
-                html.push(sprintf('<th class="detail" rowspan="%s"><div class="fht-cell"></div></th>',
-                    that.options.columns.length));
+            if (i === 0 && !_this2.options.cardView && _this2.options.detailView) {
+              html.push('<th class="detail" rowspan="' + _this2.options.columns.length + '">\n            <div class="fht-cell"></div>\n            </th>\n          ');
             }
 
-            $.each(columns, function (j, column) {
-                var text = '',
-                    halign = '', // header align style
-                    align = '', // body align style
-                    style = '',
-                    class_ = sprintf(' class="%s"', column['class']),
-                    order = that.options.sortOrder || column.order,
-                    unitWidth = 'px',
-                    width = column.width;
+            columns.forEach(function (column, j) {
+              var text = '';
 
-                if (column.width !== undefined && (!that.options.cardView)) {
-                    if (typeof column.width === 'string') {
-                        if (column.width.indexOf('%') !== -1) {
-                            unitWidth = '%';
-                        }
-                    }
+              var halign = ''; // header align style
+
+              var align = ''; // body align style
+
+              var style = '';
+              var class_ = Utils.sprintf(' class="%s"', column['class']);
+              var unitWidth = 'px';
+              var width = column.width;
+
+              if (column.width !== undefined && !_this2.options.cardView) {
+                if (typeof column.width === 'string') {
+                  if (column.width.includes('%')) {
+                    unitWidth = '%';
+                  }
                 }
-                if (column.width && typeof column.width === 'string') {
-                    width = column.width.replace('%', '').replace('px', '');
-                }
+              }
+              if (column.width && typeof column.width === 'string') {
+                width = column.width.replace('%', '').replace('px', '');
+              }
 
-                halign = sprintf('text-align: %s; ', column.halign ? column.halign : column.align);
-                align = sprintf('text-align: %s; ', column.align);
-                style = sprintf('vertical-align: %s; ', column.valign);
-                style += sprintf('width: %s; ', (column.checkbox || column.radio) && !width ?
-                    (!column.showSelectTitle ? '36px' : undefined) :
-                    (width ? width + unitWidth : undefined));
+              halign = Utils.sprintf('text-align: %s; ', column.halign ? column.halign : column.align);
+              align = Utils.sprintf('text-align: %s; ', column.align);
+              style = Utils.sprintf('vertical-align: %s; ', column.valign);
+              style += Utils.sprintf('width: %s; ', (column.checkbox || column.radio) && !width ? !column.showSelectTitle ? '36px' : undefined : width ? width + unitWidth : undefined);
 
-                if (typeof column.fieldIndex !== 'undefined') {
-                    that.header.fields[column.fieldIndex] = column.field;
-                    that.header.styles[column.fieldIndex] = align + style;
-                    that.header.classes[column.fieldIndex] = class_;
-                    that.header.formatters[column.fieldIndex] = column.formatter;
-                    that.header.events[column.fieldIndex] = column.events;
-                    that.header.sorters[column.fieldIndex] = column.sorter;
-                    that.header.sortNames[column.fieldIndex] = column.sortName;
-                    that.header.cellStyles[column.fieldIndex] = column.cellStyle;
-                    that.header.searchables[column.fieldIndex] = column.searchable;
+              if (typeof column.fieldIndex !== 'undefined') {
+                _this2.header.fields[column.fieldIndex] = column.field;
+                _this2.header.styles[column.fieldIndex] = align + style;
+                _this2.header.classes[column.fieldIndex] = class_;
+                _this2.header.formatters[column.fieldIndex] = column.formatter;
+                _this2.header.events[column.fieldIndex] = column.events;
+                _this2.header.sorters[column.fieldIndex] = column.sorter;
+                _this2.header.sortNames[column.fieldIndex] = column.sortName;
+                _this2.header.cellStyles[column.fieldIndex] = column.cellStyle;
+                _this2.header.searchables[column.fieldIndex] = column.searchable;
 
-                    if (!column.visible) {
-                        return;
-                    }
-
-                    if (that.options.cardView && (!column.cardVisible)) {
-                        return;
-                    }
-
-                    visibleColumns[column.field] = column;
+                if (!column.visible) {
+                  return;
                 }
 
-                html.push('<th' + sprintf(' title="%s"', column.titleTooltip),
-                    column.checkbox || column.radio ?
-                        sprintf(' class="bs-checkbox %s"', column['class'] || '') :
-                        class_,
-                    sprintf(' style="%s"', halign + style),
-                    sprintf(' rowspan="%s"', column.rowspan),
-                    sprintf(' colspan="%s"', column.colspan),
-                    sprintf(' data-field="%s"', column.field),
-                    j === 0 && column.fieldIndex ? ' data-not-first-th' : '',
-                    '>');
-
-                html.push(sprintf('<div class="th-inner %s">', that.options.sortable && column.sortable ?
-                    'sortable both' : ''));
-
-                text = that.options.escape ? escapeHTML(column.title) : column.title;
-
-                var title = text;
-                if (column.checkbox) {
-                    text = '';
-                    if (!that.options.singleSelect && that.options.checkboxHeader) {
-                        text = '<input name="btSelectAll" type="checkbox" />';
-                    }
-                    that.header.stateField = column.field;
-                }
-                if (column.radio) {
-                    text = '';
-                    that.header.stateField = column.field;
-                    that.options.singleSelect = true;
-                }
-                if (!text && column.showSelectTitle) {
-                    text += title;
+                if (_this2.options.cardView && !column.cardVisible) {
+                  return;
                 }
 
-                html.push(text);
-                html.push('</div>');
-                html.push('<div class="fht-cell"></div>');
-                html.push('</div>');
-                html.push('</th>');
+                visibleColumns[column.field] = column;
+              }
+
+              html.push('<th' + Utils.sprintf(' title="%s"', column.titleTooltip), column.checkbox || column.radio ? Utils.sprintf(' class="bs-checkbox %s"', column['class'] || '') : class_, Utils.sprintf(' style="%s"', halign + style), Utils.sprintf(' rowspan="%s"', column.rowspan), Utils.sprintf(' colspan="%s"', column.colspan), Utils.sprintf(' data-field="%s"', column.field),
+              // If `column` is not the first element of `this.options.columns[0]`, then className 'data-not-first-th' should be added.
+              j === 0 && i > 0 ? ' data-not-first-th' : '', '>');
+
+              html.push(Utils.sprintf('<div class="th-inner %s">', _this2.options.sortable && column.sortable ? 'sortable both' : ''));
+
+              text = _this2.options.escape ? Utils.escapeHTML(column.title) : column.title;
+
+              var title = text;
+              if (column.checkbox) {
+                text = '';
+                if (!_this2.options.singleSelect && _this2.options.checkboxHeader) {
+                  text = '<input name="btSelectAll" type="checkbox" />';
+                }
+                _this2.header.stateField = column.field;
+              }
+              if (column.radio) {
+                text = '';
+                _this2.header.stateField = column.field;
+                _this2.options.singleSelect = true;
+              }
+              if (!text && column.showSelectTitle) {
+                text += title;
+              }
+
+              html.push(text);
+              html.push('</div>');
+              html.push('<div class="fht-cell"></div>');
+              html.push('</div>');
+              html.push('</th>');
             });
             html.push('</tr>');
-        });
+          });
 
-        this.$header.html(html.join(''));
-        this.$header.find('th[data-field]').each(function (i) {
-            $(this).data(visibleColumns[$(this).data('field')]);
-        });
-        this.$container.off('click', '.th-inner').on('click', '.th-inner', function (event) {
-            var $this = $(this);
+          this.$header.html(html.join(''));
+          this.$header.find('th[data-field]').each(function (i, el) {
+            $(el).data(visibleColumns[$(el).data('field')]);
+          });
+          this.$container.off('click', '.th-inner').on('click', '.th-inner', function (e) {
+            var $this = $(e.currentTarget);
 
-            if (that.options.detailView && !$this.parent().hasClass('bs-checkbox')) {
-                if ($this.closest('.bootstrap-table')[0] !== that.$container[0]) {
-                    return false;
-                }
+            if (_this2.options.detailView && !$this.parent().hasClass('bs-checkbox')) {
+              if ($this.closest('.bootstrap-table')[0] !== _this2.$container[0]) {
+                return false;
+              }
             }
 
-            if (that.options.sortable && $this.parent().data().sortable) {
-                that.onSort(event);
+            if (_this2.options.sortable && $this.parent().data().sortable) {
+              _this2.onSort(e);
             }
-        });
+          });
 
-        this.$header.children().children().off('keypress').on('keypress', function (event) {
-            if (that.options.sortable && $(this).data().sortable) {
-                var code = event.keyCode || event.which;
-                if (code == 13) { //Enter keycode
-                    that.onSort(event);
-                }
+          this.$header.children().children().off('keypress').on('keypress', function (e) {
+            if (_this2.options.sortable && $(e.currentTarget).data().sortable) {
+              var code = e.keyCode || e.which;
+              if (code === 13) {
+                // Enter keycode
+                _this2.onSort(e);
+              }
             }
-        });
+          });
 
-        $(window).off('resize.bootstrap-table');
-        if (!this.options.showHeader || this.options.cardView) {
+          $(window).off('resize.bootstrap-table');
+          if (!this.options.showHeader || this.options.cardView) {
             this.$header.hide();
             this.$tableHeader.hide();
             this.$tableLoading.css('top', 0);
-        } else {
+          } else {
             this.$header.show();
             this.$tableHeader.show();
             this.$tableLoading.css('top', this.$header.outerHeight() + 1);
             // Assign the correct sortable arrow
             this.getCaret();
             $(window).on('resize.bootstrap-table', $.proxy(this.resetWidth, this));
+          }
+
+          this.$selectAll = this.$header.find('[name="btSelectAll"]');
+          this.$selectAll.off('click').on('click', function (_ref4) {
+            var currentTarget = _ref4.currentTarget;
+
+            var checked = $(currentTarget).prop('checked');
+            _this2[checked ? 'checkAll' : 'uncheckAll']();
+            _this2.updateSelected();
+          });
         }
-
-        this.$selectAll = this.$header.find('[name="btSelectAll"]');
-        this.$selectAll.off('click').on('click', function () {
-                var checked = $(this).prop('checked');
-                that[checked ? 'checkAll' : 'uncheckAll']();
-                that.updateSelected();
-            });
-    };
-
-    BootstrapTable.prototype.initFooter = function () {
-        if (!this.options.showFooter || this.options.cardView) {
+      }, {
+        key: 'initFooter',
+        value: function initFooter() {
+          if (!this.options.showFooter || this.options.cardView) {
             this.$tableFooter.hide();
-        } else {
+          } else {
             this.$tableFooter.show();
+          }
         }
-    };
-
-    /**
-     * @param data
-     * @param type: append / prepend
-     */
-    BootstrapTable.prototype.initData = function (data, type) {
-        if (type === 'append') {
+      }, {
+        key: 'initData',
+        value: function initData(data, type) {
+          if (type === 'append') {
             this.options.data = this.options.data.concat(data);
-        } else if (type === 'prepend') {
+          } else if (type === 'prepend') {
             this.options.data = [].concat(data).concat(this.options.data);
-        } else {
+          } else {
             this.options.data = data || this.options.data;
-        }
+          }
 
-        this.data = this.options.data;
+          this.data = this.options.data;
 
-        if (this.options.sidePagination === 'server') {
+          if (this.options.sidePagination === 'server') {
             return;
+          }
+          this.initSort();
         }
-        this.initSort();
-    };
+      }, {
+        key: 'initSort',
+        value: function initSort() {
+          var _this3 = this;
 
-    BootstrapTable.prototype.initSort = function () {
-        var that = this,
-            name = this.options.sortName,
-            order = this.options.sortOrder === 'desc' ? -1 : 1,
-            index = $.inArray(this.options.sortName, this.header.fields),
-            timeoutId = 0;
+          var name = this.options.sortName;
+          var order = this.options.sortOrder === 'desc' ? -1 : 1;
+          var index = this.header.fields.indexOf(this.options.sortName);
+          var timeoutId = 0;
 
-        if (this.options.customSort !== $.noop) {
+          if (this.options.customSort !== $.noop) {
             this.options.customSort.apply(this, [this.options.sortName, this.options.sortOrder]);
             return;
-        }
+          }
 
-        if (index !== -1) {
+          if (index !== -1) {
             if (this.options.sortStable) {
-                $.each(this.data, function (i, row) {
-                    row._position = i;
-                });
+              this.data.forEach(function (row, i) {
+                row._position = i;
+              });
             }
 
             this.data.sort(function (a, b) {
-                if (that.header.sortNames[index]) {
-                    name = that.header.sortNames[index];
-                }
-                var aa = getItemField(a, name, that.options.escape),
-                    bb = getItemField(b, name, that.options.escape),
-                    value = calculateObjectValue(that.header, that.header.sorters[index], [aa, bb, a, b]);
+              if (_this3.header.sortNames[index]) {
+                name = _this3.header.sortNames[index];
+              }
+              var aa = Utils.getItemField(a, name, _this3.options.escape);
+              var bb = Utils.getItemField(b, name, _this3.options.escape);
+              var value = Utils.calculateObjectValue(_this3.header, _this3.header.sorters[index], [aa, bb, a, b]);
 
-                if (value !== undefined) {
-                    if (that.options.sortStable && value === 0) {
-                        return a._position - b._position;
-                    }
-                    return order * value;
+              if (value !== undefined) {
+                if (_this3.options.sortStable && value === 0) {
+                  return a._position - b._position;
                 }
+                return order * value;
+              }
 
-                // Fix #161: undefined or null string sort bug.
-                if (aa === undefined || aa === null) {
-                    aa = '';
-                }
-                if (bb === undefined || bb === null) {
-                    bb = '';
-                }
+              // Fix #161: undefined or null string sort bug.
+              if (aa === undefined || aa === null) {
+                aa = '';
+              }
+              if (bb === undefined || bb === null) {
+                bb = '';
+              }
 
-                if (that.options.sortStable && aa === bb) {
-                    aa = a._position;
-                    bb = b._position;
-                    return a._position - b._position;
-                }
+              if (_this3.options.sortStable && aa === bb) {
+                aa = a._position;
+                bb = b._position;
+                return a._position - b._position;
+              }
 
-                // IF both values are numeric, do a numeric comparison
-                if ($.isNumeric(aa) && $.isNumeric(bb)) {
-                    // Convert numerical values form string to float.
-                    aa = parseFloat(aa);
-                    bb = parseFloat(bb);
-                    if (aa < bb) {
-                        return order * -1;
-                    }
-                    return order;
+              // IF both values are numeric, do a numeric comparison
+              if ($.isNumeric(aa) && $.isNumeric(bb)) {
+                // Convert numerical values form string to float.
+                aa = parseFloat(aa);
+                bb = parseFloat(bb);
+                if (aa < bb) {
+                  return order * -1;
                 }
-
-                if (aa === bb) {
-                    return 0;
-                }
-
-                // If value is not a string, convert to string
-                if (typeof aa !== 'string') {
-                    aa = aa.toString();
-                }
-
-                if (aa.localeCompare(bb) === -1) {
-                    return order * -1;
-                }
-
                 return order;
+              }
+
+              if (aa === bb) {
+                return 0;
+              }
+
+              // If value is not a string, convert to string
+              if (typeof aa !== 'string') {
+                aa = aa.toString();
+              }
+
+              if (aa.localeCompare(bb) === -1) {
+                return order * -1;
+              }
+
+              return order;
             });
 
             if (this.options.sortClass !== undefined) {
-                clearTimeout(timeoutId);
-                timeoutId = setTimeout(function () {
-                    that.$el.removeClass(that.options.sortClass);
-                    var index = that.$header.find(sprintf('[data-field="%s"]',
-                        that.options.sortName).index() + 1);
-                    that.$el.find(sprintf('tr td:nth-child(%s)', index))
-                        .addClass(that.options.sortClass);
-                }, 250);
+              clearTimeout(timeoutId);
+              timeoutId = setTimeout(function () {
+                _this3.$el.removeClass(_this3.options.sortClass);
+                var index = _this3.$header.find(Utils.sprintf('[data-field="%s"]', _this3.options.sortName).index() + 1);
+                _this3.$el.find(Utils.sprintf('tr td:nth-child(%s)', index)).addClass(_this3.options.sortClass);
+              }, 250);
             }
+          }
         }
-    };
+      }, {
+        key: 'onSort',
+        value: function onSort(_ref5) {
+          var type = _ref5.type,
+              currentTarget = _ref5.currentTarget;
 
-    BootstrapTable.prototype.onSort = function (event) {
-        var $this = event.type === "keypress" ? $(event.currentTarget) : $(event.currentTarget).parent(),
-            $this_ = this.$header.find('th').eq($this.index());
+          var $this = type === 'keypress' ? $(currentTarget) : $(currentTarget).parent();
+          var $this_ = this.$header.find('th').eq($this.index());
 
-        this.$header.add(this.$header_).find('span.order').remove();
+          this.$header.add(this.$header_).find('span.order').remove();
 
-        if (this.options.sortName === $this.data('field')) {
+          if (this.options.sortName === $this.data('field')) {
             this.options.sortOrder = this.options.sortOrder === 'asc' ? 'desc' : 'asc';
-        } else {
+          } else {
             this.options.sortName = $this.data('field');
             if (this.options.rememberOrder) {
-                this.options.sortOrder = $this.data('order') === 'asc' ? 'desc' : 'asc';
+              this.options.sortOrder = $this.data('order') === 'asc' ? 'desc' : 'asc';
             } else {
-                this.options.sortOrder = this.columns[this.fieldsColumnsIndex[$this.data('field')]].order;
+              this.options.sortOrder = this.columns[this.fieldsColumnsIndex[$this.data('field')]].order;
             }
-        }
-        this.trigger('sort', this.options.sortName, this.options.sortOrder);
+          }
+          this.trigger('sort', this.options.sortName, this.options.sortOrder);
 
-        $this.add($this_).data('order', this.options.sortOrder);
+          $this.add($this_).data('order', this.options.sortOrder);
 
-        // Assign the correct sortable arrow
-        this.getCaret();
+          // Assign the correct sortable arrow
+          this.getCaret();
 
-        if (this.options.sidePagination === 'server') {
+          if (this.options.sidePagination === 'server') {
             this.initServer(this.options.silentSort);
             return;
+          }
+
+          this.initSort();
+          this.initBody();
         }
+      }, {
+        key: 'initToolbar',
+        value: function initToolbar() {
+          var _this4 = this;
 
-        this.initSort();
-        this.initBody();
-    };
+          var html = [];
+          var timeoutId = 0;
+          var $keepOpen = void 0;
+          var $search = void 0;
+          var switchableCount = 0;
 
-    BootstrapTable.prototype.initToolbar = function () {
-        var that = this,
-            html = [],
-            timeoutId = 0,
-            $keepOpen,
-            $search,
-            switchableCount = 0;
-
-        if (this.$toolbar.find('.bs-bars').children().length) {
+          if (this.$toolbar.find('.bs-bars').children().length) {
             $('body').append($(this.options.toolbar));
-        }
-        this.$toolbar.html('');
+          }
+          this.$toolbar.html('');
 
-        if (typeof this.options.toolbar === 'string' || typeof this.options.toolbar === 'object') {
-            $(sprintf('<div class="bs-bars %s-%s"></div>', bs.pullClass, this.options.toolbarAlign))
-                .appendTo(this.$toolbar)
-                .append($(this.options.toolbar));
-        }
+          if (typeof this.options.toolbar === 'string' || _typeof(this.options.toolbar) === 'object') {
+            $(Utils.sprintf('<div class="bs-bars %s-%s"></div>', bootstrap.classes.pull, this.options.toolbarAlign)).appendTo(this.$toolbar).append($(this.options.toolbar));
+          }
 
-        // showColumns, showToggle, showRefresh
-        html = [sprintf('<div class="columns columns-%s btn-group %s-%s">',
-            this.options.buttonsAlign, bs.pullClass, this.options.buttonsAlign)];
+          // showColumns, showToggle, showRefresh
+          html = [Utils.sprintf('<div class="columns columns-%s btn-group %s-%s">', this.options.buttonsAlign, bootstrap.classes.pull, this.options.buttonsAlign)];
 
-        if (typeof this.options.icons === 'string') {
-            this.options.icons = calculateObjectValue(null, this.options.icons);
-        }
+          if (typeof this.options.icons === 'string') {
+            this.options.icons = Utils.calculateObjectValue(null, this.options.icons);
+          }
 
-        if (this.options.showPaginationSwitch) {
-            html.push(sprintf('<button class="btn' +
-                    sprintf(' btn-%s', this.options.buttonsClass) +
-                    sprintf(' btn-%s', this.options.iconSize) +
-                    '" type="button" name="paginationSwitch" aria-label="pagination Switch" title="%s">',
-                    this.options.formatPaginationSwitch()),
-                sprintf('<i class="%s %s"></i>', this.options.iconsPrefix, this.options.icons.paginationSwitchDown),
-                '</button>');
-        }
+          if (this.options.showPaginationSwitch) {
+            html.push(Utils.sprintf('<button class="btn' + Utils.sprintf(' btn-%s', this.options.buttonsClass) + Utils.sprintf(' btn-%s', this.options.iconSize) + '" type="button" name="paginationSwitch" aria-label="pagination Switch" title="%s">', this.options.formatPaginationSwitch()), Utils.sprintf('<i class="%s %s"></i>', this.options.iconsPrefix, this.options.icons.paginationSwitchDown), '</button>');
+          }
 
-        if (this.options.showFullscreen) {
-            this.$toolbar.find('button[name="fullscreen"]')
-                .off('click').on('click', $.proxy(this.toggleFullscreen, this));
-        }
+          if (this.options.showFullscreen) {
+            this.$toolbar.find('button[name="fullscreen"]').off('click').on('click', $.proxy(this.toggleFullscreen, this));
+          }
 
-        if (this.options.showRefresh) {
-            html.push(sprintf('<button class="btn' +
-                    sprintf(' btn-%s', this.options.buttonsClass) +
-                    sprintf(' btn-%s', this.options.iconSize) +
-                    '" type="button" name="refresh" aria-label="refresh" title="%s">',
-                    this.options.formatRefresh()),
-                sprintf('<i class="%s %s"></i>', this.options.iconsPrefix, this.options.icons.refresh),
-                '</button>');
-        }
+          if (this.options.showRefresh) {
+            html.push(Utils.sprintf('<button class="btn' + Utils.sprintf(' btn-%s', this.options.buttonsClass) + Utils.sprintf(' btn-%s', this.options.iconSize) + '" type="button" name="refresh" aria-label="refresh" title="%s">', this.options.formatRefresh()), Utils.sprintf('<i class="%s %s"></i>', this.options.iconsPrefix, this.options.icons.refresh), '</button>');
+          }
 
-        if (this.options.showToggle) {
-            html.push(sprintf('<button class="btn' +
-                    sprintf(' btn-%s', this.options.buttonsClass) +
-                    sprintf(' btn-%s', this.options.iconSize) +
-                    '" type="button" name="toggle" aria-label="toggle" title="%s">',
-                    this.options.formatToggle()),
-                sprintf('<i class="%s %s"></i>', this.options.iconsPrefix, this.options.icons.toggle),
-                '</button>');
-        }
+          if (this.options.showToggle) {
+            html.push(Utils.sprintf('<button class="btn' + Utils.sprintf(' btn-%s', this.options.buttonsClass) + Utils.sprintf(' btn-%s', this.options.iconSize) + '" type="button" name="toggle" aria-label="toggle" title="%s">', this.options.formatToggle()), Utils.sprintf('<i class="%s %s"></i>', this.options.iconsPrefix, this.options.icons.toggleOff), '</button>');
+          }
 
-        if (this.options.showFullscreen) {
-            html.push(sprintf('<button class="btn' +
-                    sprintf(' btn-%s', this.options.buttonsClass) +
-                    sprintf(' btn-%s', this.options.iconSize) +
-                    '" type="button" name="fullscreen" aria-label="fullscreen" title="%s">',
-                    this.options.formatFullscreen()),
-                    sprintf('<i class="%s %s"></i>', this.options.iconsPrefix, this.options.icons.fullscreen),
-                    '</button>');
-        }
+          if (this.options.showFullscreen) {
+            html.push(Utils.sprintf('<button class="btn' + Utils.sprintf(' btn-%s', this.options.buttonsClass) + Utils.sprintf(' btn-%s', this.options.iconSize) + '" type="button" name="fullscreen" aria-label="fullscreen" title="%s">', this.options.formatFullscreen()), Utils.sprintf('<i class="%s %s"></i>', this.options.iconsPrefix, this.options.icons.fullscreen), '</button>');
+          }
 
-        if (this.options.showColumns) {
-            html.push(sprintf('<div class="keep-open btn-group" title="%s">',
-                    this.options.formatColumns()),
-                '<button type="button" aria-label="columns" class="btn' +
-                sprintf(' btn-%s', this.options.buttonsClass) +
-                sprintf(' btn-%s', this.options.iconSize) +
-                ' dropdown-toggle" data-toggle="dropdown">',
-                sprintf('<i class="%s %s"></i>', this.options.iconsPrefix, this.options.icons.columns),
-                ' <span class="caret"></span>',
-                '</button>',
-                bs.toobarDropdowHtml[0]);
+          if (this.options.showColumns) {
+            html.push(Utils.sprintf('<div class="keep-open btn-group" title="%s">', this.options.formatColumns()), '<button type="button" aria-label="columns" class="btn' + Utils.sprintf(' btn-%s', this.options.buttonsClass) + Utils.sprintf(' btn-%s', this.options.iconSize) + ' dropdown-toggle" data-toggle="dropdown">', Utils.sprintf('<i class="%s %s"></i>', this.options.iconsPrefix, this.options.icons.columns), ' <span class="caret"></span>', '</button>', bootstrap.html.toobarDropdow[0]);
 
-            $.each(this.columns, function (i, column) {
-                if (column.radio || column.checkbox) {
-                    return;
-                }
+            this.columns.forEach(function (column, i) {
+              if (column.radio || column.checkbox) {
+                return;
+              }
 
-                if (that.options.cardView && !column.cardVisible) {
-                    return;
-                }
+              if (_this4.options.cardView && !column.cardVisible) {
+                return;
+              }
 
-                var checked = column.visible ? ' checked="checked"' : '';
+              var checked = column.visible ? ' checked="checked"' : '';
 
-                if (column.switchable) {
-                    html.push(sprintf(bs.toobarDropdowItemHtml,
-                        sprintf('<input type="checkbox" data-field="%s" value="%s"%s> %s',
-                        column.field, i, checked, column.title)));
-                    switchableCount++;
-                }
+              if (column.switchable) {
+                html.push(Utils.sprintf(bootstrap.html.toobarDropdowItem, Utils.sprintf('<input type="checkbox" data-field="%s" value="%s"%s> %s', column.field, i, checked, column.title)));
+                switchableCount++;
+              }
             });
-            html.push(bs.toobarDropdowHtml[1], '</div>');
-        }
+            html.push(bootstrap.html.toobarDropdow[1], '</div>');
+          }
 
-        html.push('</div>');
+          html.push('</div>');
 
-        // Fix #188: this.showToolbar is for extensions
-        if (this.showToolbar || html.length > 2) {
+          // Fix #188: this.showToolbar is for extensions
+          if (this.showToolbar || html.length > 2) {
             this.$toolbar.append(html.join(''));
-        }
+          }
 
-        if (this.options.showPaginationSwitch) {
-            this.$toolbar.find('button[name="paginationSwitch"]')
-                .off('click').on('click', $.proxy(this.togglePagination, this));
-        }
+          if (this.options.showPaginationSwitch) {
+            this.$toolbar.find('button[name="paginationSwitch"]').off('click').on('click', $.proxy(this.togglePagination, this));
+          }
 
-        if (this.options.showRefresh) {
-            this.$toolbar.find('button[name="refresh"]')
-                .off('click').on('click', $.proxy(this.refresh, this));
-        }
+          if (this.options.showRefresh) {
+            this.$toolbar.find('button[name="refresh"]').off('click').on('click', $.proxy(this.refresh, this));
+          }
 
-        if (this.options.showToggle) {
-            this.$toolbar.find('button[name="toggle"]')
-                .off('click').on('click', function () {
-                    that.toggleView();
-                });
-        }
+          if (this.options.showToggle) {
+            this.$toolbar.find('button[name="toggle"]').off('click').on('click', function () {
+              _this4.toggleView();
+            });
+          }
 
-        if (this.options.showColumns) {
+          if (this.options.showColumns) {
             $keepOpen = this.$toolbar.find('.keep-open');
 
             if (switchableCount <= this.options.minimumCountColumns) {
-                $keepOpen.find('input').prop('disabled', true);
+              $keepOpen.find('input').prop('disabled', true);
             }
 
-            $keepOpen.find('li').off('click').on('click', function (event) {
-                event.stopImmediatePropagation();
+            $keepOpen.find('li').off('click').on('click', function (e) {
+              e.stopImmediatePropagation();
             });
-            $keepOpen.find('input').off('click').on('click', function () {
-                var $this = $(this);
+            $keepOpen.find('input').off('click').on('click', function (_ref6) {
+              var currentTarget = _ref6.currentTarget;
 
-                that.toggleColumn($(this).val(), $this.prop('checked'), false);
-                that.trigger('column-switch', $(this).data('field'), $this.prop('checked'));
+              var $this = $(currentTarget);
+
+              _this4.toggleColumn($this.val(), $this.prop('checked'), false);
+              _this4.trigger('column-switch', $this.data('field'), $this.prop('checked'));
             });
-        }
+          }
 
-        if (this.options.search) {
+          if (this.options.search) {
             html = [];
-            html.push(
-                sprintf('<div class="%s-%s search">', bs.pullClass, this.options.searchAlign),
-                sprintf('<input class="form-control' +
-                    sprintf(' input-%s', this.options.iconSize) +
-                    '" type="text" placeholder="%s">',
-                    this.options.formatSearch()),
-                '</div>');
+            html.push(Utils.sprintf('<div class="%s-%s search">', bootstrap.classes.pull, this.options.searchAlign), Utils.sprintf('<input class="form-control' + Utils.sprintf(' input-%s', this.options.iconSize) + '" type="text" placeholder="%s">', this.options.formatSearch()), '</div>');
 
             this.$toolbar.append(html.join(''));
             $search = this.$toolbar.find('.search input');
             $search.off('keyup drop blur').on('keyup drop blur', function (event) {
-                if (that.options.searchOnEnterKey && event.keyCode !== 13) {
-                    return;
-                }
+              if (_this4.options.searchOnEnterKey && event.keyCode !== 13) {
+                return;
+              }
 
-                if ($.inArray(event.keyCode, [37, 38, 39, 40]) > -1) {
-                    return;
-                }
+              if ([37, 38, 39, 40].includes(event.keyCode)) {
+                return;
+              }
 
-                clearTimeout(timeoutId); // doesn't matter if it's 0
-                timeoutId = setTimeout(function () {
-                    that.onSearch(event);
-                }, that.options.searchTimeOut);
+              clearTimeout(timeoutId); // doesn't matter if it's 0
+              timeoutId = setTimeout(function () {
+                _this4.onSearch(event);
+              }, _this4.options.searchTimeOut);
             });
 
-            if (isIEBrowser()) {
-                $search.off('mouseup').on('mouseup', function (event) {
-                    clearTimeout(timeoutId); // doesn't matter if it's 0
-                    timeoutId = setTimeout(function () {
-                        that.onSearch(event);
-                    }, that.options.searchTimeOut);
-                });
+            if (Utils.isIEBrowser()) {
+              $search.off('mouseup').on('mouseup', function (event) {
+                clearTimeout(timeoutId); // doesn't matter if it's 0
+                timeoutId = setTimeout(function () {
+                  _this4.onSearch(event);
+                }, _this4.options.searchTimeOut);
+              });
             }
+          }
         }
-    };
+      }, {
+        key: 'onSearch',
+        value: function onSearch(_ref7) {
+          var currentTarget = _ref7.currentTarget,
+              firedByInitSearchText = _ref7.firedByInitSearchText;
 
-    BootstrapTable.prototype.onSearch = function (event) {
-        var text = $.trim($(event.currentTarget).val());
+          var text = $.trim($(currentTarget).val());
 
-        // trim search input
-        if (this.options.trimOnSearch && $(event.currentTarget).val() !== text) {
-            $(event.currentTarget).val(text);
-        }
+          // trim search input
+          if (this.options.trimOnSearch && $(currentTarget).val() !== text) {
+            $(currentTarget).val(text);
+          }
 
-        if (text === this.searchText) {
+          if (text === this.searchText) {
             return;
-        }
-        this.searchText = text;
-        this.options.searchText = text;
+          }
+          this.searchText = text;
+          this.options.searchText = text;
 
-        this.options.pageNumber = 1;
-        this.initSearch();
-        if (event.firedByInitSearchText) {
+          if (!firedByInitSearchText) {
+            this.options.pageNumber = 1;
+          }
+          this.initSearch();
+          if (firedByInitSearchText) {
             if (this.options.sidePagination === 'client') {
-                this.updatePagination();
+              this.updatePagination();
             }
-        } else {
+          } else {
             this.updatePagination();
+          }
+          this.trigger('search', text);
         }
-        this.trigger('search', text);
-    };
+      }, {
+        key: 'initSearch',
+        value: function initSearch() {
+          var _this5 = this;
 
-    BootstrapTable.prototype.initSearch = function () {
-        var that = this;
-
-        if (this.options.sidePagination !== 'server') {
+          if (this.options.sidePagination !== 'server') {
             if (this.options.customSearch !== $.noop) {
-                window[this.options.customSearch].apply(this, [this.searchText]);
-                return;
+              Utils.calculateObjectValue(this.options, this.options.customSearch, [this.searchText]);
+              return;
             }
 
-            var s = this.searchText && (this.options.escape ?
-                escapeHTML(this.searchText) : this.searchText).toLowerCase();
+            var s = this.searchText && (this.options.escape ? Utils.escapeHTML(this.searchText) : this.searchText).toLowerCase();
             var f = $.isEmptyObject(this.filterColumns) ? null : this.filterColumns;
 
             // Check filter
-            this.data = f ? $.grep(this.options.data, function (item, i) {
-                for (var key in f) {
-                    if ($.isArray(f[key]) && $.inArray(item[key], f[key]) === -1 ||
-                            !$.isArray(f[key]) && item[key] !== f[key]) {
-                        return false;
-                    }
+            this.data = f ? this.options.data.filter(function (item, i) {
+              for (var key in f) {
+                if (Array.isArray(f[key]) && !f[key].includes(item[key]) || !Array.isArray(f[key]) && item[key] !== f[key]) {
+                  return false;
                 }
-                return true;
+              }
+              return true;
             }) : this.options.data;
 
-            this.data = s ? $.grep(this.data, function (item, i) {
-                for (var j = 0; j < that.header.fields.length; j++) {
-
-                    if (!that.header.searchables[j]) {
-                        continue;
-                    }
-
-                    var key = $.isNumeric(that.header.fields[j]) ? parseInt(that.header.fields[j], 10) : that.header.fields[j];
-                    var column = that.columns[that.fieldsColumnsIndex[key]];
-                    var value;
-
-                    if (typeof key === 'string') {
-                        value = item;
-                        var props = key.split('.');
-                        for (var prop_index = 0; prop_index < props.length; prop_index++) {
-                            if (value[props[prop_index]] != null) {
-                                value = value[props[prop_index]];
-                            }
-                        }
-
-                        // Fix #142: respect searchForamtter boolean
-                        if (column && column.searchFormatter) {
-                            value = calculateObjectValue(column,
-                                that.header.formatters[j], [value, item, i], value);
-                        }
-                    } else {
-                        value = item[key];
-                    }
-
-                    if (typeof value === 'string' || typeof value === 'number') {
-                        if (that.options.strictSearch) {
-                            if ((value + '').toLowerCase() === s) {
-                                return true;
-                            }
-                        } else {
-                            if ((value + '').toLowerCase().indexOf(s) !== -1) {
-                                return true;
-                            }
-                        }
-                    }
+            this.data = s ? this.data.filter(function (item, i) {
+              for (var j = 0; j < _this5.header.fields.length; j++) {
+                if (!_this5.header.searchables[j]) {
+                  continue;
                 }
-                return false;
-            }) : this.data;
-        }
-    };
 
-    BootstrapTable.prototype.initPagination = function () {
-        if (!this.options.pagination) {
+                var key = $.isNumeric(_this5.header.fields[j]) ? parseInt(_this5.header.fields[j], 10) : _this5.header.fields[j];
+                var column = _this5.columns[_this5.fieldsColumnsIndex[key]];
+                var value = void 0;
+
+                if (typeof key === 'string') {
+                  value = item;
+                  var props = key.split('.');
+                  for (var _i2 = 0; _i2 < props.length; _i2++) {
+                    if (value[props[_i2]] !== null) {
+                      value = value[props[_i2]];
+                    }
+                  }
+                } else {
+                  value = item[key];
+                }
+
+                // Fix #142: respect searchForamtter boolean
+                if (column && column.searchFormatter) {
+                  value = Utils.calculateObjectValue(column, _this5.header.formatters[j], [value, item, i], value);
+                }
+
+                if (typeof value === 'string' || typeof value === 'number') {
+                  if (_this5.options.strictSearch) {
+                    if (('' + value).toLowerCase() === s) {
+                      return true;
+                    }
+                  } else {
+                    if (('' + value).toLowerCase().includes(s)) {
+                      return true;
+                    }
+                  }
+                }
+              }
+              return false;
+            }) : this.data;
+          }
+        }
+      }, {
+        key: 'initPagination',
+        value: function initPagination() {
+          var _this6 = this;
+
+          if (!this.options.pagination) {
             this.$pagination.hide();
             return;
-        } else {
-            this.$pagination.show();
-        }
+          }
+          this.$pagination.show();
 
-        var that = this,
-            html = [],
-            $allSelected = false,
-            i, from, to,
-            $pageList,
-            $pre,
-            $next,
-            $number,
-            data = this.getData(),
-            pageList = this.options.pageList;
+          var html = [];
+          var $allSelected = false;
+          var i = void 0;
+          var from = void 0;
+          var to = void 0;
+          var $pageList = void 0;
+          var $pre = void 0;
+          var $next = void 0;
+          var $number = void 0;
+          var data = this.getData();
+          var pageList = this.options.pageList;
 
-        if (this.options.sidePagination !== 'server') {
+          if (this.options.sidePagination !== 'server') {
             this.options.totalRows = data.length;
-        }
+          }
 
-        this.totalPages = 0;
-        if (this.options.totalRows) {
+          this.totalPages = 0;
+          if (this.options.totalRows) {
             if (this.options.pageSize === this.options.formatAllRows()) {
-                this.options.pageSize = this.options.totalRows;
-                $allSelected = true;
+              this.options.pageSize = this.options.totalRows;
+              $allSelected = true;
             } else if (this.options.pageSize === this.options.totalRows) {
-                // Fix #667 Table with pagination,
-                // multiple pages and a search that matches to one page throws exception
-                var pageLst = typeof this.options.pageList === 'string' ?
-                    this.options.pageList.replace('[', '').replace(']', '')
-                        .replace(/ /g, '').toLowerCase().split(',') : this.options.pageList;
-                if ($.inArray(this.options.formatAllRows().toLowerCase(), pageLst)  > -1) {
-                    $allSelected = true;
-                }
+              // Fix #667 Table with pagination,
+              // multiple pages and a search this matches to one page throws exception
+              var pageLst = typeof this.options.pageList === 'string' ? this.options.pageList.replace('[', '').replace(']', '').replace(/ /g, '').toLowerCase().split(',') : this.options.pageList;
+              if (pageLst.includes(this.options.formatAllRows().toLowerCase())) {
+                $allSelected = true;
+              }
             }
 
             this.totalPages = ~~((this.options.totalRows - 1) / this.options.pageSize) + 1;
 
             this.options.totalPages = this.totalPages;
-        }
-        if (this.totalPages > 0 && this.options.pageNumber > this.totalPages) {
+          }
+          if (this.totalPages > 0 && this.options.pageNumber > this.totalPages) {
             this.options.pageNumber = this.totalPages;
-        }
+          }
 
-        this.pageFrom = (this.options.pageNumber - 1) * this.options.pageSize + 1;
-        this.pageTo = this.options.pageNumber * this.options.pageSize;
-        if (this.pageTo > this.options.totalRows) {
+          this.pageFrom = (this.options.pageNumber - 1) * this.options.pageSize + 1;
+          this.pageTo = this.options.pageNumber * this.options.pageSize;
+          if (this.pageTo > this.options.totalRows) {
             this.pageTo = this.options.totalRows;
-        }
+          }
 
-        html.push(
-            sprintf('<div class="%s-%s pagination-detail">', bs.pullClass, this.options.paginationDetailHAlign),
-            '<span class="pagination-info">',
-            this.options.onlyInfoPagination ? this.options.formatDetailPagination(this.options.totalRows) :
-            this.options.formatShowingRows(this.pageFrom, this.pageTo, this.options.totalRows),
-            '</span>');
+          html.push(Utils.sprintf('<div class="%s-%s pagination-detail">', bootstrap.classes.pull, this.options.paginationDetailHAlign), '<span class="pagination-info">', this.options.onlyInfoPagination ? this.options.formatDetailPagination(this.options.totalRows) : this.options.formatShowingRows(this.pageFrom, this.pageTo, this.options.totalRows), '</span>');
 
-        if (!this.options.onlyInfoPagination) {
+          if (!this.options.onlyInfoPagination) {
             html.push('<span class="page-list">');
 
-            var pageNumber = [
-                    sprintf('<span class="btn-group %s">',
-                        this.options.paginationVAlign === 'top' || this.options.paginationVAlign === 'both' ?
-                            'dropdown' : 'dropup'),
-                    '<button type="button" class="btn' +
-                    sprintf(' btn-%s', this.options.buttonsClass) +
-                    sprintf(' btn-%s', this.options.iconSize) +
-                    ' dropdown-toggle" data-toggle="dropdown">',
-                    '<span class="page-size">',
-                    $allSelected ? this.options.formatAllRows() : this.options.pageSize,
-                    '</span>',
-                    ' <span class="caret"></span>',
-                    '</button>',
-                    bs.pageDropdownHtml[0]
-                ];
+            var pageNumber = [Utils.sprintf('<span class="btn-group %s">', this.options.paginationVAlign === 'top' || this.options.paginationVAlign === 'both' ? 'dropdown' : 'dropup'), '<button type="button" class="btn' + Utils.sprintf(' btn-%s', this.options.buttonsClass) + Utils.sprintf(' btn-%s', this.options.iconSize) + ' dropdown-toggle" data-toggle="dropdown">', '<span class="page-size">', $allSelected ? this.options.formatAllRows() : this.options.pageSize, '</span>', ' <span class="caret"></span>', '</button>', bootstrap.html.pageDropdown[0]];
 
             if (typeof this.options.pageList === 'string') {
-                var list = this.options.pageList.replace('[', '').replace(']', '')
-                    .replace(/ /g, '').split(',');
+              var list = this.options.pageList.replace('[', '').replace(']', '').replace(/ /g, '').split(',');
 
-                pageList = [];
-                $.each(list, function (i, value) {
-                    pageList.push((value.toUpperCase() === that.options.formatAllRows().toUpperCase() || value.toUpperCase() === "UNLIMITED") ?
-                        that.options.formatAllRows() : +value);
-                });
+              pageList = [];
+              var _iteratorNormalCompletion8 = true;
+              var _didIteratorError8 = false;
+              var _iteratorError8 = undefined;
+
+              try {
+                for (var _iterator8 = list[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+                  var value = _step8.value;
+
+                  pageList.push(value.toUpperCase() === this.options.formatAllRows().toUpperCase() || value.toUpperCase() === 'UNLIMITED' ? this.options.formatAllRows() : +value);
+                }
+              } catch (err) {
+                _didIteratorError8 = true;
+                _iteratorError8 = err;
+              } finally {
+                try {
+                  if (!_iteratorNormalCompletion8 && _iterator8.return) {
+                    _iterator8.return();
+                  }
+                } finally {
+                  if (_didIteratorError8) {
+                    throw _iteratorError8;
+                  }
+                }
+              }
             }
 
-            $.each(pageList, function (i, page) {
-                if (!that.options.smartDisplay || i === 0 || pageList[i - 1] < that.options.totalRows) {
-                    var active;
-                    if ($allSelected) {
-                        active = page === that.options.formatAllRows() ? 'active' : '';
-                    } else {
-                        active = page === that.options.pageSize ? 'active' : '';
-                    }
-                    pageNumber.push(sprintf(bs.pageDropdownItemHtml, active, page));
+            pageList.forEach(function (page, i) {
+              if (!_this6.options.smartDisplay || i === 0 || pageList[i - 1] < _this6.options.totalRows) {
+                var active = void 0;
+                if ($allSelected) {
+                  active = page === _this6.options.formatAllRows() ? 'active' : '';
+                } else {
+                  active = page === _this6.options.pageSize ? 'active' : '';
                 }
+                pageNumber.push(Utils.sprintf(bootstrap.html.pageDropdownItem, active, page));
+              }
             });
-            pageNumber.push(bs.pageDropdownHtml[1] + '</span>');
+            pageNumber.push(bootstrap.html.pageDropdown[1] + '</span>');
 
             html.push(this.options.formatRecordsPerPage(pageNumber.join('')));
             html.push('</span>');
 
-            html.push('</div>',
-                sprintf('<div class="%s-%s pagination">', bs.pullClass, this.options.paginationHAlign),
-                '<ul class="pagination' + sprintf(' pagination-%s', this.options.iconSize) + '">',
-                sprintf('<li class="page-item page-pre"><a class="page-link" href="#">%s</a></li>',
-                this.options.paginationPreText));
+            html.push('</div>', Utils.sprintf('<div class="%s-%s pagination">', bootstrap.classes.pull, this.options.paginationHAlign), '<ul class="pagination' + Utils.sprintf(' pagination-%s', this.options.iconSize) + '">', Utils.sprintf('<li class="page-item page-pre"><a class="page-link" href="#">%s</a></li>', this.options.paginationPreText));
 
             if (this.totalPages < 5) {
-                from = 1;
-                to = this.totalPages;
+              from = 1;
+              to = this.totalPages;
             } else {
-                from = this.options.pageNumber - 2;
-                to = from + 4;
-                if (from < 1) {
-                    from = 1;
-                    to = 5;
-                }
-                if (to > this.totalPages) {
-                    to = this.totalPages;
-                    from = to - 4;
-                }
+              from = this.options.pageNumber - 2;
+              to = from + 4;
+              if (from < 1) {
+                from = 1;
+                to = 5;
+              }
+              if (to > this.totalPages) {
+                to = this.totalPages;
+                from = to - 4;
+              }
             }
 
             if (this.totalPages >= 6) {
-                if (this.options.pageNumber >= 3) {
-                    html.push(
-                        sprintf('<li class="page-item page-first%s">',
-                        1 === this.options.pageNumber ? ' active' : ''),
-                        '<a class="page-link" href="#">', 1, '</a>',
-                        '</li>');
+              if (this.options.pageNumber >= 3) {
+                html.push(Utils.sprintf('<li class="page-item page-first%s">', this.options.pageNumber === 1 ? ' active' : ''), '<a class="page-link" href="#">', 1, '</a>', '</li>');
 
-                    from++;
+                from++;
+              }
+
+              if (this.options.pageNumber >= 4) {
+                if (this.options.pageNumber === 4 || this.totalPages === 6 || this.totalPages === 7) {
+                  from--;
+                } else {
+                  html.push('<li class="page-item page-first-separator disabled">', '<a class="page-link" href="#">...</a>', '</li>');
                 }
 
-                if (this.options.pageNumber >= 4) {
-                    if (this.options.pageNumber == 4 || this.totalPages == 6 || this.totalPages == 7) {
-                        from--;
-                    } else {
-                        html.push('<li class="page-item page-first-separator disabled">',
-                            '<a class="page-link" href="#">...</a>',
-                            '</li>');
-                    }
-
-                    to--;
-                }
+                to--;
+              }
             }
 
             if (this.totalPages >= 7) {
-                if (this.options.pageNumber >= (this.totalPages - 2)) {
-                    from--;
-                }
+              if (this.options.pageNumber >= this.totalPages - 2) {
+                from--;
+              }
             }
 
-            if (this.totalPages == 6) {
-                if (this.options.pageNumber >= (this.totalPages - 2)) {
-                    to++;
-                }
+            if (this.totalPages === 6) {
+              if (this.options.pageNumber >= this.totalPages - 2) {
+                to++;
+              }
             } else if (this.totalPages >= 7) {
-                if (this.totalPages == 7 || this.options.pageNumber >= (this.totalPages - 3)) {
-                    to++;
-                }
+              if (this.totalPages === 7 || this.options.pageNumber >= this.totalPages - 3) {
+                to++;
+              }
             }
 
             for (i = from; i <= to; i++) {
-                html.push(sprintf('<li class="page-item%s">',
-                    i === this.options.pageNumber ? ' active' : ''),
-                    '<a class="page-link" href="#">', i, '</a>',
-                    '</li>');
+              html.push(Utils.sprintf('<li class="page-item%s">', i === this.options.pageNumber ? ' active' : ''), '<a class="page-link" href="#">', i, '</a>', '</li>');
             }
 
             if (this.totalPages >= 8) {
-                if (this.options.pageNumber <= (this.totalPages - 4)) {
-                    html.push('<li class="page-item page-last-separator disabled">',
-                        '<a class="page-link" href="#">...</a>',
-                        '</li>');
-                }
+              if (this.options.pageNumber <= this.totalPages - 4) {
+                html.push('<li class="page-item page-last-separator disabled">', '<a class="page-link" href="#">...</a>', '</li>');
+              }
             }
 
             if (this.totalPages >= 6) {
-                if (this.options.pageNumber <= (this.totalPages - 3)) {
-                    html.push(sprintf('<li class="page-item page-last%s">',
-                        this.totalPages === this.options.pageNumber ? ' active' : ''),
-                        '<a class="page-link" href="#">', this.totalPages, '</a>',
-                        '</li>');
-                }
+              if (this.options.pageNumber <= this.totalPages - 3) {
+                html.push(Utils.sprintf('<li class="page-item page-last%s">', this.totalPages === this.options.pageNumber ? ' active' : ''), '<a class="page-link" href="#">', this.totalPages, '</a>', '</li>');
+              }
             }
 
-            html.push(
-                sprintf('<li class="page-item page-next"><a class="page-link" href="#">%s</a></li>',
-                this.options.paginationNextText),
-                '</ul>',
-                '</div>');
-        }
-        this.$pagination.html(html.join(''));
+            html.push(Utils.sprintf('<li class="page-item page-next"><a class="page-link" href="#">%s</a></li>', this.options.paginationNextText), '</ul>', '</div>');
+          }
+          this.$pagination.html(html.join(''));
 
-        if (!this.options.onlyInfoPagination) {
+          if (!this.options.onlyInfoPagination) {
             $pageList = this.$pagination.find('.page-list a');
             $pre = this.$pagination.find('.page-pre');
             $next = this.$pagination.find('.page-next');
             $number = this.$pagination.find('.page-item').not('.page-next, .page-pre');
 
             if (this.options.smartDisplay) {
-                if (this.totalPages <= 1) {
-                    this.$pagination.find('div.pagination').hide();
-                }
-                if (pageList.length < 2 || this.options.totalRows <= pageList[0]) {
-                    this.$pagination.find('span.page-list').hide();
-                }
+              if (this.totalPages <= 1) {
+                this.$pagination.find('div.pagination').hide();
+              }
+              if (pageList.length < 2 || this.options.totalRows <= pageList[0]) {
+                this.$pagination.find('span.page-list').hide();
+              }
 
-                // when data is empty, hide the pagination
-                this.$pagination[this.getData().length ? 'show' : 'hide']();
+              // when data is empty, hide the pagination
+              this.$pagination[this.getData().length ? 'show' : 'hide']();
             }
 
             if (!this.options.paginationLoop) {
-                if (this.options.pageNumber === 1) {
-                    $pre.addClass('disabled');
-                }
-                if (this.options.pageNumber === this.totalPages) {
-                    $next.addClass('disabled');
-                }
+              if (this.options.pageNumber === 1) {
+                $pre.addClass('disabled');
+              }
+              if (this.options.pageNumber === this.totalPages) {
+                $next.addClass('disabled');
+              }
             }
 
             if ($allSelected) {
-                this.options.pageSize = this.options.formatAllRows();
+              this.options.pageSize = this.options.formatAllRows();
             }
             // removed the events for last and first, onPageNumber executeds the same logic
             $pageList.off('click').on('click', $.proxy(this.onPageListChange, this));
             $pre.off('click').on('click', $.proxy(this.onPagePre, this));
             $next.off('click').on('click', $.proxy(this.onPageNext, this));
             $number.off('click').on('click', $.proxy(this.onPageNumber, this));
+          }
         }
-    };
-
-    BootstrapTable.prototype.updatePagination = function (event) {
-        // Fix #171: IE disabled button can be clicked bug.
-        if (event && $(event.currentTarget).hasClass('disabled')) {
+      }, {
+        key: 'updatePagination',
+        value: function updatePagination(event) {
+          // Fix #171: IE disabled button can be clicked bug.
+          if (event && $(event.currentTarget).hasClass('disabled')) {
             return;
-        }
+          }
 
-        if (!this.options.maintainSelected) {
+          if (!this.options.maintainSelected) {
             this.resetRows();
-        }
+          }
 
-        this.initPagination();
-        if (this.options.sidePagination === 'server') {
+          this.initPagination();
+          if (this.options.sidePagination === 'server') {
             this.initServer();
-        } else {
+          } else {
             this.initBody();
+          }
+
+          this.trigger('page-change', this.options.pageNumber, this.options.pageSize);
         }
+      }, {
+        key: 'onPageListChange',
+        value: function onPageListChange(event) {
+          event.preventDefault();
+          var $this = $(event.currentTarget);
 
-        this.trigger('page-change', this.options.pageNumber, this.options.pageSize);
-    };
+          $this.parent().addClass('active').siblings().removeClass('active');
+          this.options.pageSize = $this.text().toUpperCase() === this.options.formatAllRows().toUpperCase() ? this.options.formatAllRows() : +$this.text();
+          this.$toolbar.find('.page-size').text(this.options.pageSize);
 
-    BootstrapTable.prototype.onPageListChange = function (event) {
-        event.preventDefault();
-        var $this = $(event.currentTarget);
-
-        $this.parent().addClass('active').siblings().removeClass('active');
-        this.options.pageSize = $this.text().toUpperCase() === this.options.formatAllRows().toUpperCase() ?
-            this.options.formatAllRows() : +$this.text();
-        this.$toolbar.find('.page-size').text(this.options.pageSize);
-
-        this.updatePagination(event);
-        return false;
-    };
-
-    BootstrapTable.prototype.onPagePre = function (event) {
-        event.preventDefault();
-        if ((this.options.pageNumber - 1) === 0) {
+          this.updatePagination(event);
+          return false;
+        }
+      }, {
+        key: 'onPagePre',
+        value: function onPagePre(event) {
+          event.preventDefault();
+          if (this.options.pageNumber - 1 === 0) {
             this.options.pageNumber = this.options.totalPages;
-        } else {
+          } else {
             this.options.pageNumber--;
+          }
+          this.updatePagination(event);
+          return false;
         }
-        this.updatePagination(event);
-        return false;
-    };
-
-    BootstrapTable.prototype.onPageNext = function (event) {
-        event.preventDefault();
-        if ((this.options.pageNumber + 1) > this.options.totalPages) {
+      }, {
+        key: 'onPageNext',
+        value: function onPageNext(event) {
+          event.preventDefault();
+          if (this.options.pageNumber + 1 > this.options.totalPages) {
             this.options.pageNumber = 1;
-        } else {
+          } else {
             this.options.pageNumber++;
+          }
+          this.updatePagination(event);
+          return false;
         }
-        this.updatePagination(event);
-        return false;
-    };
-
-    BootstrapTable.prototype.onPageNumber = function (event) {
-        event.preventDefault();
-        if (this.options.pageNumber === +$(event.currentTarget).text()) {
+      }, {
+        key: 'onPageNumber',
+        value: function onPageNumber(event) {
+          event.preventDefault();
+          if (this.options.pageNumber === +$(event.currentTarget).text()) {
             return;
+          }
+          this.options.pageNumber = +$(event.currentTarget).text();
+          this.updatePagination(event);
+          return false;
         }
-        this.options.pageNumber = +$(event.currentTarget).text();
-        this.updatePagination(event);
-        return false;
-    };
+      }, {
+        key: 'initRow',
+        value: function initRow(item, i, data, parentDom) {
+          var _this7 = this;
 
-    BootstrapTable.prototype.initRow = function(item, i, data, parentDom) {
-        var that=this,
-            key,
-            html = [],
-            style = {},
-            csses = [],
-            data_ = '',
-            attributes = {},
-            htmlAttributes = [];
+          var html = [];
+          var style = {};
+          var csses = [];
+          var data_ = '';
+          var attributes = {};
+          var htmlAttributes = [];
 
-        if ($.inArray(item, this.hiddenRows) > -1) {
+          if (this.hiddenRows.includes(item)) {
             return;
-        }
+          }
 
-        style = calculateObjectValue(this.options, this.options.rowStyle, [item, i], style);
+          style = Utils.calculateObjectValue(this.options, this.options.rowStyle, [item, i], style);
 
-        if (style && style.css) {
-            for (key in style.css) {
-                csses.push(key + ': ' + style.css[key]);
+          if (style && style.css) {
+            var _iteratorNormalCompletion9 = true;
+            var _didIteratorError9 = false;
+            var _iteratorError9 = undefined;
+
+            try {
+              for (var _iterator9 = Object.entries(style.css)[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+                var _ref8 = _step9.value;
+
+                var _ref9 = _slicedToArray(_ref8, 2);
+
+                var key = _ref9[0];
+                var value = _ref9[1];
+
+                csses.push(key + ': ' + value);
+              }
+            } catch (err) {
+              _didIteratorError9 = true;
+              _iteratorError9 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion9 && _iterator9.return) {
+                  _iterator9.return();
+                }
+              } finally {
+                if (_didIteratorError9) {
+                  throw _iteratorError9;
+                }
+              }
             }
-        }
+          }
 
-        attributes = calculateObjectValue(this.options,
-            this.options.rowAttributes, [item, i], attributes);
+          attributes = Utils.calculateObjectValue(this.options, this.options.rowAttributes, [item, i], attributes);
 
-        if (attributes) {
-            for (key in attributes) {
-                htmlAttributes.push(sprintf('%s="%s"', key, escapeHTML(attributes[key])));
+          if (attributes) {
+            var _iteratorNormalCompletion10 = true;
+            var _didIteratorError10 = false;
+            var _iteratorError10 = undefined;
+
+            try {
+              for (var _iterator10 = Object.entries(attributes)[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
+                var _ref10 = _step10.value;
+
+                var _ref11 = _slicedToArray(_ref10, 2);
+
+                var _key2 = _ref11[0];
+                var _value2 = _ref11[1];
+
+                htmlAttributes.push(_key2 + '="' + Utils.escapeHTML(_value2) + '"');
+              }
+            } catch (err) {
+              _didIteratorError10 = true;
+              _iteratorError10 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion10 && _iterator10.return) {
+                  _iterator10.return();
+                }
+              } finally {
+                if (_didIteratorError10) {
+                  throw _iteratorError10;
+                }
+              }
             }
-        }
+          }
 
-        if (item._data && !$.isEmptyObject(item._data)) {
-            $.each(item._data, function(k, v) {
+          if (item._data && !$.isEmptyObject(item._data)) {
+            var _iteratorNormalCompletion11 = true;
+            var _didIteratorError11 = false;
+            var _iteratorError11 = undefined;
+
+            try {
+              for (var _iterator11 = Object.entries(item._data)[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
+                var _ref12 = _step11.value;
+
+                var _ref13 = _slicedToArray(_ref12, 2);
+
+                var k = _ref13[0];
+                var v = _ref13[1];
+
                 // ignore data-index
                 if (k === 'index') {
-                    return;
+                  return;
                 }
-                data_ += sprintf(' data-%s="%s"', k, v);
-            });
-        }
+                data_ += ' data-' + k + '="' + v + '"';
+              }
+            } catch (err) {
+              _didIteratorError11 = true;
+              _iteratorError11 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion11 && _iterator11.return) {
+                  _iterator11.return();
+                }
+              } finally {
+                if (_didIteratorError11) {
+                  throw _iteratorError11;
+                }
+              }
+            }
+          }
 
-        html.push('<tr',
-            sprintf(' %s', htmlAttributes.join(' ')),
-            sprintf(' id="%s"', $.isArray(item) ? undefined : item._id),
-            sprintf(' class="%s"', style.classes || ($.isArray(item) ? undefined : item._class)),
-            sprintf(' data-index="%s"', i),
-            sprintf(' data-uniqueid="%s"', item[this.options.uniqueId]),
-            sprintf('%s', data_),
-            '>'
-        );
+          html.push('<tr', Utils.sprintf(' %s', htmlAttributes.length ? htmlAttributes.join(' ') : undefined), Utils.sprintf(' id="%s"', Array.isArray(item) ? undefined : item._id), Utils.sprintf(' class="%s"', style.classes || (Array.isArray(item) ? undefined : item._class)), ' data-index="' + i + '"', Utils.sprintf(' data-uniqueid="%s"', item[this.options.uniqueId]), Utils.sprintf('%s', data_), '>');
 
-        if (this.options.cardView) {
-            html.push(sprintf('<td colspan="%s"><div class="card-views">', this.header.fields.length));
-        }
+          if (this.options.cardView) {
+            html.push('<td colspan="' + this.header.fields.length + '"><div class="card-views">');
+          }
 
-        if (!this.options.cardView && this.options.detailView) {
+          if (!this.options.cardView && this.options.detailView) {
             html.push('<td>');
 
-            if (calculateObjectValue(null, this.options.detailFilter, [i, item])) {
-                html.push('<a class="detail-icon" href="#">',
-                sprintf('<i class="%s %s"></i>', this.options.iconsPrefix, this.options.icons.detailOpen),
-                '</a>');
+            if (Utils.calculateObjectValue(null, this.options.detailFilter, [i, item])) {
+              html.push('\n            <a class="detail-icon" href="#">\n            <i class="' + this.options.iconsPrefix + ' ' + this.options.icons.detailOpen + '"></i>\n            </a>\n          ');
             }
 
             html.push('</td>');
-        }
+          }
 
-        $.each(this.header.fields, function(j, field) {
-            var text = '',
-                value_ = getItemField(item, field, that.options.escape),
-                value = '',
-                type = '',
-                cellStyle = {},
-                id_ = '',
-                class_ = that.header.classes[j],
-                data_ = '',
-                rowspan_ = '',
-                colspan_ = '',
-                title_ = '',
-                column = that.columns[j];
+          this.header.fields.forEach(function (field, j) {
+            var text = '';
+            var value_ = Utils.getItemField(item, field, _this7.options.escape);
+            var value = '';
+            var type = '';
+            var cellStyle = {};
+            var id_ = '';
+            var class_ = _this7.header.classes[j];
+            var style_ = '';
+            var data_ = '';
+            var rowspan_ = '';
+            var colspan_ = '';
+            var title_ = '';
+            var column = _this7.columns[j];
 
-            if (that.fromHtml && typeof value_ === 'undefined') {
-                if((!column.checkbox) && (!column.radio)) {
-                    return;
-                }
+            if (_this7.fromHtml && typeof value_ === 'undefined') {
+              if (!column.checkbox && !column.radio) {
+                return;
+              }
             }
 
             if (!column.visible) {
-                return;
+              return;
             }
 
-            if (that.options.cardView && (!column.cardVisible)) {
-                return;
+            if (_this7.options.cardView && !column.cardVisible) {
+              return;
             }
 
             if (column.escape) {
-                value_ = escapeHTML(value_);
+              value_ = Utils.escapeHTML(value_);
             }
 
-            style = sprintf('style="%s"', csses.concat(that.header.styles[j]).join('; '));
-
+            if (csses.concat([_this7.header.styles[j]]).length) {
+              style_ = ' style="' + csses.concat([_this7.header.styles[j]]).join('; ') + '"';
+            }
             // handle td's id and class
             if (item['_' + field + '_id']) {
-                id_ = sprintf(' id="%s"', item['_' + field + '_id']);
+              id_ = Utils.sprintf(' id="%s"', item['_' + field + '_id']);
             }
             if (item['_' + field + '_class']) {
-                class_ = sprintf(' class="%s"', item['_' + field + '_class']);
+              class_ = Utils.sprintf(' class="%s"', item['_' + field + '_class']);
             }
             if (item['_' + field + '_rowspan']) {
-                rowspan_ = sprintf(' rowspan="%s"', item['_' + field + '_rowspan']);
+              rowspan_ = Utils.sprintf(' rowspan="%s"', item['_' + field + '_rowspan']);
             }
             if (item['_' + field + '_colspan']) {
-                colspan_ = sprintf(' colspan="%s"', item['_' + field + '_colspan']);
+              colspan_ = Utils.sprintf(' colspan="%s"', item['_' + field + '_colspan']);
             }
             if (item['_' + field + '_title']) {
-                title_ = sprintf(' title="%s"', item['_' + field + '_title']);
+              title_ = Utils.sprintf(' title="%s"', item['_' + field + '_title']);
             }
-            cellStyle = calculateObjectValue(that.header,
-                that.header.cellStyles[j], [value_, item, i, field], cellStyle);
+            cellStyle = Utils.calculateObjectValue(_this7.header, _this7.header.cellStyles[j], [value_, item, i, field], cellStyle);
             if (cellStyle.classes) {
-                class_ = sprintf(' class="%s"', cellStyle.classes);
+              class_ = ' class="' + cellStyle.classes + '"';
             }
             if (cellStyle.css) {
-                var csses_ = [];
-                for (var key in cellStyle.css) {
-                    csses_.push(key + ': ' + cellStyle.css[key]);
+              var csses_ = [];
+              var _iteratorNormalCompletion12 = true;
+              var _didIteratorError12 = false;
+              var _iteratorError12 = undefined;
+
+              try {
+                for (var _iterator12 = Object.entries(cellStyle.css)[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
+                  var _ref14 = _step12.value;
+
+                  var _ref15 = _slicedToArray(_ref14, 2);
+
+                  var _key3 = _ref15[0];
+                  var _value3 = _ref15[1];
+
+                  csses_.push(_key3 + ': ' + _value3);
                 }
-                style = sprintf('style="%s"', csses_.concat(that.header.styles[j]).join('; '));
+              } catch (err) {
+                _didIteratorError12 = true;
+                _iteratorError12 = err;
+              } finally {
+                try {
+                  if (!_iteratorNormalCompletion12 && _iterator12.return) {
+                    _iterator12.return();
+                  }
+                } finally {
+                  if (_didIteratorError12) {
+                    throw _iteratorError12;
+                  }
+                }
+              }
+
+              style_ = ' style="' + csses_.concat(_this7.header.styles[j]).join('; ') + '"';
             }
 
-            value = calculateObjectValue(column,
-                that.header.formatters[j], [value_, item, i, field], value_);
+            value = Utils.calculateObjectValue(column, _this7.header.formatters[j], [value_, item, i, field], value_);
 
             if (item['_' + field + '_data'] && !$.isEmptyObject(item['_' + field + '_data'])) {
-                $.each(item['_' + field + '_data'], function(k, v) {
-                    // ignore data-index
-                    if (k === 'index') {
-                        return;
-                    }
-                    data_ += sprintf(' data-%s="%s"', k, v);
-                });
+              var _iteratorNormalCompletion13 = true;
+              var _didIteratorError13 = false;
+              var _iteratorError13 = undefined;
+
+              try {
+                for (var _iterator13 = Object.entries(item['_' + field + '_data'])[Symbol.iterator](), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
+                  var _ref16 = _step13.value;
+
+                  var _ref17 = _slicedToArray(_ref16, 2);
+
+                  var _k2 = _ref17[0];
+                  var _v = _ref17[1];
+
+                  // ignore data-index
+                  if (_k2 === 'index') {
+                    return;
+                  }
+                  data_ += ' data-' + _k2 + '="' + _v + '"';
+                }
+              } catch (err) {
+                _didIteratorError13 = true;
+                _iteratorError13 = err;
+              } finally {
+                try {
+                  if (!_iteratorNormalCompletion13 && _iterator13.return) {
+                    _iterator13.return();
+                  }
+                } finally {
+                  if (_didIteratorError13) {
+                    throw _iteratorError13;
+                  }
+                }
+              }
             }
 
             if (column.checkbox || column.radio) {
-                type = column.checkbox ? 'checkbox' : type;
-                type = column.radio ? 'radio' : type;
+              type = column.checkbox ? 'checkbox' : type;
+              type = column.radio ? 'radio' : type;
 
-                text = [sprintf(that.options.cardView ?
-                        '<div class="card-view %s">' : '<td class="bs-checkbox %s">', column['class'] || ''),
-                    '<input' +
-                    sprintf(' data-index="%s"', i) +
-                    sprintf(' name="%s"', that.options.selectItemName) +
-                    sprintf(' type="%s"', type) +
-                    sprintf(' value="%s"', item[that.options.idField]) +
-                    sprintf(' checked="%s"', value === true ||
-                        (value_ || value && value.checked) ? 'checked' : undefined) +
-                    sprintf(' disabled="%s"', !column.checkboxEnabled ||
-                        (value && value.disabled) ? 'disabled' : undefined) +
-                    ' />',
-                    that.header.formatters[j] && typeof value === 'string' ? value : '',
-                    that.options.cardView ? '</div>' : '</td>'
-                ].join('');
+              var c = column['class'] || '';
+              var isChecked = value === true || value_ || value && value.checked;
+              var isDisabled = !column.checkboxEnabled || value && value.disabled;
 
-                item[that.header.stateField] = value === true || (!!value_ || value && value.checked);
+              text = [_this7.options.cardView ? '<div class="card-view ' + c + '">' : '<td class="bs-checkbox ' + c + '">', '<input\n              data-index="' + i + '"\n              name="' + _this7.options.selectItemName + '"\n              type="' + type + '"\n              ' + Utils.sprintf('value="%s"', item[_this7.options.idField]) + '\n              ' + Utils.sprintf('checked="%s"', isChecked ? 'checked' : undefined) + '\n              ' + Utils.sprintf('disabled="%s"', isDisabled ? 'disabled' : undefined) + ' />', _this7.header.formatters[j] && typeof value === 'string' ? value : '', _this7.options.cardView ? '</div>' : '</td>'].join('');
+
+              item[_this7.header.stateField] = value === true || !!value_ || value && value.checked;
             } else {
-                value = typeof value === 'undefined' || value === null ?
-                    that.options.undefinedText : value;
+              value = typeof value === 'undefined' || value === null ? _this7.options.undefinedText : value;
 
-                text = that.options.cardView ? ['<div class="card-view">',
-                    that.options.showHeader ? sprintf('<span class="title" %s>%s</span>', style,
-                        getPropertyFromOther(that.columns, 'field', 'title', field)) : '',
-                    sprintf('<span class="value">%s</span>', value),
-                    '</div>'
-                ].join('') : [sprintf('<td%s %s %s %s %s %s %s>',
-                        id_, class_, style, data_, rowspan_, colspan_, title_),
-                    value,
-                    '</td>'
-                ].join('');
+              if (_this7.options.cardView) {
+                var cardTitle = _this7.options.showHeader ? '<span class="title"' + style + '>' + Utils.getFieldTitle(_this7.columns, field) + '</span>' : '';
 
-                // Hide empty data on Card view when smartDisplay is set to true.
-                if (that.options.cardView && that.options.smartDisplay && value === '') {
-                    // Should set a placeholder for event binding correct fieldIndex
-                    text = '<div class="card-view"></div>';
+                text = '<div class="card-view">' + cardTitle + '<span class="value">' + value + '</span></div>';
+
+                if (_this7.options.smartDisplay && value === '') {
+                  text = '<div class="card-view"></div>';
                 }
+              } else {
+                text = '<td' + id_ + class_ + style_ + data_ + rowspan_ + colspan_ + title_ + '>' + value + '</td>';
+              }
             }
 
             html.push(text);
-        });
+          });
 
-        if (this.options.cardView) {
+          if (this.options.cardView) {
             html.push('</div></td>');
+          }
+          html.push('</tr>');
+
+          return html.join('');
         }
-        html.push('</tr>');
+      }, {
+        key: 'initBody',
+        value: function initBody(fixedScroll) {
+          var _this8 = this;
 
-        return html.join(' ');
-    };
+          var data = this.getData();
 
-    BootstrapTable.prototype.initBody = function (fixedScroll) {
-        var that = this,
-            html = [],
-            data = this.getData();
+          this.trigger('pre-body', data);
 
-        this.trigger('pre-body', data);
-
-        this.$body = this.$el.find('>tbody');
-        if (!this.$body.length) {
+          this.$body = this.$el.find('>tbody');
+          if (!this.$body.length) {
             this.$body = $('<tbody></tbody>').appendTo(this.$el);
-        }
+          }
 
-        //Fix #389 Bootstrap-table-flatJSON is not working
-
-        if (!this.options.pagination || this.options.sidePagination === 'server') {
+          // Fix #389 Bootstrap-table-flatJSON is not working
+          if (!this.options.pagination || this.options.sidePagination === 'server') {
             this.pageFrom = 1;
             this.pageTo = data.length;
-        }
+          }
 
-        var trFragments = $(document.createDocumentFragment());
-        var hasTr;
+          var trFragments = $(document.createDocumentFragment());
+          var hasTr = false;
 
-        for (var i = this.pageFrom - 1; i < this.pageTo; i++) {
+          for (var i = this.pageFrom - 1; i < this.pageTo; i++) {
             var item = data[i];
             var tr = this.initRow(item, i, data, trFragments);
             hasTr = hasTr || !!tr;
-            if (tr&&tr!==true) {
-                trFragments.append(tr);
+            if (tr && typeof tr === 'string') {
+              trFragments.append(tr);
             }
-        }
+          }
 
-        // show no records
-        if (!hasTr) {
-            trFragments.append('<tr class="no-records-found">' +
-                sprintf('<td colspan="%s">%s</td>',
-                this.$header.find('th').length,
-                this.options.formatNoMatches()) +
-                '</tr>');
-        }
+          // show no records
+          if (!hasTr) {
+            this.$body.html('<tr class="no-records-found">' + Utils.sprintf('<td colspan="%s">%s</td>', this.$header.find('th').length, this.options.formatNoMatches()) + '</tr>');
+          } else {
+            this.$body.html(trFragments);
+          }
 
-        this.$body.html(trFragments);
-
-        if (!fixedScroll) {
+          if (!fixedScroll) {
             this.scrollTo(0);
-        }
+          }
 
-        // click to select by column
-        this.$body.find('> tr[data-index] > td').off('click dblclick').on('click dblclick', function (e) {
-            var $td = $(this),
-                $tr = $td.parent(),
-                item = that.data[$tr.data('index')],
-                index = $td[0].cellIndex,
-                fields = that.getVisibleFields(),
-                field = fields[that.options.detailView && !that.options.cardView ? index - 1 : index],
-                column = that.columns[that.fieldsColumnsIndex[field]],
-                value = getItemField(item, field, that.options.escape);
+          // click to select by column
+          this.$body.find('> tr[data-index] > td').off('click dblclick').on('click dblclick', function (_ref18) {
+            var currentTarget = _ref18.currentTarget,
+                type = _ref18.type,
+                target = _ref18.target;
+
+            var $td = $(currentTarget);
+            var $tr = $td.parent();
+            var item = _this8.data[$tr.data('index')];
+            var index = $td[0].cellIndex;
+            var fields = _this8.getVisibleFields();
+            var field = fields[_this8.options.detailView && !_this8.options.cardView ? index - 1 : index];
+            var column = _this8.columns[_this8.fieldsColumnsIndex[field]];
+            var value = Utils.getItemField(item, field, _this8.options.escape);
 
             if ($td.find('.detail-icon').length) {
-                return;
+              return;
             }
 
-            that.trigger(e.type === 'click' ? 'click-cell' : 'dbl-click-cell', field, value, item, $td);
-            that.trigger(e.type === 'click' ? 'click-row' : 'dbl-click-row', item, $tr, field);
+            _this8.trigger(type === 'click' ? 'click-cell' : 'dbl-click-cell', field, value, item, $td);
+            _this8.trigger(type === 'click' ? 'click-row' : 'dbl-click-row', item, $tr, field);
 
             // if click to select - then trigger the checkbox/radio click
-            if (e.type === 'click' && that.options.clickToSelect && column.clickToSelect && that.options.ignoreClickToSelectOn(e.target)) {
-                var $selectItem = $tr.find(sprintf('[name="%s"]', that.options.selectItemName));
-                if ($selectItem.length) {
-                    $selectItem[0].click(); // #144: .trigger('click') bug
-                }
+            if (type === 'click' && _this8.options.clickToSelect && column.clickToSelect && !_this8.options.ignoreClickToSelectOn(target)) {
+              var $selectItem = $tr.find(Utils.sprintf('[name="%s"]', _this8.options.selectItemName));
+              if ($selectItem.length) {
+                $selectItem[0].click(); // #144: .trigger('click') bug
+              }
             }
-        });
+          });
 
-        this.$body.find('> tr[data-index] > td > .detail-icon').off('click').on('click', function (e) {
+          this.$body.find('> tr[data-index] > td > .detail-icon').off('click').on('click', function (e) {
             e.preventDefault();
 
-            var $this = $(this),
-                $tr = $this.parent().parent(),
-                index = $tr.data('index'),
-                row = data[index]; // Fix #980 Detail view, when searching, returns wrong row
+            var $this = $(e.currentTarget); // Fix #980 Detail view, when searching, returns wrong row
+            var $tr = $this.parent().parent();
+            var index = $tr.data('index');
+            var row = data[index];
 
             // remove and update
             if ($tr.next().is('tr.detail-view')) {
-                $this.find('i').attr('class', sprintf('%s %s', that.options.iconsPrefix, that.options.icons.detailOpen));
-                that.trigger('collapse-row', index, row, $tr.next());
-                $tr.next().remove();
+              $this.find('i').attr('class', Utils.sprintf('%s %s', _this8.options.iconsPrefix, _this8.options.icons.detailOpen));
+              _this8.trigger('collapse-row', index, row, $tr.next());
+              $tr.next().remove();
             } else {
-                $this.find('i').attr('class', sprintf('%s %s', that.options.iconsPrefix, that.options.icons.detailClose));
-                $tr.after(sprintf('<tr class="detail-view"><td colspan="%s"></td></tr>', $tr.find('td').length));
-                var $element = $tr.next().find('td');
-                var content = calculateObjectValue(that.options, that.options.detailFormatter, [index, row, $element], '');
-                if ($element.length === 1) {
-                    $element.append(content);
-                }
-                that.trigger('expand-row', index, row, $element);
+              $this.find('i').attr('class', Utils.sprintf('%s %s', _this8.options.iconsPrefix, _this8.options.icons.detailClose));
+              $tr.after(Utils.sprintf('<tr class="detail-view"><td colspan="%s"></td></tr>', $tr.find('td').length));
+              var $element = $tr.next().find('td');
+              var content = Utils.calculateObjectValue(_this8.options, _this8.options.detailFormatter, [index, row, $element], '');
+              if ($element.length === 1) {
+                $element.append(content);
+              }
+              _this8.trigger('expand-row', index, row, $element);
             }
-            that.resetView();
+            _this8.resetView();
             return false;
-        });
+          });
 
-        this.$selectItem = this.$body.find(sprintf('[name="%s"]', this.options.selectItemName));
-        this.$selectItem.off('click').on('click', function (event) {
-            event.stopImmediatePropagation();
+          this.$selectItem = this.$body.find(Utils.sprintf('[name="%s"]', this.options.selectItemName));
+          this.$selectItem.off('click').on('click', function (e) {
+            e.stopImmediatePropagation();
 
-            var $this = $(this),
-                checked = $this.prop('checked'),
-                row = that.data[$this.data('index')];
+            var $this = $(e.currentTarget);
+            _this8.check_($this.prop('checked'), $this.data('index'));
+          });
 
-            if ($(this).is(':radio') || that.options.singleSelect) {
-                $.each(that.options.data, function (i, row) {
-                    row[that.header.stateField] = false;
-                });
-            }
-
-            row[that.header.stateField] = checked;
-
-            if (that.options.singleSelect) {
-                that.$selectItem.not(this).each(function () {
-                    that.data[$(this).data('index')][that.header.stateField] = false;
-                });
-                that.$selectItem.filter(':checked').not(this).prop('checked', false);
-            }
-
-            that.updateSelected();
-            that.trigger(checked ? 'check' : 'uncheck', row, $this);
-        });
-
-        $.each(this.header.events, function (i, events) {
+          this.header.events.forEach(function (_events, i) {
+            var events = _events;
             if (!events) {
-                return;
+              return;
             }
             // fix bug, if events is defined with namespace
             if (typeof events === 'string') {
-                events = calculateObjectValue(null, events);
+              events = Utils.calculateObjectValue(null, events);
             }
 
-            var field = that.header.fields[i],
-                fieldIndex = $.inArray(field, that.getVisibleFields());
+            var field = _this8.header.fields[i];
+            var fieldIndex = _this8.getVisibleFields().indexOf(field);
 
             if (fieldIndex === -1) {
-                return;
+              return;
             }
 
-            if (that.options.detailView && !that.options.cardView) {
-                fieldIndex += 1;
+            if (_this8.options.detailView && !_this8.options.cardView) {
+              fieldIndex += 1;
             }
 
-            for (var key in events) {
-                that.$body.find('>tr:not(.no-records-found)').each(function () {
-                    var $tr = $(this),
-                        $td = $tr.find(that.options.cardView ? '.card-view' : 'td').eq(fieldIndex),
-                        index = key.indexOf(' '),
-                        name = key.substring(0, index),
-                        el = key.substring(index + 1),
-                        func = events[key];
+            var _loop = function _loop(key, event) {
+              _this8.$body.find('>tr:not(.no-records-found)').each(function (i, tr) {
+                var $tr = $(tr);
+                var $td = $tr.find(_this8.options.cardView ? '.card-view' : 'td').eq(fieldIndex);
+                var index = key.indexOf(' ');
+                var name = key.substring(0, index);
+                var el = key.substring(index + 1);
 
-                    $td.find(el).off(name).on(name, function (e) {
-                        var index = $tr.data('index'),
-                            row = that.data[index],
-                            value = row[field];
+                $td.find(el).off(name).on(name, function (e) {
+                  var index = $tr.data('index');
+                  var row = _this8.data[index];
+                  var value = row[field];
 
-                        func.apply(this, [e, value, row, index]);
-                    });
+                  event.apply(_this8, [e, value, row, index]);
                 });
+              });
+            };
+
+            var _iteratorNormalCompletion14 = true;
+            var _didIteratorError14 = false;
+            var _iteratorError14 = undefined;
+
+            try {
+              for (var _iterator14 = Object.entries(events)[Symbol.iterator](), _step14; !(_iteratorNormalCompletion14 = (_step14 = _iterator14.next()).done); _iteratorNormalCompletion14 = true) {
+                var _ref19 = _step14.value;
+
+                var _ref20 = _slicedToArray(_ref19, 2);
+
+                var key = _ref20[0];
+                var event = _ref20[1];
+
+                _loop(key, event);
+              }
+            } catch (err) {
+              _didIteratorError14 = true;
+              _iteratorError14 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion14 && _iterator14.return) {
+                  _iterator14.return();
+                }
+              } finally {
+                if (_didIteratorError14) {
+                  throw _iteratorError14;
+                }
+              }
             }
-        });
+          });
 
-        this.updateSelected();
-        this.resetView();
+          this.updateSelected();
+          this.resetView();
 
-        this.trigger('post-body', data);
-    };
+          this.trigger('post-body', data);
+        }
+      }, {
+        key: 'initServer',
+        value: function initServer(silent, query, url) {
+          var _this9 = this;
 
-    BootstrapTable.prototype.initServer = function (silent, query, url) {
-        var that = this,
-            data = {},
-            index = $.inArray(this.options.sortName, this.header.fields),
-            params = {
-                searchText: this.searchText,
-                sortName: this.options.sortName,
-                sortOrder: this.options.sortOrder
-            },
-            request;
+          var data = {};
+          var index = this.header.fields.indexOf(this.options.sortName);
 
-        if (this.header.sortNames[index]) {
+          var params = {
+            searchText: this.searchText,
+            sortName: this.options.sortName,
+            sortOrder: this.options.sortOrder
+          };
+
+          if (this.header.sortNames[index]) {
             params.sortName = this.header.sortNames[index];
-        }
+          }
 
-        if (this.options.pagination && this.options.sidePagination === 'server') {
-            params.pageSize = this.options.pageSize === this.options.formatAllRows() ?
-                this.options.totalRows : this.options.pageSize;
+          if (this.options.pagination && this.options.sidePagination === 'server') {
+            params.pageSize = this.options.pageSize === this.options.formatAllRows() ? this.options.totalRows : this.options.pageSize;
             params.pageNumber = this.options.pageNumber;
-        }
+          }
 
-        if (!(url || this.options.url) && !this.options.ajax) {
+          if (!(url || this.options.url) && !this.options.ajax) {
             return;
-        }
+          }
 
-        if (this.options.queryParamsType === 'limit') {
+          if (this.options.queryParamsType === 'limit') {
             params = {
-                search: params.searchText,
-                sort: params.sortName,
-                order: params.sortOrder
+              search: params.searchText,
+              sort: params.sortName,
+              order: params.sortOrder
             };
 
             if (this.options.pagination && this.options.sidePagination === 'server') {
-                params.offset = this.options.pageSize === this.options.formatAllRows() ?
-                    0 : this.options.pageSize * (this.options.pageNumber - 1);
-                params.limit = this.options.pageSize === this.options.formatAllRows() ?
-                    this.options.totalRows : this.options.pageSize;
-                if (params.limit === 0) {
-                    delete params.limit;
-                }
+              params.offset = this.options.pageSize === this.options.formatAllRows() ? 0 : this.options.pageSize * (this.options.pageNumber - 1);
+              params.limit = this.options.pageSize === this.options.formatAllRows() ? this.options.totalRows : this.options.pageSize;
+              if (params.limit === 0) {
+                delete params.limit;
+              }
             }
-        }
+          }
 
-        if (!($.isEmptyObject(this.filterColumnsPartial))) {
+          if (!$.isEmptyObject(this.filterColumnsPartial)) {
             params.filter = JSON.stringify(this.filterColumnsPartial, null);
-        }
+          }
 
-        data = calculateObjectValue(this.options, this.options.queryParams, [params], data);
+          data = Utils.calculateObjectValue(this.options, this.options.queryParams, [params], data);
 
-        $.extend(data, query || {});
+          $.extend(data, query || {});
 
-        // false to stop request
-        if (data === false) {
+          // false to stop request
+          if (data === false) {
             return;
-        }
+          }
 
-        if (!silent) {
+          if (!silent) {
             this.$tableLoading.show();
-        }
-        request = $.extend({}, calculateObjectValue(null, this.options.ajaxOptions), {
+          }
+          var request = $.extend({}, Utils.calculateObjectValue(null, this.options.ajaxOptions), {
             type: this.options.method,
-            url:  url || this.options.url,
-            data: this.options.contentType === 'application/json' && this.options.method === 'post' ?
-                JSON.stringify(data) : data,
+            url: url || this.options.url,
+            data: this.options.contentType === 'application/json' && this.options.method === 'post' ? JSON.stringify(data) : data,
             cache: this.options.cache,
             contentType: this.options.contentType,
             dataType: this.options.dataType,
-            success: function (res) {
-                res = calculateObjectValue(that.options, that.options.responseHandler, [res], res);
+            success: function success(_res) {
+              var res = Utils.calculateObjectValue(_this9.options, _this9.options.responseHandler, [_res], _res);
 
-                that.load(res);
-                that.trigger('load-success', res);
-                if (!silent) that.$tableLoading.hide();
+              _this9.load(res);
+              _this9.trigger('load-success', res);
+              if (!silent) _this9.$tableLoading.hide();
             },
-            error: function (res) {
-                var data = [];
-                if (that.options.sidePagination === 'server') {
-                    data = {};
-                    data[that.options.totalField] = 0;
-                    data[that.options.dataField] = [];
-                }
-                that.load(data);
-                that.trigger('load-error', res.status, res);
-                if (!silent) that.$tableLoading.hide();
+            error: function error(res) {
+              var data = [];
+              if (_this9.options.sidePagination === 'server') {
+                data = {};
+                data[_this9.options.totalField] = 0;
+                data[_this9.options.dataField] = [];
+              }
+              _this9.load(data);
+              _this9.trigger('load-error', res.status, res);
+              if (!silent) _this9.$tableLoading.hide();
             }
-        });
+          });
 
-        if (this.options.ajax) {
-            calculateObjectValue(this, this.options.ajax, [request], null);
-        } else {
+          if (this.options.ajax) {
+            Utils.calculateObjectValue(this, this.options.ajax, [request], null);
+          } else {
             if (this._xhr && this._xhr.readyState !== 4) {
-                this._xhr.abort();
+              this._xhr.abort();
             }
             this._xhr = $.ajax(request);
+          }
         }
-    };
-
-    BootstrapTable.prototype.initSearchText = function () {
-        if (this.options.search) {
+      }, {
+        key: 'initSearchText',
+        value: function initSearchText() {
+          if (this.options.search) {
             this.searchText = '';
             if (this.options.searchText !== '') {
-                var $search = this.$toolbar.find('.search input');
-                $search.val(this.options.searchText);
-                this.onSearch({currentTarget: $search, firedByInitSearchText: true});
+              var $search = this.$toolbar.find('.search input');
+              $search.val(this.options.searchText);
+              this.onSearch({ currentTarget: $search, firedByInitSearchText: true });
             }
+          }
         }
-    };
+      }, {
+        key: 'getCaret',
+        value: function getCaret() {
+          var _this10 = this;
 
-    BootstrapTable.prototype.getCaret = function () {
-        var that = this;
+          this.$header.find('th').each(function (i, th) {
+            $(th).find('.sortable').removeClass('desc asc').addClass($(th).data('field') === _this10.options.sortName ? _this10.options.sortOrder : 'both');
+          });
+        }
+      }, {
+        key: 'updateSelected',
+        value: function updateSelected() {
+          var checkAll = this.$selectItem.filter(':enabled').length && this.$selectItem.filter(':enabled').length === this.$selectItem.filter(':enabled').filter(':checked').length;
 
-        $.each(this.$header.find('th'), function (i, th) {
-            $(th).find('.sortable').removeClass('desc asc').addClass($(th).data('field') === that.options.sortName ? that.options.sortOrder : 'both');
-        });
-    };
+          this.$selectAll.add(this.$selectAll_).prop('checked', checkAll);
 
-    BootstrapTable.prototype.updateSelected = function () {
-        var checkAll = this.$selectItem.filter(':enabled').length &&
-            this.$selectItem.filter(':enabled').length ===
-            this.$selectItem.filter(':enabled').filter(':checked').length;
+          this.$selectItem.each(function (i, el) {
+            $(el).closest('tr')[$(el).prop('checked') ? 'addClass' : 'removeClass']('selected');
+          });
+        }
+      }, {
+        key: 'updateRows',
+        value: function updateRows() {
+          var _this11 = this;
 
-        this.$selectAll.add(this.$selectAll_).prop('checked', checkAll);
+          this.$selectItem.each(function (i, el) {
+            _this11.data[$(el).data('index')][_this11.header.stateField] = $(el).prop('checked');
+          });
+        }
+      }, {
+        key: 'resetRows',
+        value: function resetRows() {
+          var _iteratorNormalCompletion15 = true;
+          var _didIteratorError15 = false;
+          var _iteratorError15 = undefined;
 
-        this.$selectItem.each(function () {
-            $(this).closest('tr')[$(this).prop('checked') ? 'addClass' : 'removeClass']('selected');
-        });
-    };
+          try {
+            for (var _iterator15 = this.data[Symbol.iterator](), _step15; !(_iteratorNormalCompletion15 = (_step15 = _iterator15.next()).done); _iteratorNormalCompletion15 = true) {
+              var row = _step15.value;
 
-    BootstrapTable.prototype.updateRows = function () {
-        var that = this;
-
-        this.$selectItem.each(function () {
-            that.data[$(this).data('index')][that.header.stateField] = $(this).prop('checked');
-        });
-    };
-
-    BootstrapTable.prototype.resetRows = function () {
-        var that = this;
-
-        $.each(this.data, function (i, row) {
-            that.$selectAll.prop('checked', false);
-            that.$selectItem.prop('checked', false);
-            if (that.header.stateField) {
-                row[that.header.stateField] = false;
+              this.$selectAll.prop('checked', false);
+              this.$selectItem.prop('checked', false);
+              if (this.header.stateField) {
+                row[this.header.stateField] = false;
+              }
             }
-        });
-        this.initHiddenRows();
-    };
+          } catch (err) {
+            _didIteratorError15 = true;
+            _iteratorError15 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion15 && _iterator15.return) {
+                _iterator15.return();
+              }
+            } finally {
+              if (_didIteratorError15) {
+                throw _iteratorError15;
+              }
+            }
+          }
 
-    BootstrapTable.prototype.trigger = function (name) {
-        var args = Array.prototype.slice.call(arguments, 1);
+          this.initHiddenRows();
+        }
+      }, {
+        key: 'trigger',
+        value: function trigger(_name) {
+          var _options;
 
-        name += '.bs.table';
-        this.options[BootstrapTable.EVENTS[name]].apply(this.options, args);
-        this.$el.trigger($.Event(name), args);
+          var name = _name + '.bs.table';
 
-        this.options.onAll(name, args);
-        this.$el.trigger($.Event('all.bs.table'), [name, args]);
-    };
+          for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key4 = 1; _key4 < _len2; _key4++) {
+            args[_key4 - 1] = arguments[_key4];
+          }
 
-    BootstrapTable.prototype.resetHeader = function () {
-        // fix #61: the hidden table reset header bug.
-        // fix bug: get $el.css('width') error sometime (height = 500)
-        clearTimeout(this.timeoutId_);
-        this.timeoutId_ = setTimeout($.proxy(this.fitHeader, this), this.$el.is(':hidden') ? 100 : 0);
-    };
+          (_options = this.options)[BootstrapTable.EVENTS[name]].apply(_options, args);
+          this.$el.trigger($.Event(name), args);
 
-    BootstrapTable.prototype.fitHeader = function () {
-        var that = this,
-            fixedBody,
-            scrollWidth,
-            focused,
-            focusedTemp;
+          this.options.onAll(name, args);
+          this.$el.trigger($.Event('all.bs.table'), [name, args]);
+        }
+      }, {
+        key: 'resetHeader',
+        value: function resetHeader() {
+          // fix #61: the hidden table reset header bug.
+          // fix bug: get $el.css('width') error sometime (height = 500)
+          clearTimeout(this.timeoutId_);
+          this.timeoutId_ = setTimeout($.proxy(this.fitHeader, this), this.$el.is(':hidden') ? 100 : 0);
+        }
+      }, {
+        key: 'fitHeader',
+        value: function fitHeader() {
+          var _this12 = this;
 
-        if (that.$el.is(':hidden')) {
-            that.timeoutId_ = setTimeout($.proxy(that.fitHeader, that), 100);
+          if (this.$el.is(':hidden')) {
+            this.timeoutId_ = setTimeout($.proxy(this.fitHeader, this), 100);
             return;
-        }
-        fixedBody = this.$tableBody.get(0);
+          }
+          var fixedBody = this.$tableBody.get(0);
 
-        scrollWidth = fixedBody.scrollWidth > fixedBody.clientWidth &&
-        fixedBody.scrollHeight > fixedBody.clientHeight + this.$header.outerHeight() ?
-            getScrollBarWidth() : 0;
+          var scrollWidth = fixedBody.scrollWidth > fixedBody.clientWidth && fixedBody.scrollHeight > fixedBody.clientHeight + this.$header.outerHeight() ? Utils.getScrollBarWidth() : 0;
 
-        this.$el.css('margin-top', -this.$header.outerHeight());
+          this.$el.css('margin-top', -this.$header.outerHeight());
 
-        focused = $(':focus');
-        if (focused.length > 0) {
+          var focused = $(':focus');
+          if (focused.length > 0) {
             var $th = focused.parents('th');
             if ($th.length > 0) {
-                var dataField = $th.attr('data-field');
-                if (dataField !== undefined) {
-                    var $headerTh = this.$header.find("[data-field='" + dataField + "']");
-                    if ($headerTh.length > 0) {
-                        $headerTh.find(":input").addClass("focus-temp");
-                    }
+              var dataField = $th.attr('data-field');
+              if (dataField !== undefined) {
+                var $headerTh = this.$header.find('[data-field=\'' + dataField + '\']');
+                if ($headerTh.length > 0) {
+                  $headerTh.find(':input').addClass('focus-temp');
                 }
+              }
             }
-        }
+          }
 
-        this.$header_ = this.$header.clone(true, true);
-        this.$selectAll_ = this.$header_.find('[name="btSelectAll"]');
-        this.$tableHeader.css({
+          this.$header_ = this.$header.clone(true, true);
+          this.$selectAll_ = this.$header_.find('[name="btSelectAll"]');
+          this.$tableHeader.css({
             'margin-right': scrollWidth
-        }).find('table').css('width', this.$el.outerWidth())
-            .html('').attr('class', this.$el.attr('class'))
-            .append(this.$header_);
+          }).find('table').css('width', this.$el.outerWidth()).html('').attr('class', this.$el.attr('class')).append(this.$header_);
 
-        focusedTemp = $('.focus-temp:visible:eq(0)');
-        if (focusedTemp.length > 0) {
+          var focusedTemp = $('.focus-temp:visible:eq(0)');
+          if (focusedTemp.length > 0) {
             focusedTemp.focus();
             this.$header.find('.focus-temp').removeClass('focus-temp');
-        }
+          }
 
-        // fix bug: $.data() is not working as expected after $.append()
-        this.$header.find('th[data-field]').each(function (i) {
-            that.$header_.find(sprintf('th[data-field="%s"]', $(this).data('field'))).data($(this).data());
-        });
+          // fix bug: $.data() is not working as expected after $.append()
+          this.$header.find('th[data-field]').each(function (i, el) {
+            _this12.$header_.find(Utils.sprintf('th[data-field="%s"]', $(el).data('field'))).data($(el).data());
+          });
 
-        var visibleFields = this.getVisibleFields(),
-            $ths = this.$header_.find('th');
+          var visibleFields = this.getVisibleFields();
+          var $ths = this.$header_.find('th');
 
-        this.$body.find('>tr:first-child:not(.no-records-found) > *').each(function (i) {
-            var $this = $(this),
-                index = i;
+          this.$body.find('>tr:first-child:not(.no-records-found) > *').each(function (i, el) {
+            var $this = $(el);
+            var index = i;
 
-            if (that.options.detailView && !that.options.cardView) {
-                if (i === 0) {
-                    that.$header_.find('th.detail').find('.fht-cell').width($this.innerWidth());
-                }
-                index = i - 1;
+            if (_this12.options.detailView && !_this12.options.cardView) {
+              if (i === 0) {
+                _this12.$header_.find('th.detail').find('.fht-cell').width($this.innerWidth());
+              }
+              index = i - 1;
             }
 
             if (index === -1) {
-                return;
+              return;
             }
 
-            var $th = that.$header_.find(sprintf('th[data-field="%s"]', visibleFields[index]));
+            var $th = _this12.$header_.find(Utils.sprintf('th[data-field="%s"]', visibleFields[index]));
             if ($th.length > 1) {
-                $th = $($ths[$this[0].cellIndex]);
+              $th = $($ths[$this[0].cellIndex]);
             }
 
             var zoomWidth = $th.width() - $th.find('.fht-cell').width();
             $th.find('.fht-cell').width($this.innerWidth() - zoomWidth);
-        });
+          });
 
-        this.horizontalScroll();
-        this.trigger('post-header');
-    };
+          this.horizontalScroll();
+          this.trigger('post-header');
+        }
+      }, {
+        key: 'resetFooter',
+        value: function resetFooter() {
+          var data = this.getData();
+          var html = [];
 
-    BootstrapTable.prototype.resetFooter = function () {
-        var that = this,
-            data = that.getData(),
-            html = [];
-
-        if (!this.options.showFooter || this.options.cardView) { //do nothing
+          if (!this.options.showFooter || this.options.cardView) {
+            // do nothing
             return;
-        }
+          }
 
-        if (!this.options.cardView && this.options.detailView) {
+          if (!this.options.cardView && this.options.detailView) {
             html.push('<td><div class="th-inner">&nbsp;</div><div class="fht-cell"></div></td>');
-        }
+          }
 
-        $.each(this.columns, function (i, column) {
-            var key,
-                falign = '', // footer align style
-                valign = '',
-                csses = [],
-                style = {},
-                class_ = sprintf(' class="%s"', column['class']);
+          var _iteratorNormalCompletion16 = true;
+          var _didIteratorError16 = false;
+          var _iteratorError16 = undefined;
 
-            if (!column.visible) {
+          try {
+            for (var _iterator16 = this.columns[Symbol.iterator](), _step16; !(_iteratorNormalCompletion16 = (_step16 = _iterator16.next()).done); _iteratorNormalCompletion16 = true) {
+              var column = _step16.value;
+
+              var falign = '';
+
+              var valign = '';
+              var csses = [];
+              var style = {};
+              var class_ = Utils.sprintf(' class="%s"', column['class']);
+
+              if (!column.visible) {
                 return;
-            }
+              }
 
-            if (that.options.cardView && (!column.cardVisible)) {
+              if (this.options.cardView && !column.cardVisible) {
                 return;
-            }
+              }
 
-            falign = sprintf('text-align: %s; ', column.falign ? column.falign : column.align);
-            valign = sprintf('vertical-align: %s; ', column.valign);
+              falign = Utils.sprintf('text-align: %s; ', column.falign ? column.falign : column.align);
+              valign = Utils.sprintf('vertical-align: %s; ', column.valign);
 
-            style = calculateObjectValue(null, that.options.footerStyle);
+              style = Utils.calculateObjectValue(null, this.options.footerStyle);
 
-            if (style && style.css) {
-                for (key in style.css) {
-                    csses.push(key + ': ' + style.css[key]);
+              if (style && style.css) {
+                var _iteratorNormalCompletion17 = true;
+                var _didIteratorError17 = false;
+                var _iteratorError17 = undefined;
+
+                try {
+                  for (var _iterator17 = Object.keys(style.css)[Symbol.iterator](), _step17; !(_iteratorNormalCompletion17 = (_step17 = _iterator17.next()).done); _iteratorNormalCompletion17 = true) {
+                    var _ref21 = _step17.value;
+
+                    var _ref22 = _slicedToArray(_ref21, 2);
+
+                    var key = _ref22[0];
+                    var value = _ref22[1];
+
+                    csses.push(key + ': ' + value);
+                  }
+                } catch (err) {
+                  _didIteratorError17 = true;
+                  _iteratorError17 = err;
+                } finally {
+                  try {
+                    if (!_iteratorNormalCompletion17 && _iterator17.return) {
+                      _iterator17.return();
+                    }
+                  } finally {
+                    if (_didIteratorError17) {
+                      throw _iteratorError17;
+                    }
+                  }
                 }
+              }
+
+              html.push('<td', class_, Utils.sprintf(' style="%s"', falign + valign + csses.concat().join('; ')), '>');
+              html.push('<div class="th-inner">');
+
+              html.push(Utils.calculateObjectValue(column, column.footerFormatter, [data], '&nbsp;') || '&nbsp;');
+
+              html.push('</div>');
+              html.push('<div class="fht-cell"></div>');
+              html.push('</div>');
+              html.push('</td>');
             }
+          } catch (err) {
+            _didIteratorError16 = true;
+            _iteratorError16 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion16 && _iterator16.return) {
+                _iterator16.return();
+              }
+            } finally {
+              if (_didIteratorError16) {
+                throw _iteratorError16;
+              }
+            }
+          }
 
-            html.push('<td', class_, sprintf(' style="%s"', falign + valign + csses.concat().join('; ')), '>');
-            html.push('<div class="th-inner">');
-
-            html.push(calculateObjectValue(column, column.footerFormatter, [data], '&nbsp;') || '&nbsp;');
-
-            html.push('</div>');
-            html.push('<div class="fht-cell"></div>');
-            html.push('</div>');
-            html.push('</td>');
-        });
-
-        this.$tableFooter.find('tr').html(html.join(''));
-        this.$tableFooter.show();
-        clearTimeout(this.timeoutFooter_);
-        this.timeoutFooter_ = setTimeout($.proxy(this.fitFooter, this),
-            this.$el.is(':hidden') ? 100 : 0);
-    };
-
-    BootstrapTable.prototype.fitFooter = function () {
-        var that = this,
-            $footerTd,
-            elWidth,
-            scrollWidth;
-
-        clearTimeout(this.timeoutFooter_);
-        if (this.$el.is(':hidden')) {
+          this.$tableFooter.find('tr').html(html.join(''));
+          this.$tableFooter.show();
+          clearTimeout(this.timeoutFooter_);
+          this.timeoutFooter_ = setTimeout($.proxy(this.fitFooter, this), this.$el.is(':hidden') ? 100 : 0);
+        }
+      }, {
+        key: 'fitFooter',
+        value: function fitFooter() {
+          clearTimeout(this.timeoutFooter_);
+          if (this.$el.is(':hidden')) {
             this.timeoutFooter_ = setTimeout($.proxy(this.fitFooter, this), 100);
             return;
-        }
+          }
 
-        elWidth = this.$el.css('width');
-        scrollWidth = elWidth > this.$tableBody.width() ? getScrollBarWidth() : 0;
+          var elWidth = this.$el.css('width');
+          var scrollWidth = elWidth > this.$tableBody.width() ? Utils.getScrollBarWidth() : 0;
 
-        this.$tableFooter.css({
+          this.$tableFooter.css({
             'margin-right': scrollWidth
-        }).find('table').css('width', elWidth)
-            .attr('class', this.$el.attr('class'));
+          }).find('table').css('width', elWidth).attr('class', this.$el.attr('class'));
 
-        $footerTd = this.$tableFooter.find('td');
+          var $footerTd = this.$tableFooter.find('td');
 
-        this.$body.find('>tr:first-child:not(.no-records-found) > *').each(function (i) {
-            var $this = $(this);
+          this.$body.find('>tr:first-child:not(.no-records-found) > *').each(function (i, el) {
+            var $this = $(el);
 
             $footerTd.eq(i).find('.fht-cell').width($this.innerWidth());
-        });
+          });
 
-        this.horizontalScroll();
-    };
-
-    BootstrapTable.prototype.horizontalScroll = function () {
-        var that = this;
-        // horizontal scroll event
-        // TODO: it's probably better improving the layout than binding to scroll event
-
-        that.trigger('scroll-body');
-        this.$tableBody.off('scroll').on('scroll', function () {
-            if (that.options.showHeader && that.options.height) {
-              that.$tableHeader.scrollLeft($(this).scrollLeft());
-            }
-
-            if (that.options.showFooter && !that.options.cardView) {
-                that.$tableFooter.scrollLeft($(this).scrollLeft());
-            }
-        });
-    };
-
-    BootstrapTable.prototype.toggleColumn = function (index, checked, needUpdate) {
-        if (index === -1) {
-            return;
+          this.horizontalScroll();
         }
-        this.columns[index].visible = checked;
-        this.initHeader();
-        this.initSearch();
-        this.initPagination();
-        this.initBody();
+      }, {
+        key: 'horizontalScroll',
+        value: function horizontalScroll() {
+          var _this13 = this;
 
-        if (this.options.showColumns) {
+          // horizontal scroll event
+          // TODO: it's probably better improving the layout than binding to scroll event
+
+          this.trigger('scroll-body');
+          this.$tableBody.off('scroll').on('scroll', function (_ref23) {
+            var currentTarget = _ref23.currentTarget;
+
+            if (_this13.options.showHeader && _this13.options.height) {
+              _this13.$tableHeader.scrollLeft($(currentTarget).scrollLeft());
+            }
+
+            if (_this13.options.showFooter && !_this13.options.cardView) {
+              _this13.$tableFooter.scrollLeft($(currentTarget).scrollLeft());
+            }
+          });
+        }
+      }, {
+        key: 'toggleColumn',
+        value: function toggleColumn(index, checked, needUpdate) {
+          if (index === -1) {
+            return;
+          }
+          this.columns[index].visible = checked;
+          this.initHeader();
+          this.initSearch();
+          this.initPagination();
+          this.initBody();
+
+          if (this.options.showColumns) {
             var $items = this.$toolbar.find('.keep-open input').prop('disabled', false);
 
             if (needUpdate) {
-                $items.filter(sprintf('[value="%s"]', index)).prop('checked', checked);
+              $items.filter(Utils.sprintf('[value="%s"]', index)).prop('checked', checked);
             }
 
             if ($items.filter(':checked').length <= this.options.minimumCountColumns) {
-                $items.filter(':checked').prop('disabled', true);
+              $items.filter(':checked').prop('disabled', true);
             }
+          }
         }
-    };
+      }, {
+        key: 'getVisibleFields',
+        value: function getVisibleFields() {
+          var visibleFields = [];
 
-    BootstrapTable.prototype.getVisibleFields = function () {
-        var that = this,
-            visibleFields = [];
+          var _iteratorNormalCompletion18 = true;
+          var _didIteratorError18 = false;
+          var _iteratorError18 = undefined;
 
-        $.each(this.header.fields, function (j, field) {
-            var column = that.columns[that.fieldsColumnsIndex[field]];
+          try {
+            for (var _iterator18 = this.header.fields[Symbol.iterator](), _step18; !(_iteratorNormalCompletion18 = (_step18 = _iterator18.next()).done); _iteratorNormalCompletion18 = true) {
+              var field = _step18.value;
 
-            if (!column.visible) {
-                return;
+              var column = this.columns[this.fieldsColumnsIndex[field]];
+
+              if (!column.visible) {
+                continue;
+              }
+              visibleFields.push(field);
             }
-            visibleFields.push(field);
-        });
-        return visibleFields;
-    };
+          } catch (err) {
+            _didIteratorError18 = true;
+            _iteratorError18 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion18 && _iterator18.return) {
+                _iterator18.return();
+              }
+            } finally {
+              if (_didIteratorError18) {
+                throw _iteratorError18;
+              }
+            }
+          }
 
-    // PUBLIC FUNCTION DEFINITION
-    // =======================
+          return visibleFields;
+        }
+      }, {
+        key: 'resetView',
+        value: function resetView(params) {
+          var padding = 0;
 
-    BootstrapTable.prototype.resetView = function (params) {
-        var padding = 0;
-
-        if (params && params.height) {
+          if (params && params.height) {
             this.options.height = params.height;
-        }
+          }
 
-        this.$selectAll.prop('checked', this.$selectItem.length > 0 &&
-            this.$selectItem.length === this.$selectItem.filter(':checked').length);
+          this.$selectAll.prop('checked', this.$selectItem.length > 0 && this.$selectItem.length === this.$selectItem.filter(':checked').length);
 
-        if (this.options.height) {
-            var toolbarHeight = this.$toolbar.outerHeight(true),
-                paginationHeight = this.$pagination.outerHeight(true),
-                height = this.options.height - toolbarHeight - paginationHeight;
+          if (this.options.height) {
+            var toolbarHeight = this.$toolbar.outerHeight(true);
+            var paginationHeight = this.$pagination.outerHeight(true);
+            var height = this.options.height - toolbarHeight - paginationHeight;
 
             this.$tableContainer.css('height', height + 'px');
-        }
+          }
 
-        if (this.options.cardView) {
+          if (this.options.cardView) {
             // remove the element css
             this.$el.css('margin-top', '0');
             this.$tableContainer.css('padding-bottom', '0');
             this.$tableFooter.hide();
             return;
-        }
+          }
 
-        if (this.options.showHeader && this.options.height) {
+          if (this.options.showHeader && this.options.height) {
             this.$tableHeader.show();
             this.resetHeader();
             padding += this.$header.outerHeight();
-        } else {
+          } else {
             this.$tableHeader.hide();
             this.trigger('post-header');
-        }
+          }
 
-        if (this.options.showFooter) {
+          if (this.options.showFooter) {
             this.resetFooter();
             if (this.options.height) {
-                padding += this.$tableFooter.outerHeight() + 1;
+              padding += this.$tableFooter.outerHeight() + 1;
             }
+          }
+
+          // Assign the correct sortable arrow
+          this.getCaret();
+          this.$tableContainer.css('padding-bottom', padding + 'px');
+          this.trigger('reset-view');
         }
-
-        // Assign the correct sortable arrow
-        this.getCaret();
-        this.$tableContainer.css('padding-bottom', padding + 'px');
-        this.trigger('reset-view');
-    };
-
-    BootstrapTable.prototype.getData = function (useCurrentPage) {
-        var data = this.options.data;
-        if (this.searchText || this.options.sortName || !$.isEmptyObject(this.filterColumns) || !$.isEmptyObject(this.filterColumnsPartial)) {
+      }, {
+        key: 'getData',
+        value: function getData(useCurrentPage) {
+          var data = this.options.data;
+          if (this.searchText || this.options.sortName || !$.isEmptyObject(this.filterColumns) || !$.isEmptyObject(this.filterColumnsPartial)) {
             data = this.data;
-        }
+          }
 
-        if (useCurrentPage) {
+          if (useCurrentPage) {
             return data.slice(this.pageFrom - 1, this.pageTo);
+          }
+
+          return data;
         }
+      }, {
+        key: 'load',
+        value: function load(_data) {
+          var fixedScroll = false;
+          var data = _data;
 
-        return data;
-    };
-
-    BootstrapTable.prototype.load = function (data) {
-        var fixedScroll = false;
-
-        // #431: support pagination
-        if (this.options.pagination && this.options.sidePagination === 'server') {
+          // #431: support pagination
+          if (this.options.pagination && this.options.sidePagination === 'server') {
             this.options.totalRows = data[this.options.totalField];
-            fixedScroll = data.fixedScroll;
-            data = data[this.options.dataField];
-        } else if (!$.isArray(data)) { // support fixedScroll
-            fixedScroll = data.fixedScroll;
-            data = data.data;
+          }
+
+          fixedScroll = data.fixedScroll;
+          data = Array.isArray(data) ? data : data[this.options.dataField];
+
+          this.initData(data);
+          this.initSearch();
+          this.initPagination();
+          this.initBody(fixedScroll);
         }
+      }, {
+        key: 'append',
+        value: function append(data) {
+          this.initData(data, 'append');
+          this.initSearch();
+          this.initPagination();
+          this.initSort();
+          this.initBody(true);
+        }
+      }, {
+        key: 'prepend',
+        value: function prepend(data) {
+          this.initData(data, 'prepend');
+          this.initSearch();
+          this.initPagination();
+          this.initSort();
+          this.initBody(true);
+        }
+      }, {
+        key: 'remove',
+        value: function remove(params) {
+          var len = this.options.data.length;
+          var i = void 0;
+          var row = void 0;
 
-        this.initData(data);
-        this.initSearch();
-        this.initPagination();
-        this.initBody(fixedScroll);
-    };
-
-    BootstrapTable.prototype.append = function (data) {
-        this.initData(data, 'append');
-        this.initSearch();
-        this.initPagination();
-        this.initSort();
-        this.initBody(true);
-    };
-
-    BootstrapTable.prototype.prepend = function (data) {
-        this.initData(data, 'prepend');
-        this.initSearch();
-        this.initPagination();
-        this.initSort();
-        this.initBody(true);
-    };
-
-    BootstrapTable.prototype.remove = function (params) {
-        var len = this.options.data.length,
-            i, row;
-
-        if (!params.hasOwnProperty('field') || !params.hasOwnProperty('values')) {
+          if (!params.hasOwnProperty('field') || !params.hasOwnProperty('values')) {
             return;
-        }
+          }
 
-        for (i = len - 1; i >= 0; i--) {
+          for (i = len - 1; i >= 0; i--) {
             row = this.options.data[i];
 
             if (!row.hasOwnProperty(params.field)) {
-                continue;
+              continue;
             }
-            if ($.inArray(row[params.field], params.values) !== -1) {
-                this.options.data.splice(i, 1);
-                if (this.options.sidePagination === 'server') {
-                    this.options.totalRows -= 1;
-                }
+            if (params.values.includes(row[params.field])) {
+              this.options.data.splice(i, 1);
+              if (this.options.sidePagination === 'server') {
+                this.options.totalRows -= 1;
+              }
             }
-        }
+          }
 
-        if (len === this.options.data.length) {
+          if (len === this.options.data.length) {
             return;
+          }
+
+          this.initSearch();
+          this.initPagination();
+          this.initSort();
+          this.initBody(true);
         }
-
-        this.initSearch();
-        this.initPagination();
-        this.initSort();
-        this.initBody(true);
-    };
-
-    BootstrapTable.prototype.removeAll = function () {
-        if (this.options.data.length > 0) {
+      }, {
+        key: 'removeAll',
+        value: function removeAll() {
+          if (this.options.data.length > 0) {
             this.options.data.splice(0, this.options.data.length);
             this.initSearch();
             this.initPagination();
             this.initBody(true);
+          }
         }
-    };
+      }, {
+        key: 'getRowByUniqueId',
+        value: function getRowByUniqueId(_id) {
+          var uniqueId = this.options.uniqueId;
+          var len = this.options.data.length;
+          var id = _id;
+          var dataRow = null;
+          var i = void 0;
+          var row = void 0;
+          var rowUniqueId = void 0;
 
-    BootstrapTable.prototype.getRowByUniqueId = function (id) {
-        var uniqueId = this.options.uniqueId,
-            len = this.options.data.length,
-            dataRow = null,
-            i, row, rowUniqueId;
-
-        for (i = len - 1; i >= 0; i--) {
+          for (i = len - 1; i >= 0; i--) {
             row = this.options.data[i];
 
-            if (row.hasOwnProperty(uniqueId)) { // uniqueId is a column
-                rowUniqueId = row[uniqueId];
-            } else if(row._data.hasOwnProperty(uniqueId)) { // uniqueId is a row data property
-                rowUniqueId = row._data[uniqueId];
+            if (row.hasOwnProperty(uniqueId)) {
+              // uniqueId is a column
+              rowUniqueId = row[uniqueId];
+            } else if (row._data && row._data.hasOwnProperty(uniqueId)) {
+              // uniqueId is a row data property
+              rowUniqueId = row._data[uniqueId];
             } else {
-                continue;
+              continue;
             }
 
             if (typeof rowUniqueId === 'string') {
-                id = id.toString();
+              id = id.toString();
             } else if (typeof rowUniqueId === 'number') {
-                if ((Number(rowUniqueId) === rowUniqueId) && (rowUniqueId % 1 === 0)) {
-                    id = parseInt(id);
-                } else if ((rowUniqueId === Number(rowUniqueId)) && (rowUniqueId !== 0)) {
-                    id = parseFloat(id);
-                }
+              if (Number(rowUniqueId) === rowUniqueId && rowUniqueId % 1 === 0) {
+                id = parseInt(id);
+              } else if (rowUniqueId === Number(rowUniqueId) && rowUniqueId !== 0) {
+                id = parseFloat(id);
+              }
             }
 
             if (rowUniqueId === id) {
-                dataRow = row;
-                break;
+              dataRow = row;
+              break;
             }
+          }
+
+          return dataRow;
         }
+      }, {
+        key: 'removeByUniqueId',
+        value: function removeByUniqueId(id) {
+          var len = this.options.data.length;
+          var row = this.getRowByUniqueId(id);
 
-        return dataRow;
-    };
-
-    BootstrapTable.prototype.removeByUniqueId = function (id) {
-        var len = this.options.data.length,
-            row = this.getRowByUniqueId(id);
-
-        if (row) {
+          if (row) {
             this.options.data.splice(this.options.data.indexOf(row), 1);
-        }
+          }
 
-        if (len === this.options.data.length) {
+          if (len === this.options.data.length) {
             return;
+          }
+
+          this.initSearch();
+          this.initPagination();
+          this.initBody(true);
         }
+      }, {
+        key: 'updateByUniqueId',
+        value: function updateByUniqueId(params) {
+          var allParams = Array.isArray(params) ? params : [params];
 
-        this.initSearch();
-        this.initPagination();
-        this.initBody(true);
-    };
+          var _iteratorNormalCompletion19 = true;
+          var _didIteratorError19 = false;
+          var _iteratorError19 = undefined;
 
-    BootstrapTable.prototype.updateByUniqueId = function (params) {
-        var that = this;
-        var allParams = $.isArray(params) ? params : [ params ];
+          try {
+            for (var _iterator19 = allParams[Symbol.iterator](), _step19; !(_iteratorNormalCompletion19 = (_step19 = _iterator19.next()).done); _iteratorNormalCompletion19 = true) {
+              var _params = _step19.value;
 
-        $.each(allParams, function(i, params) {
-            var rowId;
+              if (!_params.hasOwnProperty('id') || !_params.hasOwnProperty('row')) {
+                continue;
+              }
 
-            if (!params.hasOwnProperty('id') || !params.hasOwnProperty('row')) {
-                return;
+              var rowId = this.options.data.indexOf(this.getRowByUniqueId(_params.id));
+
+              if (rowId === -1) {
+                continue;
+              }
+              $.extend(this.options.data[rowId], _params.row);
             }
-
-            rowId = $.inArray(that.getRowByUniqueId(params.id), that.options.data);
-
-            if (rowId === -1) {
-                return;
+          } catch (err) {
+            _didIteratorError19 = true;
+            _iteratorError19 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion19 && _iterator19.return) {
+                _iterator19.return();
+              }
+            } finally {
+              if (_didIteratorError19) {
+                throw _iteratorError19;
+              }
             }
-            $.extend(that.options.data[rowId], params.row);
-        });
+          }
 
-        this.initSearch();
-        this.initPagination();
-        this.initSort();
-        this.initBody(true);
-    };
-
-    BootstrapTable.prototype.refreshColumnTitle = function (params) {
-        if (!params.hasOwnProperty('field') || !params.hasOwnProperty('title')) {
+          this.initSearch();
+          this.initPagination();
+          this.initSort();
+          this.initBody(true);
+        }
+      }, {
+        key: 'refreshColumnTitle',
+        value: function refreshColumnTitle(params) {
+          if (!params.hasOwnProperty('field') || !params.hasOwnProperty('title')) {
             return;
-        }
+          }
 
-        this.columns[this.fieldsColumnsIndex[params.field]].title =
-            this.options.escape ? escapeHTML(params.title) : params.title;
+          this.columns[this.fieldsColumnsIndex[params.field]].title = this.options.escape ? Utils.escapeHTML(params.title) : params.title;
 
-        if (this.columns[this.fieldsColumnsIndex[params.field]].visible) {
+          if (this.columns[this.fieldsColumnsIndex[params.field]].visible) {
             var header = this.options.height !== undefined ? this.$tableHeader : this.$header;
-            header.find('th[data-field]').each(function (i) {
-                if ($(this).data('field') === params.field) {
-                    $($(this).find(".th-inner")[0]).text(params.title);
-                    return false;
-                }
+            header.find('th[data-field]').each(function (i, el) {
+              if ($(el).data('field') === params.field) {
+                $($(el).find('.th-inner')[0]).text(params.title);
+                return false;
+              }
             });
+          }
         }
-    };
-
-    BootstrapTable.prototype.insertRow = function (params) {
-        if (!params.hasOwnProperty('index') || !params.hasOwnProperty('row')) {
+      }, {
+        key: 'insertRow',
+        value: function insertRow(params) {
+          if (!params.hasOwnProperty('index') || !params.hasOwnProperty('row')) {
             return;
+          }
+          this.options.data.splice(params.index, 0, params.row);
+          this.initSearch();
+          this.initPagination();
+          this.initSort();
+          this.initBody(true);
         }
-        this.options.data.splice(params.index, 0, params.row);
-        this.initSearch();
-        this.initPagination();
-        this.initSort();
-        this.initBody(true);
-    };
+      }, {
+        key: 'updateRow',
+        value: function updateRow(params) {
+          var allParams = Array.isArray(params) ? params : [params];
 
-    BootstrapTable.prototype.updateRow = function (params) {
-        var that = this;
-        var allParams = $.isArray(params) ? params : [ params ];
+          var _iteratorNormalCompletion20 = true;
+          var _didIteratorError20 = false;
+          var _iteratorError20 = undefined;
 
-        $.each(allParams, function(i, params) {
-            if (!params.hasOwnProperty('index') || !params.hasOwnProperty('row')) {
-                return;
+          try {
+            for (var _iterator20 = allParams[Symbol.iterator](), _step20; !(_iteratorNormalCompletion20 = (_step20 = _iterator20.next()).done); _iteratorNormalCompletion20 = true) {
+              var _params2 = _step20.value;
+
+              if (!_params2.hasOwnProperty('index') || !_params2.hasOwnProperty('row')) {
+                continue;
+              }
+              $.extend(this.options.data[_params2.index], _params2.row);
             }
-            $.extend(that.options.data[params.index], params.row);
-        });
+          } catch (err) {
+            _didIteratorError20 = true;
+            _iteratorError20 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion20 && _iterator20.return) {
+                _iterator20.return();
+              }
+            } finally {
+              if (_didIteratorError20) {
+                throw _iteratorError20;
+              }
+            }
+          }
 
-        this.initSearch();
-        this.initPagination();
-        this.initSort();
-        this.initBody(true);
-    };
+          this.initSearch();
+          this.initPagination();
+          this.initSort();
+          this.initBody(true);
+        }
+      }, {
+        key: 'initHiddenRows',
+        value: function initHiddenRows() {
+          this.hiddenRows = [];
+        }
+      }, {
+        key: 'showRow',
+        value: function showRow(params) {
+          this.toggleRow(params, true);
+        }
+      }, {
+        key: 'hideRow',
+        value: function hideRow(params) {
+          this.toggleRow(params, false);
+        }
+      }, {
+        key: 'toggleRow',
+        value: function toggleRow(params, visible) {
+          var row = void 0;
 
-    BootstrapTable.prototype.initHiddenRows = function () {
-        this.hiddenRows = [];
-    };
-
-    BootstrapTable.prototype.showRow = function (params) {
-        this.toggleRow(params, true);
-    };
-
-    BootstrapTable.prototype.hideRow = function (params) {
-        this.toggleRow(params, false);
-    };
-
-    BootstrapTable.prototype.toggleRow = function (params, visible) {
-        var row, index;
-
-        if (params.hasOwnProperty('index')) {
+          if (params.hasOwnProperty('index')) {
             row = this.getData()[params.index];
-        } else if (params.hasOwnProperty('uniqueId')) {
+          } else if (params.hasOwnProperty('uniqueId')) {
             row = this.getRowByUniqueId(params.uniqueId);
-        }
+          }
 
-        if (!row) {
+          if (!row) {
             return;
-        }
+          }
 
-        index = $.inArray(row, this.hiddenRows);
+          var index = this.hiddenRows.indexOf(row);
 
-        if (!visible && index === -1) {
+          if (!visible && index === -1) {
             this.hiddenRows.push(row);
-        } else if (visible && index > -1) {
+          } else if (visible && index > -1) {
             this.hiddenRows.splice(index, 1);
+          }
+          this.initBody(true);
         }
-        this.initBody(true);
-    };
+      }, {
+        key: 'getHiddenRows',
+        value: function getHiddenRows(show) {
+          if (show) {
+            this.initHiddenRows();
+            this.initBody(true);
+            return;
+          }
+          var data = this.getData();
+          var rows = [];
 
-    BootstrapTable.prototype.getHiddenRows = function (show) {
-        var that = this,
-            data = this.getData(),
-            rows = [];
+          var _iteratorNormalCompletion21 = true;
+          var _didIteratorError21 = false;
+          var _iteratorError21 = undefined;
 
-        $.each(data, function (i, row) {
-            if ($.inArray(row, that.hiddenRows) > -1) {
+          try {
+            for (var _iterator21 = data[Symbol.iterator](), _step21; !(_iteratorNormalCompletion21 = (_step21 = _iterator21.next()).done); _iteratorNormalCompletion21 = true) {
+              var row = _step21.value;
+
+              if (this.hiddenRows.includes(row)) {
                 rows.push(row);
+              }
             }
-        });
-        this.hiddenRows = rows;
-        return rows;
-    };
+          } catch (err) {
+            _didIteratorError21 = true;
+            _iteratorError21 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion21 && _iterator21.return) {
+                _iterator21.return();
+              }
+            } finally {
+              if (_didIteratorError21) {
+                throw _iteratorError21;
+              }
+            }
+          }
 
-    BootstrapTable.prototype.mergeCells = function (options) {
-        var row = options.index,
-            col = $.inArray(options.field, this.getVisibleFields()),
-            rowspan = options.rowspan || 1,
-            colspan = options.colspan || 1,
-            i, j,
-            $tr = this.$body.find('>tr'),
-            $td;
+          this.hiddenRows = rows;
+          return rows;
+        }
+      }, {
+        key: 'mergeCells',
+        value: function mergeCells(options) {
+          var row = options.index;
+          var col = this.getVisibleFields().indexOf(options.field);
+          var rowspan = options.rowspan || 1;
+          var colspan = options.colspan || 1;
+          var i = void 0;
+          var j = void 0;
+          var $tr = this.$body.find('>tr');
 
-        if (this.options.detailView && !this.options.cardView) {
+          if (this.options.detailView && !this.options.cardView) {
             col += 1;
-        }
+          }
 
-        $td = $tr.eq(row).find('>td').eq(col);
+          var $td = $tr.eq(row).find('>td').eq(col);
 
-        if (row < 0 || col < 0 || row >= this.data.length) {
+          if (row < 0 || col < 0 || row >= this.data.length) {
             return;
-        }
+          }
 
-        for (i = row; i < row + rowspan; i++) {
+          for (i = row; i < row + rowspan; i++) {
             for (j = col; j < col + colspan; j++) {
-                $tr.eq(i).find('>td').eq(j).hide();
+              $tr.eq(i).find('>td').eq(j).hide();
             }
+          }
+
+          $td.attr('rowspan', rowspan).attr('colspan', colspan).show();
         }
-
-        $td.attr('rowspan', rowspan).attr('colspan', colspan).show();
-    };
-
-    BootstrapTable.prototype.updateCell = function (params) {
-        if (!params.hasOwnProperty('index') ||
-            !params.hasOwnProperty('field') ||
-            !params.hasOwnProperty('value')) {
+      }, {
+        key: 'updateCell',
+        value: function updateCell(params) {
+          if (!params.hasOwnProperty('index') || !params.hasOwnProperty('field') || !params.hasOwnProperty('value')) {
             return;
-        }
-        this.data[params.index][params.field] = params.value;
+          }
+          this.data[params.index][params.field] = params.value;
 
-        if (params.reinit === false) {
+          if (params.reinit === false) {
             return;
+          }
+          this.initSort();
+          this.initBody(true);
         }
-        this.initSort();
-        this.initBody(true);
-    };
+      }, {
+        key: 'updateCellById',
+        value: function updateCellById(params) {
+          var _this14 = this;
 
-    BootstrapTable.prototype.updateCellById = function (params) {
-        var that = this;
-        if (!params.hasOwnProperty('id') ||
-            !params.hasOwnProperty('field') ||
-            !params.hasOwnProperty('value')) {
+          if (!params.hasOwnProperty('id') || !params.hasOwnProperty('field') || !params.hasOwnProperty('value')) {
             return;
-        }
-        var allParams = $.isArray(params) ? params : [ params ];
+          }
+          var allParams = Array.isArray(params) ? params : [params];
 
-        $.each(allParams, function(i, params) {
-            var rowId;
+          allParams.forEach(function (_ref24) {
+            var id = _ref24.id,
+                field = _ref24.field,
+                value = _ref24.value;
 
-            rowId = $.inArray(that.getRowByUniqueId(params.id), that.options.data);
+            var rowId = _this14.options.data.indexOf(_this14.getRowByUniqueId(id));
 
             if (rowId === -1) {
-                return;
+              return;
             }
-            that.data[rowId][params.field] = params.value;
-        });
+            _this14.data[rowId][field] = value;
+          });
 
-        if (params.reinit === false) {
+          if (params.reinit === false) {
             return;
+          }
+          this.initSort();
+          this.initBody(true);
         }
-        this.initSort();
-        this.initBody(true);
-    };
+      }, {
+        key: 'getOptions',
+        value: function getOptions() {
+          // Deep copy: remove data
+          var options = $.extend({}, this.options);
+          delete options.data;
+          return $.extend(true, {}, options);
+        }
+      }, {
+        key: 'getSelections',
+        value: function getSelections() {
+          var _this15 = this;
 
-    BootstrapTable.prototype.getOptions = function () {
-        //Deep copy
-        return $.extend(true, {}, this.options);
-    };
+          // fix #2424: from html with checkbox
+          return this.options.data.filter(function (row) {
+            return row[_this15.header.stateField] === true;
+          });
+        }
+      }, {
+        key: 'getAllSelections',
+        value: function getAllSelections() {
+          var _this16 = this;
 
-    BootstrapTable.prototype.getSelections = function () {
-        var that = this;
-
-        return $.grep(this.options.data, function (row) {
-            // fix #2424: from html with checkbox
-            return row[that.header.stateField] === true;
-        });
-    };
-
-    BootstrapTable.prototype.getAllSelections = function () {
-        var that = this;
-
-        return $.grep(this.options.data, function (row) {
-            return row[that.header.stateField];
-        });
-    };
-
-    BootstrapTable.prototype.checkAll = function () {
-        this.checkAll_(true);
-    };
-
-    BootstrapTable.prototype.uncheckAll = function () {
-        this.checkAll_(false);
-    };
-
-    BootstrapTable.prototype.checkInvert = function () {
-        var that = this;
-        var rows = that.$selectItem.filter(':enabled');
-        var checked = rows.filter(':checked');
-        rows.each(function() {
-            $(this).prop('checked', !$(this).prop('checked'));
-        });
-        that.updateRows();
-        that.updateSelected();
-        that.trigger('uncheck-some', checked);
-        checked = that.getSelections();
-        that.trigger('check-some', checked);
-    };
-
-    BootstrapTable.prototype.checkAll_ = function (checked) {
-        var rows;
-        if (!checked) {
+          return this.options.data.filter(function (row) {
+            return row[_this16.header.stateField];
+          });
+        }
+      }, {
+        key: 'checkAll',
+        value: function checkAll() {
+          this.checkAll_(true);
+        }
+      }, {
+        key: 'uncheckAll',
+        value: function uncheckAll() {
+          this.checkAll_(false);
+        }
+      }, {
+        key: 'checkInvert',
+        value: function checkInvert() {
+          var $items = this.$selectItem.filter(':enabled');
+          var checked = $items.filter(':checked');
+          $items.each(function (i, el) {
+            $(el).prop('checked', !$(el).prop('checked'));
+          });
+          this.updateRows();
+          this.updateSelected();
+          this.trigger('uncheck-some', checked);
+          checked = this.getSelections();
+          this.trigger('check-some', checked);
+        }
+      }, {
+        key: 'checkAll_',
+        value: function checkAll_(checked) {
+          var rows = void 0;
+          if (!checked) {
             rows = this.getSelections();
-        }
-        this.$selectAll.add(this.$selectAll_).prop('checked', checked);
-        this.$selectItem.filter(':enabled').prop('checked', checked);
-        this.updateRows();
-        if (checked) {
+          }
+          this.$selectAll.add(this.$selectAll_).prop('checked', checked);
+          this.$selectItem.filter(':enabled').prop('checked', checked);
+          this.updateRows();
+          if (checked) {
             rows = this.getSelections();
+          }
+          this.trigger(checked ? 'check-all' : 'uncheck-all', rows);
         }
-        this.trigger(checked ? 'check-all' : 'uncheck-all', rows);
-    };
+      }, {
+        key: 'check',
+        value: function check(index) {
+          this.check_(true, index);
+        }
+      }, {
+        key: 'uncheck',
+        value: function uncheck(index) {
+          this.check_(false, index);
+        }
+      }, {
+        key: 'check_',
+        value: function check_(checked, index) {
+          var $el = this.$selectItem.filter('[data-index="' + index + '"]');
+          var row = this.data[index];
 
-    BootstrapTable.prototype.check = function (index) {
-        this.check_(true, index);
-    };
+          if ($el.is(':radio') || this.options.singleSelect) {
+            var _iteratorNormalCompletion22 = true;
+            var _didIteratorError22 = false;
+            var _iteratorError22 = undefined;
 
-    BootstrapTable.prototype.uncheck = function (index) {
-        this.check_(false, index);
-    };
+            try {
+              for (var _iterator22 = this.options.data[Symbol.iterator](), _step22; !(_iteratorNormalCompletion22 = (_step22 = _iterator22.next()).done); _iteratorNormalCompletion22 = true) {
+                var r = _step22.value;
 
-    BootstrapTable.prototype.check_ = function (checked, index) {
-        var $el = this.$selectItem.filter(sprintf('[data-index="%s"]', index)).prop('checked', checked);
-        this.data[index][this.header.stateField] = checked;
-        this.updateSelected();
-        this.trigger(checked ? 'check' : 'uncheck', this.data[index], $el);
-    };
+                r[this.header.stateField] = false;
+              }
+            } catch (err) {
+              _didIteratorError22 = true;
+              _iteratorError22 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion22 && _iterator22.return) {
+                  _iterator22.return();
+                }
+              } finally {
+                if (_didIteratorError22) {
+                  throw _iteratorError22;
+                }
+              }
+            }
 
-    BootstrapTable.prototype.checkBy = function (obj) {
-        this.checkBy_(true, obj);
-    };
+            this.$selectItem.filter(':checked').not($el).prop('checked', false);
+          }
 
-    BootstrapTable.prototype.uncheckBy = function (obj) {
-        this.checkBy_(false, obj);
-    };
+          row[this.header.stateField] = checked;
+          $el.prop('checked', checked);
+          this.updateSelected();
+          this.trigger(checked ? 'check' : 'uncheck', this.data[index], $el);
+        }
+      }, {
+        key: 'checkBy',
+        value: function checkBy(obj) {
+          this.checkBy_(true, obj);
+        }
+      }, {
+        key: 'uncheckBy',
+        value: function uncheckBy(obj) {
+          this.checkBy_(false, obj);
+        }
+      }, {
+        key: 'checkBy_',
+        value: function checkBy_(checked, obj) {
+          var _this17 = this;
 
-    BootstrapTable.prototype.checkBy_ = function (checked, obj) {
-        if (!obj.hasOwnProperty('field') || !obj.hasOwnProperty('values')) {
+          if (!obj.hasOwnProperty('field') || !obj.hasOwnProperty('values')) {
             return;
-        }
+          }
 
-        var that = this,
-            rows = [];
-        $.each(this.options.data, function (index, row) {
+          var rows = [];
+          this.options.data.forEach(function (row, i) {
             if (!row.hasOwnProperty(obj.field)) {
-                return false;
+              return false;
             }
-            if ($.inArray(row[obj.field], obj.values) !== -1) {
-                var $el = that.$selectItem.filter(':enabled')
-                    .filter(sprintf('[data-index="%s"]', index)).prop('checked', checked);
-                row[that.header.stateField] = checked;
-                rows.push(row);
-                that.trigger(checked ? 'check' : 'uncheck', row, $el);
+            if (obj.values.includes(row[obj.field])) {
+              var $el = _this17.$selectItem.filter(':enabled').filter(Utils.sprintf('[data-index="%s"]', i)).prop('checked', checked);
+              row[_this17.header.stateField] = checked;
+              rows.push(row);
+              _this17.trigger(checked ? 'check' : 'uncheck', row, $el);
             }
-        });
-        this.updateSelected();
-        this.trigger(checked ? 'check-some' : 'uncheck-some', rows);
-    };
-
-    BootstrapTable.prototype.destroy = function () {
-        this.$el.insertBefore(this.$container);
-        $(this.options.toolbar).insertBefore(this.$el);
-        this.$container.next().remove();
-        this.$container.remove();
-        this.$el.html(this.$el_.html())
-            .css('margin-top', '0')
-            .attr('class', this.$el_.attr('class') || ''); // reset the class
-    };
-
-    BootstrapTable.prototype.showLoading = function () {
-        this.$tableLoading.show();
-    };
-
-    BootstrapTable.prototype.hideLoading = function () {
-        this.$tableLoading.hide();
-    };
-
-    BootstrapTable.prototype.togglePagination = function () {
-        this.options.pagination = !this.options.pagination;
-        var button = this.$toolbar.find('button[name="paginationSwitch"] i');
-        if (this.options.pagination) {
-            button.attr("class", this.options.iconsPrefix + " " + this.options.icons.paginationSwitchDown);
-        } else {
-            button.attr("class", this.options.iconsPrefix + " " + this.options.icons.paginationSwitchUp);
+          });
+          this.updateSelected();
+          this.trigger(checked ? 'check-some' : 'uncheck-some', rows);
         }
-        this.updatePagination();
-    };
-
-    BootstrapTable.prototype.toggleFullscreen = function () {
-        this.$el.closest('.bootstrap-table').toggleClass('fullscreen');
-    };
-
-    BootstrapTable.prototype.refresh = function (params) {
-        if (params && params.url) {
+      }, {
+        key: 'destroy',
+        value: function destroy() {
+          this.$el.insertBefore(this.$container);
+          $(this.options.toolbar).insertBefore(this.$el);
+          this.$container.next().remove();
+          this.$container.remove();
+          this.$el.html(this.$el_.html()).css('margin-top', '0').attr('class', this.$el_.attr('class') || ''); // reset the class
+        }
+      }, {
+        key: 'showLoading',
+        value: function showLoading() {
+          this.$tableLoading.show();
+        }
+      }, {
+        key: 'hideLoading',
+        value: function hideLoading() {
+          this.$tableLoading.hide();
+        }
+      }, {
+        key: 'togglePagination',
+        value: function togglePagination() {
+          this.options.pagination = !this.options.pagination;
+          var button = this.$toolbar.find('button[name="paginationSwitch"] i');
+          if (this.options.pagination) {
+            button.attr('class', this.options.iconsPrefix + ' ' + this.options.icons.paginationSwitchDown);
+          } else {
+            button.attr('class', this.options.iconsPrefix + ' ' + this.options.icons.paginationSwitchUp);
+          }
+          this.updatePagination();
+        }
+      }, {
+        key: 'toggleFullscreen',
+        value: function toggleFullscreen() {
+          this.$el.closest('.bootstrap-table').toggleClass('fullscreen');
+        }
+      }, {
+        key: 'refresh',
+        value: function refresh(params) {
+          if (params && params.url) {
             this.options.url = params.url;
-        }
-        if (params && params.pageNumber) {
+          }
+          if (params && params.pageNumber) {
             this.options.pageNumber = params.pageNumber;
-        }
-        if (params && params.pageSize) {
+          }
+          if (params && params.pageSize) {
             this.options.pageSize = params.pageSize;
+          }
+          this.initServer(params && params.silent, params && params.query, params && params.url);
+          this.trigger('refresh', params);
         }
-        this.initServer(params && params.silent,
-            params && params.query, params && params.url);
-        this.trigger('refresh', params);
-    };
-
-    BootstrapTable.prototype.resetWidth = function () {
-        if (this.options.showHeader && this.options.height) {
+      }, {
+        key: 'resetWidth',
+        value: function resetWidth() {
+          if (this.options.showHeader && this.options.height) {
             this.fitHeader();
-        }
-        if (this.options.showFooter && !this.options.cardView) {
+          }
+          if (this.options.showFooter && !this.options.cardView) {
             this.fitFooter();
+          }
         }
-    };
+      }, {
+        key: 'showColumn',
+        value: function showColumn(field) {
+          this.toggleColumn(this.fieldsColumnsIndex[field], true, true);
+        }
+      }, {
+        key: 'hideColumn',
+        value: function hideColumn(field) {
+          this.toggleColumn(this.fieldsColumnsIndex[field], false, true);
+        }
+      }, {
+        key: 'getHiddenColumns',
+        value: function getHiddenColumns() {
+          return this.columns.filter(function (_ref25) {
+            var visible = _ref25.visible;
+            return !visible;
+          });
+        }
+      }, {
+        key: 'getVisibleColumns',
+        value: function getVisibleColumns() {
+          return this.columns.filter(function (_ref26) {
+            var visible = _ref26.visible;
+            return visible;
+          });
+        }
+      }, {
+        key: 'toggleAllColumns',
+        value: function toggleAllColumns(visible) {
+          var _iteratorNormalCompletion23 = true;
+          var _didIteratorError23 = false;
+          var _iteratorError23 = undefined;
 
-    BootstrapTable.prototype.showColumn = function (field) {
-        this.toggleColumn(this.fieldsColumnsIndex[field], true, true);
-    };
+          try {
+            for (var _iterator23 = this.columns[Symbol.iterator](), _step23; !(_iteratorNormalCompletion23 = (_step23 = _iterator23.next()).done); _iteratorNormalCompletion23 = true) {
+              var column = _step23.value;
 
-    BootstrapTable.prototype.hideColumn = function (field) {
-        this.toggleColumn(this.fieldsColumnsIndex[field], false, true);
-    };
+              column.visible = visible;
+            }
+          } catch (err) {
+            _didIteratorError23 = true;
+            _iteratorError23 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion23 && _iterator23.return) {
+                _iterator23.return();
+              }
+            } finally {
+              if (_didIteratorError23) {
+                throw _iteratorError23;
+              }
+            }
+          }
 
-    BootstrapTable.prototype.getHiddenColumns = function () {
-        return $.grep(this.columns, function (column) {
-            return !column.visible;
-        });
-    };
-
-    BootstrapTable.prototype.getVisibleColumns = function () {
-        return $.grep(this.columns, function (column) {
-            return column.visible;
-        });
-    };
-
-    BootstrapTable.prototype.toggleAllColumns = function (visible) {
-        var that = this;
-        $.each(this.columns, function (i, column) {
-            that.columns[i].visible = visible;
-        });
-
-        this.initHeader();
-        this.initSearch();
-        this.initPagination();
-        this.initBody();
-        if (this.options.showColumns) {
+          this.initHeader();
+          this.initSearch();
+          this.initPagination();
+          this.initBody();
+          if (this.options.showColumns) {
             var $items = this.$toolbar.find('.keep-open input').prop('disabled', false);
 
             if ($items.filter(':checked').length <= this.options.minimumCountColumns) {
-                $items.filter(':checked').prop('disabled', true);
+              $items.filter(':checked').prop('disabled', true);
             }
+          }
         }
-    };
-
-    BootstrapTable.prototype.showAllColumns = function () {
-        this.toggleAllColumns(true);
-    };
-
-    BootstrapTable.prototype.hideAllColumns = function () {
-        this.toggleAllColumns(false);
-    };
-
-    BootstrapTable.prototype.filterBy = function (columns) {
-        this.filterColumns = $.isEmptyObject(columns) ? {} : columns;
-        this.options.pageNumber = 1;
-        this.initSearch();
-        this.updatePagination();
-    };
-
-    BootstrapTable.prototype.scrollTo = function (value) {
-        if (typeof value === 'string') {
-            value = value === 'bottom' ? this.$tableBody[0].scrollHeight : 0;
+      }, {
+        key: 'showAllColumns',
+        value: function showAllColumns() {
+          this.toggleAllColumns(true);
         }
-        if (typeof value === 'number') {
-            this.$tableBody.scrollTop(value);
+      }, {
+        key: 'hideAllColumns',
+        value: function hideAllColumns() {
+          this.toggleAllColumns(false);
         }
-        if (typeof value === 'undefined') {
+      }, {
+        key: 'filterBy',
+        value: function filterBy(columns) {
+          this.filterColumns = $.isEmptyObject(columns) ? {} : columns;
+          this.options.pageNumber = 1;
+          this.initSearch();
+          this.updatePagination();
+        }
+      }, {
+        key: 'scrollTo',
+        value: function scrollTo(_value) {
+          if (typeof _value === 'undefined') {
             return this.$tableBody.scrollTop();
+          }
+
+          var value = 0;
+          if (typeof _value === 'string' && _value === 'bottom') {
+            value = this.$tableBody[0].scrollHeight;
+          }
+          this.$tableBody.scrollTop(value);
         }
-    };
-
-    BootstrapTable.prototype.getScrollPosition = function () {
-        return this.scrollTo();
-    };
-
-    BootstrapTable.prototype.selectPage = function (page) {
-        if (page > 0 && page <= this.options.totalPages) {
+      }, {
+        key: 'getScrollPosition',
+        value: function getScrollPosition() {
+          return this.scrollTo();
+        }
+      }, {
+        key: 'selectPage',
+        value: function selectPage(page) {
+          if (page > 0 && page <= this.options.totalPages) {
             this.options.pageNumber = page;
             this.updatePagination();
+          }
         }
-    };
-
-    BootstrapTable.prototype.prevPage = function () {
-        if (this.options.pageNumber > 1) {
+      }, {
+        key: 'prevPage',
+        value: function prevPage() {
+          if (this.options.pageNumber > 1) {
             this.options.pageNumber--;
             this.updatePagination();
+          }
         }
-    };
-
-    BootstrapTable.prototype.nextPage = function () {
-        if (this.options.pageNumber < this.options.totalPages) {
+      }, {
+        key: 'nextPage',
+        value: function nextPage() {
+          if (this.options.pageNumber < this.options.totalPages) {
             this.options.pageNumber++;
             this.updatePagination();
+          }
         }
-    };
-
-    BootstrapTable.prototype.toggleView = function () {
-        this.options.cardView = !this.options.cardView;
-        this.initHeader();
-        // Fixed remove toolbar when click cardView button.
-        //that.initToolbar();
-        var $icon = this.$toolbar.find('button[name="toggle"] i');
-        if (this.options.cardView) {
+      }, {
+        key: 'toggleView',
+        value: function toggleView() {
+          this.options.cardView = !this.options.cardView;
+          this.initHeader();
+          // Fixed remove toolbar when click cardView button.
+          // this.initToolbar();
+          var $icon = this.$toolbar.find('button[name="toggle"] i');
+          if (this.options.cardView) {
             $icon.removeClass(this.options.icons.toggleOff);
             $icon.addClass(this.options.icons.toggleOn);
-        } else {
+          } else {
             $icon.removeClass(this.options.icons.toggleOn);
             $icon.addClass(this.options.icons.toggleOff);
+          }
+          this.initBody();
+          this.trigger('toggle', this.options.cardView);
         }
-        this.initBody();
-        this.trigger('toggle', this.options.cardView);
-    };
-
-    BootstrapTable.prototype.refreshOptions = function (options) {
-        //If the objects are equivalent then avoid the call of destroy / init methods
-        if (compareObjects(this.options, options, true)) {
+      }, {
+        key: 'refreshOptions',
+        value: function refreshOptions(options) {
+          // If the objects are equivalent then avoid the call of destroy / init methods
+          if (Utils.compareObjects(this.options, options, true)) {
             return;
+          }
+          this.options = $.extend(this.options, options);
+          this.trigger('refresh-options', this.options);
+          this.destroy();
+          this.init();
         }
-        this.options = $.extend(this.options, options);
-        this.trigger('refresh-options', this.options);
-        this.destroy();
-        this.init();
-    };
-
-    BootstrapTable.prototype.resetSearch = function (text) {
-        var $search = this.$toolbar.find('.search input');
-        $search.val(text || '');
-        this.onSearch({currentTarget: $search});
-    };
-
-    BootstrapTable.prototype.expandRow_ = function (expand, index) {
-        var $tr = this.$body.find(sprintf('> tr[data-index="%s"]', index));
-        if ($tr.next().is('tr.detail-view') === (expand ? false : true)) {
+      }, {
+        key: 'resetSearch',
+        value: function resetSearch(text) {
+          var $search = this.$toolbar.find('.search input');
+          $search.val(text || '');
+          this.onSearch({ currentTarget: $search });
+        }
+      }, {
+        key: 'expandRow_',
+        value: function expandRow_(expand, index) {
+          var $tr = this.$body.find(Utils.sprintf('> tr[data-index="%s"]', index));
+          if ($tr.next().is('tr.detail-view') === !expand) {
             $tr.find('> td > .detail-icon').click();
+          }
         }
-    };
+      }, {
+        key: 'expandRow',
+        value: function expandRow(index) {
+          this.expandRow_(true, index);
+        }
+      }, {
+        key: 'collapseRow',
+        value: function collapseRow(index) {
+          this.expandRow_(false, index);
+        }
+      }, {
+        key: 'expandAllRows',
+        value: function expandAllRows(isSubTable) {
+          var _this18 = this;
 
-    BootstrapTable.prototype.expandRow = function (index) {
-        this.expandRow_(true, index);
-    };
-
-    BootstrapTable.prototype.collapseRow = function (index) {
-        this.expandRow_(false, index);
-    };
-
-    BootstrapTable.prototype.expandAllRows = function (isSubTable) {
-        if (isSubTable) {
-            var $tr = this.$body.find(sprintf('> tr[data-index="%s"]', 0)),
-                that = this,
-                detailIcon = null,
-                executeInterval = false,
-                idInterval = -1;
+          if (isSubTable) {
+            var $tr = this.$body.find(Utils.sprintf('> tr[data-index="%s"]', 0));
+            var detailIcon = null;
+            var executeInterval = false;
+            var idInterval = -1;
 
             if (!$tr.next().is('tr.detail-view')) {
-                $tr.find('> td > .detail-icon').click();
-                executeInterval = true;
+              $tr.find('> td > .detail-icon').click();
+              executeInterval = true;
             } else if (!$tr.next().next().is('tr.detail-view')) {
-                $tr.next().find(".detail-icon").click();
-                executeInterval = true;
+              $tr.next().find('.detail-icon').click();
+              executeInterval = true;
             }
 
             if (executeInterval) {
-                try {
-                    idInterval = setInterval(function () {
-                        detailIcon = that.$body.find("tr.detail-view").last().find(".detail-icon");
-                        if (detailIcon.length > 0) {
-                            detailIcon.click();
-                        } else {
-                            clearInterval(idInterval);
-                        }
-                    }, 1);
-                } catch (ex) {
+              try {
+                idInterval = setInterval(function () {
+                  detailIcon = _this18.$body.find('tr.detail-view').last().find('.detail-icon');
+                  if (detailIcon.length > 0) {
+                    detailIcon.click();
+                  } else {
                     clearInterval(idInterval);
-                }
+                  }
+                }, 1);
+              } catch (ex) {
+                clearInterval(idInterval);
+              }
             }
-        } else {
+          } else {
             var trs = this.$body.children();
             for (var i = 0; i < trs.length; i++) {
-                this.expandRow_(true, $(trs[i]).data("index"));
+              this.expandRow_(true, $(trs[i]).data('index'));
             }
+          }
         }
-    };
-
-    BootstrapTable.prototype.collapseAllRows = function (isSubTable) {
-        if (isSubTable) {
+      }, {
+        key: 'collapseAllRows',
+        value: function collapseAllRows(isSubTable) {
+          if (isSubTable) {
             this.expandRow_(false, 0);
-        } else {
+          } else {
             var trs = this.$body.children();
             for (var i = 0; i < trs.length; i++) {
-                this.expandRow_(false, $(trs[i]).data("index"));
+              this.expandRow_(false, $(trs[i]).data('index'));
             }
+          }
         }
-    };
-
-    BootstrapTable.prototype.updateFormatText = function (name, text) {
-        if (this.options[sprintf('format%s', name)]) {
+      }, {
+        key: 'updateFormatText',
+        value: function updateFormatText(name, text) {
+          if (this.options[Utils.sprintf('format%s', name)]) {
             if (typeof text === 'string') {
-                this.options[sprintf('format%s', name)] = function () {
-                    return text;
-                };
+              this.options[Utils.sprintf('format%s', name)] = function () {
+                return text;
+              };
             } else if (typeof text === 'function') {
-                this.options[sprintf('format%s', name)] = text;
+              this.options[Utils.sprintf('format%s', name)] = text;
             }
+          }
+          this.initToolbar();
+          this.initPagination();
+          this.initBody();
         }
-        this.initToolbar();
-        this.initPagination();
-        this.initBody();
-    };
+      }]);
+
+      return BootstrapTable;
+    }();
+
+    BootstrapTable.DEFAULTS = DEFAULTS;
+    BootstrapTable.LOCALES = LOCALES;
+    BootstrapTable.COLUMN_DEFAULTS = COLUMN_DEFAULTS;
+    BootstrapTable.EVENTS = EVENTS;
 
     // BOOTSTRAP TABLE PLUGIN DEFINITION
     // =======================
 
-    var allowedMethods = [
-        'getOptions',
-        'getSelections', 'getAllSelections', 'getData',
-        'load', 'append', 'prepend', 'remove', 'removeAll',
-        'insertRow', 'updateRow', 'updateCell', 'updateByUniqueId', 'removeByUniqueId',
-        'getRowByUniqueId', 'showRow', 'hideRow', 'getHiddenRows',
-        'mergeCells', 'refreshColumnTitle',
-        'checkAll', 'uncheckAll', 'checkInvert',
-        'check', 'uncheck',
-        'checkBy', 'uncheckBy',
-        'refresh',
-        'resetView',
-        'resetWidth',
-        'destroy',
-        'showLoading', 'hideLoading',
-        'showColumn', 'hideColumn', 'getHiddenColumns', 'getVisibleColumns',
-        'showAllColumns', 'hideAllColumns',
-        'filterBy',
-        'scrollTo',
-        'getScrollPosition',
-        'selectPage', 'prevPage', 'nextPage',
-        'togglePagination',
-        'toggleView',
-        'refreshOptions',
-        'resetSearch',
-        'expandRow', 'collapseRow', 'expandAllRows', 'collapseAllRows',
-        'updateFormatText', 'updateCellById'
-    ];
+    var allowedMethods = ['getOptions', 'getSelections', 'getAllSelections', 'getData', 'load', 'append', 'prepend', 'remove', 'removeAll', 'insertRow', 'updateRow', 'updateCell', 'updateByUniqueId', 'removeByUniqueId', 'getRowByUniqueId', 'showRow', 'hideRow', 'getHiddenRows', 'mergeCells', 'refreshColumnTitle', 'checkAll', 'uncheckAll', 'checkInvert', 'check', 'uncheck', 'checkBy', 'uncheckBy', 'refresh', 'resetView', 'resetWidth', 'destroy', 'showLoading', 'hideLoading', 'showColumn', 'hideColumn', 'getHiddenColumns', 'getVisibleColumns', 'showAllColumns', 'hideAllColumns', 'filterBy', 'scrollTo', 'getScrollPosition', 'selectPage', 'prevPage', 'nextPage', 'togglePagination', 'toggleView', 'refreshOptions', 'resetSearch', 'expandRow', 'collapseRow', 'expandAllRows', 'collapseAllRows', 'updateFormatText', 'updateCellById'];
 
+    $.BootstrapTable = BootstrapTable;
     $.fn.bootstrapTable = function (option) {
-        var value,
-            args = Array.prototype.slice.call(arguments, 1);
+      for (var _len3 = arguments.length, args = Array(_len3 > 1 ? _len3 - 1 : 0), _key5 = 1; _key5 < _len3; _key5++) {
+        args[_key5 - 1] = arguments[_key5];
+      }
 
-        this.each(function () {
-            var $this = $(this),
-                data = $this.data('bootstrap.table'),
-                options = $.extend({}, BootstrapTable.DEFAULTS, $this.data(),
-                    typeof option === 'object' && option);
+      var value = void 0;
 
-            if (typeof option === 'string') {
-                if ($.inArray(option, allowedMethods) < 0) {
-                    throw new Error("Unknown method: " + option);
-                }
+      this.each(function (i, el) {
+        var data = $(el).data('bootstrap.table');
+        var options = $.extend({}, BootstrapTable.DEFAULTS, $(el).data(), (typeof option === 'undefined' ? 'undefined' : _typeof(option)) === 'object' && option);
 
-                if (!data) {
-                    return;
-                }
+        if (typeof option === 'string') {
+          var _data2;
 
-                value = data[option].apply(data, args);
+          if (!allowedMethods.includes(option)) {
+            throw new Error('Unknown method: ' + option);
+          }
 
-                if (option === 'destroy') {
-                    $this.removeData('bootstrap.table');
-                }
-            }
+          if (!data) {
+            return;
+          }
 
-            if (!data) {
-                $this.data('bootstrap.table', (data = new BootstrapTable(this, options)));
-            }
-        });
+          value = (_data2 = data)[option].apply(_data2, args);
 
-        return typeof value === 'undefined' ? this : value;
+          if (option === 'destroy') {
+            $(el).removeData('bootstrap.table');
+          }
+        }
+
+        if (!data) {
+          $(el).data('bootstrap.table', data = new $.BootstrapTable(el, options));
+        }
+      });
+
+      return typeof value === 'undefined' ? this : value;
     };
 
     $.fn.bootstrapTable.Constructor = BootstrapTable;
@@ -51353,24 +52193,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     $.fn.bootstrapTable.columnDefaults = BootstrapTable.COLUMN_DEFAULTS;
     $.fn.bootstrapTable.locales = BootstrapTable.LOCALES;
     $.fn.bootstrapTable.methods = allowedMethods;
-    $.fn.bootstrapTable.utils = {
-        bootstrapVersion: bootstrapVersion,
-        sprintf: sprintf,
-        compareObjects: compareObjects,
-        calculateObjectValue: calculateObjectValue,
-        getItemField: getItemField,
-        objectKeys: objectKeys,
-        isIEBrowser: isIEBrowser
-    };
+    $.fn.bootstrapTable.utils = Utils;
 
     // BOOTSTRAP TABLE INIT
     // =======================
 
     $(function () {
-        $('[data-toggle="table"]').bootstrapTable();
+      $('[data-toggle="table"]').bootstrapTable();
     });
-})(jQuery);
-
+  })(jQuery);
+});
 
 /***/ }),
 /* 90 */
@@ -51511,7 +52343,7 @@ if (document.getElementById('app')) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.6.1
+/** @license React v16.7.0
  * react.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -51528,12 +52360,12 @@ if (true) {
   (function() {
 'use strict';
 
-var _assign = __webpack_require__(17);
-var checkPropTypes = __webpack_require__(18);
+var _assign = __webpack_require__(18);
+var checkPropTypes = __webpack_require__(19);
 
 // TODO: this is special because it gets imported during build.
 
-var ReactVersion = '16.6.3';
+var ReactVersion = '16.7.0';
 
 // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
 // nor polyfill, then a plain number is used for performance.
@@ -51589,6 +52421,9 @@ var enableHooks = false;
 
 // Trace which interactions trigger each commit.
 
+
+// Only used in www builds.
+ // TODO: true? Here it might just be false.
 
 // Only used in www builds.
 
@@ -52881,13 +53716,51 @@ function createContext(defaultValue, calculateChangedBits) {
 }
 
 function lazy(ctor) {
-  return {
+  var lazyType = {
     $$typeof: REACT_LAZY_TYPE,
     _ctor: ctor,
     // React uses these fields to store the result.
     _status: -1,
     _result: null
   };
+
+  {
+    // In production, this would just set it on the object.
+    var defaultProps = void 0;
+    var propTypes = void 0;
+    Object.defineProperties(lazyType, {
+      defaultProps: {
+        configurable: true,
+        get: function () {
+          return defaultProps;
+        },
+        set: function (newDefaultProps) {
+          warning$1(false, 'React.lazy(...): It is not supported to assign `defaultProps` to ' + 'a lazy component import. Either specify them where the component ' + 'is defined, or create a wrapping component around it.');
+          defaultProps = newDefaultProps;
+          // Match production behavior more closely:
+          Object.defineProperty(lazyType, 'defaultProps', {
+            enumerable: true
+          });
+        }
+      },
+      propTypes: {
+        configurable: true,
+        get: function () {
+          return propTypes;
+        },
+        set: function (newPropTypes) {
+          warning$1(false, 'React.lazy(...): It is not supported to assign `propTypes` to ' + 'a lazy component import. Either specify them where the component ' + 'is defined, or create a wrapping component around it.');
+          propTypes = newPropTypes;
+          // Match production behavior more closely:
+          Object.defineProperty(lazyType, 'propTypes', {
+            enumerable: true
+          });
+        }
+      }
+    });
+  }
+
+  return lazyType;
 }
 
 function forwardRef(render) {
@@ -52974,11 +53847,6 @@ function useRef(initialValue) {
 function useEffect(create, inputs) {
   var dispatcher = resolveDispatcher();
   return dispatcher.useEffect(create, inputs);
-}
-
-function useMutationEffect(create, inputs) {
-  var dispatcher = resolveDispatcher();
-  return dispatcher.useMutationEffect(create, inputs);
 }
 
 function useLayoutEffect(create, inputs) {
@@ -53143,16 +54011,17 @@ function validateChildKeys(node, parentType) {
  */
 function validatePropTypes(element) {
   var type = element.type;
-  var name = void 0,
-      propTypes = void 0;
+  if (type === null || type === undefined || typeof type === 'string') {
+    return;
+  }
+  var name = getComponentName(type);
+  var propTypes = void 0;
   if (typeof type === 'function') {
-    // Class or function component
-    name = type.displayName || type.name;
     propTypes = type.propTypes;
-  } else if (typeof type === 'object' && type !== null && type.$$typeof === REACT_FORWARD_REF_TYPE) {
-    // ForwardRef
-    var functionName = type.render.displayName || type.render.name || '';
-    name = type.displayName || (functionName !== '' ? 'ForwardRef(' + functionName + ')' : 'ForwardRef');
+  } else if (typeof type === 'object' && (type.$$typeof === REACT_FORWARD_REF_TYPE ||
+  // Note: Memo only checks outer props here.
+  // Inner props are checked in the reconciler.
+  type.$$typeof === REACT_MEMO_TYPE)) {
     propTypes = type.propTypes;
   } else {
     return;
@@ -53312,15 +54181,22 @@ var React = {
 
   version: ReactVersion,
 
+  unstable_ConcurrentMode: REACT_CONCURRENT_MODE_TYPE,
+  unstable_Profiler: REACT_PROFILER_TYPE,
+
   __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: ReactSharedInternals
 };
+
+// Note: some APIs are added with feature flags.
+// Make sure that stable builds for open source
+// don't modify the React object to avoid deopts.
+// Also let's not expose their names in stable builds.
 
 if (enableStableConcurrentModeAPIs) {
   React.ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
   React.Profiler = REACT_PROFILER_TYPE;
-} else {
-  React.unstable_ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
-  React.unstable_Profiler = REACT_PROFILER_TYPE;
+  React.unstable_ConcurrentMode = undefined;
+  React.unstable_Profiler = undefined;
 }
 
 if (enableHooks) {
@@ -53330,7 +54206,6 @@ if (enableHooks) {
   React.useImperativeMethods = useImperativeMethods;
   React.useLayoutEffect = useLayoutEffect;
   React.useMemo = useMemo;
-  React.useMutationEffect = useMutationEffect;
   React.useReducer = useReducer;
   React.useRef = useRef;
   React.useState = useState;
@@ -53358,7 +54233,7 @@ module.exports = react;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.6.1
+/** @license React v16.7.0
  * react-dom.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -53376,8 +54251,8 @@ if (true) {
 'use strict';
 
 var React = __webpack_require__(0);
-var _assign = __webpack_require__(17);
-var checkPropTypes = __webpack_require__(18);
+var _assign = __webpack_require__(18);
+var checkPropTypes = __webpack_require__(19);
 var scheduler = __webpack_require__(93);
 var tracing = __webpack_require__(95);
 
@@ -55874,13 +56749,14 @@ var ReactDebugCurrentFrame = ReactSharedInternals.ReactDebugCurrentFrame;
 
 function describeFiber(fiber) {
   switch (fiber.tag) {
-    case IndeterminateComponent:
-    case LazyComponent:
-    case FunctionComponent:
-    case ClassComponent:
-    case HostComponent:
-    case Mode:
-    case SuspenseComponent:
+    case HostRoot:
+    case HostPortal:
+    case HostText:
+    case Fragment:
+    case ContextProvider:
+    case ContextConsumer:
+      return '';
+    default:
       var owner = fiber._debugOwner;
       var source = fiber._debugSource;
       var name = getComponentName(fiber.type);
@@ -55889,8 +56765,6 @@ function describeFiber(fiber) {
         ownerName = getComponentName(owner.type);
       }
       return describeComponentFrame(name, source, ownerName);
-    default:
-      return '';
   }
 }
 
@@ -56500,6 +57374,9 @@ var enableProfilerTimer = true;
 var enableSchedulerTracing = true;
 
 // Only used in www builds.
+ // TODO: true? Here it might just be false.
+
+// Only used in www builds.
 
 
 // Only used in www builds.
@@ -56512,6 +57389,8 @@ var disableInputAttributeSyncing = false;
 // These APIs will no longer be "unstable" in the upcoming 16.7 release,
 // Control this behavior with a flag to support 16.6 minor releases in the meanwhile.
 var enableStableConcurrentModeAPIs = false;
+
+var warnAboutShorthandPropertyCollision = false;
 
 // TODO: direct imports like some-package/src/* are bad. Fix me.
 var didWarnValueDefaultValue = false;
@@ -59450,6 +60329,58 @@ var setTextContent = function (node, text) {
   node.textContent = text;
 };
 
+// List derived from Gecko source code:
+// https://github.com/mozilla/gecko-dev/blob/4e638efc71/layout/style/test/property_database.js
+var shorthandToLonghand = {
+  animation: ['animationDelay', 'animationDirection', 'animationDuration', 'animationFillMode', 'animationIterationCount', 'animationName', 'animationPlayState', 'animationTimingFunction'],
+  background: ['backgroundAttachment', 'backgroundClip', 'backgroundColor', 'backgroundImage', 'backgroundOrigin', 'backgroundPositionX', 'backgroundPositionY', 'backgroundRepeat', 'backgroundSize'],
+  backgroundPosition: ['backgroundPositionX', 'backgroundPositionY'],
+  border: ['borderBottomColor', 'borderBottomStyle', 'borderBottomWidth', 'borderImageOutset', 'borderImageRepeat', 'borderImageSlice', 'borderImageSource', 'borderImageWidth', 'borderLeftColor', 'borderLeftStyle', 'borderLeftWidth', 'borderRightColor', 'borderRightStyle', 'borderRightWidth', 'borderTopColor', 'borderTopStyle', 'borderTopWidth'],
+  borderBlockEnd: ['borderBlockEndColor', 'borderBlockEndStyle', 'borderBlockEndWidth'],
+  borderBlockStart: ['borderBlockStartColor', 'borderBlockStartStyle', 'borderBlockStartWidth'],
+  borderBottom: ['borderBottomColor', 'borderBottomStyle', 'borderBottomWidth'],
+  borderColor: ['borderBottomColor', 'borderLeftColor', 'borderRightColor', 'borderTopColor'],
+  borderImage: ['borderImageOutset', 'borderImageRepeat', 'borderImageSlice', 'borderImageSource', 'borderImageWidth'],
+  borderInlineEnd: ['borderInlineEndColor', 'borderInlineEndStyle', 'borderInlineEndWidth'],
+  borderInlineStart: ['borderInlineStartColor', 'borderInlineStartStyle', 'borderInlineStartWidth'],
+  borderLeft: ['borderLeftColor', 'borderLeftStyle', 'borderLeftWidth'],
+  borderRadius: ['borderBottomLeftRadius', 'borderBottomRightRadius', 'borderTopLeftRadius', 'borderTopRightRadius'],
+  borderRight: ['borderRightColor', 'borderRightStyle', 'borderRightWidth'],
+  borderStyle: ['borderBottomStyle', 'borderLeftStyle', 'borderRightStyle', 'borderTopStyle'],
+  borderTop: ['borderTopColor', 'borderTopStyle', 'borderTopWidth'],
+  borderWidth: ['borderBottomWidth', 'borderLeftWidth', 'borderRightWidth', 'borderTopWidth'],
+  columnRule: ['columnRuleColor', 'columnRuleStyle', 'columnRuleWidth'],
+  columns: ['columnCount', 'columnWidth'],
+  flex: ['flexBasis', 'flexGrow', 'flexShrink'],
+  flexFlow: ['flexDirection', 'flexWrap'],
+  font: ['fontFamily', 'fontFeatureSettings', 'fontKerning', 'fontLanguageOverride', 'fontSize', 'fontSizeAdjust', 'fontStretch', 'fontStyle', 'fontVariant', 'fontVariantAlternates', 'fontVariantCaps', 'fontVariantEastAsian', 'fontVariantLigatures', 'fontVariantNumeric', 'fontVariantPosition', 'fontWeight', 'lineHeight'],
+  fontVariant: ['fontVariantAlternates', 'fontVariantCaps', 'fontVariantEastAsian', 'fontVariantLigatures', 'fontVariantNumeric', 'fontVariantPosition'],
+  gap: ['columnGap', 'rowGap'],
+  grid: ['gridAutoColumns', 'gridAutoFlow', 'gridAutoRows', 'gridTemplateAreas', 'gridTemplateColumns', 'gridTemplateRows'],
+  gridArea: ['gridColumnEnd', 'gridColumnStart', 'gridRowEnd', 'gridRowStart'],
+  gridColumn: ['gridColumnEnd', 'gridColumnStart'],
+  gridColumnGap: ['columnGap'],
+  gridGap: ['columnGap', 'rowGap'],
+  gridRow: ['gridRowEnd', 'gridRowStart'],
+  gridRowGap: ['rowGap'],
+  gridTemplate: ['gridTemplateAreas', 'gridTemplateColumns', 'gridTemplateRows'],
+  listStyle: ['listStyleImage', 'listStylePosition', 'listStyleType'],
+  margin: ['marginBottom', 'marginLeft', 'marginRight', 'marginTop'],
+  marker: ['markerEnd', 'markerMid', 'markerStart'],
+  mask: ['maskClip', 'maskComposite', 'maskImage', 'maskMode', 'maskOrigin', 'maskPositionX', 'maskPositionY', 'maskRepeat', 'maskSize'],
+  maskPosition: ['maskPositionX', 'maskPositionY'],
+  outline: ['outlineColor', 'outlineStyle', 'outlineWidth'],
+  overflow: ['overflowX', 'overflowY'],
+  padding: ['paddingBottom', 'paddingLeft', 'paddingRight', 'paddingTop'],
+  placeContent: ['alignContent', 'justifyContent'],
+  placeItems: ['alignItems', 'justifyItems'],
+  placeSelf: ['alignSelf', 'justifySelf'],
+  textDecoration: ['textDecorationColor', 'textDecorationLine', 'textDecorationStyle'],
+  textEmphasis: ['textEmphasisColor', 'textEmphasisStyle'],
+  transition: ['transitionDelay', 'transitionDuration', 'transitionProperty', 'transitionTimingFunction'],
+  wordWrap: ['overflowWrap']
+};
+
 /**
  * CSS properties which accept numbers but are not in units of "px".
  */
@@ -59726,6 +60657,69 @@ function setValueForStyles(node, styles) {
       style.setProperty(styleName, styleValue);
     } else {
       style[styleName] = styleValue;
+    }
+  }
+}
+
+function isValueEmpty(value) {
+  return value == null || typeof value === 'boolean' || value === '';
+}
+
+/**
+ * Given {color: 'red', overflow: 'hidden'} returns {
+ *   color: 'color',
+ *   overflowX: 'overflow',
+ *   overflowY: 'overflow',
+ * }. This can be read as "the overflowY property was set by the overflow
+ * shorthand". That is, the values are the property that each was derived from.
+ */
+function expandShorthandMap(styles) {
+  var expanded = {};
+  for (var key in styles) {
+    var longhands = shorthandToLonghand[key] || [key];
+    for (var i = 0; i < longhands.length; i++) {
+      expanded[longhands[i]] = key;
+    }
+  }
+  return expanded;
+}
+
+/**
+ * When mixing shorthand and longhand property names, we warn during updates if
+ * we expect an incorrect result to occur. In particular, we warn for:
+ *
+ * Updating a shorthand property (longhand gets overwritten):
+ *   {font: 'foo', fontVariant: 'bar'} -> {font: 'baz', fontVariant: 'bar'}
+ *   becomes .style.font = 'baz'
+ * Removing a shorthand property (longhand gets lost too):
+ *   {font: 'foo', fontVariant: 'bar'} -> {fontVariant: 'bar'}
+ *   becomes .style.font = ''
+ * Removing a longhand property (should revert to shorthand; doesn't):
+ *   {font: 'foo', fontVariant: 'bar'} -> {font: 'foo'}
+ *   becomes .style.fontVariant = ''
+ */
+function validateShorthandPropertyCollisionInDev(styleUpdates, nextStyles) {
+  if (!warnAboutShorthandPropertyCollision) {
+    return;
+  }
+
+  if (!nextStyles) {
+    return;
+  }
+
+  var expandedUpdates = expandShorthandMap(styleUpdates);
+  var expandedStyles = expandShorthandMap(nextStyles);
+  var warnedAbout = {};
+  for (var key in expandedUpdates) {
+    var originalKey = expandedUpdates[key];
+    var correctOriginalKey = expandedStyles[key];
+    if (correctOriginalKey && originalKey !== correctOriginalKey) {
+      var warningKey = originalKey + ',' + correctOriginalKey;
+      if (warnedAbout[warningKey]) {
+        continue;
+      }
+      warnedAbout[warningKey] = true;
+      warning$1(false, '%s a style property during rerender (%s) when a ' + 'conflicting property is set (%s) can lead to styling bugs. To ' + "avoid this, don't mix shorthand and non-shorthand properties " + 'for the same value; instead, replace the shorthand with ' + 'separate values.', isValueEmpty(styleUpdates[originalKey]) ? 'Removing' : 'Updating', originalKey, correctOriginalKey);
     }
   }
 }
@@ -61169,6 +62163,9 @@ function diffProperties(domElement, tag, lastRawProps, nextRawProps, rootContain
     }
   }
   if (styleUpdates) {
+    {
+      validateShorthandPropertyCollisionInDev(styleUpdates, nextProps[STYLE$1]);
+    }
     (updatePayload = updatePayload || []).push(STYLE$1, styleUpdates);
   }
   return updatePayload;
@@ -63118,6 +64115,26 @@ function FiberNode(tag, pendingProps, key, mode) {
   this.alternate = null;
 
   if (enableProfilerTimer) {
+    // Note: The following is done to avoid a v8 performance cliff.
+    //
+    // Initializing the fields below to smis and later updating them with
+    // double values will cause Fibers to end up having separate shapes.
+    // This behavior/bug has something to do with Object.preventExtension().
+    // Fortunately this only impacts DEV builds.
+    // Unfortunately it makes React unusably slow for some applications.
+    // To work around this, initialize the fields below with doubles.
+    //
+    // Learn more about this here:
+    // https://github.com/facebook/react/issues/14365
+    // https://bugs.chromium.org/p/v8/issues/detail?id=8538
+    this.actualDuration = Number.NaN;
+    this.actualStartTime = Number.NaN;
+    this.selfBaseDuration = Number.NaN;
+    this.treeBaseDuration = Number.NaN;
+
+    // It's okay to replace the initial doubles with smis after initialization.
+    // This won't trigger the performance cliff mentioned above,
+    // and it simplifies other profiler code (including DevTools).
     this.actualDuration = 0;
     this.actualStartTime = -1;
     this.selfBaseDuration = 0;
@@ -63500,6 +64517,8 @@ function createFiberRoot(containerInfo, isConcurrent, hydrate) {
       latestSuspendedTime: NoWork,
       latestPingedTime: NoWork,
 
+      pingCache: null,
+
       didError: false,
 
       pendingCommitExpirationTime: NoWork,
@@ -63522,6 +64541,8 @@ function createFiberRoot(containerInfo, isConcurrent, hydrate) {
       current: uninitializedFiber,
       containerInfo: containerInfo,
       pendingChildren: null,
+
+      pingCache: null,
 
       earliestPendingTime: NoWork,
       latestPendingTime: NoWork,
@@ -63897,6 +64918,10 @@ function markCommittedPriorityLevels(root, earliestRemainingTime) {
     return;
   }
 
+  if (earliestRemainingTime < root.latestPingedTime) {
+    root.latestPingedTime = NoWork;
+  }
+
   // Let's see if the previous latest known pending level was just flushed.
   var latestPendingTime = root.latestPendingTime;
   if (latestPendingTime !== NoWork) {
@@ -64022,10 +65047,8 @@ function markPingedPriorityLevel(root, pingedTime) {
 }
 
 function clearPing(root, completedTime) {
-  // TODO: Track whether the root was pinged during the render phase. If so,
-  // we need to make sure we don't lose track of it.
   var latestPingedTime = root.latestPingedTime;
-  if (latestPingedTime !== NoWork && latestPingedTime >= completedTime) {
+  if (latestPingedTime >= completedTime) {
     root.latestPingedTime = NoWork;
   }
 }
@@ -64976,7 +65999,7 @@ function cloneHook(hook) {
   return {
     memoizedState: hook.memoizedState,
 
-    baseState: hook.memoizedState,
+    baseState: hook.baseState,
     queue: hook.queue,
     baseUpdate: hook.baseUpdate,
 
@@ -65221,10 +66244,6 @@ function useRef(initialValue) {
   return ref;
 }
 
-function useMutationEffect(create, inputs) {
-  useEffectImpl(Snapshot | Update, UnmountSnapshot | MountMutation, create, inputs);
-}
-
 function useLayoutEffect(create, inputs) {
   useEffectImpl(Update, UnmountMutation | MountLayout, create, inputs);
 }
@@ -65259,7 +66278,7 @@ function useImperativeMethods(ref, create, inputs) {
   // TODO: I've implemented this on top of useEffect because it's almost the
   // same thing, and it would require an equal amount of code. It doesn't seem
   // like a common enough use case to justify the additional size.
-  useEffectImpl(Update, UnmountMutation | MountLayout, function () {
+  useLayoutEffect(function () {
     if (typeof ref === 'function') {
       var refCallback = ref;
       var _inst = create();
@@ -67421,12 +68440,14 @@ var didWarnAboutBadClass = void 0;
 var didWarnAboutContextTypeOnFunctionComponent = void 0;
 var didWarnAboutGetDerivedStateOnFunctionComponent = void 0;
 var didWarnAboutFunctionRefs = void 0;
+var didWarnAboutReassigningProps = void 0;
 
 {
   didWarnAboutBadClass = {};
   didWarnAboutContextTypeOnFunctionComponent = {};
   didWarnAboutGetDerivedStateOnFunctionComponent = {};
   didWarnAboutFunctionRefs = {};
+  didWarnAboutReassigningProps = false;
 }
 
 function reconcileChildren(current$$1, workInProgress, nextChildren, renderExpirationTime) {
@@ -67465,6 +68486,18 @@ function forceUnmountCurrentAndReconcile(current$$1, workInProgress, nextChildre
 }
 
 function updateForwardRef(current$$1, workInProgress, Component, nextProps, renderExpirationTime) {
+  {
+    if (workInProgress.type !== workInProgress.elementType) {
+      // Lazy component props can't be validated in createElement
+      // because they're only guaranteed to be resolved here.
+      var innerPropTypes = Component.propTypes;
+      if (innerPropTypes) {
+        checkPropTypes(innerPropTypes, nextProps, // Resolved props
+        'prop', getComponentName(Component), getCurrentFiberStackInDev);
+      }
+    }
+  }
+
   var render = Component.render;
   var ref = workInProgress.ref;
 
@@ -67489,19 +68522,43 @@ function updateForwardRef(current$$1, workInProgress, Component, nextProps, rend
 function updateMemoComponent(current$$1, workInProgress, Component, nextProps, updateExpirationTime, renderExpirationTime) {
   if (current$$1 === null) {
     var type = Component.type;
-    if (isSimpleFunctionComponent(type) && Component.compare === null) {
+    if (isSimpleFunctionComponent(type) && Component.compare === null &&
+    // SimpleMemoComponent codepath doesn't resolve outer props either.
+    Component.defaultProps === undefined) {
       // If this is a plain function component without default props,
       // and with only the default shallow comparison, we upgrade it
       // to a SimpleMemoComponent to allow fast path updates.
       workInProgress.tag = SimpleMemoComponent;
       workInProgress.type = type;
+      {
+        validateFunctionComponentInDev(workInProgress, type);
+      }
       return updateSimpleMemoComponent(current$$1, workInProgress, type, nextProps, updateExpirationTime, renderExpirationTime);
+    }
+    {
+      var innerPropTypes = type.propTypes;
+      if (innerPropTypes) {
+        // Inner memo component props aren't currently validated in createElement.
+        // We could move it there, but we'd still need this for lazy code path.
+        checkPropTypes(innerPropTypes, nextProps, // Resolved props
+        'prop', getComponentName(type), getCurrentFiberStackInDev);
+      }
     }
     var child = createFiberFromTypeAndProps(Component.type, null, nextProps, null, workInProgress.mode, renderExpirationTime);
     child.ref = workInProgress.ref;
     child.return = workInProgress;
     workInProgress.child = child;
     return child;
+  }
+  {
+    var _type = Component.type;
+    var _innerPropTypes = _type.propTypes;
+    if (_innerPropTypes) {
+      // Inner memo component props aren't currently validated in createElement.
+      // We could move it there, but we'd still need this for lazy code path.
+      checkPropTypes(_innerPropTypes, nextProps, // Resolved props
+      'prop', getComponentName(_type), getCurrentFiberStackInDev);
+    }
   }
   var currentChild = current$$1.child; // This is always exactly one child
   if (updateExpirationTime < renderExpirationTime) {
@@ -67525,6 +68582,25 @@ function updateMemoComponent(current$$1, workInProgress, Component, nextProps, u
 }
 
 function updateSimpleMemoComponent(current$$1, workInProgress, Component, nextProps, updateExpirationTime, renderExpirationTime) {
+  {
+    if (workInProgress.type !== workInProgress.elementType) {
+      // Lazy component props can't be validated in createElement
+      // because they're only guaranteed to be resolved here.
+      var outerMemoType = workInProgress.elementType;
+      if (outerMemoType.$$typeof === REACT_LAZY_TYPE) {
+        // We warn when you define propTypes on lazy()
+        // so let's just skip over it to find memo() outer wrapper.
+        // Inner props for memo are validated later.
+        outerMemoType = refineResolvedLazyComponent(outerMemoType);
+      }
+      var outerPropTypes = outerMemoType && outerMemoType.propTypes;
+      if (outerPropTypes) {
+        checkPropTypes(outerPropTypes, nextProps, // Resolved (SimpleMemoComponent has no defaultProps)
+        'prop', getComponentName(outerMemoType), getCurrentFiberStackInDev);
+      }
+      // Inner propTypes will be validated in the function component path.
+    }
+  }
   if (current$$1 !== null && updateExpirationTime < renderExpirationTime) {
     var prevProps = current$$1.memoizedProps;
     if (shallowEqual(prevProps, nextProps) && current$$1.ref === workInProgress.ref) {
@@ -67565,6 +68641,18 @@ function markRef(current$$1, workInProgress) {
 }
 
 function updateFunctionComponent(current$$1, workInProgress, Component, nextProps, renderExpirationTime) {
+  {
+    if (workInProgress.type !== workInProgress.elementType) {
+      // Lazy component props can't be validated in createElement
+      // because they're only guaranteed to be resolved here.
+      var innerPropTypes = Component.propTypes;
+      if (innerPropTypes) {
+        checkPropTypes(innerPropTypes, nextProps, // Resolved props
+        'prop', getComponentName(Component), getCurrentFiberStackInDev);
+      }
+    }
+  }
+
   var unmaskedContext = getUnmaskedContext(workInProgress, Component, true);
   var context = getMaskedContext(workInProgress, unmaskedContext);
 
@@ -67586,6 +68674,18 @@ function updateFunctionComponent(current$$1, workInProgress, Component, nextProp
 }
 
 function updateClassComponent(current$$1, workInProgress, Component, nextProps, renderExpirationTime) {
+  {
+    if (workInProgress.type !== workInProgress.elementType) {
+      // Lazy component props can't be validated in createElement
+      // because they're only guaranteed to be resolved here.
+      var innerPropTypes = Component.propTypes;
+      if (innerPropTypes) {
+        checkPropTypes(innerPropTypes, nextProps, // Resolved props
+        'prop', getComponentName(Component), getCurrentFiberStackInDev);
+      }
+    }
+  }
+
   // Push context providers early to prevent context stack mismatches.
   // During mounting we don't know the child context yet as the instance doesn't exist.
   // We will invalidate the child context in finishClassComponent() right after rendering.
@@ -67621,7 +68721,15 @@ function updateClassComponent(current$$1, workInProgress, Component, nextProps, 
   } else {
     shouldUpdate = updateClassInstance(current$$1, workInProgress, Component, nextProps, renderExpirationTime);
   }
-  return finishClassComponent(current$$1, workInProgress, Component, shouldUpdate, hasContext, renderExpirationTime);
+  var nextUnitOfWork = finishClassComponent(current$$1, workInProgress, Component, shouldUpdate, hasContext, renderExpirationTime);
+  {
+    var inst = workInProgress.stateNode;
+    if (inst.props !== nextProps) {
+      !didWarnAboutReassigningProps ? warning$1(false, 'It looks like %s is reassigning its own `this.props` while rendering. ' + 'This is not supported and can lead to confusing bugs.', getComponentName(workInProgress.type) || 'a component') : void 0;
+      didWarnAboutReassigningProps = true;
+    }
+  }
+  return nextUnitOfWork;
 }
 
 function finishClassComponent(current$$1, workInProgress, Component, shouldUpdate, hasContext, renderExpirationTime) {
@@ -67834,16 +68942,31 @@ function mountLazyComponent(_current, workInProgress, elementType, updateExpirat
       }
     case MemoComponent:
       {
+        {
+          if (workInProgress.type !== workInProgress.elementType) {
+            var outerPropTypes = Component.propTypes;
+            if (outerPropTypes) {
+              checkPropTypes(outerPropTypes, resolvedProps, // Resolved for outer only
+              'prop', getComponentName(Component), getCurrentFiberStackInDev);
+            }
+          }
+        }
         child = updateMemoComponent(null, workInProgress, Component, resolveDefaultProps(Component.type, resolvedProps), // The inner type can have defaults too
         updateExpirationTime, renderExpirationTime);
         break;
       }
     default:
       {
+        var hint = '';
+        {
+          if (Component !== null && typeof Component === 'object' && Component.$$typeof === REACT_LAZY_TYPE) {
+            hint = ' Did you wrap a component in React.lazy() more than once?';
+          }
+        }
         // This message intentionally doesn't mention ForwardRef or MemoComponent
         // because the fact that it's a separate type of work is an
         // implementation detail.
-        invariant(false, 'Element type is invalid. Received a promise that resolves to: %s. Promise elements must resolve to a class or function.', Component);
+        invariant(false, 'Element type is invalid. Received a promise that resolves to: %s. Lazy element type must resolve to a class or function.%s', Component, hint);
       }
   }
   return child;
@@ -67957,48 +69080,52 @@ function mountIndeterminateComponent(_current, workInProgress, Component, render
     // Proceed under the assumption that this is a function component
     workInProgress.tag = FunctionComponent;
     value = finishHooks(Component, props, value, context);
-    {
-      if (Component) {
-        !!Component.childContextTypes ? warningWithoutStack$1(false, '%s(...): childContextTypes cannot be defined on a function component.', Component.displayName || Component.name || 'Component') : void 0;
-      }
-      if (workInProgress.ref !== null) {
-        var info = '';
-        var ownerName = getCurrentFiberOwnerNameInDevOrNull();
-        if (ownerName) {
-          info += '\n\nCheck the render method of `' + ownerName + '`.';
-        }
-
-        var warningKey = ownerName || workInProgress._debugID || '';
-        var debugSource = workInProgress._debugSource;
-        if (debugSource) {
-          warningKey = debugSource.fileName + ':' + debugSource.lineNumber;
-        }
-        if (!didWarnAboutFunctionRefs[warningKey]) {
-          didWarnAboutFunctionRefs[warningKey] = true;
-          warning$1(false, 'Function components cannot be given refs. ' + 'Attempts to access this ref will fail.%s', info);
-        }
-      }
-
-      if (typeof Component.getDerivedStateFromProps === 'function') {
-        var _componentName = getComponentName(Component) || 'Unknown';
-
-        if (!didWarnAboutGetDerivedStateOnFunctionComponent[_componentName]) {
-          warningWithoutStack$1(false, '%s: Function components do not support getDerivedStateFromProps.', _componentName);
-          didWarnAboutGetDerivedStateOnFunctionComponent[_componentName] = true;
-        }
-      }
-
-      if (typeof Component.contextType === 'object' && Component.contextType !== null) {
-        var _componentName2 = getComponentName(Component) || 'Unknown';
-
-        if (!didWarnAboutContextTypeOnFunctionComponent[_componentName2]) {
-          warningWithoutStack$1(false, '%s: Function components do not support contextType.', _componentName2);
-          didWarnAboutContextTypeOnFunctionComponent[_componentName2] = true;
-        }
-      }
-    }
     reconcileChildren(null, workInProgress, value, renderExpirationTime);
+    {
+      validateFunctionComponentInDev(workInProgress, Component);
+    }
     return workInProgress.child;
+  }
+}
+
+function validateFunctionComponentInDev(workInProgress, Component) {
+  if (Component) {
+    !!Component.childContextTypes ? warningWithoutStack$1(false, '%s(...): childContextTypes cannot be defined on a function component.', Component.displayName || Component.name || 'Component') : void 0;
+  }
+  if (workInProgress.ref !== null) {
+    var info = '';
+    var ownerName = getCurrentFiberOwnerNameInDevOrNull();
+    if (ownerName) {
+      info += '\n\nCheck the render method of `' + ownerName + '`.';
+    }
+
+    var warningKey = ownerName || workInProgress._debugID || '';
+    var debugSource = workInProgress._debugSource;
+    if (debugSource) {
+      warningKey = debugSource.fileName + ':' + debugSource.lineNumber;
+    }
+    if (!didWarnAboutFunctionRefs[warningKey]) {
+      didWarnAboutFunctionRefs[warningKey] = true;
+      warning$1(false, 'Function components cannot be given refs. ' + 'Attempts to access this ref will fail.%s', info);
+    }
+  }
+
+  if (typeof Component.getDerivedStateFromProps === 'function') {
+    var componentName = getComponentName(Component) || 'Unknown';
+
+    if (!didWarnAboutGetDerivedStateOnFunctionComponent[componentName]) {
+      warningWithoutStack$1(false, '%s: Function components do not support getDerivedStateFromProps.', componentName);
+      didWarnAboutGetDerivedStateOnFunctionComponent[componentName] = true;
+    }
+  }
+
+  if (typeof Component.contextType === 'object' && Component.contextType !== null) {
+    var _componentName = getComponentName(Component) || 'Unknown';
+
+    if (!didWarnAboutContextTypeOnFunctionComponent[_componentName]) {
+      warningWithoutStack$1(false, '%s: Function components do not support contextType.', _componentName);
+      didWarnAboutContextTypeOnFunctionComponent[_componentName] = true;
+    }
   }
 }
 
@@ -68200,6 +69327,7 @@ function updateSuspenseComponent(current$$1, workInProgress, renderExpirationTim
         next = child = reconcileChildFibers(workInProgress, _currentPrimaryChild, _nextPrimaryChildren2, renderExpirationTime);
       }
     }
+    workInProgress.stateNode = current$$1.stateNode;
   }
 
   workInProgress.memoizedState = nextState;
@@ -68470,10 +69598,21 @@ function beginWork(current$$1, workInProgress, renderExpirationTime) {
       return updateContextConsumer(current$$1, workInProgress, renderExpirationTime);
     case MemoComponent:
       {
-        var _type = workInProgress.type;
+        var _type2 = workInProgress.type;
         var _unresolvedProps3 = workInProgress.pendingProps;
-        var _resolvedProps3 = resolveDefaultProps(_type.type, _unresolvedProps3);
-        return updateMemoComponent(current$$1, workInProgress, _type, _resolvedProps3, updateExpirationTime, renderExpirationTime);
+        // Resolve outer props first, then resolve inner props.
+        var _resolvedProps3 = resolveDefaultProps(_type2, _unresolvedProps3);
+        {
+          if (workInProgress.type !== workInProgress.elementType) {
+            var outerPropTypes = _type2.propTypes;
+            if (outerPropTypes) {
+              checkPropTypes(outerPropTypes, _resolvedProps3, // Resolved for outer only
+              'prop', getComponentName(_type2), getCurrentFiberStackInDev);
+            }
+          }
+        }
+        _resolvedProps3 = resolveDefaultProps(_type2.type, _resolvedProps3);
+        return updateMemoComponent(current$$1, workInProgress, _type2, _resolvedProps3, updateExpirationTime, renderExpirationTime);
       }
     case SimpleMemoComponent:
       {
@@ -69032,7 +70171,7 @@ function completeWork(current, workInProgress, renderExpirationTime) {
   return null;
 }
 
-function shouldCaptureSuspense(current, workInProgress) {
+function shouldCaptureSuspense(workInProgress) {
   // In order to capture, the Suspense component must have a fallback prop.
   if (workInProgress.memoizedProps.fallback === undefined) {
     return false;
@@ -69114,6 +70253,8 @@ var didWarnAboutUndefinedSnapshotBeforeUpdate = null;
 {
   didWarnAboutUndefinedSnapshotBeforeUpdate = new Set();
 }
+
+var PossiblyWeakSet = typeof WeakSet === 'function' ? WeakSet : Set;
 
 function logError(boundary, errorInfo) {
   var source = errorInfo.source;
@@ -69219,9 +70360,9 @@ function commitBeforeMutationLifeCycles(current$$1, finishedWork) {
             // but instead we rely on them being set during last render.
             // TODO: revisit this when we implement resuming.
             {
-              if (finishedWork.type === finishedWork.elementType) {
-                !(instance.props === finishedWork.memoizedProps) ? warning$1(false, 'Expected instance props to match memoized props before ' + 'getSnapshotBeforeUpdate. This is likely due to a bug in React. ' + 'Please file an issue.') : void 0;
-                !(instance.state === finishedWork.memoizedState) ? warning$1(false, 'Expected instance state to match memoized state before ' + 'getSnapshotBeforeUpdate. This is likely due to a bug in React. ' + 'Please file an issue.') : void 0;
+              if (finishedWork.type === finishedWork.elementType && !didWarnAboutReassigningProps) {
+                !(instance.props === finishedWork.memoizedProps) ? warning$1(false, 'Expected %s props to match memoized props before ' + 'getSnapshotBeforeUpdate. ' + 'This might either be because of a bug in React, or because ' + 'a component reassigns its own `this.props`. ' + 'Please file an issue.', getComponentName(finishedWork.type) || 'instance') : void 0;
+                !(instance.state === finishedWork.memoizedState) ? warning$1(false, 'Expected %s state to match memoized state before ' + 'getSnapshotBeforeUpdate. ' + 'This might either be because of a bug in React, or because ' + 'a component reassigns its own `this.props`. ' + 'Please file an issue.', getComponentName(finishedWork.type) || 'instance') : void 0;
               }
             }
             var snapshot = instance.getSnapshotBeforeUpdate(finishedWork.elementType === finishedWork.type ? prevProps : resolveDefaultProps(finishedWork.type, prevProps), prevState);
@@ -69277,7 +70418,7 @@ function commitHookEffectList(unmountTag, mountTag, finishedWork) {
         if (typeof _destroy !== 'function') {
           {
             if (_destroy !== null && _destroy !== undefined) {
-              warningWithoutStack$1(false, 'useEffect function must return a cleanup function or ' + 'nothing.%s%s', typeof _destroy.then === 'function' ? ' Promises and useEffect(async () => ...) are not ' + 'supported, but you can call an async function inside an ' + 'effect.' : '', getStackByFiberInDevAndProd(finishedWork));
+              warningWithoutStack$1(false, 'useEffect function must return a cleanup function or ' + 'nothing.%s%s', typeof _destroy.then === 'function' ? '\n\nIt looks like you wrote useEffect(async () => ...) or returned a Promise. ' + 'Instead, you may write an async function separately ' + 'and then call it from inside the effect:\n\n' + 'async function fetchComment(commentId) {\n' + '  // You can await here\n' + '}\n\n' + 'useEffect(() => {\n' + '  fetchComment(commentId);\n' + '}, [commentId]);\n\n' + 'In the future, React will provide a more idiomatic solution for data fetching ' + "that doesn't involve writing effects manually." : '', getStackByFiberInDevAndProd(finishedWork));
             }
           }
           _destroy = null;
@@ -69313,9 +70454,9 @@ function commitLifeCycles(finishedRoot, current$$1, finishedWork, committedExpir
             // but instead we rely on them being set during last render.
             // TODO: revisit this when we implement resuming.
             {
-              if (finishedWork.type === finishedWork.elementType) {
-                !(instance.props === finishedWork.memoizedProps) ? warning$1(false, 'Expected instance props to match memoized props before ' + 'componentDidMount. This is likely due to a bug in React. ' + 'Please file an issue.') : void 0;
-                !(instance.state === finishedWork.memoizedState) ? warning$1(false, 'Expected instance state to match memoized state before ' + 'componentDidMount. This is likely due to a bug in React. ' + 'Please file an issue.') : void 0;
+              if (finishedWork.type === finishedWork.elementType && !didWarnAboutReassigningProps) {
+                !(instance.props === finishedWork.memoizedProps) ? warning$1(false, 'Expected %s props to match memoized props before ' + 'componentDidMount. ' + 'This might either be because of a bug in React, or because ' + 'a component reassigns its own `this.props`. ' + 'Please file an issue.', getComponentName(finishedWork.type) || 'instance') : void 0;
+                !(instance.state === finishedWork.memoizedState) ? warning$1(false, 'Expected %s state to match memoized state before ' + 'componentDidMount. ' + 'This might either be because of a bug in React, or because ' + 'a component reassigns its own `this.props`. ' + 'Please file an issue.', getComponentName(finishedWork.type) || 'instance') : void 0;
               }
             }
             instance.componentDidMount();
@@ -69328,9 +70469,9 @@ function commitLifeCycles(finishedRoot, current$$1, finishedWork, committedExpir
             // but instead we rely on them being set during last render.
             // TODO: revisit this when we implement resuming.
             {
-              if (finishedWork.type === finishedWork.elementType) {
-                !(instance.props === finishedWork.memoizedProps) ? warning$1(false, 'Expected instance props to match memoized props before ' + 'componentDidUpdate. This is likely due to a bug in React. ' + 'Please file an issue.') : void 0;
-                !(instance.state === finishedWork.memoizedState) ? warning$1(false, 'Expected instance state to match memoized state before ' + 'componentDidUpdate. This is likely due to a bug in React. ' + 'Please file an issue.') : void 0;
+              if (finishedWork.type === finishedWork.elementType && !didWarnAboutReassigningProps) {
+                !(instance.props === finishedWork.memoizedProps) ? warning$1(false, 'Expected %s props to match memoized props before ' + 'componentDidUpdate. ' + 'This might either be because of a bug in React, or because ' + 'a component reassigns its own `this.props`. ' + 'Please file an issue.', getComponentName(finishedWork.type) || 'instance') : void 0;
+                !(instance.state === finishedWork.memoizedState) ? warning$1(false, 'Expected %s state to match memoized state before ' + 'componentDidUpdate. ' + 'This might either be because of a bug in React, or because ' + 'a component reassigns its own `this.props`. ' + 'Please file an issue.', getComponentName(finishedWork.type) || 'instance') : void 0;
               }
             }
             instance.componentDidUpdate(prevProps, prevState, instance.__reactInternalSnapshotBeforeUpdate);
@@ -69340,9 +70481,9 @@ function commitLifeCycles(finishedRoot, current$$1, finishedWork, committedExpir
         var updateQueue = finishedWork.updateQueue;
         if (updateQueue !== null) {
           {
-            if (finishedWork.type === finishedWork.elementType) {
-              !(instance.props === finishedWork.memoizedProps) ? warning$1(false, 'Expected instance props to match memoized props before ' + 'processing the update queue. This is likely due to a bug in React. ' + 'Please file an issue.') : void 0;
-              !(instance.state === finishedWork.memoizedState) ? warning$1(false, 'Expected instance state to match memoized state before ' + 'processing the update queue. This is likely due to a bug in React. ' + 'Please file an issue.') : void 0;
+            if (finishedWork.type === finishedWork.elementType && !didWarnAboutReassigningProps) {
+              !(instance.props === finishedWork.memoizedProps) ? warning$1(false, 'Expected %s props to match memoized props before ' + 'processing the update queue. ' + 'This might either be because of a bug in React, or because ' + 'a component reassigns its own `this.props`. ' + 'Please file an issue.', getComponentName(finishedWork.type) || 'instance') : void 0;
+              !(instance.state === finishedWork.memoizedState) ? warning$1(false, 'Expected %s state to match memoized state before ' + 'processing the update queue. ' + 'This might either be because of a bug in React, or because ' + 'a component reassigns its own `this.props`. ' + 'Please file an issue.', getComponentName(finishedWork.type) || 'instance') : void 0;
             }
           }
           // We could update instance props and state here,
@@ -69601,9 +70742,14 @@ function detachFiber(current$$1) {
   // itself will be GC:ed when the parent updates the next time.
   current$$1.return = null;
   current$$1.child = null;
-  if (current$$1.alternate) {
-    current$$1.alternate.child = null;
-    current$$1.alternate.return = null;
+  current$$1.memoizedState = null;
+  current$$1.updateQueue = null;
+  var alternate = current$$1.alternate;
+  if (alternate !== null) {
+    alternate.return = null;
+    alternate.child = null;
+    alternate.memoizedState = null;
+    alternate.updateQueue = null;
   }
 }
 
@@ -69892,6 +71038,8 @@ function commitWork(current$$1, finishedWork) {
       case MemoComponent:
       case SimpleMemoComponent:
         {
+          // Note: We currently never use MountMutation, but useLayout uses
+          // UnmountMutation.
           commitHookEffectList(UnmountMutation, MountMutation, finishedWork);
           return;
         }
@@ -69907,6 +71055,8 @@ function commitWork(current$$1, finishedWork) {
     case MemoComponent:
     case SimpleMemoComponent:
       {
+        // Note: We currently never use MountMutation, but useLayout uses
+        // UnmountMutation.
         commitHookEffectList(UnmountMutation, MountMutation, finishedWork);
         return;
       }
@@ -69976,6 +71126,30 @@ function commitWork(current$$1, finishedWork) {
         if (primaryChildParent !== null) {
           hideOrUnhideAllChildren(primaryChildParent, newDidTimeout);
         }
+
+        // If this boundary just timed out, then it will have a set of thenables.
+        // For each thenable, attach a listener so that when it resolves, React
+        // attempts to re-render the boundary in the primary (pre-timeout) state.
+        var thenables = finishedWork.updateQueue;
+        if (thenables !== null) {
+          finishedWork.updateQueue = null;
+          var retryCache = finishedWork.stateNode;
+          if (retryCache === null) {
+            retryCache = finishedWork.stateNode = new PossiblyWeakSet();
+          }
+          thenables.forEach(function (thenable) {
+            // Memoize using the boundary fiber to prevent redundant listeners.
+            var retry = retryTimedOutBoundary.bind(null, finishedWork, thenable);
+            if (enableSchedulerTracing) {
+              retry = tracing.unstable_wrap(retry);
+            }
+            if (!retryCache.has(thenable)) {
+              retryCache.add(thenable);
+              thenable.then(retry, retry);
+            }
+          });
+        }
+
         return;
       }
     case IncompleteClassComponent:
@@ -69995,6 +71169,8 @@ function commitResetTextContent(current$$1) {
   }
   resetTextContent(current$$1.stateNode);
 }
+
+var PossiblyWeakMap = typeof WeakMap === 'function' ? WeakMap : Map;
 
 function createRootErrorUpdate(fiber, errorInfo, expirationTime) {
   var update = createUpdate(expirationTime);
@@ -70099,19 +71275,16 @@ function throwException(root, returnFiber, sourceFiber, value, renderExpirationT
     // Schedule the nearest Suspense to re-render the timed out view.
     _workInProgress = returnFiber;
     do {
-      if (_workInProgress.tag === SuspenseComponent && shouldCaptureSuspense(_workInProgress.alternate, _workInProgress)) {
+      if (_workInProgress.tag === SuspenseComponent && shouldCaptureSuspense(_workInProgress)) {
         // Found the nearest boundary.
 
-        // If the boundary is not in concurrent mode, we should not suspend, and
-        // likewise, when the promise resolves, we should ping synchronously.
-        var pingTime = (_workInProgress.mode & ConcurrentMode) === NoEffect ? Sync : renderExpirationTime;
-
-        // Attach a listener to the promise to "ping" the root and retry.
-        var onResolveOrReject = retrySuspendedRoot.bind(null, root, _workInProgress, sourceFiber, pingTime);
-        if (enableSchedulerTracing) {
-          onResolveOrReject = tracing.unstable_wrap(onResolveOrReject);
+        // Stash the promise on the boundary fiber. If the boundary times out, we'll
+        var thenables = _workInProgress.updateQueue;
+        if (thenables === null) {
+          _workInProgress.updateQueue = new Set([thenable]);
+        } else {
+          thenables.add(thenable);
         }
-        thenable.then(onResolveOrReject, onResolveOrReject);
 
         // If the boundary is outside of concurrent mode, we should *not*
         // suspend the commit. Pretend as if the suspended component rendered
@@ -70130,18 +71303,25 @@ function throwException(root, returnFiber, sourceFiber, value, renderExpirationT
           sourceFiber.effectTag &= ~(LifecycleEffectMask | Incomplete);
 
           if (sourceFiber.tag === ClassComponent) {
-            var _current = sourceFiber.alternate;
-            if (_current === null) {
+            var currentSourceFiber = sourceFiber.alternate;
+            if (currentSourceFiber === null) {
               // This is a new mount. Change the tag so it's not mistaken for a
               // completed class component. For example, we should not call
               // componentWillUnmount if it is deleted.
               sourceFiber.tag = IncompleteClassComponent;
+            } else {
+              // When we try rendering again, we should not reuse the current fiber,
+              // since it's known to be in an inconsistent state. Use a force updte to
+              // prevent a bail out.
+              var update = createUpdate(Sync);
+              update.tag = ForceUpdate;
+              enqueueUpdate(sourceFiber, update);
             }
           }
 
-          // The source fiber did not complete. Mark it with the current
-          // render priority to indicate that it still has pending work.
-          sourceFiber.expirationTime = renderExpirationTime;
+          // The source fiber did not complete. Mark it with Sync priority to
+          // indicate that it still has pending work.
+          sourceFiber.expirationTime = Sync;
 
           // Exit without suspending.
           return;
@@ -70149,6 +71329,32 @@ function throwException(root, returnFiber, sourceFiber, value, renderExpirationT
 
         // Confirmed that the boundary is in a concurrent mode tree. Continue
         // with the normal suspend path.
+
+        // Attach a listener to the promise to "ping" the root and retry. But
+        // only if one does not already exist for the current render expiration
+        // time (which acts like a "thread ID" here).
+        var pingCache = root.pingCache;
+        var threadIDs = void 0;
+        if (pingCache === null) {
+          pingCache = root.pingCache = new PossiblyWeakMap();
+          threadIDs = new Set();
+          pingCache.set(thenable, threadIDs);
+        } else {
+          threadIDs = pingCache.get(thenable);
+          if (threadIDs === undefined) {
+            threadIDs = new Set();
+            pingCache.set(thenable, threadIDs);
+          }
+        }
+        if (!threadIDs.has(renderExpirationTime)) {
+          // Memoize using the thread ID to prevent redundant listeners.
+          threadIDs.add(renderExpirationTime);
+          var ping = pingSuspendedRoot.bind(null, root, thenable, renderExpirationTime);
+          if (enableSchedulerTracing) {
+            ping = tracing.unstable_wrap(ping);
+          }
+          thenable.then(ping, ping);
+        }
 
         var absoluteTimeoutMs = void 0;
         if (earliestTimeoutMs === -1) {
@@ -70206,8 +71412,8 @@ function throwException(root, returnFiber, sourceFiber, value, renderExpirationT
           var _errorInfo = value;
           workInProgress.effectTag |= ShouldCapture;
           workInProgress.expirationTime = renderExpirationTime;
-          var update = createRootErrorUpdate(workInProgress, _errorInfo, renderExpirationTime);
-          enqueueCapturedUpdate(workInProgress, update);
+          var _update = createRootErrorUpdate(workInProgress, _errorInfo, renderExpirationTime);
+          enqueueCapturedUpdate(workInProgress, _update);
           return;
         }
       case ClassComponent:
@@ -70219,8 +71425,8 @@ function throwException(root, returnFiber, sourceFiber, value, renderExpirationT
           workInProgress.effectTag |= ShouldCapture;
           workInProgress.expirationTime = renderExpirationTime;
           // Schedule the error boundary to re-render using updated state
-          var _update = createClassErrorUpdate(workInProgress, errorInfo, renderExpirationTime);
-          enqueueCapturedUpdate(workInProgress, _update);
+          var _update2 = createClassErrorUpdate(workInProgress, errorInfo, renderExpirationTime);
+          enqueueCapturedUpdate(workInProgress, _update2);
           return;
         }
         break;
@@ -70321,7 +71527,6 @@ var Dispatcher = {
   useImperativeMethods: useImperativeMethods,
   useLayoutEffect: useLayoutEffect,
   useMemo: useMemo,
-  useMutationEffect: useMutationEffect,
   useReducer: useReducer,
   useRef: useRef,
   useState: useState
@@ -71596,56 +72801,54 @@ function renderDidError() {
   nextRenderDidError = true;
 }
 
-function retrySuspendedRoot(root, boundaryFiber, sourceFiber, suspendedTime) {
-  var retryTime = void 0;
+function pingSuspendedRoot(root, thenable, pingTime) {
+  // A promise that previously suspended React from committing has resolved.
+  // If React is still suspended, try again at the previous level (pingTime).
 
-  if (isPriorityLevelSuspended(root, suspendedTime)) {
-    // Ping at the original level
-    retryTime = suspendedTime;
+  var pingCache = root.pingCache;
+  if (pingCache !== null) {
+    // The thenable resolved, so we no longer need to memoize, because it will
+    // never be thrown again.
+    pingCache.delete(thenable);
+  }
 
-    markPingedPriorityLevel(root, retryTime);
+  if (nextRoot !== null && nextRenderExpirationTime === pingTime) {
+    // Received a ping at the same priority level at which we're currently
+    // rendering. Restart from the root.
+    nextRoot = null;
   } else {
-    // Suspense already timed out. Compute a new expiration time
-    var currentTime = requestCurrentTime();
-    retryTime = computeExpirationForFiber(currentTime, boundaryFiber);
+    // Confirm that the root is still suspended at this level. Otherwise exit.
+    if (isPriorityLevelSuspended(root, pingTime)) {
+      // Ping at the original level
+      markPingedPriorityLevel(root, pingTime);
+      var rootExpirationTime = root.expirationTime;
+      if (rootExpirationTime !== NoWork) {
+        requestWork(root, rootExpirationTime);
+      }
+    }
+  }
+}
+
+function retryTimedOutBoundary(boundaryFiber, thenable) {
+  // The boundary fiber (a Suspense component) previously timed out and was
+  // rendered in its fallback state. One of the promises that suspended it has
+  // resolved, which means at least part of the tree was likely unblocked. Try
+  var retryCache = boundaryFiber.stateNode;
+  if (retryCache !== null) {
+    // The thenable resolved, so we no longer need to memoize, because it will
+    // never be thrown again.
+    retryCache.delete(thenable);
+  }
+
+  var currentTime = requestCurrentTime();
+  var retryTime = computeExpirationForFiber(currentTime, boundaryFiber);
+  var root = scheduleWorkToRoot(boundaryFiber, retryTime);
+  if (root !== null) {
     markPendingPriorityLevel(root, retryTime);
-  }
-
-  // TODO: If the suspense fiber has already rendered the primary children
-  // without suspending (that is, all of the promises have already resolved),
-  // we should not trigger another update here. One case this happens is when
-  // we are in sync mode and a single promise is thrown both on initial render
-  // and on update; we attach two .then(retrySuspendedRoot) callbacks and each
-  // one performs Sync work, rerendering the Suspense.
-
-  if ((boundaryFiber.mode & ConcurrentMode) !== NoContext) {
-    if (root === nextRoot && nextRenderExpirationTime === suspendedTime) {
-      // Received a ping at the same priority level at which we're currently
-      // rendering. Restart from the root.
-      nextRoot = null;
+    var rootExpirationTime = root.expirationTime;
+    if (rootExpirationTime !== NoWork) {
+      requestWork(root, rootExpirationTime);
     }
-  }
-
-  scheduleWorkToRoot(boundaryFiber, retryTime);
-  if ((boundaryFiber.mode & ConcurrentMode) === NoContext) {
-    // Outside of concurrent mode, we must schedule an update on the source
-    // fiber, too, since it already committed in an inconsistent state and
-    // therefore does not have any pending work.
-    scheduleWorkToRoot(sourceFiber, retryTime);
-    var sourceTag = sourceFiber.tag;
-    if (sourceTag === ClassComponent && sourceFiber.stateNode !== null) {
-      // When we try rendering again, we should not reuse the current fiber,
-      // since it's known to be in an inconsistent state. Use a force updte to
-      // prevent a bail out.
-      var update = createUpdate(retryTime);
-      update.tag = ForceUpdate;
-      enqueueUpdate(sourceFiber, update);
-    }
-  }
-
-  var rootExpirationTime = root.expirationTime;
-  if (rootExpirationTime !== NoWork) {
-    requestWork(root, rootExpirationTime);
   }
 }
 
@@ -72535,10 +73738,40 @@ function findHostInstanceWithNoPortals(fiber) {
   return hostFiber.stateNode;
 }
 
+var overrideProps = null;
+
+{
+  var copyWithSetImpl = function (obj, path, idx, value) {
+    if (idx >= path.length) {
+      return value;
+    }
+    var key = path[idx];
+    var updated = Array.isArray(obj) ? obj.slice() : _assign({}, obj);
+    // $FlowFixMe number or string is fine here
+    updated[key] = copyWithSetImpl(obj[key], path, idx + 1, value);
+    return updated;
+  };
+
+  var copyWithSet = function (obj, path, value) {
+    return copyWithSetImpl(obj, path, 0, value);
+  };
+
+  // Support DevTools props for function components, forwardRef, memo, host components, etc.
+  overrideProps = function (fiber, path, value) {
+    flushPassiveEffects();
+    fiber.pendingProps = copyWithSet(fiber.memoizedProps, path, value);
+    if (fiber.alternate) {
+      fiber.alternate.pendingProps = fiber.pendingProps;
+    }
+    scheduleWork(fiber, Sync);
+  };
+}
+
 function injectIntoDevTools(devToolsConfig) {
   var findFiberByHostInstance = devToolsConfig.findFiberByHostInstance;
 
   return injectInternals(_assign({}, devToolsConfig, {
+    overrideProps: overrideProps,
     findHostInstanceByFiber: function (fiber) {
       var hostFiber = findCurrentHostFiber(fiber);
       if (hostFiber === null) {
@@ -72576,7 +73809,7 @@ implementation) {
 
 // TODO: this is special because it gets imported during build.
 
-var ReactVersion = '16.6.3';
+var ReactVersion = '16.7.0';
 
 // TODO: This type is shared between the reconciler and ReactDOM, but will
 // eventually be lifted out to the renderer.
@@ -72934,7 +74167,7 @@ function legacyRenderSubtreeIntoContainer(parentComponent, children, container, 
   return getPublicRootInstance(root._internalRoot);
 }
 
-function createPortal(children, container) {
+function createPortal$$1(children, container) {
   var key = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
   !isValidContainer(container) ? invariant(false, 'Target container is not a DOM element.') : void 0;
@@ -72943,7 +74176,7 @@ function createPortal(children, container) {
 }
 
 var ReactDOM = {
-  createPortal: createPortal,
+  createPortal: createPortal$$1,
 
   findDOMNode: function (componentOrElement) {
     {
@@ -73018,7 +74251,7 @@ var ReactDOM = {
       didWarnAboutUnstableCreatePortal = true;
       lowPriorityWarning$1(false, 'The ReactDOM.unstable_createPortal() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactDOM.createPortal() instead. It has the exact same API, ' + 'but without the "unstable_" prefix.');
     }
-    return createPortal.apply(undefined, arguments);
+    return createPortal$$1.apply(undefined, arguments);
   },
 
 
@@ -73028,6 +74261,7 @@ var ReactDOM = {
 
   flushSync: flushSync,
 
+  unstable_createRoot: createRoot,
   unstable_flushControlled: flushControlled,
 
   __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {
@@ -73046,8 +74280,7 @@ function createRoot(container, options) {
 
 if (enableStableConcurrentModeAPIs) {
   ReactDOM.createRoot = createRoot;
-} else {
-  ReactDOM.unstable_createRoot = createRoot;
+  ReactDOM.unstable_createRoot = undefined;
 }
 
 var foundDevTools = injectIntoDevTools({
@@ -73106,7 +74339,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.6.1
+/* WEBPACK VAR INJECTION */(function(global) {/** @license React v0.12.0
  * scheduler.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -73124,6 +74357,44 @@ if (true) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
+
+// Helps identify side effects in begin-phase lifecycle hooks and setState reducers:
+
+
+// In some cases, StrictMode should also double-render lifecycles.
+// This can be confusing for tests though,
+// And it can be bad for performance in production.
+// This feature flag can be used to control the behavior:
+
+
+// To preserve the "Pause on caught exceptions" behavior of the debugger, we
+// replay the begin phase of a failed component inside invokeGuardedCallback.
+
+
+// Warn about deprecated, async-unsafe lifecycles; relates to RFC #6:
+
+
+// Gather advanced timing metrics for Profiler subtrees.
+
+
+// Trace which interactions trigger each commit.
+
+
+// Only used in www builds.
+ // TODO: true? Here it might just be false.
+
+// Only used in www builds.
+var enableSchedulerDebugging = true;
+
+// Only used in www builds.
+
+
+// React Fire: prevent the value and checked attributes from syncing
+// with their related DOM properties
+
+
+// These APIs will no longer be "unstable" in the upcoming 16.7 release,
+// Control this behavior with a flag to support 16.6 minor releases in the meanwhile.
 
 /* eslint-disable no-var */
 
@@ -73152,6 +74423,9 @@ var IDLE_PRIORITY = maxSigned31BitInt;
 var firstCallbackNode = null;
 
 var currentDidTimeout = false;
+// Pausing the scheduler is useful for debugging.
+var isSchedulerPaused = false;
+
 var currentPriorityLevel = NormalPriority;
 var currentEventStartTime = -1;
 var currentExpirationTime = -1;
@@ -73286,13 +74560,20 @@ function flushImmediateWork() {
 }
 
 function flushWork(didTimeout) {
+  // Exit right away if we're currently paused
+
+  if (enableSchedulerDebugging && isSchedulerPaused) {
+    return;
+  }
+
   isExecutingCallback = true;
   var previousDidTimeout = currentDidTimeout;
   currentDidTimeout = didTimeout;
   try {
     if (didTimeout) {
       // Flush all the expired callbacks without yielding.
-      while (firstCallbackNode !== null) {
+      while (firstCallbackNode !== null && !(enableSchedulerDebugging && isSchedulerPaused)) {
+        // TODO Wrap i nfeature flag
         // Read the current time. Flush all the callbacks that expire at or
         // earlier than that time. Then read the current time again and repeat.
         // This optimizes for as few performance.now calls as possible.
@@ -73300,7 +74581,7 @@ function flushWork(didTimeout) {
         if (firstCallbackNode.expirationTime <= currentTime) {
           do {
             flushFirstCallback();
-          } while (firstCallbackNode !== null && firstCallbackNode.expirationTime <= currentTime);
+          } while (firstCallbackNode !== null && firstCallbackNode.expirationTime <= currentTime && !(enableSchedulerDebugging && isSchedulerPaused));
           continue;
         }
         break;
@@ -73309,6 +74590,9 @@ function flushWork(didTimeout) {
       // Keep flushing callbacks until we run out of time in the frame.
       if (firstCallbackNode !== null) {
         do {
+          if (enableSchedulerDebugging && isSchedulerPaused) {
+            break;
+          }
           flushFirstCallback();
         } while (firstCallbackNode !== null && !shouldYieldToHost());
       }
@@ -73447,6 +74731,21 @@ function unstable_scheduleCallback(callback, deprecated_options) {
   return newNode;
 }
 
+function unstable_pauseExecution() {
+  isSchedulerPaused = true;
+}
+
+function unstable_continueExecution() {
+  isSchedulerPaused = false;
+  if (firstCallbackNode !== null) {
+    ensureHostCallbackIsScheduled();
+  }
+}
+
+function unstable_getFirstCallbackNode() {
+  return firstCallbackNode;
+}
+
 function unstable_cancelCallback(callbackNode) {
   var next = callbackNode.next;
   if (next === null) {
@@ -73540,41 +74839,45 @@ var requestHostCallback;
 var cancelHostCallback;
 var shouldYieldToHost;
 
-if (typeof window !== 'undefined' && window._schedMock) {
+var globalValue = null;
+if (typeof window !== 'undefined') {
+  globalValue = window;
+} else if (typeof global !== 'undefined') {
+  globalValue = global;
+}
+
+if (globalValue && globalValue._schedMock) {
   // Dynamic injection, only for testing purposes.
-  var impl = window._schedMock;
-  requestHostCallback = impl[0];
-  cancelHostCallback = impl[1];
-  shouldYieldToHost = impl[2];
+  var globalImpl = globalValue._schedMock;
+  requestHostCallback = globalImpl[0];
+  cancelHostCallback = globalImpl[1];
+  shouldYieldToHost = globalImpl[2];
+  exports.unstable_now = globalImpl[3];
 } else if (
 // If Scheduler runs in a non-DOM environment, it falls back to a naive
 // implementation using setTimeout.
 typeof window === 'undefined' ||
-// "addEventListener" might not be available on the window object
-// if this is a mocked "window" object. So we need to validate that too.
-typeof window.addEventListener !== 'function') {
+// Check if MessageChannel is supported, too.
+typeof MessageChannel !== 'function') {
+  // If this accidentally gets imported in a non-browser environment, e.g. JavaScriptCore,
+  // fallback to a naive implementation.
   var _callback = null;
-  var _currentTime = -1;
-  var _flushCallback = function (didTimeout, ms) {
+  var _flushCallback = function (didTimeout) {
     if (_callback !== null) {
-      var cb = _callback;
-      _callback = null;
       try {
-        _currentTime = ms;
-        cb(didTimeout);
+        _callback(didTimeout);
       } finally {
-        _currentTime = -1;
+        _callback = null;
       }
     }
   };
   requestHostCallback = function (cb, ms) {
-    if (_currentTime !== -1) {
+    if (_callback !== null) {
       // Protect against re-entrancy.
-      setTimeout(requestHostCallback, 0, cb, ms);
+      setTimeout(requestHostCallback, 0, cb);
     } else {
       _callback = cb;
-      setTimeout(_flushCallback, ms, true, ms);
-      setTimeout(_flushCallback, maxSigned31BitInt, false, maxSigned31BitInt);
+      setTimeout(_flushCallback, 0, false);
     }
   };
   cancelHostCallback = function () {
@@ -73582,9 +74885,6 @@ typeof window.addEventListener !== 'function') {
   };
   shouldYieldToHost = function () {
     return false;
-  };
-  exports.unstable_now = function () {
-    return _currentTime === -1 ? 0 : _currentTime;
   };
 } else {
   if (typeof console !== 'undefined') {
@@ -73617,12 +74917,9 @@ typeof window.addEventListener !== 'function') {
   };
 
   // We use the postMessage trick to defer idle work until after the repaint.
-  var messageKey = '__reactIdleCallback$' + Math.random().toString(36).slice(2);
-  var idleTick = function (event) {
-    if (event.source !== window || event.data !== messageKey) {
-      return;
-    }
-
+  var channel = new MessageChannel();
+  var port = channel.port2;
+  channel.port1.onmessage = function (event) {
     isMessageEventScheduled = false;
 
     var prevScheduledCallback = scheduledHostCallback;
@@ -73663,9 +74960,6 @@ typeof window.addEventListener !== 'function') {
       }
     }
   };
-  // Assumes that we have addEventListener in this environment. Might need
-  // something better for old IE.
-  window.addEventListener('message', idleTick, false);
 
   var animationTick = function (rafTime) {
     if (scheduledHostCallback !== null) {
@@ -73705,7 +74999,7 @@ typeof window.addEventListener !== 'function') {
     frameDeadline = rafTime + activeFrameTime;
     if (!isMessageEventScheduled) {
       isMessageEventScheduled = true;
-      window.postMessage(messageKey, '*');
+      port.postMessage(undefined);
     }
   };
 
@@ -73714,7 +75008,7 @@ typeof window.addEventListener !== 'function') {
     timeoutTime = absoluteTimeout;
     if (isFlushingHostCallback || absoluteTimeout < 0) {
       // Don't wait for the next frame. Continue working ASAP, in a new event.
-      window.postMessage(messageKey, '*');
+      port.postMessage(undefined);
     } else if (!isAnimationFrameScheduled) {
       // If rAF didn't already schedule one, we need to schedule a frame.
       // TODO: If this rAF doesn't materialize because the browser throttles, we
@@ -73743,9 +75037,13 @@ exports.unstable_cancelCallback = unstable_cancelCallback;
 exports.unstable_wrapCallback = unstable_wrapCallback;
 exports.unstable_getCurrentPriorityLevel = unstable_getCurrentPriorityLevel;
 exports.unstable_shouldYield = unstable_shouldYield;
+exports.unstable_continueExecution = unstable_continueExecution;
+exports.unstable_pauseExecution = unstable_pauseExecution;
+exports.unstable_getFirstCallbackNode = unstable_getFirstCallbackNode;
   })();
 }
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16)))
 
 /***/ }),
 /* 95 */
@@ -73766,7 +75064,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.6.1
+/** @license React v0.12.0
  * scheduler-tracing.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -73806,6 +75104,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 // Trace which interactions trigger each commit.
 var enableSchedulerTracing = true;
+
+// Only used in www builds.
+ // TODO: true? Here it might just be false.
 
 // Only used in www builds.
 
@@ -74200,7 +75501,7 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(21);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -74268,10 +75569,10 @@ BrowserRouter.propTypes = {
 
 
 
-var assign = __webpack_require__(17);
+var assign = __webpack_require__(18);
 
 var ReactPropTypesSecret = __webpack_require__(30);
-var checkPropTypes = __webpack_require__(18);
+var checkPropTypes = __webpack_require__(19);
 
 var printWarning = function() {};
 
@@ -74827,7 +76128,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_invariant__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PathUtils__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DOMUtils__ = __webpack_require__(32);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -75251,7 +76552,7 @@ function valueEqual(a, b) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_invariant__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PathUtils__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DOMUtils__ = __webpack_require__(32);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -75570,7 +76871,7 @@ var createHashHistory = function createHashHistory() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_warning___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_warning__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__PathUtils__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__createTransitionManager__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__createTransitionManager__ = __webpack_require__(20);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -75741,7 +77042,7 @@ var createMemoryHistory = function createMemoryHistory() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(21);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -75817,7 +77118,7 @@ HashRouter.propTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(22);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -76233,7 +77534,7 @@ Redirect.contextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_history__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Router__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Router__ = __webpack_require__(22);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -76409,7 +77710,7 @@ StaticRouter.childContextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_warning___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_warning__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_invariant__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_invariant__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__matchPath__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__matchPath__ = __webpack_require__(23);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -76504,7 +77805,7 @@ Switch.propTypes = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_matchPath__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_matchPath__ = __webpack_require__(23);
 // Written in this round about way for babel-transform-imports
 
 
@@ -77013,10 +78314,46 @@ var Content = function (_Component) {
     function Content(props) {
         _classCallCheck(this, Content);
 
-        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
+
+        _this.state = {
+            projects: []
+        };
+        return _this;
     }
 
     _createClass(Content, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            axios.get("http://127.0.0.1:8000/api/v1/projects").then(function (response) {
+
+                // create an array of projects only with relevant data
+                var newProjects = response.data.data.map(function (c) {
+                    return {
+                        id: c.id,
+                        name: c.name,
+                        description: c.description,
+                        project_team: c.assigned_to,
+                        project_customers: c.customers,
+                        project_progress: c.progress
+                    };
+                });
+
+                // create a new "State" object without mutating
+                // the original State object.
+                var newState = Object.assign({}, _this2.state, {
+                    projects: newProjects
+                });
+
+                // store the new state object in the component's state
+                _this2.setState(newState);
+            }).catch(function (error) {
+                return console.log(error);
+            });
+        }
+    }, {
         key: "componentWillMount",
         value: function componentWillMount() {}
     }, {
@@ -77024,7 +78361,35 @@ var Content = function (_Component) {
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content-page" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "container-fluid" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group pull-right m-t-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "button",
                 className: "btn btn-default dropdown-toggle waves-effect waves-light",
-                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-md-10" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", { role: "form" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "form-group contact-search m-b-30" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", id: "search", className: "form-control", placeholder: "Search..." }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "submit", className: "btn btn-white" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-search" }))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-md-2" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_router_dom__["b" /* Link */], { className: "btn btn-default btn-md waves-effect waves-light m-b-30 pull-right", to: "/quotations" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "md md-add" }), " New Project"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-lg-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "card-box m-b-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-box opport-box" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail checkbx-detail" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "checkbox checkbox-primary checkbox-single m-r-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { id: "checkbox1", type: "checkbox" }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { htmlFor: "checkbox1" }))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "member-info" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "m-t-0" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Kejamove Payment Platform. ")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-dark m-b-0" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Internal Code Name: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "text-muted" }, "Project Scorpio")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-dark m-b-0" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Lead Programmer: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "text-muted" }, "Samuel Kyama")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-dark m-b-0" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Programming Team: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "text-muted" }, "Solo")))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-dark m-b-0" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Email:"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "text-muted" }, "samuelkyama102@gmail.com")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-dark m-b-0" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Contact:"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "text-muted" }, "0716234567")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-dark m-b-5" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Category: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "text-muted" }, "Payments, Mpesa, C2B, B2C"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail lable-detail" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "label label-info" }, "In Development")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail table-actions-bar" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "md  md-remove-red-eye" })))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-lg-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "card-box m-b-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-box opport-box" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail checkbx-detail" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "checkbox checkbox-primary checkbox-single m-r-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { id: "checkbox1", type: "checkbox" }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { htmlFor: "checkbox1" }))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "member-info" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "m-t-0" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Delta Centre Charity Centre. ")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-dark m-b-0" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Internal Code Name: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "text-muted" }, "Project Nexus")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-dark m-b-0" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Lead Programmer: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "text-muted" }, "Samuel Kyama")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-dark m-b-0" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Programming Team: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "text-muted" }, "Alpha Team")))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-dark m-b-0" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Email:"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "text-muted" }, "samuelkyama102@gmail.com")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-dark m-b-0" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Contact:"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "text-muted" }, "0716234567")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-dark m-b-5" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Category: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "text-muted" }, "Charity, Wordpress"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail lable-detail" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "label label-success" }, "Completed")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail table-actions-bar" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "md  md-remove-red-eye" }))))))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
+                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-md-10" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", { role: "form" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "form-group contact-search m-b-30" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", id: "search", className: "form-control", placeholder: "Search..." }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "submit", className: "btn btn-white" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-search" }))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-md-2" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_router_dom__["b" /* Link */], { className: "btn btn-default btn-md waves-effect waves-light m-b-30 pull-right", to: "/quotations" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "md md-add" })))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, this.state.projects.map(function (project) {
+                var progress_color = "progress-bar progress-bar-danger";
+                var text_progress_color = "text-danger";
+
+                if (project.project_progress < 4) {
+                    progress_color = "progress-bar progress-bar-danger";
+                    text_progress_color = "text-danger";
+                } else if (project.project_progress === 5) {
+                    progress_color = "progress-bar progress-bar-warning";
+                    text_progress_color = "text-warning";
+                } else if (project.project_progress > 5) {
+                    progress_color = "progress-bar progress-bar-primary";
+                    text_progress_color = "text-primary";
+                } else {
+                    progress_color = "progress-bar progress-bar-custom";
+                    text_progress_color = "text-custom";
+                }
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-4 col-lg-3 col-xs-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "card m-b-20" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "card-body" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h5", { className: 'card-title ' + 'text-center ' + text_progress_color }, project.name), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "card-text" }, project.description)), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "card-body" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: 'lead m-t-0 ' + text_progress_color }, "Project Team"), project.project_team.map(function (team_member) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "text-muted m-t-5 m-r-5" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: team_member.user_avatar, alt: "task-user",
+                        className: "thumb-sm rounded-circle m-r-5 m-t-5" }), " ", __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+                        className: "font-bold" }, team_member.name, " ,"));
+                }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: 'lead m-t-10 ' + text_progress_color }, "Customers"), project.project_customers.map(function (customer) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "text-muted m-t-5 m-r-5" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: customer.user_avatar, alt: "task-user",
+                        className: "thumb-sm rounded-circle m-r-5" }), " ", __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+                        className: "font-bold" }, customer.name, " ,"));
+                }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: 'lead m-t-10 ' + text_progress_color }, "Progress"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "progress m-t-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: progress_color,
+                    role: "progressbar", "aria-valuenow": project.project_progress * 10, "aria-valuemin": "0",
+                    "aria-valuemax": "100", style: { width: project.project_progress * 10 + '%' } }, project.project_progress * 10, "%")))));
+            })))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
         }
     }]);
 
@@ -77174,7 +78539,17 @@ var Content = function (_Component) {
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content-page" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "container-fluid" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group pull-right m-t-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "button",
                 className: "btn btn-default dropdown-toggle waves-effect waves-light",
-                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
+                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "card-box" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row m-t-10 m-b-10" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-6 col-lg-8" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "form-group contact-search m-b-30" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", id: "search", className: "form-control",
+                placeholder: "Search..." }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "submit", className: "btn btn-white" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-search" })))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-6 col-lg-4" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "h5 m-0" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "font-16" }, "Sort By:"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group vertical-middle", "data-toggle": "buttons" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { className: "btn btn-white btn-md waves-effect active mb-0" }, "Status"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { className: "btn btn-white btn-md waves-effect mb-0" }, "Type"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { className: "btn btn-white btn-md waves-effect mb-0" }, "Name"))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-responsive" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("table", { className: "table table-actions-bar" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("thead", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Product"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Order Date"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Order Number"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Seller"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Status"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Amount"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", { style: { minWidth: 80 } }, "Action"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tbody", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "assets/images/products/iphone.jpg", className: "thumb-sm",
+                alt: "" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, "08/10/2015"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "UB#160924")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "text-dark" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Apple Inc."))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "label label-success" }, "Deliverd")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, "$1,256"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+                className: "md md-edit" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+                className: "md md-close" })))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "assets/images/products/samsung.jpg", className: "thumb-sm",
+                alt: "" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, "08/10/2015"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "UB#160923")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "text-dark" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Samsung Company"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "label label-warning" }, "Shipped")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, "$2,562"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+                className: "md md-edit" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+                className: "md md-close" })))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "assets/images/products/lumia.jpg", className: "thumb-sm",
+                alt: "" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, "08/10/2015"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "UB#160922")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "text-dark" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Sony Company"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "label label-primary" }, "Proceed")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, "$6,458"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+                className: "md md-edit" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+                className: "md md-close" })))))))))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
         }
     }]);
 

@@ -16,9 +16,9 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        PaymentResource::withoutWrapping();
+//        PaymentResource::withoutWrapping();
 
-        return PaymentResource::collection(payment::all());
+        return PaymentResource::collection(payment::paginate());
     }
 
     /**
@@ -50,7 +50,7 @@ class PaymentController extends Controller
      */
     public function show(payment $payment)
     {
-        PaymentResource::withoutWrapping();
+//        PaymentResource::withoutWrapping();
 
         return PaymentResource::collection(payment::find($payment));
     }

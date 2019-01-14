@@ -7,7 +7,41 @@ import {Link} from "react-router-dom";
 export default class Content extends Component {
     constructor(props){
         super(props);
+        this.state = {
+            projects: []
+        }
     }
+
+
+    componentDidMount() {
+        axios
+            .get("http://127.0.0.1:8000/api/v1/projects")
+            .then(response => {
+
+                // create an array of projects only with relevant data
+                const newProjects = response.data.data.map(c => {
+                    return {
+                        id: c.id,
+                        name: c.name,
+                        description: c.description,
+                        project_team: c.assigned_to,
+                        project_customers: c.customers,
+                        project_progress: c.progress,
+                    };
+                });
+
+                // create a new "State" object without mutating
+                // the original State object.
+                const newState = Object.assign({}, this.state, {
+                    projects: newProjects
+                });
+
+                // store the new state object in the component's state
+                this.setState(newState);
+            })
+            .catch(error => console.log(error));
+    }
+
     componentWillMount(){
     }
     render() {
@@ -47,118 +81,97 @@ export default class Content extends Component {
                             </div>
                             <div className="col-md-2">
                                 <Link className="btn btn-default btn-md waves-effect waves-light m-b-30 pull-right" to='/quotations'>
-                                    <i className="md md-add"/> New Project
+                                    <i className="md md-add"/>
+                                {/*{ this.state.projects.map(project => <li>{project.name}</li>)}*/}
+
+
+
                                 </Link>
 
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-lg-12">
-                                <div className="card-box m-b-12">
-                                    <div className="table-box opport-box">
-                                        <div className="table-detail checkbx-detail">
-                                            <div className="checkbox checkbox-primary checkbox-single m-r-15">
-                                                <input id="checkbox1" type="checkbox"/>
-                                                <label htmlFor="checkbox1"/>
+
+                                {this.state.projects.map(function (project){
+                                    let progress_color= "progress-bar progress-bar-danger";
+                                    let text_progress_color ="text-danger";
+
+                                    if(project.project_progress < 4){
+                                        progress_color = "progress-bar progress-bar-danger";
+                                        text_progress_color ="text-danger";
+                                    }
+                                    else if(project.project_progress === 5){
+                                        progress_color = "progress-bar progress-bar-warning";
+                                        text_progress_color ="text-warning";
+                                    }
+                                    else if(project.project_progress > 5){
+                                        progress_color = "progress-bar progress-bar-primary";
+                                        text_progress_color ="text-primary";
+                                    }
+                                    else{
+                                        progress_color = "progress-bar progress-bar-custom";
+                                        text_progress_color ="text-custom";
+                                    }
+                                    return(
+                                        <div className="col-sm-4 col-lg-3 col-xs-12">
+                                            <div className="card m-b-20">
+                                                    <div className="card-body">
+                                                        <h5 className={'card-title '+ 'text-center '+ text_progress_color}>{project.name}</h5>
+                                                        <p className="card-text">{project.description}</p>
+                                                    </div>
+
+                                                    <div className="card-body">
+                                                        <p className={'lead m-t-0 '+ text_progress_color}>
+                                                            Project Team
+                                                        </p>
+
+                                                        {project.project_team.map(function(team_member){
+                                                            return(
+
+                                                                    <a href="#" className="text-muted m-t-5 m-r-5" >
+                                                                        <img src={team_member.user_avatar} alt="task-user"
+                                                                             className="thumb-sm rounded-circle m-r-5 m-t-5"/> <span
+                                                                        className="font-bold">{team_member.name} ,</span></a>
+
+
+                                                            );
+                                                        })}
+
+                                                        <p className={'lead m-t-10 '+ text_progress_color }>
+                                                            Customers
+                                                        </p>
+
+                                                        {project.project_customers.map(function(customer){
+                                                            return(
+
+                                                                    <a href="#" className="text-muted m-t-5 m-r-5" >
+                                                                        <img src={customer.user_avatar} alt="task-user"
+                                                                             className="thumb-sm rounded-circle m-r-5"/> <span
+                                                                        className="font-bold">{customer.name} ,</span></a>
+
+
+                                                            );
+                                                        })}
+
+                                                        <p className={'lead m-t-10 ' + text_progress_color}>
+                                                            Progress
+                                                        </p>
+
+
+                                                        <div className="progress m-t-15">
+
+                                                            <div className={progress_color}
+                                                                 role="progressbar" aria-valuenow={project.project_progress *10 } aria-valuemin="0"
+                                                                 aria-valuemax="100" style={{width: project.project_progress *10 + '%'}}>
+                                                                {project.project_progress *10}%
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                             </div>
                                         </div>
-                                        <div className="table-detail">
-                                            <div className="member-info">
-                                                <h4 className="m-t-0">
-                                                    <b>Kejamove Payment Platform. </b>
-                                                </h4>
-                                                <p className="text-dark m-b-0">
-                                                    <b>Internal Code Name: </b>
-                                                    <span className="text-muted">Project Scorpio</span>
-                                                </p>
-                                                <p className="text-dark m-b-0">
-                                                    <b>Lead Programmer: </b>
-                                                    <span className="text-muted">Samuel Kyama</span>
-                                                </p>
-                                                <p className="text-dark m-b-0">
-                                                    <b>Programming Team: </b>
-                                                    <span className="text-muted">Solo</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="table-detail">
-                                            <p className="text-dark m-b-0">
-                                                <b>Email:</b>
-                                                <span className="text-muted">samuelkyama102@gmail.com</span>
-                                            </p>
-                                            <p className="text-dark m-b-0">
-                                                <b>Contact:</b>
-                                                <span className="text-muted">0716234567</span>
-                                            </p>
-                                            <p className="text-dark m-b-5">
-                                                <b>Category: </b>
-                                                <span className="text-muted">Payments, Mpesa, C2B, B2C</span>
-                                            </p>
-                                        </div>
-                                        <div className="table-detail lable-detail">
-                                            <span className="label label-info">In Development</span>
-                                        </div>
-                                        <div className="table-detail table-actions-bar">
-                                            <a href="#" className="table-action-btn">
-                                                <i className="md  md-remove-red-eye"/>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-12">
-                                <div className="card-box m-b-12">
-                                    <div className="table-box opport-box">
-                                        <div className="table-detail checkbx-detail">
-                                            <div className="checkbox checkbox-primary checkbox-single m-r-15">
-                                                <input id="checkbox1" type="checkbox"/>
-                                                <label htmlFor="checkbox1"/>
-                                            </div>
-                                        </div>
-                                        <div className="table-detail">
-                                            <div className="member-info">
-                                                <h4 className="m-t-0">
-                                                    <b>Delta Centre Charity Centre. </b>
-                                                </h4>
-                                                <p className="text-dark m-b-0">
-                                                    <b>Internal Code Name: </b>
-                                                    <span className="text-muted">Project Nexus</span>
-                                                </p>
-                                                <p className="text-dark m-b-0">
-                                                    <b>Lead Programmer: </b>
-                                                    <span className="text-muted">Samuel Kyama</span>
-                                                </p>
-                                                <p className="text-dark m-b-0">
-                                                    <b>Programming Team: </b>
-                                                    <span className="text-muted">Alpha Team</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="table-detail">
-                                            <p className="text-dark m-b-0">
-                                                <b>Email:</b>
-                                                <span className="text-muted">samuelkyama102@gmail.com</span>
-                                            </p>
-                                            <p className="text-dark m-b-0">
-                                                <b>Contact:</b>
-                                                <span className="text-muted">0716234567</span>
-                                            </p>
-                                            <p className="text-dark m-b-5">
-                                                <b>Category: </b>
-                                                <span className="text-muted">Charity, Wordpress</span>
-                                            </p>
-                                        </div>
-                                        <div className="table-detail lable-detail">
-                                            <span className="label label-success">Completed</span>
-                                        </div>
-                                        <div className="table-detail table-actions-bar">
-                                            <a href="#" className="table-action-btn">
-                                                <i className="md  md-remove-red-eye"/>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                    );
+                                })}
+
                         </div>
                     </div>
                 </div>
