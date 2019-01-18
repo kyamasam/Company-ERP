@@ -52,7 +52,7 @@ class PaymentController extends Controller
     {
 //        PaymentResource::withoutWrapping();
 
-        return PaymentResource::collection(payment::find($payment));
+        return PaymentResource::collection(payment::find($payment)->sortBy('invoice_id', 'ASC'));
     }
 
     /**
@@ -88,4 +88,7 @@ class PaymentController extends Controller
     {
         //
     }
-}
+}{
+
+            }
+

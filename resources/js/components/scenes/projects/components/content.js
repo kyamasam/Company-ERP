@@ -29,7 +29,7 @@ export default class Content extends Component {
                         project_progress: c.progress,
                     };
                 });
-
+                console.log(newProjects)
                 // create a new "State" object without mutating
                 // the original State object.
                 const newState = Object.assign({}, this.state, {
@@ -92,7 +92,8 @@ export default class Content extends Component {
                         </div>
                         <div className="row">
 
-                                {this.state.projects.map(function (project){
+                                {
+                                    this.state.projects.map(function (project){
                                     let progress_color= "progress-bar progress-bar-danger";
                                     let text_progress_color ="text-danger";
 

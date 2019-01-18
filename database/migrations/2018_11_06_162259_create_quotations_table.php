@@ -16,6 +16,8 @@ class CreateQuotationsTable extends Migration
         Schema::create('quotations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('client_id')->references('id')->on('users');
+            //has the customer has accepted the quote?
+            $table->integer('accepted');
             $table->timestamps();
         });
     }

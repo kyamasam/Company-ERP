@@ -474,7 +474,7 @@ var TopNav = function (_Component) {
     _createClass(TopNav, [{
         key: 'render',
         value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'topbar' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'topbar-left' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'text-center' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["b" /* Link */], { className: 'logo', to: '/' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'icon-magnet icon-c-logo' }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null, 'Skality')))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('nav', { className: 'navbar-custom' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('ul', { className: 'list-inline float-right mb-0' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('li', { className: 'list-inline-item dropdown notification-list' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('a', { className: 'nav-link dropdown-toggle arrow-none waves-light waves-effect',
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'topbar' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'topbar-left' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'text-center padding-sm-10' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["b" /* Link */], { className: 'logo', to: '/' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'small-logo icon-c-logo', src: '/skality_favicon.png', height: '48' }), ' ', __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/skality_logo.png', height: '30' }))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('nav', { className: 'navbar-custom' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('ul', { className: 'list-inline float-right mb-0' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('li', { className: 'list-inline-item dropdown notification-list' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('a', { className: 'nav-link dropdown-toggle arrow-none waves-light waves-effect',
                 'data-toggle': 'dropdown',
                 href: '#', role: 'button',
                 'aria-haspopup': 'false', 'aria-expanded': 'false' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'dripicons-bell noti-icon' }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'badge badge-pink noti-icon-badge' }, '4')), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'dropdown-menu dropdown-menu-right dropdown-arrow dropdown-lg',
@@ -78340,7 +78340,7 @@ var Content = function (_Component) {
                         project_progress: c.progress
                     };
                 });
-
+                console.log(newProjects);
                 // create a new "State" object without mutating
                 // the original State object.
                 var newState = Object.assign({}, _this2.state, {
@@ -78528,28 +78528,83 @@ var Content = function (_Component) {
     function Content(props) {
         _classCallCheck(this, Content);
 
-        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
+
+        _this.state = {
+            quotations: []
+        };
+        return _this;
     }
 
     _createClass(Content, [{
-        key: "componentWillMount",
-        value: function componentWillMount() {}
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            axios.get("http://127.0.0.1:8000/api/v1/quotations").then(function (response) {
+
+                // create an array of projects only with relevant data
+                var newQuotations = response.data.data;
+                console.log("all invoices" + newQuotations);
+
+                // create a new "State" object without mutating
+                // the original State object.
+                var newState = Object.assign({}, _this2.state, {
+                    quotations: newQuotations
+                });
+                console.log(newQuotations);
+
+                // store the new state object in the component's state
+                _this2.setState(newState);
+            }).catch(function (error) {
+                return console.log(error);
+            });
+        }
+    }, {
+        key: "create_table",
+        value: function create_table() {
+            var array_of_invoices = [];
+            var values = this.state.quotations.map(function (c) {
+                var confirmed_status = "default";
+                var confirmed_status_text = "Pending";
+
+                if (c.accepted === 0) {
+                    confirmed_status = "danger";
+                    confirmed_status_text = "Pending";
+                } else {
+                    confirmed_status = "success";
+                    confirmed_status_text = "Accepted";
+                }
+                var avatar = "";
+                var email = "";
+
+                if (c.customer) {
+                    avatar = c.customer.user_avatar;
+                    email = c.customer.email;
+                    name = c.customer.name;
+                } else {
+                    avatar = "https://www.qualiscare.com/wp-content/uploads/2017/08/default-user.png";
+                }
+
+                return [__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "checkbox checkbox-primary m-r-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { id: "checkbox2", type: "checkbox" }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { htmlFor: "checkbox2" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: avatar, alt: "contact-img",
+                    title: "contact-img", className: "rounded-circle thumb-sm" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "QT#", c.id)), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, name)), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, email)), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "label label-" + confirmed_status }, confirmed_status_text)), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, c.created_at), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+                    className: "md md-edit" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+                    className: "md md-file-download" }))))];
+            });
+
+            return values;
+        }
     }, {
         key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content-page" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "container-fluid" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group pull-right m-t-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "button",
                 className: "btn btn-default dropdown-toggle waves-effect waves-light",
-                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "card-box" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row m-t-10 m-b-10" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-6 col-lg-8" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "form-group contact-search m-b-30" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", id: "search", className: "form-control",
-                placeholder: "Search..." }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "submit", className: "btn btn-white" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-search" })))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-6 col-lg-4" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "h5 m-0" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "font-16" }, "Sort By:"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group vertical-middle", "data-toggle": "buttons" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { className: "btn btn-white btn-md waves-effect active mb-0" }, "Status"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { className: "btn btn-white btn-md waves-effect mb-0" }, "Type"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { className: "btn btn-white btn-md waves-effect mb-0" }, "Name"))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-responsive" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("table", { className: "table table-actions-bar" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("thead", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Product"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Order Date"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Order Number"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Seller"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Status"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Amount"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", { style: { minWidth: 80 } }, "Action"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tbody", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "assets/images/products/iphone.jpg", className: "thumb-sm",
-                alt: "" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, "08/10/2015"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "UB#160924")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "text-dark" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Apple Inc."))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "label label-success" }, "Deliverd")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, "$1,256"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
-                className: "md md-edit" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
-                className: "md md-close" })))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "assets/images/products/samsung.jpg", className: "thumb-sm",
-                alt: "" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, "08/10/2015"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "UB#160923")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "text-dark" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Samsung Company"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "label label-warning" }, "Shipped")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, "$2,562"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
-                className: "md md-edit" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
-                className: "md md-close" })))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: "assets/images/products/lumia.jpg", className: "thumb-sm",
-                alt: "" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, "08/10/2015"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "UB#160922")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "text-dark" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Sony Company"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "label label-primary" }, "Proceed")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, "$6,458"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
-                className: "md md-edit" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
-                className: "md md-close" })))))))))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
+                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-lg-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "card-box" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-8" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "form-group contact-search m-b-30" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", id: "search", className: "form-control",
+                placeholder: "Search..." }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "submit", className: "btn btn-white" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-search" })))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-4" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#custom-modal",
+                className: "btn btn-default btn-md waves-effect waves-light m-b-30",
+                "data-animation": "fadein", "data-plugin": "custommodal",
+                "data-overlayspeed": "200", "data-overlaycolor": "#36404a" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+                className: "md md-add" }), " Add Customer"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-responsive" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("table", { className: "table table-hover mails m-0 table table-actions-bar" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("thead", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", { style: { width: '120' + "px" } }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "checkbox checkbox-primary checkbox-single m-r-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { id: "action-checkbox", type: "checkbox" }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { htmlFor: "action-checkbox" }))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Invoice ID"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Name"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Email"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Acceptance Status"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Start Date"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Action"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tbody", null, this.create_table()))))))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
         }
     }]);
 
@@ -78688,19 +78743,98 @@ var Content = function (_Component) {
     function Content(props) {
         _classCallCheck(this, Content);
 
-        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
+
+        _this.state = {
+            invoices: []
+        };
+        return _this;
     }
 
     _createClass(Content, [{
-        key: "componentWillMount",
-        value: function componentWillMount() {}
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            axios.get("http://127.0.0.1:8000/api/v1/invoices").then(function (response) {
+
+                // create an array of projects only with relevant data
+                var newInvoices = response.data;
+                console.log("all invoices" + newInvoices);
+
+                // create a new "State" object without mutating
+                // the original State object.
+                var newState = Object.assign({}, _this2.state, {
+                    invoices: newInvoices
+                });
+                // console.log(newInvoices)
+
+
+                // store the new state object in the component's state
+                _this2.setState(newState);
+            }).catch(function (error) {
+                return console.log(error);
+            });
+        }
+    }, {
+        key: "create_table",
+        value: function create_table() {
+            var array_of_invoices = [];
+            var values = this.state.invoices.map(function (c) {
+                var myDate = new Date(c.created_at);
+                var amount_paid = c.amount;
+
+                return [__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "INV#", c.invoice_id)), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, c.currency, " ", amount_paid.toLocaleString()), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "PR#", c.project_id)), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "label label-success" }, "Deliverd"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, myDate.getDate(), "/", myDate.getDay(), "/", myDate.getFullYear()), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+                    className: "md md-edit" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+                    className: "md md-file-download" }))))];
+            });
+            // array_of_invoices.push({values})
+            // var array_of_invoices = []
+            // for (var key in this.state.invoices) {
+            //     // skip loop if the property is from prototype
+            //     if (!this.state.invoices.hasOwnProperty(key)) continue;
+            //
+            //     var ivoices_obj = this.state.invoices[key];
+            //     // console.log(obj)
+            //
+            //     var values = ivoices_obj.map((c,index,array) => {
+            //
+            //             return ([
+            //
+            //                     <td>{c.invoice_id}</td>,
+            //                         <td>{c.amount}</td>,
+            //                         <td>{c.project.name}</td>,
+            //                         <td>{c.created_at}</td>,
+            //                         <td></td>,
+            //
+            //             ]);
+            //
+            //         }
+            //     );
+            //
+            //     console.log("this is a test run "+ values)
+            //     array_of_invoices.push(<tr>{values}</tr>)
+            //     // console.log("expanded values")
+            //     // console.log(values)
+            // }
+
+            //array inside array
+
+
+            // console.log("array of invoices")
+            // console.log(array_of_invoices)
+
+
+            return values;
+        }
     }, {
         key: "render",
         value: function render() {
+
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content-page" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "container-fluid" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group pull-right m-t-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "button",
                 className: "btn btn-default dropdown-toggle waves-effect waves-light",
-                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "form-group" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { htmlFor: "exampleInputEmail1" }, "Email address"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", className: "form-control", id: "exampleInputEmail1", "aria-describedby": "emailHelp", placeholder: "Enter email" }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("small", { id: "emailHelp", className: "form-text text-muted" }, "We'll never share your email with anyone else.")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "form-group" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { htmlFor: "exampleInputPassword1" }, "Password"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", className: "form-control", id: "exampleInputPassword1",
-                placeholder: "Password" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "form-check" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "checkbox", className: "form-check-input", id: "exampleCheck1" }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { className: "form-check-label", htmlFor: "exampleCheck1" }, "Check me out")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "submit", className: "btn btn-primary" }, "Submit")))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
+                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "card-box" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row m-t-10 m-b-10" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-6 col-lg-8" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "form-group contact-search m-b-30" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", id: "search", className: "form-control",
+                placeholder: "Search..." }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "submit", className: "btn btn-white" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-search" })))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-6 col-lg-4" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "h5 m-0" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "font-16" }, "Sort By:"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group vertical-middle", "data-toggle": "buttons" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { className: "btn btn-white btn-md waves-effect active mb-0" }, "Status"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { className: "btn btn-white btn-md waves-effect mb-0" }, "Type"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { className: "btn btn-white btn-md waves-effect mb-0" }, "Name"))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-responsive" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("table", { className: "table table-actions-bar" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("thead", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Invoice Id"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Amount Paid "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Project Name "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Status "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Created On "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", { style: { minWidth: 80 } }, "Action"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tbody", null, this.create_table())))))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
         }
     }]);
 
@@ -78839,18 +78973,80 @@ var Content = function (_Component) {
     function Content(props) {
         _classCallCheck(this, Content);
 
-        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
+
+        _this.state = {
+            payments: []
+        };
+        return _this;
     }
 
     _createClass(Content, [{
-        key: "componentWillMount",
-        value: function componentWillMount() {}
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            axios.get("http://127.0.0.1:8000/api/v1/payments").then(function (response) {
+
+                // create an array of projects only with relevant data
+                var newPayments = response.data.data;
+                console.log("all invoices" + newPayments);
+
+                // create a new "State" object without mutating
+                // the original State object.
+                var newState = Object.assign({}, _this2.state, {
+                    payments: newPayments
+                });
+                console.log(newPayments);
+
+                // store the new state object in the component's state
+                _this2.setState(newState);
+            }).catch(function (error) {
+                return console.log(error);
+            });
+        }
+    }, {
+        key: "create_table",
+        value: function create_table() {
+            var array_of_invoices = [];
+            var values = this.state.payments.map(function (c) {
+                var myDate = new Date(c.created_at);
+                var amount_paid = c.amount;
+                console.log(amount_paid);
+
+                var confirmed_status = "default";
+                var confirmed_status_text = "unpaid";
+
+                if (c.confirmed === 0) {
+                    confirmed_status = "danger";
+                    confirmed_status_text = "Unpaid";
+                } else {
+                    confirmed_status = "success";
+                    confirmed_status_text = "Paid";
+                }
+                var project_name = "";
+                if (c.project) {
+                    project_name = c.project.name;
+                } else {}
+
+                return [__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "checkbox checkbox-primary m-r-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { id: "checkbox2", type: "checkbox" }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { htmlFor: "checkbox2" }))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "INV#", c.invoice_id)), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, c.currency, " ", amount_paid.toLocaleString()), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, project_name)), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "label label-" + confirmed_status }, confirmed_status_text)), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, c.payment_method), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, myDate.getDate(), "/", myDate.getDay(), "/", myDate.getFullYear()), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+                    className: "md md-edit" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+                    className: "md md-file-download" }))))];
+            });
+
+            return values;
+        }
     }, {
         key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content-page" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "container-fluid" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group pull-right m-t-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "button",
                 className: "btn btn-default dropdown-toggle waves-effect waves-light",
-                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
+                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-lg-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "card-box" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-8" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "form-group contact-search m-b-30" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", id: "search", className: "form-control",
+                placeholder: "Search..." }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "submit", className: "btn btn-white" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-search" })))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-4" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#custom-modal",
+                className: "btn btn-default btn-md waves-effect waves-light m-b-30",
+                "data-animation": "fadein", "data-plugin": "custommodal",
+                "data-overlayspeed": "200", "data-overlaycolor": "#36404a" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+                className: "md md-add" }), " Add Payment"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-responsive" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("table", { className: "table table-hover mails m-0 table table-actions-bar" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("thead", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", { style: { width: '120' + "px" } }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "checkbox checkbox-primary checkbox-single m-r-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { id: "action-checkbox", type: "checkbox" }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { htmlFor: "action-checkbox" }))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Invoice Id"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Amount Paid "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Project Name "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Payment Status "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Payment Method "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Created On "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", { style: { minWidth: 80 } }, "Action"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tbody", null, this.create_table()))))))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
         }
     }]);
 
@@ -79289,27 +79485,83 @@ var Content = function (_Component) {
     function Content(props) {
         _classCallCheck(this, Content);
 
-        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
+
+        _this.state = {
+            quotations: []
+        };
+        return _this;
     }
 
     _createClass(Content, [{
-        key: "componentWillMount",
-        value: function componentWillMount() {}
-    }, {
         key: "componentDidMount",
         value: function componentDidMount() {
-            $('[data-toggle="table"]').show();
+            var _this2 = this;
+
+            axios.get("http://127.0.0.1:8000/api/v1/quotations").then(function (response) {
+
+                // create an array of projects only with relevant data
+                var newQuotations = response.data.data;
+                console.log("all invoices" + newQuotations);
+
+                // create a new "State" object without mutating
+                // the original State object.
+                var newState = Object.assign({}, _this2.state, {
+                    quotations: newQuotations
+                });
+                console.log(newQuotations);
+
+                // store the new state object in the component's state
+                _this2.setState(newState);
+            }).catch(function (error) {
+                return console.log(error);
+            });
+        }
+    }, {
+        key: "create_table",
+        value: function create_table() {
+            var array_of_invoices = [];
+            var values = this.state.quotations.map(function (c) {
+                var confirmed_status = "default";
+                var confirmed_status_text = "Pending";
+
+                if (c.accepted === 0) {
+                    confirmed_status = "danger";
+                    confirmed_status_text = "Pending";
+                } else {
+                    confirmed_status = "success";
+                    confirmed_status_text = "Accepted";
+                }
+                var avatar = "";
+                var email = "";
+
+                if (c.customer) {
+                    avatar = c.customer.user_avatar;
+                    email = c.customer.email;
+                    name = c.customer.name;
+                } else {
+                    avatar = "https://www.qualiscare.com/wp-content/uploads/2017/08/default-user.png";
+                }
+
+                return [__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "checkbox checkbox-primary m-r-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { id: "checkbox2", type: "checkbox" }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { htmlFor: "checkbox2" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: avatar, alt: "contact-img",
+                    title: "contact-img", className: "rounded-circle thumb-sm" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, "QT#", c.id)), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, name)), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#" }, email)), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "label label-" + confirmed_status }, confirmed_status_text)), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, c.created_at), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+                    className: "md md-edit" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "table-action-btn" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+                    className: "md md-file-download" }))))];
+            });
+
+            return values;
         }
     }, {
         key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content-page" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "container-fluid" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group pull-right m-t-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "button",
                 className: "btn btn-default dropdown-toggle waves-effect waves-light",
-                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "card-box" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "m-t-0 header-title" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Custom Toolbar")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-muted font-13" }, "Example of Custom Toolbar (Your text goes here)."), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { id: "demo-delete-row", className: "btn btn-danger", disabled: true }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-times m-r-5" }), "Delete"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("table", { id: "table",
-                "data-toggle": "table",
-                "data-toolbar": "#toolbar",
-                "data-height": "428",
-                "data-url": "/json/data.json" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("thead", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", { "data-field": "id" }, "ID"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", { "data-field": "name" }, "Item Name"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", { "data-field": "price" }, "Item Price"))))))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
+                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-lg-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "card-box" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-8" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "form-group contact-search m-b-30" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", id: "search", className: "form-control",
+                placeholder: "Search..." }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "submit", className: "btn btn-white" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-search" })))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-4" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#custom-modal",
+                className: "btn btn-default btn-md waves-effect waves-light m-b-30",
+                "data-animation": "fadein", "data-plugin": "custommodal",
+                "data-overlayspeed": "200", "data-overlaycolor": "#36404a" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+                className: "md md-add" }), " Add Customer"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-responsive" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("table", { className: "table table-hover mails m-0 table table-actions-bar" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("thead", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", { style: { width: '120' + "px" } }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "checkbox checkbox-primary checkbox-single m-r-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { id: "action-checkbox", type: "checkbox" }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { htmlFor: "action-checkbox" }))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Invoice ID"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Name"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Email"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Acceptance Status"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Start Date"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Action"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tbody", null, this.create_table()))))))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
         }
     }]);
 

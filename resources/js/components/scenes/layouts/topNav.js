@@ -6,11 +6,18 @@ export default class TopNav extends Component {
         return (
             <div className="topbar">
                 <div className="topbar-left">
-                    <div className="text-center">
+                    <div className="text-center padding-sm-10">
+
+
                         <Link className='logo' to='/'>
-                            <i className="icon-magnet icon-c-logo"/>
-                            <span>Skality</span>
+                            <img className="small-logo icon-c-logo" src="/skality_favicon.png" height="48"/> <span><img src="/skality_logo.png" height="30"/></span>
                         </Link>
+                         {/*Image Logo here -->*/}
+                        {/*<a href="index.html" class="logo">*/}
+                        {/*<img src="/skality_favicon.png" height="42"/>*/}
+                        {/*<span><img src="/skality_favicon.png" height="20"/></span>*/}
+                        {/*</a>-->*/}
+
                     </div>
                 </div>
 

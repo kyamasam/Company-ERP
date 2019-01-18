@@ -20,6 +20,10 @@ class PaymentResource extends JsonResource
             'project'=> new ProjectsResource($this->project),
             'invoice_id'=>$this->invoice_id,
             'amount'=>$this->amount,
+            'created_at'=>$this->created_at->format('m/d/Y'),
+            'payment_method'=>$this->payment_method,
+            'currency'=>$this->currency,
+            'confirmed'=>$this->confirmed,
         ];
     }
 }

@@ -19,7 +19,9 @@ class QuotationResource extends JsonResource
           'id'=>$this->id,
           'customer'=> new UserResource($this->user),
           'products'=> ProductResource::collection($this->products),
-          'payments'=> PaymentResource::collection($this->payments)
+          'accepted'=> $this->accepted,
+            'created_at'=>$this->created_at->format('m/d/Y'),
+//          'payments'=> PaymentResource::collection($this->payments)
         ];
     }
 }

@@ -1333,6 +1333,7 @@ select[multiple] {
 
 .logo i {
   color: #5fbeaa;
+
 }
 
 .logo .icon-c-logo {
@@ -1905,6 +1906,7 @@ body.fixed-left .side-menu.left {
 #wrapper.enlarged .topbar .topbar-left .logo .icon-c-logo {
   display: block;
   line-height: 70px;
+  margin: 14px;
 }
 
 #wrapper.enlarged #sidebar-menu > ul > li:hover > a.open :after {
@@ -7639,7 +7641,7 @@ div.hopscotch-bubble .hopscotch-bubble-arrow-container.down .hopscotch-bubble-ar
   }
   .logo .icon-c-logo {
     display: inline-block !important;
-    line-height: 58px !important;
+    line-height: 70px !important;
   }
   .logo span {
     display: none !important;

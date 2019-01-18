@@ -23,6 +23,7 @@ Route::group(['prefix'=>'v1','as'=>'v1.'], function(){
     Route::resource('projects', 'ProjectController');
     Route::resource('quotations', 'QuotationController');
     Route::resource('payments', 'PaymentController');
+    Route::resource('invoices', 'InvoiceController');
     Route::resource('proficiencies', 'ProficiencyController');
     Route::resource('categories', 'CategoryController');
     Route::resource('employees', 'EmployeeProjectController');
