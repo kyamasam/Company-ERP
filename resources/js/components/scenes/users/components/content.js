@@ -7,13 +7,14 @@ export default class Content extends Component {
     constructor(props){
         super(props);
         this.state ={
+            isLoading:true,
             quotations:[]
         }
     }
 
     componentDidMount() {
         axios
-            .get("http://127.0.0.1:8000/api/v1/quotations")
+            .get("http://127.0.0.1:8000/api/v1/users")
             .then(response => {
 
                 // create an array of projects only with relevant data
@@ -22,16 +23,23 @@ export default class Content extends Component {
 
                 // create a new "State" object without mutating
                 // the original State object.
-                const newState = Object.assign({}, this.state, {
-                    quotations: newQuotations
-                });
-                console.log(newQuotations)
+                // const newState = Object.assign({}, this.state, {
+                //     quotations: newQuotations
+                // });
+                // console.log(newQuotations)
 
 
                 // store the new state object in the component's state
-                this.setState(newState);
+                this.setState({
+                    quotations: newQuotations,
+                    isLoading: false
+                });
             })
             .catch(error => console.log(error));
+    };
+
+    write_proficiencies(array){
+
     };
 
     create_table()
@@ -52,16 +60,12 @@ export default class Content extends Component {
 
             }
             var avatar="";
-            var email=""
+            var email="";
+            var proficiency =c.proficiency;
 
-            if(c.customer){
-                avatar=c.customer.user_avatar;
-                email = c.customer.email;
-                name = c.customer.name;
-            }
-            else{
-                avatar="https://www.qualiscare.com/wp-content/uploads/2017/08/default-user.png"
-            }
+
+
+
 
 
 
@@ -73,15 +77,22 @@ export default class Content extends Component {
                             <label htmlFor="checkbox2"></label>
                         </div>
 
-                        <img src={avatar} alt="contact-img"
+                        <img src={c.user_avatar} alt="contact-img"
                              title="contact-img" className="rounded-circle thumb-sm"/>
                     </td>
-                    <td><a href="#">QT#{c.id}</a></td>
+                    <td><a href="#">{c.id}</a></td>
 
-                    <td><a href="#">{name}</a></td>
-                    <td><a href="#">{email}</a></td>
-                    <td><span className={"label label-"+confirmed_status}>{confirmed_status_text}</span></td>
-                    <td>{c.created_at}</td>
+                    <td><a href="#">{c.name}</a></td>
+                    <td><a href="#">{c.email}</a></td>
+                    <td>
+                        {
+                            proficiency.map(element => {
+                                return ([
+                                    <span className={"label label-inverse mr-2"}>{element.name}  </span> ,
+                                ])
+                            })
+                        }
+                    </td>
                     <td>
                         <a href="#" className="table-action-btn"><i
                             className="md md-edit"/></a>
@@ -101,6 +112,9 @@ export default class Content extends Component {
     }
 
     render() {
+        var isLoading = this.state.isLoading;
+        console.log("are we loading?" + isLoading)
+
         return (
             <div className="content-page">
                 <div className="content">
@@ -141,7 +155,7 @@ export default class Content extends Component {
                                                    className="btn btn-default btn-md waves-effect waves-light m-b-30"
                                                    data-animation="fadein" data-plugin="custommodal"
                                                    data-overlayspeed="200" data-overlaycolor="#36404a"><i
-                                                    className="md md-add"></i> Add Customer</a>
+                                                    className="md md-add"></i> Add User</a>
                                             </div>
                                         </div>
 
@@ -154,26 +168,12 @@ export default class Content extends Component {
                                                             <input id="action-checkbox" type="checkbox"/>
                                                             <label htmlFor="action-checkbox"></label>
                                                         </div>
-                                                        {/*<div className="btn-group dropdown">*/}
-                                                        {/*<button type="button"*/}
-                                                        {/*className="btn btn-white btn-sm dropdown-toggle waves-effect waves-light"*/}
-                                                        {/*data-toggle="dropdown" aria-expanded="false"><i*/}
-                                                        {/*className="caret"></i></button>*/}
-                                                        {/*<div className="dropdown-menu"*/}
-                                                        {/*// aria-labelledby="btnGroupDrop1"*/}
-                                                        {/*x-placement="bottom-start"*/}
-                                                        {/*style={{position: absolute; transform: translate3d(0px, 31px, 0px); top: 0px; left: 0px; will-change: transform;}}>*/}
-                                                        {/*<a className="dropdown-item" href="#">Dropdown One</a>*/}
-                                                        {/*<a className="dropdown-item" href="#">Dropdown Two</a>*/}
-                                                        {/*<a className="dropdown-item" href="#">Dropdown Three</a>*/}
-                                                        {/*<a className="dropdown-item" href="#">Dropdown Four</a>*/}
-                                                        {/*</div>*/}
-                                                        {/*</div>*/}
+
                                                     </th>
-                                                    <th>Invoice ID</th>
+                                                    <th>User ID</th>
                                                     <th>Name</th>
                                                     <th>Email</th>
-                                                    <th>Acceptance Status</th>
+                                                    <th>Proficiencies</th>
                                                     <th>Start Date</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -182,7 +182,17 @@ export default class Content extends Component {
                                                 <tbody>
 
                                                 {
-                                                    this.create_table()
+                                                    !isLoading ? this.create_table() :
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <div className="text-center offset-md-5">
+                                                            <div className="spinner-border" role="status">
+                                                                <span className="sr-only">Loading...</span>
+                                                            </div>
+                                                        </div>
+                                                    </tr>
                                                 }
 
                                                 </tbody>

@@ -7,6 +7,7 @@ export default class Content extends Component {
     constructor(props){
         super(props);
         this.state ={
+            isLoading:true,
             quotations:[]
         }
     }
@@ -22,14 +23,18 @@ export default class Content extends Component {
 
                 // create a new "State" object without mutating
                 // the original State object.
-                const newState = Object.assign({}, this.state, {
-                    quotations: newQuotations
-                });
-                console.log(newQuotations)
+                // const newState = Object.assign({}, this.state, {
+                //     quotations: newQuotations
+                // });
+                // console.log(newQuotations)
 
 
                 // store the new state object in the component's state
-                this.setState(newState);
+
+                this.setState({
+                    quotations: newQuotations,
+                    isLoading: false
+                });
             })
             .catch(error => console.log(error));
     };
@@ -101,7 +106,9 @@ export default class Content extends Component {
     }
 
     render() {
+        var isLoading = this.state.isLoading;
         return (
+
             <div className="content-page">
                 <div className="content">
                     <div className="container-fluid">
@@ -181,9 +188,19 @@ export default class Content extends Component {
 
                                                 <tbody>
 
-                                                    {
-                                                        this.create_table()
-                                                    }
+                                                {
+                                                    !isLoading ? this.create_table() :
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <div className="text-center offset-md-5">
+                                                                <div className="spinner-border" role="status">
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </div>
+                                                            </div>
+                                                        </tr>
+                                                }
 
                                                 </tbody>
                                             </table>

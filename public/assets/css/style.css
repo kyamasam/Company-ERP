@@ -1960,7 +1960,11 @@ body.fixed-left .side-menu.left {
 #wrapper.right-bar-enabled .left-layout {
   left: 0;
 }
-
+.widget-style-2 i.status_icon {
+    right: 54%;
+    top: -9%;
+    background: transparent !important;
+}
 /* Right sidebar */
 .side-bar.right-bar {
   float: right !important;

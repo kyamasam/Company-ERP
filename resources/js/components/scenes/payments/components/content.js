@@ -8,6 +8,7 @@ export default class Content extends Component {
         super(props);
         this.state ={
             payments:[]
+
         }
     }
 

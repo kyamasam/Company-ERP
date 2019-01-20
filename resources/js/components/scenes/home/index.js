@@ -8,11 +8,14 @@ export default class Home extends Component {
     constructor(props){
         super(props);
         this.state={
-            isLoading:true
+            isLoading:true,
+
         }
     }
 
     componentDidMount(){
+
+
         var scripts_array=[
             '/js/jquery.dashboard_3.js',
             '/js/jquery.core.js',
