@@ -18,6 +18,9 @@ class CreatePaymentsTable extends Migration
             $table->integer('project_id')->references('id')->on('projects');
 	        $table->integer('invoice_id')->references('id')->on('invoices');
             $table->float('amount');
+            $table->string('payment_method');
+            $table->string('currency');
+            $table->binary('confirmed');
             $table->timestamps();
         });
     }

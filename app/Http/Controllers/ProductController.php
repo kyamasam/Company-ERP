@@ -15,9 +15,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        ProductResource::withoutWrapping();
+//        ProductResource::withoutWrapping();
 
-        return ProductResource::collection(\App\product::all());
+        return ProductResource::collection(\App\product::paginate());
 
     }
 
@@ -50,7 +50,7 @@ class ProductController extends Controller
      */
     public function show(product $product)
     {
-        ProductResource::withoutWrapping();
+//        ProductResource::withoutWrapping();
 
         return new ProductResource($product);
     }

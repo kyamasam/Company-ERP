@@ -6,10 +6,86 @@ import Breadcrumbs from "../../layouts/breadcrumbs_2l"
 export default class Content extends Component {
     constructor(props){
         super(props);
+        this.state ={
+            current_revenue:0,
+            prev_revenue:0,
+            users_count:[],
+            projects_count:[],
+            payments_count:[],
+            payments_count_yesterday:[],
+        }
+    }
+    componentDidMount(){
+        axios.all([
+            axios.get("http://127.0.0.1:8000/api/v1/payments/sum_payments_within/7/0"),
+            axios.get("http://127.0.0.1:8000/api/v1/payments/sum_payments_within/8/1"),
+            axios.get("http://127.0.0.1:8000/api/v1/users/"),
+            axios.get("http://127.0.0.1:8000/api/v1/projects/count/2"),
+            axios.get("http://127.0.0.1:8000/api/v1/payments/count_payments_within/0/0"),
+            axios.get("http://127.0.0.1:8000/api/v1/payments/count_payments_within/1/0"),
+        ])
+            .then(
+                axios.spread((current_revenue_Res,prev_revenue_Res,users_Res,projects_Res,payments_count_Res,payments_count_yesterday_Res) =>{
+
+                this.setState({
+                    current_revenue:current_revenue_Res.data,
+                    prev_revenue:prev_revenue_Res.data,
+                    users_count:users_Res.data.meta.total,
+                    projects_count:projects_Res.data,
+                    payments_count:payments_count_Res.data,
+                    payments_count_yesterday:payments_count_yesterday_Res.data,
+
+                })
+                console.log("curr revenue is"+ this.state.current_revenue)
+                console.log("prev revenue is"+ this.state.prev_revenue)
+                console.log("user count is"+ this.state.users_count)
+                console.log("project count is"+ this.state.projects_count)
+                console.log("payment count is"+ this.state.payments_count)
+                console.log("payment count yesterday was"+ this.state.payments_count_yesterday)
+
+
+            })).catch(error => console.log(error))
     }
     componentWillMount(){
     }
+
     render() {
+
+         const difference= this.state.current_revenue-this.state.prev_revenue;
+         var arrow_trend = "";
+         var trend_color = "";
+
+         if(this.state.current_revenue > this.state.prev_revenue){
+             arrow_trend ="up"
+             trend_color ="primary"
+         }
+         else if(this.state.current_revenue < this.state.prev_revenue){
+             arrow_trend = "down"
+             trend_color = "danger"
+         }
+         else{
+             arrow_trend = "neutral"
+             trend_color = "inverse"
+         }
+
+        var carret_trend = "";
+        var carret_color = "";
+        if(this.state.payments_count > this.state.payments_count_yesterday){
+            carret_trend ="up"
+            carret_color ="primary"
+        }
+        else if(this.state.payments_count < this.state.payments_count_yesterday){
+            carret_trend = "down"
+            carret_color = "danger"
+        }
+        else{
+            carret_trend = "neutral"
+            carret_color = "inverse"
+        }
+
+
+
+
         return (
             <div className="content-page">
                 <div className="content">
@@ -32,80 +108,43 @@ export default class Content extends Component {
                             </div>
                         </div>
 
-
                         <div className="row">
-                            <div className="col-lg-12 col-xl-4">
-                                <div className="card-box">
-                                    <div className="bar-widget">
-                                        <div className="table-box">
-                                            <div className="table-detail">
-                                                <div className="iconbox bg-info">
-                                                    <i className="icon-layers"/>
-                                                </div>
-                                            </div>
+                            <div className="col-md-6 col-lg-6 col-xl-3">
+                                <div className="widget-panel widget-style-2 bg-white">
 
-                                            <div className="table-detail">
-                                                <h4 className="m-t-0 m-b-5"><b>12560</b></h4>
-                                                <p className="text-muted m-b-0 m-t-0">Total Revenue</p>
-                                            </div>
-                                            <div className="table-detail text-right">
-                                                <span data-plugin="peity-bar"
-                                                      data-colors="#34d3eb,#ebeff2"
-                                                      data-width="120"
-                                                      data-height="45">5,3,9,6,5,9,7,3,5,2,9,7,2,1
-                                                </span>
-                                            </div>
+                                    <i className={"md md-trending-"+arrow_trend+" "+ "text-"+trend_color }></i>
 
-                                        </div>
-                                    </div>
+                                    <h2 className="m-0 text-dark counter font-600">Ksh { this.state.current_revenue.toLocaleString() }</h2>
+                                    <div className=" m-t-15"> Revenue last 7 days <span className="pull-right" style={{marginRight:"6"+"%"}}>Ksh {difference.toLocaleString()}</span> </div>
+
                                 </div>
                             </div>
-
-                            <div className="col-lg-12 col-xl-4">
-                                <div className="card-box">
-                                    <div className="bar-widget">
-                                        <div className="table-box">
-                                            <div className="table-detail">
-                                                <div className="iconbox bg-custom">
-                                                    <i className="icon-layers"/>
-                                                </div>
-                                            </div>
-
-                                            <div className="table-detail">
-                                                <h4 className="m-t-0 m-b-5"><b>356</b></h4>
-                                                <p className="text-muted m-b-0 m-t-0">Ave. weekly Sales</p>
-                                            </div>
-                                            <div className="table-detail text-right">
-                                                <span data-plugin="peity-pie" data-colors="#5fbeaa,#ebeff2"
-                                                      data-width="50" data-height="45">1/5</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
+                            <div className="col-md-6 col-lg 6 col-xl-3">
+                                <div className="widget-panel widget-style-2 bg-white">
+                                    <i className="md md-work text-primary"></i>
+                                    <h2 className="m-0 text-dark counter font-600">{this.state.projects_count}</h2>
+                                    <div className="text-muted m-t-5">Projects Ongoin</div>
                                 </div>
                             </div>
-
-                            <div className="col-lg-12 col-xl-4">
-                                <div className="card-box">
-                                    <div className="bar-widget">
-                                        <div className="table-box">
-                                            <div className="table-detail">
-                                                <div className="iconbox bg-danger">
-                                                    <i className="icon-layers"/>
-                                                </div>
-                                            </div>
-
-                                            <div className="table-detail">
-                                                <h4 className="m-t-0 m-b-5"><b>96562</b></h4>
-                                                <p className="text-muted m-b-0 m-t-0">Visiters</p>
-                                            </div>
-                                            <div className="table-detail text-right">
-                                                <span data-plugin="peity-donut" data-colors="#f05050,#ebeff2"
-                                                      data-width="50" data-height="45">1/5</span>
-                                            </div>
-
-                                        </div>
+                            <div className="col-md-6 col-lg-6 col-xl-3">
+                                <div className="widget-panel widget-style-2 bg-white">
+                                    <i className="md  md-attach-money text-info"></i>
+                                    <h2 className="m-0 text-dark counter font-600">{this.state.payments_count}</h2>
+                                    <div className="text-muted m-t-5">Payments In
+                                        <i className={"fa fa-caret-" + carret_trend +" text-"+carret_color+" status_icon"}></i>
                                     </div>
+
+                                </div>
+                            </div>
+                            <div className="col-md-6 col-lg-6 col-xl-3">
+                                <div className="widget-panel widget-style-2 bg-white">
+                                    <i className="md md-account-child text-custom"></i>
+                                    <h2 className="m-0 text-dark counter font-600">
+                                        {
+                                            this.state.users_count
+                                        }
+                                    </h2>
+                                    <div className="text-muted m-t-5">Users</div>
                                 </div>
                             </div>
                         </div>

@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom'
 export default class Breadcrumbs_2l extends Component {
     constructor(props) {
         super(props);
+
     }
 
     componentWillMount() {

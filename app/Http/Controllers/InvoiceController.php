@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
-use App\User;
+use App\Http\Resources\PaymentResource;
+use App\payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class SystemUserController extends Controller
+class InvoiceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +16,29 @@ class SystemUserController extends Controller
      */
     public function index()
     {
+        //here , we want to group all the payments that were made towards a specific invoice
+//        $all_payments= PaymentResource::collection(payment::paginate())->groupBy('invoice_id');
+//        return $all_payments;
+//        $changed= $all_payments->map(function ($item, $key ) {
+//                return[
+//                    $item['created_at'] = $item->created_at,
+////                    'amount'=>$row->sum('amount')
+//                ];
+//
+//            });
+//        return $changed->all();
 
-//        UserResource::withoutWrapping();
+        $payment= payment::
+        selectRaw('sum(amount) as amount, invoice_id , max(project_id) as project_id, max(created_at) as created_at ')
+        ->groupBy('invoice_id')
+        ->get();
 
-        return UserResource::collection(User::paginate());
+        return $payment;
+
+
+
+//        return PaymentResource::collection(payment::paginate())->groupBy('invoice_id')->selectRaw('sum(amount) as amounts, invoice_id','id');
+
 
     }
 
@@ -51,13 +71,7 @@ class SystemUserController extends Controller
      */
     public function show($id)
     {
-        $user=\App\User::findOrFail($id);
-//        UserResource::withoutWrapping();
-
-
-        return new UserResource($user);
-//             ArticleResource::withoutWrapping();
-//        return new ArticleResource($article);
+        return PaymentResource::collection(payment::where('invoice_id',$id)->get());
     }
 
     /**
@@ -90,18 +104,6 @@ class SystemUserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        //
-    }
-
-    /**
-     * Show the projects this user is involved in the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function assigned_projects(Request $request, $id)
     {
         //
     }

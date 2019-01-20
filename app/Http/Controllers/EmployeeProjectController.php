@@ -17,9 +17,9 @@ class EmployeeProjectController extends Controller
      */
     public function index()
     {
-        EmployeeProjectResource::withoutWrapping();
+//        EmployeeProjectResource::withoutWrapping();
 
-        return EmployeeProjectResource::collection(User::all());
+        return EmployeeProjectResource::collection(User::paginate());
     }
 
     /**
@@ -51,7 +51,7 @@ class EmployeeProjectController extends Controller
      */
     public function show(employee_project $employee_project)
     {
-        EmployeeProjectResource::withoutWrapping();
+//        EmployeeProjectResource::withoutWrapping();
 
         return EmployeeProjectResource::collection(User::find($employee_project));
     }
@@ -98,7 +98,7 @@ class EmployeeProjectController extends Controller
      */
     public function projects(employee_project $employee_project)
     {
-        EmployeeProjectResource::withoutWrapping();
+//        EmployeeProjectResource::withoutWrapping();
 
         return EmployeeProjectResource::collection(User::find($employee_project)->assigned_project);
     }

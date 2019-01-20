@@ -18,6 +18,7 @@ class ProjectsResource extends JsonResource
         return [
         'id'=>$this->id,
         'name'=>$this->name,
+        'description'=>$this->description,
         'progress'=>$this->progress,
         'customers' => UserResource::collection($this->user),
         'assigned_to' => UserResource::collection($this->assigned_employee),

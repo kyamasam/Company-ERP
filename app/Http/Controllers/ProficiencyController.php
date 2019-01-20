@@ -15,9 +15,9 @@ class ProficiencyController extends Controller
      */
     public function index()
     {
-        UserProficiencyResource::withoutWrapping();
+//        UserProficiencyResource::withoutWrapping();
 
-        return UserProficiencyResource::collection(proficiency::all());
+        return UserProficiencyResource::collection(proficiency::paginate());
     }
 
     /**
@@ -49,7 +49,7 @@ class ProficiencyController extends Controller
      */
     public function show(proficiency $proficiency)
     {
-        UserProficiencyResource::withoutWrapping();
+//        UserProficiencyResource::withoutWrapping();
 
         return new UserProficiencyResource($proficiency);
     }

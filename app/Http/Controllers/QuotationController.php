@@ -15,8 +15,8 @@ class QuotationController extends Controller
      */
     public function index()
     {
-        QuotationResource::withoutWrapping();
-        return QuotationResource::collection(quotation::all());
+//        QuotationResource::withoutWrapping();
+        return QuotationResource::collection(quotation::paginate());
 
     }
 
@@ -49,7 +49,7 @@ class QuotationController extends Controller
      */
     public function show(quotation $quotation)
     {
-        QuotationResource::withoutWrapping();
+//        QuotationResource::withoutWrapping();
         $user= quotation::findOrFail($quotation->id);
 //        return $user;
         return new QuotationResource($user);
