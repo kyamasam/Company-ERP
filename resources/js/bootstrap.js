@@ -9,11 +9,12 @@ window.Popper = require('popper.js').default;
  * code may be modified to fit the specific needs of your application.
  */
 
-try {
-    window.$ = window.jQuery = require('jquery');
-
-    require('bootstrap');
-} catch (e) {}
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
+global.jQuery = $;
+const bootstrap = require('bootstrap');
+console.log(bootstrap)
 
 /**
  * CUSTOM
@@ -83,7 +84,12 @@ window.blockUI= require('block-ui');
 window.peity=require('peity');
 window.sparkline=require('jquery-sparkline');
 
+
+
 /**
  *Bootstrap Table
  */
 window.bootstrapTable=require('bootstrap-table');
+
+
+

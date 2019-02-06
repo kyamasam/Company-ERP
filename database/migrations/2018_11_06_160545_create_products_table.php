@@ -16,7 +16,7 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-	        $table->string('price');
+	        $table->integer('price');
             $table->string('association');//this is an array of all the products associated with this product
             $table->timestamps();
         });

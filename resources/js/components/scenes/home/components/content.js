@@ -2,6 +2,8 @@ import {Component} from "react";
 import React from "react";
 import Footer from "../../layouts/footer"
 import Breadcrumbs from "../../layouts/breadcrumbs_2l"
+import axios from "axios";
+
 
 export default class Content extends Component {
     constructor(props){
@@ -104,7 +106,7 @@ export default class Content extends Component {
                                         <a className="dropdown-item" href="#">Dropdown Four</a>
                                     </div>
                                 </div>
-                                <Breadcrumbs{...this.props}/>
+                                {/*<Breadcrumbs{...this.props}/>*/}
                             </div>
                         </div>
 

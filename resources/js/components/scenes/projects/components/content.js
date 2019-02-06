@@ -3,6 +3,7 @@ import React from "react";
 import Footer from "../../layouts/footer"
 import Breadcrumbs from "../../layouts/breadcrumbs_2l";
 import {Link} from "react-router-dom";
+import axios from 'axios';
 
 export default class Content extends Component {
     constructor(props){

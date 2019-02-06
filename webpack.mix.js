@@ -1,4 +1,4 @@
-let mix = require('laravel-mix');
+const mix = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
@@ -12,12 +12,4 @@ let mix = require('laravel-mix');
  */
 
 mix.react('resources/js/app.js', 'public/js')
-    .js('resources/assets/js/detect.js','public/js')
-    .js('resources/assets/js/jquery.core.js','public/js')
-    .js('resources/assets/js/pace.js','public/js')
-    .js('resources/assets/js/tableExport.js','public/js')
-    .js('resources/assets/js/bootstrap-table-export.js','public/js')
-    .js('resources/assets/pages/jquery.dashboard_3.js','public/js')
-    .js('resources/assets/pages/jquery.bs-table.js','public/js')
-    .js('resources/assets/plugins/bootstrap-table/js/bootstrap-table.js','public/js')
-    .sass('resources/sass/app.scss', 'public/css');
+   .sass('resources/sass/app.scss', 'public/css');

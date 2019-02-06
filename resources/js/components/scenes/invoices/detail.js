@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import TopNav from "../layouts/topNav";
 import SideNav from "../layouts/sideNav";
 import RightNav from "../layouts/rightNav";
-import Content from "./components/content";
-import axios from "axios";
+import Content from "./components/invoice_detail";
 
-export default class Projects extends Component {
+export default class Invoices extends Component {
     constructor(props){
         super(props);
+
     }
 
     componentDidMount(){
