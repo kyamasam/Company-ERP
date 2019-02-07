@@ -60,21 +60,21 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 38);
+/******/ 	return __webpack_require__(__webpack_require__.s = 39);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 38:
+/***/ 39:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(39);
-module.exports = __webpack_require__(40);
+__webpack_require__(40);
+module.exports = __webpack_require__(41);
 
 
 /***/ }),
 
-/***/ 39:
+/***/ 40:
 /***/ (function(module, exports) {
 
 /**
@@ -89,10 +89,10 @@ module.exports = __webpack_require__(40);
 
 /***/ }),
 
-/***/ 40:
+/***/ 41:
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed: ModuleBuildError: Module build failed: \n@import '~bootstrap/scss/bootstrap';\n^\n      File to import not found or unreadable: /media/samuel/5AB2103948E11D3C/work/skality/skality-client/node_modules/bootstrap/scss/bootstrap.scss.\n      in /media/samuel/5AB2103948E11D3C/work/skality/skality-client/resources/sass/app.scss (line 9, column 1)\n    at runLoaders (/media/samuel/5AB2103948E11D3C/work/skality/skality-client/node_modules/webpack/lib/NormalModule.js:195:19)\n    at /media/samuel/5AB2103948E11D3C/work/skality/skality-client/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /media/samuel/5AB2103948E11D3C/work/skality/skality-client/node_modules/loader-runner/lib/LoaderRunner.js:230:18\n    at context.callback (/media/samuel/5AB2103948E11D3C/work/skality/skality-client/node_modules/loader-runner/lib/LoaderRunner.js:111:13)\n    at Object.asyncSassJobQueue.push [as callback] (/media/samuel/5AB2103948E11D3C/work/skality/skality-client/node_modules/sass-loader/lib/loader.js:55:13)\n    at Object.done [as callback] (/media/samuel/5AB2103948E11D3C/work/skality/skality-client/node_modules/neo-async/async.js:8077:18)\n    at options.error (/media/samuel/5AB2103948E11D3C/work/skality/skality-client/node_modules/node-sass/lib/index.js:294:32)");
+// removed by extract-text-webpack-plugin
 
 /***/ })
 
