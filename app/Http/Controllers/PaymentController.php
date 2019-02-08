@@ -7,13 +7,14 @@ use App\payment;
 use App\quotation_payment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\quotation ;
 
 class PaymentController extends Controller
 {
 
     function __construct()
     {
-         $this->today=Carbon::now();
+        $this->today=Carbon::now();
     }
 
     /**
@@ -59,7 +60,8 @@ class PaymentController extends Controller
     {
 //        PaymentResource::withoutWrapping();
 
-        return PaymentResource::collection(payment::find($payment)->sortBy('invoice_id', 'ASC'));
+        return new PaymentResource($payment);
+
     }
 
     /**
@@ -152,6 +154,20 @@ class PaymentController extends Controller
             return json_encode($payments);
         }
 
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\quotation  $invoice_id
+     * @return \Illuminate\Http\Response
+     */
+    public function payment_for_invoice($invoice_id)
+    {
+//        PaymentResource::withoutWrapping();
+//        return App\
+        return PaymentResource::collection(payment::where('invoice_id','=',$invoice_id)->get());
+//        return 'adsads';
     }
 }
 

@@ -1,7 +1,31 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
+import axios from 'axios';
 
 export default class TopNav extends Component {
+    constructor(props){
+        super(props);
+    }
+
+    logout(e){
+        e.preventDefault();
+        axios.post('logout')
+            .then(response=> {
+                localStorage.removeItem('user');
+                console.log("removed user from local storage");
+                window.location.reload();
+            })
+            .catch(error=> {
+                console.log(error);
+            });
+    }
+
+    handleClick(e){
+
+        e.preventDefault();
+        this.props.history.push('/');
+
+    }
     render() {
         return (
             <div className="topbar">
@@ -98,7 +122,7 @@ export default class TopNav extends Component {
                                 <Link className="dropdown-item notify-item" to='/settings'>
                                     <i className="md md-settings"/> <span>Settings</span>
                                 </Link>
-                                <a href="javascript:void(0);" className="dropdown-item notify-item">
+                                <a href="javascript:void(0);" className="dropdown-item notify-item" onClick={this.logout.bind(this)}>
                                     <i className="md md-settings-power"/> <span>Logout</span>
                                 </a>
                             </div>

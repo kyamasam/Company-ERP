@@ -6,7 +6,8 @@ use App\Http\Resources\PaymentResource;
 use App\payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use App\quotation;
+use App\Http\Resources\QuotationResource;
 class InvoiceController extends Controller
 {
     /**
@@ -17,23 +18,18 @@ class InvoiceController extends Controller
     public function index()
     {
         //here , we want to group all the payments that were made towards a specific invoice
-//        $all_payments= PaymentResource::collection(payment::paginate())->groupBy('invoice_id');
-//        return $all_payments;
-//        $changed= $all_payments->map(function ($item, $key ) {
-//                return[
-//                    $item['created_at'] = $item->created_at,
-////                    'amount'=>$row->sum('amount')
-//                ];
-//
-//            });
-//        return $changed->all();
 
-        $payment= payment::
-        selectRaw('sum(amount) as amount, invoice_id , max(project_id) as project_id, max(created_at) as created_at ')
-        ->groupBy('invoice_id')
-        ->get();
 
-        return $payment;
+//        $payment= payment::
+//        selectRaw('sum(amount) as amount, invoice_id , max(project_id) as project_id, max(created_at) as created_at ')
+//        ->groupBy('invoice_id')
+//        ->get();
+
+        // remember an invoice is an accepted quotation
+        $invoice = QuotationResource::collection(quotation::where('accepted','=','1')->get());
+
+
+        return $invoice;
 
 
 
@@ -67,11 +63,12 @@ class InvoiceController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return
      */
     public function show($id)
     {
-        return PaymentResource::collection(payment::where('invoice_id',$id)->get());
+        $data= QuotationResource::collection(quotation::where('id','=',$id)->get());
+        return $data;
     }
 
     /**
@@ -107,4 +104,6 @@ class InvoiceController extends Controller
     {
         //
     }
+
+
 }

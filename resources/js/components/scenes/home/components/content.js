@@ -44,7 +44,16 @@ export default class Content extends Component {
                 console.log("payment count yesterday was"+ this.state.payments_count_yesterday)
 
 
-            })).catch(error => console.log(error))
+            }))
+            .catch(error =>{
+                    if (error.response.status === 401){
+                        window.location.replace("/login");
+                    }
+                    else{
+                        console.log(error.response);
+                    }
+                }
+            );
     }
     componentWillMount(){
     }

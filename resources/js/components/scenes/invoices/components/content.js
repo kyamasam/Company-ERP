@@ -2,28 +2,34 @@ import {Component} from "react";
 import React from "react";
 import Footer from "../../layouts/footer"
 import Breadcrumbs from "../../layouts/breadcrumbs_2l";
+import {Link} from 'react-router-dom'
+import axios from "axios";
 
 export default class Content extends Component {
     constructor(props){
         super(props);
         this.state ={
-            invoices:[]
+            invoices:[],
+            isLoading:true
         }
     }
 
     componentDidMount() {
+
+        console.log(this.invoice_id)
         axios
             .get("http://127.0.0.1:8000/api/v1/invoices")
             .then(response => {
 
                 // create an array of projects only with relevant data
-                const newInvoices = response.data;
+                const newInvoices = response.data.data;
                 console.log("all invoices"+ newInvoices)
 
                 // create a new "State" object without mutating
                 // the original State object.
                 const newState = Object.assign({}, this.state, {
-                    invoices: newInvoices
+                    invoices: newInvoices,
+                    isLoading: false
                 });
                 // console.log(newInvoices)
 
@@ -36,75 +42,69 @@ export default class Content extends Component {
 
     create_table()
     {
-        var array_of_invoices = [];
         var values = this.state.invoices.map(c=>{
-            var myDate = new Date(c.created_at);
-            var amount_paid = c.amount
+        var customer_name ="";
+        var avatar="";
+        var customer_email="";
+        var created_at="";
+            if((c.customer !== null) ){
+                customer_name = c.customer.name;
+                avatar=c.customer.user_avatar;
+                customer_email=c.customer.email;
+                created_at=c.created_at;
+            }else{
+                customer_name="";
+                avatar="http://www.sbcs.edu.tt/wp-content/uploads/2016/04/profile-default.png";
+
+            }
+            console.log("sdffsfdf" + customer_name)
 
             return([
                 <tr>
-                <td><a href="#">INV#{c.invoice_id}</a></td>
-                <td>{c.currency} {amount_paid.toLocaleString()}</td>
-                <td><a href="#">PR#{c.project_id}</a></td>
-                <td><a href="#"><span className="label label-success">Deliverd</span></a></td>
-                <td>{myDate.getDate()}/{myDate.getDay()}/{myDate.getFullYear()}</td>
-                <td>
-                    <a href="#" className="table-action-btn"><i
-                        className="md md-edit"/></a>
-                    <a href="#" className="table-action-btn"><i
-                        className="md md-file-download"/></a>
-                </td>
+                    <td>
+                        <div className="checkbox checkbox-primary m-r-15">
+                            <input id="checkbox2" type="checkbox" />
+                            <label htmlFor="checkbox2"></label>
+                        </div>
+
+                        <img src={avatar} alt="contact-img"
+                             title="contact-img" className="rounded-circle thumb-sm"/>
+                    </td>
+                    <td><Link className="btn btn-primary waves-effect" to={"invoices/"+c.id }>INV#{c.id}</Link></td>
+                    <td>
+                        {customer_name}
+                    </td>
+
+                    <td>
+                        {customer_email}
+                    </td>
+                    <td>
+                        <span className="label label-success">Accepted</span>
+                    </td>
+                    <td>
+                        {created_at}
+                    </td>
+                    <td>
+                        <a href="#" className="table-action-btn"><i
+                            className="md md-edit"/></a>
+                        <a href="#" className="table-action-btn"><i
+                            className="md md-file-download"/></a>
+                    </td>
                 </tr>
-            ])
-        })
-        // array_of_invoices.push({values})
-        // var array_of_invoices = []
-        // for (var key in this.state.invoices) {
-        //     // skip loop if the property is from prototype
-        //     if (!this.state.invoices.hasOwnProperty(key)) continue;
-        //
-        //     var ivoices_obj = this.state.invoices[key];
-        //     // console.log(obj)
-        //
-        //     var values = ivoices_obj.map((c,index,array) => {
-        //
-        //             return ([
-        //
-        //                     <td>{c.invoice_id}</td>,
-        //                         <td>{c.amount}</td>,
-        //                         <td>{c.project.name}</td>,
-        //                         <td>{c.created_at}</td>,
-        //                         <td></td>,
-        //
-        //             ]);
-        //
-        //         }
-        //     );
-        //
-        //     console.log("this is a test run "+ values)
-        //     array_of_invoices.push(<tr>{values}</tr>)
-        //     // console.log("expanded values")
-        //     // console.log(values)
-        // }
-
-        //array inside array
 
 
-        // console.log("array of invoices")
-        // console.log(array_of_invoices)
+            ]);
+        });
 
-
-
-
-         return values
-
+        return values;
 
     }
 
 
+
     render() {
 
-
+        var isLoading = this.state.isLoading;
         return (
             <div className="content-page">
                 <div className="content">
@@ -161,23 +161,41 @@ export default class Content extends Component {
                                     </div>
 
                                     <div className="table-responsive">
-                                        <table className="table table-actions-bar">
+                                        <table className="table table-hover mails m-0 table table-actions-bar">
                                             <thead>
                                             <tr>
-                                                <th>Invoice Id</th>
-                                                <th>Amount Paid </th>
-                                                <th>Project Name </th>
-                                                <th>Status </th>
-                                                <th>Created On </th>
+                                                <th style={{width: '120'+"px"}}>
+                                                    <div className="checkbox checkbox-primary checkbox-single m-r-15">
+                                                        <input id="action-checkbox" type="checkbox"/>
+                                                        <label htmlFor="action-checkbox"></label>
+                                                    </div>
 
-                                                <th style={{minWidth: 80}}>Action</th>
+                                                </th>
+                                                <th>Invoice ID</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Acceptance Status</th>
+                                                <th>Start Date</th>
+                                                <th>Action</th>
                                             </tr>
                                             </thead>
 
                                             <tbody>
+
                                             {
-                                                this.create_table()
+                                                !isLoading ? this.create_table() :
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <div className="text-center offset-md-5">
+                                                            <div className="spinner-border" role="status">
+                                                                <span className="sr-only">Loading...</span>
+                                                            </div>
+                                                        </div>
+                                                    </tr>
                                             }
+
                                             </tbody>
                                         </table>
                                     </div>

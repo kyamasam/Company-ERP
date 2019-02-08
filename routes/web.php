@@ -10,9 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::view('/{path?}', 'app');
+Route::get('/user', function (Request $request) {
+    return \Illuminate\Support\Facades\Auth::user();
+});
+Route::view('/{path?}', 'app')->where('path','.*');
 
 Auth::routes();
+
 
 Route::get('/home', 'HomeController@index')->name('home');

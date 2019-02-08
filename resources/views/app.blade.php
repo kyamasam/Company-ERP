@@ -7,6 +7,12 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{csrf_token()}}">
+    <script>
+        // rename myToken as you like
+        window.myToken =  <?php echo json_encode([
+            'csrfToken' => csrf_token(),
+        ]); ?>
+    </script>
 
     <title>Skality Client</title>
     <!--favicon-->

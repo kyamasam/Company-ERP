@@ -32,7 +32,15 @@ export default class Content extends Component {
                 // store the new state object in the component's state
                 this.setState(newState);
             })
-            .catch(error => console.log(error));
+            .catch(error =>{
+                    if (error.response.status === 401){
+                        window.location.replace("/login");
+                    }
+                    else{
+                        console.log(error.response);
+                    }
+                }
+            );
     };
 
     create_table()
