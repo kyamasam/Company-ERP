@@ -105,9 +105,6 @@ class Login extends Component {
         })
             .then(response=> {
                 this.setState({err: false});
-                // setAuth();
-                //we have loggen in
-                console.log("sersdf");
                 const { from } = this.props.location.state || { from: { pathname: '/' } };
                 localStorage.setItem('user', 'true');
                 console.log("storage", localStorage.getItem('user'));
@@ -143,56 +140,66 @@ class Login extends Component {
                 <div className="wrapper-page">
                     <div className="card-box">
                         <div className="panel-heading">
-                            <h4 className="text-center"> Sign In to <strong className="text-custom"><Link to='/'>Skality</Link></strong></h4>
+                            <div className="panel-heading ">
+                                <h4 className="text-center"><img src="/skality_logo.png" height="50"/></h4>
+                                <Link to='/login'><h4 className="text-center"> Sign In <strong className="text-custom"></strong></h4></Link>
+                            </div>
+                        </div>
+                        <div className="p-20">
+
+                            <div>
+                                {error != undefined && <div className={name} role="alert">{msg}</div>}
+                            </div>
+                            <form className="form-horizontal m-t-20" role="form" method="POST" onSubmit= {this.onSubmit.bind(this)}>
+
+                                <div className="form-group">
+                                    <div className="col-12">
+                                        <input id="email" type="text" ref="email" placeholder="Email" className="form-control" name="email"  onChange={this.onChange.bind(this)} required />
+                                    </div>
+                                </div>
+
+                                <div className="form-group">
+
+                                    <div className="col-12">
+                                        <input id="password" placeholder="Password" type="password" ref="password" className="form-control" name="password"  onChange={this.onChange.bind(this)}  required />
+                                    </div>
+                                </div>
+
+                                <div className="form-group ">
+                                    <div className="col-12">
+                                        <div className="checkbox checkbox-primary">
+                                            <input id="checkbox-signup" type="checkbox"/>
+                                                <label htmlFor="checkbox-signup">
+                                                    Remember me
+                                                </label>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                 <div className="form-group text-center m-t-40">
+                                     <div className="col-12">
+                                         <button className="btn btn-pink btn-block text-uppercase waves-effect waves-light" type="submit">Log In</button>
+                                     </div>
+                                 </div>
+
+                                 <div className="form-group m-t-30 m-b-0">
+                                     <div className="col-12">
+                                         <Link className="text-dark" to='/forgotpassword'><i className="fa fa-lock m-r-5"/> Forgot your password?</Link>
+                                     </div>
+                                 </div>
+                            </form>
                         </div>
 
-
-                        <div className="p-20">
-                            <div className="p-20">
-                                    <div className="col-md-offset-2 col-md-8 col-md-offset-2">
-                                        {error != undefined && <div className={name} role="alert">{msg}</div>}
-                                    </div>
-                                    <form className="form-horizontal m-t-20" role="form" method="POST" onSubmit= {this.onSubmit.bind(this)}>
-
-                                        <div className="form-group">
-                                            <div className="col-12">
-                                                <input id="email" type="email" ref="email" placeholder="Email" className="form-control" name="email"  onChange={this.onChange.bind(this)} required />
-                                            </div>
-                                        </div>
-
-                                        <div className="form-group">
-
-                                            <div className="col-12">
-                                                <input id="password" placeholder="Password" type="password" ref="password" className="form-control" name="password"  onChange={this.onChange.bind(this)}  required />
-                                            </div>
-                                        </div>
-
-                                        <div className="form-group">
-                                            <div className="col-md-6 col-md-offset-4">
-                                                <div className="checkbox">
-                                                    <label>
-                                                        <input type="checkbox" name="remember" id="" /> Remember Me
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                         <div className="form-group text-center m-t-40">
-                                             <div className="col-12">
-                                                 <button className="btn btn-pink btn-block text-uppercase waves-effect waves-light" type="submit">Log In</button>
-                                             </div>
-                                         </div>
-
-                                         <div className="form-group m-t-30 m-b-0">
-                                             <div className="col-12">
-                                                 <Link className="text-dark" to='/forgotpassword'><i className="fa fa-lock m-r-5"/> Forgot your password?</Link>
-                                             </div>
-                                         </div>
-                                    </form>
+                    </div>
+                    <div className="row">
+                        <div className="col-12 text-center">
+                            <p>
+                                Don't have an account?<Link to="/register" className="text-primary m-l-5"><b>Create One</b></Link>
+                            </p>
                         </div>
                     </div>
-                </div>
             </div>
             </div>
 

@@ -19,8 +19,14 @@ use Illuminate\Http\Request;
 Route::group(['prefix'=>'v1','as'=>'v1.'], function(){
 
 //
-//    Route::group(['middleware' => 'auth:api'], function() {
+    Route::group(['middleware' => 'auth:api'], function() {
+        Route::get('user', function (Request $request) {
+            return $request->user();
+        });
+    });
+
         Route::resource('users', 'SystemUserController');
+
         Route::resource('products', 'ProductController');
         Route::resource('systemuser', 'SystemUserController');
 

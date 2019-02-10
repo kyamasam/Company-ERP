@@ -269,7 +269,7 @@ export default class Invoice_detail extends Component {
                                                                                     <tr>
                                                                                         <td>{counter+=1}</td>
                                                                                         <td> {payment.id}</td>
-                                                                                        <td> {payment.amount}</td>
+                                                                                        <td> {(payment.amount).toLocaleString()}</td>
                                                                                         <td> {payment.payment_method}</td>
                                                                                         <td> {myDate}</td>
                                                                                     </tr>

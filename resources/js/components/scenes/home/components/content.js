@@ -159,85 +159,85 @@ export default class Content extends Component {
                         </div>
 
 
-                        <div className="row">
+                        {/*// <div className="row">*/}
+                        {/*//*/}
+                            {/*/!*<div className="col-lg-12 col-xl-4">*!/*/}
+                                {/*/!*<div className="card-box">*!/*/}
+                                    {/*/!*<h4 className="text-dark header-title m-t-0 m-b-30">Daily Sales</h4>*!/*/}
 
-                            <div className="col-lg-12 col-xl-4">
-                                <div className="card-box">
-                                    <h4 className="text-dark header-title m-t-0 m-b-30">Daily Sales</h4>
+                                    {/*/!*<div className="widget-chart text-center">*!/*/}
+                                        {/*/!*<div id="sparkline3"/>*!/*/}
+                                        {/*/!*<ul className="list-inline m-t-15">*!/*/}
+                                            {/*/!*<li>*!/*/}
+                                                {/*/!*<h5 className="text-muted m-t-20">Target</h5>*!/*/}
+                                                {/*/!*<h4 className="m-b-0">$1000</h4>*!/*/}
+                                            {/*/!*</li>*!/*/}
+                                            {/*/!*<li>*!/*/}
+                        {/*//                         <h5 className="text-muted m-t-20">Last week</h5>*/}
+                        {/*//                         <h4 className="m-b-0">$523</h4>*/}
+                        {/*//                     </li>*/}
+                                            {/*/!*<li>*!/*/}
+                                                {/*/!*<h5 className="text-muted m-t-20">Last Month</h5>*!/*/}
+                                                {/*/!*<h4 className="m-b-0">$965</h4>*!/*/}
+                                            {/*/!*</li>*!/*/}
+                                        {/*/!*</ul>*!/*/}
+                                    {/*/!*</div>*!/*/}
+                                {/*/!*</div>*!/*/}
 
-                                    <div className="widget-chart text-center">
-                                        <div id="sparkline3"/>
-                                        <ul className="list-inline m-t-15">
-                                            <li>
-                                                <h5 className="text-muted m-t-20">Target</h5>
-                                                <h4 className="m-b-0">$1000</h4>
-                                            </li>
-                                            <li>
-                                                <h5 className="text-muted m-t-20">Last week</h5>
-                                                <h4 className="m-b-0">$523</h4>
-                                            </li>
-                                            <li>
-                                                <h5 className="text-muted m-t-20">Last Month</h5>
-                                                <h4 className="m-b-0">$965</h4>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                            {/*/!*</div>*!/*/}
 
-                            </div>
+                            {/*/!*<div className="col-lg-12 col-xl-4">*!/*/}
+                                {/*/!*<div className="card-box">*!/*/}
+                                    {/*/!*<h4 className="text-dark  header-title m-t-0 m-b-30">Weekly Sales</h4>*!/*/}
 
-                            <div className="col-lg-12 col-xl-4">
-                                <div className="card-box">
-                                    <h4 className="text-dark  header-title m-t-0 m-b-30">Weekly Sales</h4>
+                                    {/*/!*<div className="widget-chart text-center">*!/*/}
+                                        {/*/!*<div id="sparkline2"/>*!/*/}
+                                        {/*/!*<ul className="list-inline m-t-15">*!/*/}
+                                            {/*/!*<li>*!/*/}
+                                                {/*/!*<h5 className="text-muted m-t-20">Target</h5>*!/*/}
+                                                {/*/!*<h4 className="m-b-0">$1000</h4>*!/*/}
+                                            {/*/!*</li>*!/*/}
+                                            {/*/!*<li>*!/*/}
+                        {/*//                         <h5 className="text-muted m-t-20">Last week</h5>*/}
+                        {/*//                         <h4 className="m-b-0">$523</h4>*/}
+                        {/*//                     </li>*/}
+                        {/*//                     <li>*/}
+                                                {/*/!*<h5 className="text-muted m-t-20">Last Month</h5>*!/*/}
+                                                {/*/!*<h4 className="m-b-0">$965</h4>*!/*/}
+                                            {/*/!*</li>*!/*/}
+                                        {/*/!*</ul>*!/*/}
+                                    {/*/!*</div>*!/*/}
+                                {/*/!*</div>*!/*/}
 
-                                    <div className="widget-chart text-center">
-                                        <div id="sparkline2"/>
-                                        <ul className="list-inline m-t-15">
-                                            <li>
-                                                <h5 className="text-muted m-t-20">Target</h5>
-                                                <h4 className="m-b-0">$1000</h4>
-                                            </li>
-                                            <li>
-                                                <h5 className="text-muted m-t-20">Last week</h5>
-                                                <h4 className="m-b-0">$523</h4>
-                                            </li>
-                                            <li>
-                                                <h5 className="text-muted m-t-20">Last Month</h5>
-                                                <h4 className="m-b-0">$965</h4>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                        {/*//     </div>*/}
+                        {/*//*/}
+                            {/*/!*<div className="col-lg-12 col-xl-4">*!/*/}
+                                {/*/!*<div className="card-box">*!/*/}
+                                    {/*/!*<h4 className="text-dark  header-title m-t-0 m-b-30">Monthly Sales</h4>*!/*/}
 
-                            </div>
+                        {/*//             <div className="widget-chart text-center">*/}
+                                        {/*/!*<div id="sparkline1"/>*!/*/}
+                                        {/*/!*<ul className="list-inline m-t-15">*!/*/}
+                                            {/*/!*<li>*!/*/}
+                                                {/*/!*<h5 className="text-muted m-t-20">Target</h5>*!/*/}
+                                                {/*/!*<h4 className="m-b-0">$1000</h4>*!/*/}
+                                            {/*/!*</li>*!/*/}
+                                            {/*/!*<li>*!/*/}
+                                                {/*/!*<h5 className="text-muted m-t-20">Last week</h5>*!/*/}
+                        {/*//                         <h4 className="m-b-0">$523</h4>*/}
+                        {/*//                     </li>*/}
+                        {/*//                     <li>*/}
+                                                {/*/!*<h5 className="text-muted m-t-20">Last Month</h5>*!/*/}
+                                                {/*/!*<h4 className="m-b-0">$965</h4>*!/*/}
+                                            {/*/!*</li>*!/*/}
+                                        {/*/!*</ul>*!/*/}
+                                    {/*/!*</div>*!/*/}
+                                {/*/!*</div>*!/*/}
 
-                            <div className="col-lg-12 col-xl-4">
-                                <div className="card-box">
-                                    <h4 className="text-dark  header-title m-t-0 m-b-30">Monthly Sales</h4>
-
-                                    <div className="widget-chart text-center">
-                                        <div id="sparkline1"/>
-                                        <ul className="list-inline m-t-15">
-                                            <li>
-                                                <h5 className="text-muted m-t-20">Target</h5>
-                                                <h4 className="m-b-0">$1000</h4>
-                                            </li>
-                                            <li>
-                                                <h5 className="text-muted m-t-20">Last week</h5>
-                                                <h4 className="m-b-0">$523</h4>
-                                            </li>
-                                            <li>
-                                                <h5 className="text-muted m-t-20">Last Month</h5>
-                                                <h4 className="m-b-0">$965</h4>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                            </div>
+                            {/*/!*</div>*!/*/}
 
 
-                        </div>
+                        {/*/!*</div>*!/*/}
 
 
                         <div className="row">
@@ -247,7 +247,7 @@ export default class Content extends Component {
                                 <div className="portlet">
                                     <div className="portlet-heading">
                                         <h3 className="portlet-title text-dark text-uppercase">
-                                            Projects
+                                            Payments
                                         </h3>
                                         <div className="portlet-widgets">
                                             <a href="javascript:;" data-toggle="reload"><i className="ion-refresh"/></a>

@@ -10,6 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::post('login', 'Auth\LoginController@login');
+Route::post('/logout', 'Auth\LoginController@logout');
+Route::post('register', 'Auth\RegisterController@register');
 Route::get('/user', function (Request $request) {
     return \Illuminate\Support\Facades\Auth::user();
 });

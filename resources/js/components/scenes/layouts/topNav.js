@@ -5,11 +5,32 @@ import axios from 'axios';
 export default class TopNav extends Component {
     constructor(props){
         super(props);
+        this.state ={
+            logged_in_user:[]
+        }
     }
-
+    componentDidMount(){
+        axios.get('/api/v1/user')
+            .then(response =>{
+                console.log(response.data)
+                const newState= Object.assign({},this.state,{
+                    logged_in_user:response.data
+                });
+                this.setState(newState);
+            })
+            .catch(error =>{
+                    if (error.response.status === 401){
+                        window.location.replace("/login");
+                    }
+                    else{
+                        console.log(error.response);
+                    }
+                }
+            );
+    }
     logout(e){
         e.preventDefault();
-        axios.post('logout')
+        axios.post('/logout')
             .then(response=> {
                 localStorage.removeItem('user');
                 console.log("removed user from local storage");
@@ -107,16 +128,23 @@ export default class TopNav extends Component {
                                data-toggle="dropdown"
                                href="#" role="button"
                                aria-haspopup="false" aria-expanded="false">
-                                <img src="/assets/images/users/avatar-1.jpg" alt="user" className="rounded-circle"/>
-                            </a>
+                                {this.state.logged_in_user.user_avatar?
+                                    <img src={this.state.logged_in_user.user_avatar} alt="user"
+                                         className="rounded-circle"/>
+                                    :
+                                    <img src="https://eform.etixdubai.com/App_Themes/DefaultNew/images/profile.png" alt="user"
+                                         className="rounded-circle"/>
+                                }
+
+                                    </a>
                             <div className="dropdown-menu dropdown-menu-right profile-dropdown "
                                  aria-labelledby="Preview">
                                 <div className="dropdown-item noti-title">
                                     <h5 className="text-overflow">
-                                        <small>Welcome ! John</small>
+                                        <small>Welcome ! <span className='text-capitalize'>{this.state.logged_in_user.name}</span></small>
                                     </h5>
                                 </div>
-                                <Link className="dropdown-item notify-item" to='/profile'>
+                                <Link className="dropdown-item notify-item" to={'/profile/'+this.state.logged_in_user.id}>
                                     <i className="md md-account-circle"/> <span>Profile</span>
                                 </Link>
                                 <Link className="dropdown-item notify-item" to='/settings'>

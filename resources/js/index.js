@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Route,Switch, Redirect} from 'react-router-dom'
 import NoMatch from "./components/scenes/error/noMatch";
 import Home from "./components/scenes/home/index";
 import Projects from "./components/scenes/projects/index";
+import ProjectDetail from "./components/scenes/projects/detail";
 import Quotations from "./components/scenes/quotations/index";
 import Invoices from "./components/scenes/invoices/index";
 import Payments from "./components/scenes/payments/index";
@@ -36,9 +37,10 @@ export default class Index extends Component {
                     <Switch>
                         <PrivateRoute path="/" exact component={props => <Home{...props} details={{title:"Dashboard"}}/>}/>
                         <PrivateRoute path="/projects" exact component={props => <Projects{...props} details={{title:"Projects"}}/>}/>
+                        <PrivateRoute path="/projects/:project_id" exact component={props => <ProjectDetail{...props} details={{title:"Projects Detail"}}/>}/>
                         <PrivateRoute path="/quotations" exact component={props => <Quotations{...props} details={{title:"Quotation"}}/>}/>
                         <PrivateRoute path="/invoices" exact component={props => <Invoices{...props} details={{title:"Invoices"}}/>}/>
-                        <PrivateRoute path="/invoices/:invoice_id" exact component={props => <InvDetail{...props} details={{title:"Invoices"}}/>}/>
+                        <PrivateRoute path="/invoices/:invoice_id" exact component={props => <InvDetail{...props} details={{title:"Invoice Detail"}}/>}/>
                         <PrivateRoute path="/payments" exact component={props => <Payments{...props} details={{title:"Payments"}}/>}/>
                         <PrivateRoute path="/tickets" exact component={props => <Tickets{...props} details={{title:"Tickets"}}/>}/>
                         <PrivateRoute path="/announcements" exact component={props => <Announcements{...props} details={{title:"Announcements"}}/>}/>
@@ -47,7 +49,7 @@ export default class Index extends Component {
                         <PrivateRoute path="/help" exact component={props => <Help{...props} details={{title:"Help"}}/>}/>
                         <Route path="/register" exact render={props => <Register{...props} details={{title:"Register"}}/>}/>
                         <Route path="/login" exact render={props => <Login{...props} details={{title:"Login"}}/>}/>
-                        <PrivateRoute path="/profile" exact component={props => <Profile{...props} details={{title:"Profile"}}/>}/>
+                        <PrivateRoute path="/profile/:user_id" exact component={props => <Profile{...props} details={{title:"Profile"}}/>}/>
                         <Route component={NoMatch}/>
                     </Switch>
                 </div>

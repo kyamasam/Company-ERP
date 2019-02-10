@@ -29,7 +29,7 @@ export default class Content extends Component {
                         project_progress: c.progress,
                     };
                 });
-                console.log(newProjects)
+                console.log(newProjects);
                 // create a new "State" object without mutating
                 // the original State object.
                 const newState = Object.assign({}, this.state, {
@@ -124,13 +124,16 @@ export default class Content extends Component {
                                     return(
                                         <div className="col-sm-4 col-lg-3 col-xs-12">
                                             <div className="card m-b-20">
-                                                    <div className="card-body">
-                                                        <h5 className={'card-title '+ 'text-center '+ text_progress_color}>{project.name}</h5>
+                                                {/*<img className="card-img-top img-fluid"*/}
+                                                     {/*src="/assets/images/gallery/9.jpg" alt="Card image cap"/>*/}
+                                                <div className="card-body">
+
+                                                    <h3> <Link to={'/projects/'+project.id} className={'card-title '+ 'text-center'}>{project.name}</Link></h3>
                                                         <p className="card-text">{project.description}</p>
                                                     </div>
 
                                                     <div className="card-body">
-                                                        <p className={'lead m-t-0 '+ text_progress_color}>
+                                                        <p className={'lead m-t-0'}>
                                                             Project Team
                                                         </p>
 
@@ -146,7 +149,7 @@ export default class Content extends Component {
                                                             );
                                                         })}
 
-                                                        <p className={'lead m-t-10 '+ text_progress_color }>
+                                                        <p className={'lead m-t-10' }>
                                                             Customers
                                                         </p>
 
@@ -162,7 +165,7 @@ export default class Content extends Component {
                                                             );
                                                         })}
 
-                                                        <p className={'lead m-t-10 ' + text_progress_color}>
+                                                        <p className={'lead m-t-10 '}>
                                                             Progress
                                                         </p>
 
