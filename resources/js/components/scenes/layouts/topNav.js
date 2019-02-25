@@ -19,12 +19,7 @@ export default class TopNav extends Component {
                 this.setState(newState);
             })
             .catch(error =>{
-                    if (error.response.status === 401){
-                        window.location.replace("/login");
-                    }
-                    else{
-                        console.log(error.response);
-                    }
+                    console.log(error.response);
                 }
             );
     }

@@ -41,7 +41,6 @@ export default class Content extends Component {
             })
             .catch(error =>{
                     if (error.response.status === 401){
-                        window.location.replace("/login");
                     }
                     else{
                         console.log(error.response);
@@ -88,12 +87,8 @@ export default class Content extends Component {
                                 </form>
                             </div>
                             <div className="col-md-2">
-                                <Link className="btn btn-default btn-md waves-effect waves-light m-b-30 pull-right" to='/quotations'>
-                                    <i className="md md-add"/>
-                                {/*{ this.state.projects.map(project => <li>{project.name}</li>)}*/}
-
-
-
+                                <Link className="btn btn-default btn-md waves-effect waves-light m-b-30 pull-right" to='/projects/create'>
+                                    Create Project<i className="md md-add"/>
                                 </Link>
 
                             </div>

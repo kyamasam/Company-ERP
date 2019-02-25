@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ProjectsResource;
 use App\project;
+use App\User;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -28,7 +29,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -39,7 +40,34 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'progress' => 'required',
+            'description' => 'required',
+        ]);
+        $business = new project;
+        $business->name = $request->name;
+        $business->progress = $request->progress;
+        $business->description = $request->description;
+
+        $business->save();
+
+        //associating users to projects
+        //customers
+        foreach ([$request->customers] as $customer){
+            $customers = User::find($customer);
+            $customers->project()->attach($business->id);
+        }
+
+        //developers
+        $developers =[$request->developers];
+        foreach ($developers as $developer){
+            $business->assigned_employee()->attach($developer);
+        }
+
+        return json_encode('saved '.$request->name.' successfully');
+
+
     }
 
     /**

@@ -106,12 +106,21 @@ class Login extends Component {
             .then(response=> {
                 this.setState({err: false});
                 const { from } = this.props.location.state || { from: { pathname: '/' } };
+                var prev_location=localStorage.getItem('prev_location');
+                console.log("previous location")
+
+
+                console.log(prev_location)
+
+                // return 0;
+                if(prev_location ===''){
+                    location ="/"
+                }else {
+                    //pass
+                }
                 localStorage.setItem('user', 'true');
-                console.log("storage", localStorage.getItem('user'));
-                console.log("history");
-                console.log(from.pathname);
                 // this.props.history.push(from.pathname);
-                window.location.replace(from.pathname);
+                window.location.replace(prev_location);
 
             })
             .catch(error=> {
@@ -189,6 +198,8 @@ class Login extends Component {
                                          <Link className="text-dark" to='/forgotpassword'><i className="fa fa-lock m-r-5"/> Forgot your password?</Link>
                                      </div>
                                  </div>
+
+
                             </form>
                         </div>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Http\Request;
+use PHPUnit\Util\Json;
 
 class SystemUserController extends Controller
 {
@@ -47,7 +48,7 @@ class SystemUserController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return string
      */
     public function show($id)
     {
@@ -105,6 +106,24 @@ class SystemUserController extends Controller
     {
         //
     }
+      /**
+     * Search for a user
+     *
+     * @param  int  $search_term
+     * @return string
+     */
+    public function search($search_term='a')
+    {
+        $result= UserResource::collection(
+            User::where('name', 'LIKE', "%{$search_term}%")
+            ->orWhere('email', 'LIKE', "%{$search_term}%")
+            ->orWhere('username', 'LIKE', "%{$search_term}%")
+            ->get());
+        return $result;
+
+    }
+
+
 
 
 
