@@ -2,6 +2,7 @@ import {Component} from "react";
 import React from "react";
 import Footer from "../../layouts/footer"
 import Breadcrumbs from "../../layouts/breadcrumbs_2l";
+import {Link} from 'react-router-dom'
 
 export default class Content extends Component {
     constructor(props){
@@ -88,10 +89,10 @@ export default class Content extends Component {
                         <img src={c.user_avatar} alt="contact-img"
                              title="contact-img" className="rounded-circle thumb-sm"/>
                     </td>
-                    <td><a href="#">{c.id}</a></td>
+                    <td><Link to={"/profile/"+c.id}>{c.id}</Link></td>
 
-                    <td><a href="#">{c.name}</a></td>
-                    <td><a href="#">{c.email}</a></td>
+                    <td><Link to={"/profile/"+c.id}>{c.name}</Link></td>
+                    <td><Link to={"/profile/"+c.id}>{c.email}</Link></td>
                     <td>
                         {
                             proficiency.map(element => {
@@ -102,10 +103,10 @@ export default class Content extends Component {
                         }
                     </td>
                     <td>
-                        <a href="#" className="table-action-btn"><i
-                            className="md md-edit"/></a>
-                        <a href="#" className="table-action-btn"><i
-                            className="md md-file-download"/></a>
+                        <Link to={"/profile/"+c.id} className="table-action-btn"><i
+                            className="md md-edit"/></Link>
+                        <Link to={"/profile/"+c.id} className="table-action-btn"><i
+                            className="md md-file-download"/></Link>
                     </td>
 
                 </tr>

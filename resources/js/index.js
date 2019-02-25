@@ -4,6 +4,8 @@ import {BrowserRouter as Router, Route,Switch, Redirect} from 'react-router-dom'
 import NoMatch from "./components/scenes/error/noMatch";
 import Home from "./components/scenes/home/index";
 import Projects from "./components/scenes/projects/index";
+import ProjectsCreate from "./components/scenes/projects/create";
+import ProjectDetail from "./components/scenes/projects/detail";
 import Quotations from "./components/scenes/quotations/index";
 import Invoices from "./components/scenes/invoices/index";
 import Payments from "./components/scenes/payments/index";
@@ -16,6 +18,7 @@ import Help from "./components/scenes/help/index";
 import Register from "./components/scenes/auth/register/index"
 import Login from "./components/scenes/auth/login/index"
 import InvDetail from "./components/scenes/invoices/detail"
+import AuthGuard from "./components/scenes/auth/auth_guard"
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={(props) => (
@@ -28,27 +31,44 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
     )} />
 );
 
+const WithAuth= (ComponentName)=>{
+    return (props)=>(
+        <AuthGuard>
+            <ComponentName {...props} details={{title:ComponentName.name}}/>
+        </AuthGuard>
+    )
+
+};
+
+
+
+
 export default class Index extends Component {
     render() {
         return (
             <Router>
                 <div>
                     <Switch>
-                        <PrivateRoute path="/" exact component={props => <Home{...props} details={{title:"Dashboard"}}/>}/>
-                        <PrivateRoute path="/projects" exact component={props => <Projects{...props} details={{title:"Projects"}}/>}/>
-                        <PrivateRoute path="/quotations" exact component={props => <Quotations{...props} details={{title:"Quotation"}}/>}/>
-                        <PrivateRoute path="/invoices" exact component={props => <Invoices{...props} details={{title:"Invoices"}}/>}/>
-                        <PrivateRoute path="/invoices/:invoice_id" exact component={props => <InvDetail{...props} details={{title:"Invoices"}}/>}/>
-                        <PrivateRoute path="/payments" exact component={props => <Payments{...props} details={{title:"Payments"}}/>}/>
-                        <PrivateRoute path="/tickets" exact component={props => <Tickets{...props} details={{title:"Tickets"}}/>}/>
-                        <PrivateRoute path="/announcements" exact component={props => <Announcements{...props} details={{title:"Announcements"}}/>}/>
-                        <PrivateRoute path="/users" exact component={props => <Users{...props} details={{title:"Users"}}/>}/>
-                        <PrivateRoute path="/settings" exact component={props => <Settings{...props} details={{title:"Settings"}}/>}/>
-                        <PrivateRoute path="/help" exact component={props => <Help{...props} details={{title:"Help"}}/>}/>
-                        <Route path="/register" exact render={props => <Register{...props} details={{title:"Register"}}/>}/>
+
+                        <Route path="/" exact component={WithAuth(Home)}/>
+                        <Route path="/projects" exact component={WithAuth(Projects)}/>
+                        {/*<Route path="/" exact component={props => <Home{...props} details={{title:"Dashboard"}}/>}/>
+                        <PrivateRoute path="/projects" exact component={props => <Projects{...props} details={{title:"Projects"}}/>}/>*/}
+                        <Route path="/projects/create" exact component={WithAuth(ProjectsCreate)}/>
+                        <Route path="/projects/:project_id" exact component={WithAuth(ProjectDetail)}/>
+                        <Route path="/quotations" exact component={WithAuth(Quotations)}/>
+                        <Route path="/invoices" exact component={WithAuth(Invoices)}/>
+                        <Route path="/invoices/:invoice_id" exact component={WithAuth(InvDetail)}/>
+                        <Route path="/payments" exact component={ WithAuth(Payments)}/>
+                        <Route path="/tickets" exact component={WithAuth(Tickets)}/>
+                        <Route path="/announcements" exact component={WithAuth(Announcements)}/>
+                        <Route path="/users" exact component={WithAuth(Users)}/>
+                        <Route path="/settings" exact component={WithAuth(Settings)}/>
+                        <Route path="/help" exact component={WithAuth(Help)}/>
+                        <Route path="/register" exact render={WithAuth(Register)}/>
                         <Route path="/login" exact render={props => <Login{...props} details={{title:"Login"}}/>}/>
-                        <PrivateRoute path="/profile" exact component={props => <Profile{...props} details={{title:"Profile"}}/>}/>
-                        <Route component={NoMatch}/>
+                        <PrivateRoute path="/profile/:user_id" exact component={props => <Profile{...props} details={{title:"Profile"}}/>}/>
+                        {/*<Route component={NoMatch}/>*/}
                     </Switch>
                 </div>
             </Router>

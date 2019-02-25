@@ -42,7 +42,7 @@ export default class Content extends Component {
 
     create_table()
     {
-        var values = this.state.invoices.map(c=>{
+        var values = this.state.invoices.map((c,index)=>{
         var customer_name ="";
         var avatar="";
         var customer_email="";
@@ -60,7 +60,8 @@ export default class Content extends Component {
             console.log("sdffsfdf" + customer_name)
 
             return([
-                <tr>
+                <tr key={index}>
+
                     <td>
                         <div className="checkbox checkbox-primary m-r-15">
                             <input id="checkbox2" type="checkbox" />
@@ -124,7 +125,7 @@ export default class Content extends Component {
                                     </div>
                                 </div>
 
-                                <Breadcrumbs{...this.props}/>
+                                <Breadcrumbs {...this.props}/>
 
                                 <div className="card-box">
                                     <div className="row m-t-10 m-b-10">
@@ -188,11 +189,13 @@ export default class Content extends Component {
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
-                                                        <div className="text-center offset-md-5">
-                                                            <div className="spinner-border" role="status">
-                                                                <span className="sr-only">Loading...</span>
+                                                        <td>
+                                                            <div className="text-center offset-md-5">
+                                                                <div className="spinner-border" role="status">
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        </td>
                                                     </tr>
                                             }
 

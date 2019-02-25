@@ -22,6 +22,7 @@ class UserResource extends JsonResource
             'email'=>$this->email,
             'username'=>$this->username,
             'user_avatar'=>$this->user_avatar,
+            'bio'=>$this->bio,
             'type'=>new UserTypeResource($this->user_type),
             'proficiency'=>new UserTypeResource($this->proficiency),
             'projects'=>EmployeeProjectResource::collection($this->assigned_project),
