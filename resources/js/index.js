@@ -9,6 +9,7 @@ import ProjectDetail from "./components/scenes/projects/detail";
 import Quotations from "./components/scenes/quotations/index";
 import Invoices from "./components/scenes/invoices/index";
 import Products from "./components/scenes/products/index";
+import ProductsCreate from "./components/scenes/products/create";
 import Payments from "./components/scenes/payments/index";
 import Tickets from "./components/scenes/tickets/index";
 import Announcements from "./components/scenes/announcements/index";
@@ -60,6 +61,7 @@ export default class Index extends Component {
                         <Route path="/quotations" exact component={WithAuth(Quotations)}/>
                         <Route path="/invoices" exact component={WithAuth(Invoices)}/>
                         <Route path="/products" exact component={WithAuth(Products)}/>
+                        <Route path="/products/create" exact component={WithAuth(ProductsCreate)}/>
                         <Route path="/invoices/:invoice_id" exact component={WithAuth(InvDetail)}/>
                         <Route path="/payments" exact component={ WithAuth(Payments)}/>
                         <Route path="/tickets" exact component={WithAuth(Tickets)}/>

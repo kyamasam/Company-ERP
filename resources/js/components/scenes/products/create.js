@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import TopNav from "../layouts/topNav";
 import SideNav from "../layouts/sideNav";
 import RightNav from "../layouts/rightNav";
-import Content from "./components/invoice_detail";
+import Content from "./components/product_create";
 
-export default class Invoices extends Component {
+export default class ProductCreate extends Component {
     constructor(props){
         super(props);
 
