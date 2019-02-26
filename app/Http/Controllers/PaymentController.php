@@ -26,7 +26,7 @@ class PaymentController extends Controller
     {
 //        PaymentResource::withoutWrapping();
 
-        return PaymentResource::collection(payment::paginate());
+        return PaymentResource::collection(payment::all()->sortByDesc('id'));
     }
 
     /**

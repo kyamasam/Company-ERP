@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ProjectsResource;
 use App\project;
 use App\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -12,13 +14,13 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return
      */
     public function index()
     {
 //        ProjectsResource::withoutWrapping();
 
-        return ProjectsResource::collection(project::paginate());
+        return ProjectsResource::collection(project::all()->sortByDesc('id'));
 
     }
 
@@ -40,11 +42,17 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validator=Validator::make($request->all(), [
             'name' => 'required',
             'progress' => 'required',
+            'customers' => 'required',
+            'developers' => 'required',
             'description' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return json_encode($validator->messages()->first());
+        }
         $business = new project;
         $business->name = $request->name;
         $business->progress = $request->progress;
@@ -54,18 +62,19 @@ class ProjectController extends Controller
 
         //associating users to projects
         //customers
-        foreach ([$request->customers] as $customer){
+        $customers=explode(',',$request->customers);
+        foreach ($customers as $customer){
             $customers = User::find($customer);
             $customers->project()->attach($business->id);
         }
 
         //developers
-        $developers =[$request->developers];
+        $developers =explode(',', $request->developers);
         foreach ($developers as $developer){
             $business->assigned_employee()->attach($developer);
         }
 
-        return json_encode('saved '.$request->name.' successfully');
+        return json_encode('successful');
 
 
     }

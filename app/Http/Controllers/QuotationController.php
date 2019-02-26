@@ -16,7 +16,7 @@ class QuotationController extends Controller
     public function index()
     {
 //        QuotationResource::withoutWrapping();
-        return QuotationResource::collection(quotation::paginate());
+        return QuotationResource::collection(quotation::all()->sortByDesc('id'));
 
     }
 

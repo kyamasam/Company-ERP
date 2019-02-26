@@ -17,7 +17,7 @@ class ProductController extends Controller
     {
 //        ProductResource::withoutWrapping();
 
-        return ProductResource::collection(\App\product::paginate());
+        return ProductResource::collection(\App\product::all()->sortByDesc('id'));
 
     }
 

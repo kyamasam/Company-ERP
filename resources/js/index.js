@@ -8,6 +8,7 @@ import ProjectsCreate from "./components/scenes/projects/create";
 import ProjectDetail from "./components/scenes/projects/detail";
 import Quotations from "./components/scenes/quotations/index";
 import Invoices from "./components/scenes/invoices/index";
+import Products from "./components/scenes/products/index";
 import Payments from "./components/scenes/payments/index";
 import Tickets from "./components/scenes/tickets/index";
 import Announcements from "./components/scenes/announcements/index";
@@ -58,6 +59,7 @@ export default class Index extends Component {
                         <Route path="/projects/:project_id" exact component={WithAuth(ProjectDetail)}/>
                         <Route path="/quotations" exact component={WithAuth(Quotations)}/>
                         <Route path="/invoices" exact component={WithAuth(Invoices)}/>
+                        <Route path="/products" exact component={WithAuth(Products)}/>
                         <Route path="/invoices/:invoice_id" exact component={WithAuth(InvDetail)}/>
                         <Route path="/payments" exact component={ WithAuth(Payments)}/>
                         <Route path="/tickets" exact component={WithAuth(Tickets)}/>
@@ -65,7 +67,7 @@ export default class Index extends Component {
                         <Route path="/users" exact component={WithAuth(Users)}/>
                         <Route path="/settings" exact component={WithAuth(Settings)}/>
                         <Route path="/help" exact component={WithAuth(Help)}/>
-                        <Route path="/register" exact render={WithAuth(Register)}/>
+                        <Route path="/register" exact render={props => <Register{...props} details={{title:"Register"}}/>}/>
                         <Route path="/login" exact render={props => <Login{...props} details={{title:"Login"}}/>}/>
                         <PrivateRoute path="/profile/:user_id" exact component={props => <Profile{...props} details={{title:"Profile"}}/>}/>
                         {/*<Route component={NoMatch}/>*/}

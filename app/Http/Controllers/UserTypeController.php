@@ -18,7 +18,7 @@ class UserTypeController extends Controller
 
 //        UserTypeResource::withoutWrapping();
 
-        return UserTypeResource::collection(user_type::paginate());
+        return UserTypeResource::collection(user_type::all()->sortByDesc('id'));
     }
 
     /**

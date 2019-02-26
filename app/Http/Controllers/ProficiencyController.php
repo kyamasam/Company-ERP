@@ -17,7 +17,7 @@ class ProficiencyController extends Controller
     {
 //        UserProficiencyResource::withoutWrapping();
 
-        return UserProficiencyResource::collection(proficiency::paginate());
+        return UserProficiencyResource::collection(proficiency::all()->sortByDesc('id'));
     }
 
     /**

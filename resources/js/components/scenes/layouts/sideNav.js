@@ -35,6 +35,11 @@ export default class SideNav extends Component {
                                     <span> Invoices </span>
                                 </Link>
                             </li>
+                            <li>
+                                <Link className='waves-effect' to='/products'><i className=" md-add-shopping-cart"/>
+                                    <span> Products </span>
+                                </Link>
+                            </li>
 
                             <li>
                                 <Link className='waves-effect' to='/payments'><i className="ti-credit-card"/>
@@ -42,17 +47,17 @@ export default class SideNav extends Component {
                                 </Link>
                             </li>
 
-                            <li>
-                                <Link className='waves-effect' to='/tickets'><i className="ti-ticket"/>
-                                    <span> Tickets </span>
-                                </Link>
-                            </li>
+                            {/*<li>*/}
+                                {/*<Link className='waves-effect' to='/tickets'><i className="ti-ticket"/>*/}
+                                    {/*<span> Tickets </span>*/}
+                                {/*</Link>*/}
+                            {/*</li>*/}
 
-                            <li>
-                                <Link className='waves-effect' to='/announcements'><i className="ti-announcement"/>
-                                    <span> Announcements </span>
-                                </Link>
-                            </li>
+                            {/*<li>*/}
+                                {/*<Link className='waves-effect' to='/announcements'><i className="ti-announcement"/>*/}
+                                    {/*<span> Announcements </span>*/}
+                                {/*</Link>*/}
+                            {/*</li>*/}
 
                             <li>
                                 <Link className='waves-effect' to='/users'><i className="ti-user"/>

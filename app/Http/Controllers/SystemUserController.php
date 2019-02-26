@@ -19,7 +19,8 @@ class SystemUserController extends Controller
 
 //        UserResource::withoutWrapping();
 
-        return UserResource::collection(User::paginate());
+
+        return UserResource::collection(User::all()->sortByDesc('id'));
 
     }
 

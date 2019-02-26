@@ -19,7 +19,7 @@ class EmployeeProjectController extends Controller
     {
 //        EmployeeProjectResource::withoutWrapping();
 
-        return EmployeeProjectResource::collection(User::paginate());
+        return EmployeeProjectResource::collection(User::all()->sortByDesc('id'));
     }
 
     /**

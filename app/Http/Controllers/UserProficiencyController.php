@@ -17,7 +17,7 @@ class UserProficiencyController extends Controller
     {
 //        UserProficiencyResource::withoutWrapping();
 
-        return UserProficiencyResource::collection(User::paginate());
+        return UserProficiencyResource::collection(User::all()->sortByDesc('id'));
     }
 
     /**

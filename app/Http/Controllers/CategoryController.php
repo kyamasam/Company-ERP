@@ -17,7 +17,7 @@ class CategoryController extends Controller
     {
 //        CategoryResource::withoutWrapping();
 
-        return CategoryResource::collection(\App\category::paginate());
+        return CategoryResource::collection(\App\category);
 
     }
 
