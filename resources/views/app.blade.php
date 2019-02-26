@@ -36,15 +36,6 @@
     <script src="{{ asset('/assets/js/waves.js') }}"></script>
     <script>
 
-        $(document).ready(function () {
-
-            window.setTimeout(function() {
-                document.getElementsByName('alert')[0].fadeTo(1000, 0).slideUp(1000, function(){
-                    $(this).remove();
-                });
-            }, 500);
-
-        });
     </script>
 </body>
 </html>
