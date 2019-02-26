@@ -55706,9 +55706,7 @@ var Index = function (_Component) {
                     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_18__components_scenes_auth_register_index__["a" /* default */], _extends({}, props, { details: { title: "Register" } }));
                 } }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["d" /* Route */], { path: '/login', exact: true, render: function render(props) {
                     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_19__components_scenes_auth_login_index__["a" /* default */], _extends({}, props, { details: { title: "Login" } }));
-                } }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(PrivateRoute, { path: '/profile/:user_id', exact: true, component: function component(props) {
-                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_16__components_scenes_profile_index__["a" /* default */], _extends({}, props, { details: { title: "Profile" } }));
-                } }))));
+                } }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(PrivateRoute, { path: '/profile/:user_id', exact: true, component: WithAuth(__WEBPACK_IMPORTED_MODULE_16__components_scenes_profile_index__["a" /* default */]) }))));
         }
     }]);
 

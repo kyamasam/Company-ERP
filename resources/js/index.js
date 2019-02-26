@@ -69,7 +69,7 @@ export default class Index extends Component {
                         <Route path="/help" exact component={WithAuth(Help)}/>
                         <Route path="/register" exact render={props => <Register{...props} details={{title:"Register"}}/>}/>
                         <Route path="/login" exact render={props => <Login{...props} details={{title:"Login"}}/>}/>
-                        <PrivateRoute path="/profile/:user_id" exact component={props => <Profile{...props} details={{title:"Profile"}}/>}/>
+                        <PrivateRoute path="/profile/:user_id" exact component={WithAuth(Profile)}/>
                         {/*<Route component={NoMatch}/>*/}
                     </Switch>
                 </div>
