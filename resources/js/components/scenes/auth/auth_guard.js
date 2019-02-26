@@ -23,9 +23,9 @@ export default class AuthGuard extends Component {
             .catch(error =>{
                     if (error.response.status === 401){
                         var prev_location=(window.location.pathname);
-
                         localStorage.setItem('prev_location',prev_location.toString());
-                        window.location.replace("/login");
+                        this.props.history.push('/login');
+                        //window.location.replace("/login");
                     }
                     else{
                         console.log(error.response);

@@ -55688,7 +55688,7 @@ var PrivateRoute = function PrivateRoute(_ref) {
 
 var WithAuth = function WithAuth(ComponentName) {
     return function (props) {
-        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_22__components_scenes_auth_auth_guard__["a" /* default */], null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ComponentName, _extends({}, props, { details: { title: ComponentName.name } })));
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_22__components_scenes_auth_auth_guard__["a" /* default */], props, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ComponentName, _extends({}, props, { details: { title: ComponentName.name } })));
     };
 };
 
@@ -94760,7 +94760,8 @@ var Login = function (_Component) {
                 }
                 localStorage.setItem('user', 'true');
                 // this.props.history.push(from.pathname);
-                window.location.replace(prev_location);
+                _this2.props.history.push(prev_location);
+                // window.location.replace(prev_location);
             }).catch(function (error) {
                 _this2.refs.email.value = "";
                 _this2.refs.password.value = "";
@@ -95128,9 +95129,9 @@ var AuthGuard = function (_Component) {
             }).catch(function (error) {
                 if (error.response.status === 401) {
                     var prev_location = window.location.pathname;
-
                     localStorage.setItem('prev_location', prev_location.toString());
-                    window.location.replace("/login");
+                    _this2.props.history.push('/login');
+                    //window.location.replace("/login");
                 } else {
                     console.log(error.response);
                 }
@@ -95464,6 +95465,8 @@ var ProductCreate = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layouts_footer__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_select_lib_Async__ = __webpack_require__(165);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_select_lib_Async___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_select_lib_Async__);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () {
@@ -95475,6 +95478,14 @@ var _createClass = function () {
         if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
     };
 }();
+
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });
+    } else {
+        obj[key] = value;
+    }return obj;
+}
 
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -95499,6 +95510,7 @@ function _inherits(subClass, superClass) {
 
 
 
+
 var Content = function (_Component) {
     _inherits(Content, _Component);
 
@@ -95514,9 +95526,21 @@ var Content = function (_Component) {
     }, {
         key: "render",
         value: function render() {
+            var _React$createElement;
+
+            var error = this.state.err;
+
+            var msg = !error ? 'Record created Successfully' : 'Oops! , Something went wrong. Try again';
+            var name = !error ? 'alert alert-success' : 'alert alert-danger';
+            var save_error = this.state.err_validation_message;
+            var save_success = this.state.success_validation_message;
+            var show_err = this.state.show_err;
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content-page" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "content" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "container-fluid" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-sm-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "btn-group pull-right m-t-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { type: "button",
                 className: "btn btn-default dropdown-toggle waves-effect waves-light",
-                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
+                "data-toggle": "dropdown", "aria-expanded": "false" }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "dropdown-menu dropdown-menu-right", "aria-labelledby": "btnGroupDrop1" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown One"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Two"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Three"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { className: "dropdown-item", href: "#" }, "Dropdown Four"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__layouts_breadcrumbs_2l__["a" /* default */], this.props), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "card-box col-8 offset-md-2" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "m-t-0 header-title text-center" }, "Create a new Project"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, error != undefined && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: name, role: "alert" }, msg), show_err != undefined ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null) : save_error != undefined && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "alert alert-danger" }, save_error), save_success != undefined && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "alert alert-success" }, save_success)), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "p-20" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", (_React$createElement = { className: "form-horizontal", role: "form" }, _defineProperty(_React$createElement, "role", "form"), _defineProperty(_React$createElement, "method", "POST"), _defineProperty(_React$createElement, "onSubmit", this.onSubmit.bind(this)), _React$createElement), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "form-group row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { className: "col-2 col-form-label" }, "Project Name"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-10" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "text", className: "form-control",
+                placeholder: "Project Mat Pay", name: "name", ref: "name", id: "name", onChange: this.normalChange.bind(this) }))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "form-group row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { className: "col-2 col-form-label" }, "Project Description"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-10" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("textarea", { className: "form-control", rows: "5", id: "description", name: "description", ref: "description", onChange: this.normalChange.bind(this) }))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "form-group row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { className: "col-2 col-form-label" }, "Progress"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-md-10" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { className: "form-control", type: "range", name: "progress", ref: "progress", id: "progress", min: "0",
+                max: "10", onChange: this.normalChange.bind(this) }))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "form-group row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-md-4 offset-4" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", { className: "btn btn-primary waves-effect waves-light",
+                type: "submit" }, "Submit"))))))))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__layouts_footer__["a" /* default */], null));
         }
     }]);
 
