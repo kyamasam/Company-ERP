@@ -39,7 +39,6 @@ export default class Content extends Component {
             })
             .catch(error => console.log(error));
     };
-
     create_table()
     {
         var values = this.state.products.map((p,index)=>{
@@ -72,10 +71,13 @@ export default class Content extends Component {
                         {price}
                     </td>
                     <td>
-                        {associations}
-                    </td>
-                    <td>
-                        {category}
+                        {
+                            category.map((cat)=>{
+                                return([
+                                    <span className="label label-info mr-4">{cat.name} </span>
+                                ])
+                            })
+                        }
                     </td>
                     <td>
                         <a href="#" className="table-action-btn"><i
@@ -137,18 +139,9 @@ export default class Content extends Component {
 
                                         <div className="col-sm-6 col-lg-4">
                                             <div className="h5 m-0">
-                                                <span className="font-16">Sort By:</span>
-                                                <div className="btn-group vertical-middle" data-toggle="buttons">
-                                                    <label className="btn btn-white btn-md waves-effect active mb-0">
-                                                        Status
-                                                    </label>
-                                                    <label className="btn btn-white btn-md waves-effect mb-0">
-                                                        Type
-                                                    </label>
-                                                    <label className="btn btn-white btn-md waves-effect mb-0">
-                                                        Name
-                                                    </label>
-                                                </div>
+                                                <a href="/products/create/"
+                                                   className="btn btn-default btn-md waves-effect waves-light m-b-30"><i
+                                                    className="md md-add"></i> Add Product</a>
                                             </div>
                                         </div>
                                     </div>
@@ -157,17 +150,9 @@ export default class Content extends Component {
                                         <table className="table table-hover mails m-0 table table-actions-bar">
                                             <thead>
                                             <tr>
-                                                <th style={{width: '120'+"px"}}>
-                                                    <div className="checkbox checkbox-primary checkbox-single m-r-15">
-                                                        <input id="action-checkbox" type="checkbox"/>
-                                                        <label htmlFor="action-checkbox"></label>
-                                                    </div>
-
-                                                </th>
                                                 <th>ID</th>
                                                 <th>Product Name</th>
                                                 <th>Price</th>
-                                                <th>Comes With </th>
                                                 <th>Category </th>
                                                 <th></th>
                                             </tr>

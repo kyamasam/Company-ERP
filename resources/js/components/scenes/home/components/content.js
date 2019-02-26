@@ -30,7 +30,7 @@ export default class Content extends Component {
                 this.setState({
                     current_revenue:current_revenue_Res.data,
                     prev_revenue:prev_revenue_Res.data,
-                    users_count:users_Res.data.meta.total,
+                    users_count:users_Res.data.data.length,
                     projects_count:projects_Res.data,
                     payments_count:payments_count_Res.data,
                     payments_count_yesterday:payments_count_yesterday_Res.data,
@@ -46,7 +46,7 @@ export default class Content extends Component {
 
             }))
             .catch(error =>{
-                console.log(error.response);
+                console.log(error);
                 }
             );
     }
