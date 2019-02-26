@@ -34,7 +34,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 
 const WithAuth= (ComponentName)=>{
     return (props)=>(
-        <AuthGuard>
+        <AuthGuard {...props}>
             <ComponentName {...props} details={{title:ComponentName.name}}/>
         </AuthGuard>
     )
