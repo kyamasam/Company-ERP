@@ -187,11 +187,14 @@ var TopNav = function (_Component) {
     }, {
         key: 'logout',
         value: function logout(e) {
+            var _this3 = this;
+
             e.preventDefault();
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/logout').then(function (response) {
                 localStorage.removeItem('user');
                 console.log("removed user from local storage");
                 window.location.reload();
+                _this3.props.history.push('/login');
             }).catch(function (error) {
                 console.log(error);
             });
@@ -81781,7 +81784,7 @@ var Content = function (_Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            axios.all([axios.get("http://127.0.0.1:8000/api/v1/payments/sum_payments_within/7/0"), axios.get("http://127.0.0.1:8000/api/v1/payments/sum_payments_within/8/1"), axios.get("http://127.0.0.1:8000/api/v1/users/"), axios.get("http://127.0.0.1:8000/api/v1/projects/count/2"), axios.get("http://127.0.0.1:8000/api/v1/payments/count_payments_within/0/0"), axios.get("http://127.0.0.1:8000/api/v1/payments/count_payments_within/1/0")]).then(axios.spread(function (current_revenue_Res, prev_revenue_Res, users_Res, projects_Res, payments_count_Res, payments_count_yesterday_Res) {
+            axios.all([axios.get("/api/v1/payments/sum_payments_within/7/0"), axios.get("/api/v1/payments/sum_payments_within/8/1"), axios.get("/api/v1/users/"), axios.get("/api/v1/projects/count/2"), axios.get("/api/v1/payments/count_payments_within/0/0"), axios.get("/api/v1/payments/count_payments_within/1/0")]).then(axios.spread(function (current_revenue_Res, prev_revenue_Res, users_Res, projects_Res, payments_count_Res, payments_count_yesterday_Res) {
 
                 _this2.setState({
                     current_revenue: current_revenue_Res.data,
@@ -81911,7 +81914,7 @@ var Payment = function (_Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            axios.get("http://127.0.0.1:8000/api/v1/payments").then(function (response) {
+            axios.get("/api/v1/payments").then(function (response) {
 
                 // create an array of projects only with relevant data
                 var newPayments = response.data.data;
@@ -81970,7 +81973,7 @@ var Payment = function (_Component) {
         key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-12" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "portlet" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "portlet-heading" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h3", { className: "portlet-title text-dark text-uppercase" }, "Payments"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "portlet-widgets" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "javascript:;", "data-toggle": "reload" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "ion-refresh" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "divider" }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { "data-toggle": "collapse", "data-parent": "#accordion1", href: "#portlet2" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
-                className: "ion-minus-round" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "divider" }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", "data-toggle": "remove" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "ion-close-round" }))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "clearfix" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "portlet2", className: "panel-collapse collapse show" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "portlet-body" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-responsive" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("table", { className: "table" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("thead", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", { style: { width: '120' + "px" } }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "checkbox checkbox-primary checkbox-single m-r-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { id: "action-checkbox", type: "checkbox" }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { htmlFor: "action-checkbox" }))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Invoice Id"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Amount Paid "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Project Name "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Payment Status "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Payment Method "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Created On "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", { style: { minWidth: 80 } }, "Action"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tbody", null, !this.state.isLoading ? this.create_table() : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "text-center offset-md-5" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "spinner-border", role: "status" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "sr-only" }, "Loading..."))))))))))));
+                className: "ion-minus-round" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "divider" }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", "data-toggle": "remove" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "ion-close-round" }))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "clearfix" })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { id: "portlet2", className: "panel-collapse collapse show" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "portlet-body" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-responsive" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("table", { className: "table" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("thead", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", { style: { width: '120' + "px" } }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "checkbox checkbox-primary checkbox-single m-r-15" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { id: "action-checkbox", type: "checkbox" }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", { htmlFor: "action-checkbox" }))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Invoice Id"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Amount Paid "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Project Name "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Payment Status "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Payment Method "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", null, "Created On "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("th", { style: { minWidth: 80 } }, "Action"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tbody", null, !this.state.isLoading ? this.create_table() : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("tr", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "text-center offset-md-5" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "spinner-border", role: "status" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "sr-only" }, "Loading...")))))))))))));
         }
     }]);
 
@@ -82124,7 +82127,7 @@ var Content = function (_Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            axios.get("http://127.0.0.1:8000/api/v1/projects").then(function (response) {
+            axios.get("/api/v1/projects").then(function (response) {
 
                 // create an array of projects only with relevant data
                 var newProjects = response.data.data.map(function (c) {
@@ -92751,7 +92754,7 @@ var Content = function (_Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_4_axios___default.a.get("http://127.0.0.1:8000/api/v1/projects/" + this.props.match.params.project_id).then(function (response) {
+            __WEBPACK_IMPORTED_MODULE_4_axios___default.a.get("/api/v1/projects/" + this.props.match.params.project_id).then(function (response) {
 
                 // create an array of projects only with relevant data
                 var newProjects = response.data.data;
@@ -92965,7 +92968,7 @@ var Content = function (_Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get("http://127.0.0.1:8000/api/v1/quotations").then(function (response) {
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get("/api/v1/quotations").then(function (response) {
 
                 // create an array of projects only with relevant data
                 var newQuotations = response.data.data;
@@ -93232,7 +93235,7 @@ var Content = function (_Component) {
             var _this2 = this;
 
             console.log(this.invoice_id);
-            __WEBPACK_IMPORTED_MODULE_4_axios___default.a.get("http://127.0.0.1:8000/api/v1/invoices").then(function (response) {
+            __WEBPACK_IMPORTED_MODULE_4_axios___default.a.get("/api/v1/invoices").then(function (response) {
 
                 // create an array of projects only with relevant data
                 var newInvoices = response.data.data;
@@ -93447,7 +93450,7 @@ var Content = function (_Component) {
             var _this2 = this;
 
             console.log(this.invoice_id);
-            __WEBPACK_IMPORTED_MODULE_4_axios___default.a.get("http://127.0.0.1:8000/api/v1/products").then(function (response) {
+            __WEBPACK_IMPORTED_MODULE_4_axios___default.a.get("/api/v1/products").then(function (response) {
 
                 // create an array of projects only with relevant data
                 var newProducts = response.data.data;
@@ -93964,7 +93967,7 @@ var Content = function (_Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            axios.get("http://127.0.0.1:8000/api/v1/payments").then(function (response) {
+            axios.get("/api/v1/payments").then(function (response) {
 
                 // create an array of projects only with relevant data
                 var newPayments = response.data.data;
@@ -94483,7 +94486,7 @@ var Content = function (_Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            axios.get("http://127.0.0.1:8000/api/v1/users").then(function (response) {
+            axios.get("/api/v1/users").then(function (response) {
 
                 // create an array of projects only with relevant data
                 var newQuotations = response.data.data;
@@ -95472,8 +95475,8 @@ var Login = function (_Component) {
                 }
                 localStorage.setItem('user', 'true');
                 // this.props.history.push(from.pathname);
-                _this2.props.history.push(prev_location);
-                // window.location.replace(prev_location);
+                //this.props.history.push(prev_location);
+                window.location.replace(prev_location);
             }).catch(function (error) {
                 _this2.refs.email.value = "";
                 _this2.refs.password.value = "";
@@ -95666,7 +95669,7 @@ var Invoice_detail = function (_Component) {
             var sth = this.state.invoice_id;
             console.log("sht" + sth);
 
-            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get("http://127.0.0.1:8000/api/v1/invoices/" + this.props.match.params.invoice_id).then(function (response) {
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get("/api/v1/invoices/" + this.props.match.params.invoice_id).then(function (response) {
 
                 // create an array of projects only with relevant data
                 var newInvoices = response.data.data;
@@ -95698,7 +95701,7 @@ var Invoice_detail = function (_Component) {
         value: function getPayments() {
             var _this3 = this;
 
-            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get('http://127.0.0.1:8000/api/v1/payments/invoice/9').then(function (response) {
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get('/api/v1/payments/invoice/9').then(function (response) {
                 var Payments = response.data.data;
 
                 var newPaymentState = Object.assign({}, _this3.state, {

@@ -120,8 +120,8 @@ class Login extends Component {
                 }
                 localStorage.setItem('user', 'true');
                 // this.props.history.push(from.pathname);
-                this.props.history.push(prev_location);
-                // window.location.replace(prev_location);
+                //this.props.history.push(prev_location);
+                 window.location.replace(prev_location);
 
             })
             .catch(error=> {

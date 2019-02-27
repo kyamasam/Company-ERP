@@ -13,7 +13,7 @@ export default class Payment extends Component {
 
     componentDidMount() {
         axios
-            .get("http://127.0.0.1:8000/api/v1/payments")
+            .get("/api/v1/payments")
             .then(response => {
 
                 // create an array of projects only with relevant data
@@ -164,11 +164,12 @@ export default class Payment extends Component {
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                <div className="text-center offset-md-5">
-                                                <div className="spinner-border" role="status">
-                                                <span className="sr-only">Loading...</span>
+                                                <td><div className="text-center offset-md-5">
+                                                    <div className="spinner-border" role="status">
+                                                        <span className="sr-only">Loading...</span>
+                                                    </div>
                                                 </div>
-                                                </div>
+                                                </td>
                                                 </tr>
 
                                             }

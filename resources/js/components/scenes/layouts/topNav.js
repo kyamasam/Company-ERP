@@ -30,6 +30,7 @@ export default class TopNav extends Component {
                 localStorage.removeItem('user');
                 console.log("removed user from local storage");
                 window.location.reload();
+                this.props.history.push('/login');
             })
             .catch(error=> {
                 console.log(error);

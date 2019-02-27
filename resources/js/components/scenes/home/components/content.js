@@ -21,12 +21,12 @@ export default class Content extends Component {
     }
     componentDidMount(){
         axios.all([
-            axios.get("http://127.0.0.1:8000/api/v1/payments/sum_payments_within/7/0"),
-            axios.get("http://127.0.0.1:8000/api/v1/payments/sum_payments_within/8/1"),
-            axios.get("http://127.0.0.1:8000/api/v1/users/"),
-            axios.get("http://127.0.0.1:8000/api/v1/projects/count/2"),
-            axios.get("http://127.0.0.1:8000/api/v1/payments/count_payments_within/0/0"),
-            axios.get("http://127.0.0.1:8000/api/v1/payments/count_payments_within/1/0"),
+            axios.get("/api/v1/payments/sum_payments_within/7/0"),
+            axios.get("/api/v1/payments/sum_payments_within/8/1"),
+            axios.get("/api/v1/users/"),
+            axios.get("/api/v1/projects/count/2"),
+            axios.get("/api/v1/payments/count_payments_within/0/0"),
+            axios.get("/api/v1/payments/count_payments_within/1/0"),
         ])
             .then(
                 axios.spread((current_revenue_Res,prev_revenue_Res,users_Res,projects_Res,payments_count_Res,payments_count_yesterday_Res) =>{
