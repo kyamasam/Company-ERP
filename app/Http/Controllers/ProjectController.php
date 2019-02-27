@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use App\Http\Resources\ProjectsResource;
 use App\project;
 use App\User;
@@ -152,6 +153,22 @@ class ProjectController extends Controller
 
 
         return json_encode($projects);
+    }
+
+    /**
+     * Search for a projects
+     *
+     * @param  int  $search_term
+     * @return string
+     */
+    public function search($search_term='')
+    {
+        $result= ProjectsResource::collection(
+            project::where('name', 'LIKE', "%{$search_term}%")
+                ->orWhere('description', 'LIKE', "%{$search_term}%")
+
+                ->get());
+        return $result;
     }
 
 }

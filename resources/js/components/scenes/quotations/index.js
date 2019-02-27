@@ -13,7 +13,10 @@ export default class Quotations extends Component {
         var scripts_array=[
             '/js/jquery.dashboard_3.js',
             '/js/jquery.core.js',
-            '/assets/js/jquery.app.js'
+            '/assets/js/jquery.app.js',
+            '/plugins/ladda-buttons/js/spin.min.js',
+            '/plugins/ladda-buttons/js/ladda.min.js',
+            '/assets/js/labda-buttons-ctrl.js',
         ];
 
         for(var i=0; i< scripts_array.length ;i++) {
@@ -21,6 +24,18 @@ export default class Quotations extends Component {
             script.src = scripts_array[i];
             script.async = true;
             document.body.appendChild(script);
+        }
+
+        var styles_array=[
+            '/plugins/ladda-buttons/css/ladda-themeless.min.css',
+        ];
+        for(var j=0;j<styles_array.length;j++){
+            var head=document.getElementsByTagName('head')[0];
+            const style=document.createElement("link");
+            style.href= styles_array[j];
+            style.rel='stylesheet';
+            style.type='text/css';
+            head.appendChild(style);
         }
     }
     render() {

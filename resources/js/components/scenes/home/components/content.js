@@ -2,6 +2,9 @@ import {Component} from "react";
 import React from "react";
 import Footer from "../../layouts/footer"
 import Breadcrumbs from "../../layouts/breadcrumbs_2l"
+import Payment from "./payments_table";
+
+
 
 export default class Content extends Component {
     constructor(props){
@@ -13,6 +16,7 @@ export default class Content extends Component {
             projects_count:[],
             payments_count:[],
             payments_count_yesterday:[],
+            isLoading:true
         }
     }
     componentDidMount(){
@@ -34,6 +38,7 @@ export default class Content extends Component {
                     projects_count:projects_Res.data,
                     payments_count:payments_count_Res.data,
                     payments_count_yesterday:payments_count_yesterday_Res.data,
+                    isLoading:false
 
                 })
                 console.log("curr revenue is"+ this.state.current_revenue)
@@ -116,9 +121,13 @@ export default class Content extends Component {
                             <div className="col-md-6 col-lg-6 col-xl-3">
                                 <div className="widget-panel widget-style-2 bg-white">
 
-                                    <i className={"md md-trending-"+arrow_trend+" "+ "text-"+trend_color }></i>
 
+
+                                        <i className={"md md-trending-"+arrow_trend+" "+ "text-"+trend_color }></i>
+
+                                    {!this.state.isLoading ?
                                     <h2 className="m-0 text-dark counter font-600">Ksh { this.state.current_revenue.toLocaleString() }</h2>
+                                        : <i className="fa fa-spin fa-spinner"></i>}
                                     <div className=" m-t-15"> Revenue last 7 days <span className="pull-right" style={{marginRight:"6"+"%"}}>Ksh {difference.toLocaleString()}</span> </div>
 
                                 </div>
@@ -152,6 +161,9 @@ export default class Content extends Component {
                                 </div>
                             </div>
                         </div>
+
+                        <Payment{...this.props} />
+
 
 
                         {/*// <div className="row">*/}
@@ -235,120 +247,6 @@ export default class Content extends Component {
                         {/*/!*</div>*!/*/}
 
 
-                        <div className="row">
-
-                            <div className="col-12">
-
-                                <div className="portlet">
-                                    <div className="portlet-heading">
-                                        <h3 className="portlet-title text-dark text-uppercase">
-                                            Payments
-                                        </h3>
-                                        <div className="portlet-widgets">
-                                            <a href="javascript:;" data-toggle="reload"><i className="ion-refresh"/></a>
-                                            <span className="divider"/>
-                                            <a data-toggle="collapse" data-parent="#accordion1" href="#portlet2"><i
-                                                className="ion-minus-round"/></a>
-                                            <span className="divider"/>
-                                            <a href="#" data-toggle="remove"><i className="ion-close-round"/></a>
-                                        </div>
-                                        <div className="clearfix"/>
-                                    </div>
-                                    <div id="portlet2" className="panel-collapse collapse show">
-                                        <div className="portlet-body">
-                                            <div className="table-responsive">
-                                                <table className="table">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Project Name</th>
-                                                        <th>Start Date</th>
-                                                        <th>Due Date</th>
-                                                        <th>Status</th>
-                                                        <th>Assign</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>Ubold Admin v1</td>
-                                                        <td>01/01/2015</td>
-                                                        <td>26/04/2015</td>
-                                                        <td><span className="label label-info">Released</span></td>
-                                                        <td>Coderthemes</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>Ubold Frontend v1</td>
-                                                        <td>01/01/2015</td>
-                                                        <td>26/04/2015</td>
-                                                        <td><span className="label label-success">Released</span></td>
-                                                        <td>Coderthemes</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>3</td>
-                                                        <td>Ubold Admin v1.1</td>
-                                                        <td>01/05/2015</td>
-                                                        <td>10/05/2015</td>
-                                                        <td><span className="label label-pink">Pending</span></td>
-                                                        <td>Coderthemes</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>4</td>
-                                                        <td>Ubold Frontend v1.1</td>
-                                                        <td>01/01/2015</td>
-                                                        <td>31/05/2015</td>
-                                                        <td><span className="label label-purple">Work in Progress</span>
-                                                        </td>
-                                                        <td>Coderthemes</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>5</td>
-                                                        <td>Ubold Admin v1.3</td>
-                                                        <td>01/01/2015</td>
-                                                        <td>31/05/2015</td>
-                                                        <td><span className="label label-warning">Coming soon</span>
-                                                        </td>
-                                                        <td>Coderthemes</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>6</td>
-                                                        <td>Ubold Admin v1.3</td>
-                                                        <td>01/01/2015</td>
-                                                        <td>31/05/2015</td>
-                                                        <td><span className="label label-primary">Coming soon</span>
-                                                        </td>
-                                                        <td>Coderthemes</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>7</td>
-                                                        <td>Ubold Admin v1.3</td>
-                                                        <td>01/01/2015</td>
-                                                        <td>31/05/2015</td>
-                                                        <td><span className="label label-info">Cool</span></td>
-                                                        <td>Coderthemes</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>8</td>
-                                                        <td>Ubold Admin v1.3</td>
-                                                        <td>01/01/2015</td>
-                                                        <td>31/05/2015</td>
-                                                        <td><span className="label label-warning">Coming soon</span>
-                                                        </td>
-                                                        <td>Coderthemes</td>
-                                                    </tr>
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <Footer/>

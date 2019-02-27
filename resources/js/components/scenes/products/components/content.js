@@ -139,9 +139,9 @@ export default class Content extends Component {
 
                                         <div className="col-sm-6 col-lg-4">
                                             <div className="h5 m-0">
-                                                <a href="/products/create/"
+                                                <Link to="/products/create/"
                                                    className="btn btn-default btn-md waves-effect waves-light m-b-30"><i
-                                                    className="md md-add"></i> Add Product</a>
+                                                    className="md md-add"></i> Add Product</Link>
                                             </div>
                                         </div>
                                     </div>

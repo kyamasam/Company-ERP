@@ -27,14 +27,16 @@ Route::group(['prefix'=>'v1','as'=>'v1.'], function(){
 
         Route::resource('users', 'SystemUserController');
 
+        Route::get('products/q/{search_term?}', 'ProductController@search');
         Route::resource('products', 'ProductController');
         Route::get('systemuser/q/{search_term?}', 'SystemUserController@search');
         Route::resource('systemuser', 'SystemUserController');
 
-
+        Route::get('projects/q/{search_term?}', 'ProjectController@search');
         Route::get('projects/count/{completion_status?}', 'ProjectController@complete_count')->where('completion_status', '[0-9]+');
         Route::resource('projects', 'ProjectController');
 
+        Route::post('quotations/approve', 'QuotationController@approve');
         Route::resource('quotations', 'QuotationController');
 
         //extending the laravel api resource
@@ -44,8 +46,10 @@ Route::group(['prefix'=>'v1','as'=>'v1.'], function(){
         Route::get('payments/invoice/{invoice_id}', 'PaymentController@payment_for_invoice');
         Route::resource('payments', 'PaymentController');
 
+        Route::get('invoices/q/{search_term?}', 'InvoiceController@search');
         Route::resource('invoices', 'InvoiceController');
         Route::resource('proficiencies', 'ProficiencyController');
+        Route::get('categories/q/{search_term?}', 'CategoryController@search');
         Route::resource('categories', 'CategoryController');
         Route::resource('employees', 'EmployeeProjectController');
         Route::resource('user_types', 'UserTypeController');

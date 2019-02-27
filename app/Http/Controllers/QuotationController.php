@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\QuotationResource;
 use App\quotation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class QuotationController extends Controller
 {
@@ -39,6 +40,19 @@ class QuotationController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+    /**
+     * Approve a quotation.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function approve(Request $request)
+    {
+
+        DB::table('quotations')->where('id','=',$request->quotation_id)->update(['accepted'=>1]);
+        return json_encode("successful");
     }
 
     /**
