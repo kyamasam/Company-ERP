@@ -4,6 +4,8 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Response;
 
 class Handler extends ExceptionHandler
 {
@@ -42,10 +44,15 @@ class Handler extends ExceptionHandler
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function render($request, Exception $exception)
     {
         return parent::render($request, $exception);
+//        return Response::json(array(
+//            'code'      =>  404,
+//            'message'   =>  "not_found"
+//        ), 404);
     }
+
 }

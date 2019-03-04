@@ -51,7 +51,7 @@ export default class TopNav extends Component {
 
 
                         <Link className='logo' to='/'>
-                            <img className="small-logo icon-c-logo" src="/skality_favicon.png" height="48"/> <span><img src="/skality_logo.png" height="30"/></span>
+                            <img className="small-logo icon-c-logo" src="/skality_favicon.png" height="37"/> <span><img src="/skality_logo.png" height="30"/></span>
                         </Link>
                          {/*Image Logo here -->*/}
                         {/*<a href="index.html" class="logo">*/}

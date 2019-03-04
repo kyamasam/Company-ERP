@@ -53,6 +53,10 @@ Route::group(['prefix'=>'v1','as'=>'v1.'], function(){
         Route::resource('categories', 'CategoryController');
         Route::resource('employees', 'EmployeeProjectController');
         Route::resource('user_types', 'UserTypeController');
+        Route::resource('subscriptions', 'SubscriptionController');
+        Route::resource('tickets', 'TicketController');
+        Route::resource('ticket_category', 'TicketCategoryController');
+        Route::resource('ticket_priority', 'TicketPriorityController');
 //    });
 
 });

@@ -53,6 +53,22 @@ class User extends Authenticatable
     {
         return $this->hasMany(quotation::class,'client_id');
     }
+    public function Subscription()
+    {
+        return $this->hasMany(Subscription::class,'user_id');
+    }
+
+    public function Tickets()
+    {
+        return $this->hasMany(Ticket::class,'user_id');
+    }
+    public function ToResolve()
+    {
+        return $this->hasMany(Ticket::class,'assigned_to');
+    }
+
+
+
 
 
 }

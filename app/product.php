@@ -16,5 +16,10 @@ class product extends Model
     {
         return $this->belongsToMany(quotation::class,'quotation_products');
     }
+    public function subscription()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
 
 }

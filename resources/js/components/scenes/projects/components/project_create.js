@@ -204,7 +204,7 @@ export default class Content extends Component {
 
 
                         <div className="row">
-                            <div className="card-box col-8 offset-md-2">
+                            <div className="card-box col-md-8 offset-md-2">
                                 <h4 className="m-t-0 header-title text-center">Create a new Project</h4>
                                 <div >
                                     {error != undefined && <div className={name} role="alert">{msg}</div>}
@@ -219,24 +219,24 @@ export default class Content extends Component {
                                         <div className="p-20">
                                             <form className="form-horizontal" role="form" role="form" method="POST" onSubmit= {this.onSubmit.bind(this)} >
                                                 <div className="form-group row">
-                                                    <label className="col-2 col-form-label">Project Name</label>
-                                                    <div className="col-10">
+                                                    <label className="col-md-2 col-form-label">Project Name</label>
+                                                    <div className="col-md-10">
                                                         <input type="text" className="form-control"
                                                                placeholder="Project Mat Pay" name="name" ref="name" id="name" onChange={this.normalChange.bind(this)}/>
                                                     </div>
                                                 </div>
 
                                                 <div className="form-group row">
-                                                    <label className="col-2 col-form-label">Project Description</label>
-                                                    <div className="col-10">
+                                                    <label className="col-md-2 col-form-label">Project Description</label>
+                                                    <div className="col-md-10">
                                                         <textarea className="form-control" rows="5" id="description" name="description"ref="description" onChange={this.normalChange.bind(this)}></textarea>
                                                     </div>
                                                 </div>
 
 
                                                 <div className="form-group row">
-                                                    <label className="col-2 col-form-label">Customers</label>
-                                                    <div className="col-10">
+                                                    <label className="col-md-2 col-form-label">Customers</label>
+                                                    <div className="col-md-10">
                                                         <AsyncSelect name="customers"  loadOptions={SearchResults}
                                                                      defaultOptions={
                                                                          this.state.users.map(
@@ -254,8 +254,8 @@ export default class Content extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="form-group row">
-                                                    <label className="col-2 col-form-label">Developers</label>
-                                                    <div className="col-10">
+                                                    <label className="col-md-2 col-form-label">Developers</label>
+                                                    <div className="col-md-10">
                                                         <AsyncSelect id="developers" value={SearchResults.value}  name="developers" ref="developers"  loadOptions={SearchResults}
                                                                      onChange={this.handleChange.bind(this)}
                                                                      defaultOptions={
@@ -272,7 +272,7 @@ export default class Content extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="form-group row">
-                                                    <label className="col-2 col-form-label">Progress</label>
+                                                    <label className="col-md-2 col-form-label">Progress</label>
                                                     <div className="col-md-10">
                                                         <input className="form-control" type="range" name="progress" ref="progress" id="progress" min="0"
                                                                max="10" onChange={this.normalChange.bind(this)} />

@@ -126,9 +126,11 @@ export default class Content extends Component {
                                         <i className={"md md-trending-"+arrow_trend+" "+ "text-"+trend_color }></i>
 
                                     {!this.state.isLoading ?
-                                    <h2 className="m-0 text-dark counter font-600">Ksh { this.state.current_revenue.toLocaleString() }</h2>
+                                    <h2 className="m-0 text-dark counter font-600"> { this.state.current_revenue.toLocaleString() }</h2>
                                         : <i className="fa fa-spin fa-spinner"></i>}
-                                    <div className=" m-t-15"> Revenue last 7 days <span className="pull-right" style={{marginRight:"6"+"%"}}>Ksh {difference.toLocaleString()}</span> </div>
+                                    <div className=" m-t-15"> Revenue (KSH) <br/> last 7 days
+                                        {/*<span className="pull-right" style={{marginRight:"6"+"%"}}>Ksh {difference.toLocaleString()}</span> */}
+                                    </div>
 
                                 </div>
                             </div>
