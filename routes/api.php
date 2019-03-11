@@ -17,12 +17,17 @@ use Illuminate\Http\Request;
 
 
 Route::group(['prefix'=>'v1','as'=>'v1.'], function(){
+    Route::post('login', 'Auth\LoginController@login');
+
 
 //
     Route::group(['middleware' => 'auth:api'], function() {
         Route::get('user', function (Request $request) {
             return $request->user();
         });
+        Route::get('subscriptions/my_subscriptions', 'SubscriptionController@my_subscriptions');
+
+
     });
 
         Route::resource('users', 'SystemUserController');
@@ -32,6 +37,7 @@ Route::group(['prefix'=>'v1','as'=>'v1.'], function(){
         Route::get('systemuser/q/{search_term?}', 'SystemUserController@search');
         Route::resource('systemuser', 'SystemUserController');
 
+        Route::get('projects/recent', 'ProjectController@recent');
         Route::get('projects/q/{search_term?}', 'ProjectController@search');
         Route::get('projects/count/{completion_status?}', 'ProjectController@complete_count')->where('completion_status', '[0-9]+');
         Route::resource('projects', 'ProjectController');
@@ -54,7 +60,10 @@ Route::group(['prefix'=>'v1','as'=>'v1.'], function(){
         Route::resource('employees', 'EmployeeProjectController');
         Route::resource('user_types', 'UserTypeController');
         Route::resource('subscriptions', 'SubscriptionController');
+        Route::post('tickets/resolve', 'TicketController@resolve');
+        Route::post('tickets/reopen', 'TicketController@reopen');
         Route::resource('tickets', 'TicketController');
+        Route::get('ticket_category/q/{search_term?}', 'TicketCategoryController@search');
         Route::resource('ticket_category', 'TicketCategoryController');
         Route::resource('ticket_priority', 'TicketPriorityController');
 //    });

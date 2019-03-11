@@ -4,10 +4,9 @@ import SideNav from "../layouts/sideNav";
 import RightNav from "../layouts/rightNav";
 import Content from "./components/content";
 
-export default class Tickets extends Component {
+export default class Subscription extends Component {
     constructor(props){
         super(props);
-
     }
 
     componentDidMount(){

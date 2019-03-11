@@ -16,6 +16,8 @@ export default class TopNav extends Component {
                 const newState= Object.assign({},this.state,{
                     logged_in_user:response.data
                 });
+                localStorage.setItem('user_id',response.data.id);
+                console.log('userid' + localStorage.getItem('user_id'));
                 this.setState(newState);
             })
             .catch(error =>{

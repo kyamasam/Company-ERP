@@ -15,12 +15,13 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('project_id')->references('id')->on('projects');
-	        $table->integer('invoice_id')->references('id')->on('invoices');
+            $table->integer('project_id')->references('id')->on('projects')->nullable();
+	        $table->integer('invoice_id')->references('id')->on('invoices')->nullable();
             $table->float('amount');
             $table->string('payment_method');
             $table->string('currency');
-            $table->binary('confirmed');
+            $table->integer('confirmed');
+            $table->integer('amount_used')->nullable()->default(0);
             $table->timestamps();
         });
     }

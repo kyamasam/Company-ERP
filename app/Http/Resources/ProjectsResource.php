@@ -22,7 +22,7 @@ class ProjectsResource extends JsonResource
             'progress'=>$this->progress,
             'created_at'=>$this->created_at,
             'customers' => UserResource::collection($this->user),
-//            'assigned_to' => UserResource::collection($this->assigned_employee),
+            'assigned_to' => UserResource::collection($this->assigned_employee),
         ];
     }
 

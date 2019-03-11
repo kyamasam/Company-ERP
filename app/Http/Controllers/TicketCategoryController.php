@@ -119,4 +119,19 @@ class TicketCategoryController extends Controller
         $ticket_category->destroy();
         return json_encode('delete_successful');
     }
+
+    /**
+     * Search for a ticket_categories
+     *
+     * @param  int  $search_term
+     * @return string
+     */
+    public function search($search_term='')
+    {
+        $result= TicketCategoryResource::collection(
+            TicketCategory::where('category_name', 'LIKE', "%{$search_term}%")
+                ->get());
+        return $result;
+    }
+
 }

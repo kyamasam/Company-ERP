@@ -23,6 +23,7 @@ class ProductResource extends JsonResource
             'name'=>$this->name,
             'price'=>$this->price,
             'association'=>$this->association,
+            'subscription_duration'=>$this->subscription_duration,
             'category'=>CategoryResource::collection($this->category)
         ];
     }

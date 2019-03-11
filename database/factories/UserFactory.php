@@ -18,6 +18,7 @@ $factory->define(App\User::class, function (Faker $faker) {
     return [
         'name' => $myname,
         'type' => $faker->numberBetween($min=0, $max=10),
+        'is_employee' => $faker->numberBetween($min=0, $max=1),
         'username' => $faker->name,
         'user_avatar' => $faker->imageUrl($width = 640, $height = 480, 'people'),
         'email' => $faker->unique()->safeEmail,

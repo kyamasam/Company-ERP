@@ -25,6 +25,7 @@
 
 </head>
 <body class="fixed-left">
+{{--{{ csrf_token() }}--}}
     <div id="app">
     </div>
     <script>

@@ -73,26 +73,29 @@ export default class Content extends Component {
 
 
 
-                        <div className="row">
+                        <div className="col-12">
 
                             <div className="card-box product-detail-box">
                                 <div className="row">
-                                    <div className="col-sm-4">
-                                        <div className="sp-loading" style={{display: 'none'}}><img
-                                            src="/assets/images/sp-loading.gif" alt=""/><br/>LOADING
-                                            IMAGES
-                                        </div>
-                                        <div className="sp-wrap sp-non-touch" style={{display: 'inline-block'}}>
+                                    {/*<div className="col-sm-4">*/}
+                                        {/*<div className="sp-loading" style={{display: 'none'}}><img*/}
+                                            {/*src="/assets/images/sp-loading.gif" alt=""/><br/>LOADING*/}
+                                            {/*IMAGES*/}
+                                        {/*</div>*/}
+                                        {/*<div className="sp-wrap sp-non-touch" style={{display: 'inline-block'}}>*/}
 
-                                            <div className="sp-large"><a href="/assets/images/gallery/2.jpg"
-                                                                         className=".sp-current-big"><img
-                                                src="/assets/images/gallery/2.jpg" alt=""/></a></div>
-                                        </div>
-                                    </div>
+                                            {/*<div className="sp-large"><a href="/assets/images/gallery/2.jpg"*/}
+                                                                         {/*className=".sp-current-big"><img*/}
+                                                {/*src="/assets/images/gallery/2.jpg" alt=""/></a></div>*/}
+                                        {/*</div>*/}
+                                    {/*</div>*/}
 
-                                    <div className="col-sm-8">
-                                        <div className="product-right-info">
-                                            <h4><b>{this.state.project.name}</b></h4>
+                                    <div className="col-sm-12">
+                                        <div className="text-center">
+                                            <h4><b>{this.state.project.name}</b>
+                                                <Link className="btn btn-default btn-md waves-effect waves-light m-b-30 pull-right" to={'/projects/edit/'+this.props.match.params.project_id}>
+                                                    Edit Project <i className="md md-mode-edit ml-1"/>
+                                                </Link></h4>
 
 
                                             <h5 className="m-t-20">
@@ -108,7 +111,7 @@ export default class Content extends Component {
 
 
 
-                                            <hr/>
+                                            <hr className="col-md-6" />
 
                                                 <h5 className="font-600">Project Description</h5>
 

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import TopNav from "../layouts/topNav";
 import SideNav from "../layouts/sideNav";
 import RightNav from "../layouts/rightNav";
-import Content from "./components/content";
+import Content from "./components/subscription_create";
 
-export default class Tickets extends Component {
+export default class SubscriptionCreate extends Component {
     constructor(props){
         super(props);
 

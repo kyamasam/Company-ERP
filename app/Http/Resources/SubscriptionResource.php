@@ -17,6 +17,7 @@ class SubscriptionResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id'=> $this->id,
             'user'=> new UserLtdResource(User::find($this->user_id)),
             'product'=> new ProductResource(product::find($this->product_id)),
             'start_date'=> $this->start_date,

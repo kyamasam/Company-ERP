@@ -12,7 +12,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $users = factory(\App\User::class, 30)->create();
+
 
         \Illuminate\Support\Facades\DB::table('users')->insert([
             'name'=>'developers',
@@ -21,5 +21,15 @@ class UsersTableSeeder extends Seeder
             'type'=>'1',
             'username'=>'skality',
             ]);
+        \Illuminate\Support\Facades\DB::table('users')->insert([
+            'name'=>'oscar',
+            'email'=>'oscar@skality.com',
+            'password'=>Hash::make('123456'),
+            'type'=>'1',
+            'is_employee'=>'1',
+            'username'=>'oscar',
+            ]);
+
+        $users = factory(\App\User::class, 30)->create();
     }
 }

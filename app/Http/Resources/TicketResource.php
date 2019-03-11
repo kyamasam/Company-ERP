@@ -18,7 +18,8 @@ class TicketResource extends JsonResource
     {
         $asssigned_to= array($this->assigned_to);
         return [
-            'user_id'=>$this->user_id,
+            'tiket_id' =>$this->id,
+            'user'=>new UserLtdResource(User::find($this->user_id)),
             'title'=>$this->title,
             'description'=>$this->description,
             'category'=>new CategoryResource(TicketCategory::find($this->category)),

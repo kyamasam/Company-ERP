@@ -36,6 +36,7 @@
         "react-router-dom": "^4.3.1",
         "react-router-hash-link": "^1.2.1",
         "react-select": "^2.3.0",
+        "react-select-simple-value": "^1.2.1",
         "wowjs": "^1.1.3"
     }
 }

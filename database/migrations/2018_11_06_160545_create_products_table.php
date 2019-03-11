@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('name');
 	        $table->string('price');
             $table->string('association')->nullable();//this is an array of all the products associated with this product
+            $table->integer('subscription_duration');
             $table->timestamps();
         });
     }

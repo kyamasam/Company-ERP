@@ -66,6 +66,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Ticket::class,'assigned_to');
     }
+    public function NonResolvedTickets()
+    {
+        $all_tickets = Ticket::all()->where('assigned_to','=',$this->id)->where('resolved','=',0);
+        return $all_tickets;
+    }
 
 
 

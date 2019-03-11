@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\employee_project;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\ProjectsResource;
 use App\project;
+use App\project_customer;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -113,7 +116,53 @@ class ProjectController extends Controller
      */
     public function update(Request $request, project $project)
     {
-        //
+
+        $validator=Validator::make($request->all(), [
+            'name' => 'required',
+            'progress' => 'required',
+//            'customers' => 'required',
+//            'developers' => 'required',
+            'description' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return json_encode($validator->messages()->first());
+        }
+        $business = $project;
+        $business->name = $request->name;
+        $business->progress = $request->progress;
+        $business->description = $request->description;
+
+        $business->save();
+
+        //associating users to projects
+        //customers
+        if(isset($request->customers)){
+            $customers=explode(',',$request->customers);
+//        $customers->associate($business->id);
+            foreach ($customers as $customer){
+                $customer_project = User::find($customer);
+                $customer_project->project()->sync($business->id);
+            }
+            project_customer::where('project_id', $business->id)->whereNotIn('user_id', $customers)->delete();
+        }
+        else{
+            //pass
+            project_customer::where('project_id', $business->id)->delete();
+        }
+
+
+        //developers
+        $developers =explode(',', $request->developers);
+        if(isset($request->developers)){
+            $business->assigned_employee()->sync($developers);
+        }
+        else{
+            $business->assigned_employee()->sync([]);
+        }
+
+
+        return json_encode('successful');
     }
 
     /**
@@ -166,6 +215,20 @@ class ProjectController extends Controller
         $result= ProjectsResource::collection(
             project::where('name', 'LIKE', "%{$search_term}%")
                 ->orWhere('description', 'LIKE', "%{$search_term}%")
+
+                ->get());
+        return $result;
+    }
+ /**
+     * Search for recent project
+     *
+     * @param
+     * @return string
+     */
+    public function recent()
+    {
+        $result= ProjectsResource::collection(
+            project::where('updated_at', '>=', Carbon::today())->offset(0)->limit(5)
 
                 ->get());
         return $result;

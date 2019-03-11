@@ -44,7 +44,9 @@ class ProductController extends Controller
         $validator=Validator::make($request->all(), [
             'name' => 'required',
             'price' => 'required|integer',
-            'category'=>'required|string'
+            'category'=>'required|string',
+            'subscription_duration'=>'required|integer',
+
         ]);
         if ($validator->fails()) {
             return json_encode($validator->messages()->first());
@@ -60,6 +62,7 @@ class ProductController extends Controller
         $product = new product;
         $product->name = $request->name;
         $product->price = $request->price;
+        $product->subscription_duration = $request->subscription_duration;
 
         $product->save();
 
@@ -109,7 +112,41 @@ class ProductController extends Controller
      */
     public function update(Request $request, product $product)
     {
-        //
+        $validator=Validator::make($request->all(), [
+            'name' => 'required',
+            'price' => 'required|integer',
+            'category'=>'required|string',
+            'subscription_duration'=>'required|integer',
+
+        ]);
+        if ($validator->fails()) {
+            return json_encode($validator->messages()->first());
+        }
+        $categories=explode(',',$request->category);
+        //run second validator to check if contents of string are integers
+        foreach ($categories as $category) {
+            if (!is_numeric($category)){
+                return json_encode("all category values must be integers");
+            }
+        }
+
+        $edit_product =$product;
+        $edit_product->name = $request->name;
+        $edit_product->price = $request->price;
+        $edit_product->subscription_duration = $request->subscription_duration;
+
+        $product->save();
+
+
+        foreach ($categories as $category){
+            $product_category=  new product_category;
+            $product_category->product_id = $edit_product->id;
+            $product_category->category_id = $category;
+            $product_category->save();
+        }
+
+
+        return json_encode('successful');
     }
 
     /**

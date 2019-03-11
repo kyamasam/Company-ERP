@@ -3,6 +3,7 @@ import React from "react";
 import Footer from "../../layouts/footer"
 import Breadcrumbs from "../../layouts/breadcrumbs_2l"
 import Payment from "./payments_table";
+import InterestingProjects from "./interesting_projects";
 
 
 
@@ -116,29 +117,41 @@ export default class Content extends Component {
                                 <Breadcrumbs{...this.props}/>
                             </div>
                         </div>
+                        <div className="ro">
+                            <h4 className="text-dark header-title m-t-0 m-b-30">Recent Stats</h4>
+
+                        </div>
 
                         <div className="row">
                             <div className="col-md-6 col-lg-6 col-xl-3">
+                                {!this.state.isLoading ?
                                 <div className="widget-panel widget-style-2 bg-white">
 
 
 
                                         <i className={"md md-trending-"+arrow_trend+" "+ "text-"+trend_color }></i>
 
-                                    {!this.state.isLoading ?
-                                    <h2 className="m-0 text-dark counter font-600"> { this.state.current_revenue.toLocaleString() }</h2>
-                                        : <i className="fa fa-spin fa-spinner"></i>}
-                                    <div className=" m-t-15"> Revenue (KSH) <br/> last 7 days
-                                        {/*<span className="pull-right" style={{marginRight:"6"+"%"}}>Ksh {difference.toLocaleString()}</span> */}
-                                    </div>
+
+                                    <span>
+                                        <h2 className="m-0 text-dark counter font-600">
+                                            { this.state.current_revenue.toLocaleString() }</h2>
+
+                                        <div className=" m-t-15">  Revenue (KSH) <br/> last 7 days
+                                            {/*<span className="pull-right" style={{marginRight:"6"+"%"}}>Ksh {difference.toLocaleString()}</span> */}
+                                        </div>
+                                    </span>
+
 
                                 </div>
+                                    :
+                                    <i className="fa fa-spin fa-spinner "></i>
+                                }
                             </div>
                             <div className="col-md-6 col-lg 6 col-xl-3">
                                 <div className="widget-panel widget-style-2 bg-white">
                                     <i className="md md-work text-primary"></i>
                                     <h2 className="m-0 text-dark counter font-600">{this.state.projects_count}</h2>
-                                    <div className="text-muted m-t-5">Projects Ongoin</div>
+                                    <div className="text-muted m-t-5">Projects Ongoing</div>
                                 </div>
                             </div>
                             <div className="col-md-6 col-lg-6 col-xl-3">
@@ -164,89 +177,13 @@ export default class Content extends Component {
                             </div>
                         </div>
 
+                        <InterestingProjects{...this.props} />
+
                         <Payment{...this.props} />
 
 
 
-                        {/*// <div className="row">*/}
-                        {/*//*/}
-                            {/*/!*<div className="col-lg-12 col-xl-4">*!/*/}
-                                {/*/!*<div className="card-box">*!/*/}
-                                    {/*/!*<h4 className="text-dark header-title m-t-0 m-b-30">Daily Sales</h4>*!/*/}
 
-                                    {/*/!*<div className="widget-chart text-center">*!/*/}
-                                        {/*/!*<div id="sparkline3"/>*!/*/}
-                                        {/*/!*<ul className="list-inline m-t-15">*!/*/}
-                                            {/*/!*<li>*!/*/}
-                                                {/*/!*<h5 className="text-muted m-t-20">Target</h5>*!/*/}
-                                                {/*/!*<h4 className="m-b-0">$1000</h4>*!/*/}
-                                            {/*/!*</li>*!/*/}
-                                            {/*/!*<li>*!/*/}
-                        {/*//                         <h5 className="text-muted m-t-20">Last week</h5>*/}
-                        {/*//                         <h4 className="m-b-0">$523</h4>*/}
-                        {/*//                     </li>*/}
-                                            {/*/!*<li>*!/*/}
-                                                {/*/!*<h5 className="text-muted m-t-20">Last Month</h5>*!/*/}
-                                                {/*/!*<h4 className="m-b-0">$965</h4>*!/*/}
-                                            {/*/!*</li>*!/*/}
-                                        {/*/!*</ul>*!/*/}
-                                    {/*/!*</div>*!/*/}
-                                {/*/!*</div>*!/*/}
-
-                            {/*/!*</div>*!/*/}
-
-                            {/*/!*<div className="col-lg-12 col-xl-4">*!/*/}
-                                {/*/!*<div className="card-box">*!/*/}
-                                    {/*/!*<h4 className="text-dark  header-title m-t-0 m-b-30">Weekly Sales</h4>*!/*/}
-
-                                    {/*/!*<div className="widget-chart text-center">*!/*/}
-                                        {/*/!*<div id="sparkline2"/>*!/*/}
-                                        {/*/!*<ul className="list-inline m-t-15">*!/*/}
-                                            {/*/!*<li>*!/*/}
-                                                {/*/!*<h5 className="text-muted m-t-20">Target</h5>*!/*/}
-                                                {/*/!*<h4 className="m-b-0">$1000</h4>*!/*/}
-                                            {/*/!*</li>*!/*/}
-                                            {/*/!*<li>*!/*/}
-                        {/*//                         <h5 className="text-muted m-t-20">Last week</h5>*/}
-                        {/*//                         <h4 className="m-b-0">$523</h4>*/}
-                        {/*//                     </li>*/}
-                        {/*//                     <li>*/}
-                                                {/*/!*<h5 className="text-muted m-t-20">Last Month</h5>*!/*/}
-                                                {/*/!*<h4 className="m-b-0">$965</h4>*!/*/}
-                                            {/*/!*</li>*!/*/}
-                                        {/*/!*</ul>*!/*/}
-                                    {/*/!*</div>*!/*/}
-                                {/*/!*</div>*!/*/}
-
-                        {/*//     </div>*/}
-                        {/*//*/}
-                            {/*/!*<div className="col-lg-12 col-xl-4">*!/*/}
-                                {/*/!*<div className="card-box">*!/*/}
-                                    {/*/!*<h4 className="text-dark  header-title m-t-0 m-b-30">Monthly Sales</h4>*!/*/}
-
-                        {/*//             <div className="widget-chart text-center">*/}
-                                        {/*/!*<div id="sparkline1"/>*!/*/}
-                                        {/*/!*<ul className="list-inline m-t-15">*!/*/}
-                                            {/*/!*<li>*!/*/}
-                                                {/*/!*<h5 className="text-muted m-t-20">Target</h5>*!/*/}
-                                                {/*/!*<h4 className="m-b-0">$1000</h4>*!/*/}
-                                            {/*/!*</li>*!/*/}
-                                            {/*/!*<li>*!/*/}
-                                                {/*/!*<h5 className="text-muted m-t-20">Last week</h5>*!/*/}
-                        {/*//                         <h4 className="m-b-0">$523</h4>*/}
-                        {/*//                     </li>*/}
-                        {/*//                     <li>*/}
-                                                {/*/!*<h5 className="text-muted m-t-20">Last Month</h5>*!/*/}
-                                                {/*/!*<h4 className="m-b-0">$965</h4>*!/*/}
-                                            {/*/!*</li>*!/*/}
-                                        {/*/!*</ul>*!/*/}
-                                    {/*/!*</div>*!/*/}
-                                {/*/!*</div>*!/*/}
-
-                            {/*/!*</div>*!/*/}
-
-
-                        {/*/!*</div>*!/*/}
 
 
                     </div>
@@ -256,3 +193,82 @@ export default class Content extends Component {
         );
     }
 }
+{/*<div className="row">*/}
+
+    {/*<div className="col-lg-12 col-xl-4">*/}
+        {/*<div className="card-box">*/}
+            {/*<h4 className="text-dark header-title m-t-0 m-b-30">Daily Sales</h4>*/}
+
+            {/*<div className="widget-chart text-center">*/}
+                {/*<div id="sparkline3"/>*/}
+                {/*<ul className="list-inline m-t-15">*/}
+                    {/*<li>*/}
+                        {/*<h5 className="text-muted m-t-20">Target</h5>*/}
+                        {/*<h4 className="m-b-0">$1000</h4>*/}
+                    {/*</li>*/}
+                    {/*<li>*/}
+                        {/*<h5 className="text-muted m-t-20">Last week</h5>*/}
+                        {/*<h4 className="m-b-0">$523</h4>*/}
+                    {/*</li>*/}
+                    {/*<li>*/}
+                        {/*<h5 className="text-muted m-t-20">Last Month</h5>*/}
+                        {/*<h4 className="m-b-0">$965</h4>*/}
+                    {/*</li>*/}
+                {/*</ul>*/}
+            {/*</div>*/}
+        {/*</div>*/}
+
+    {/*</div>*/}
+
+    {/*<div className="col-lg-12 col-xl-4">*/}
+        {/*<div className="card-box">*/}
+            {/*<h4 className="text-dark  header-title m-t-0 m-b-30">Weekly Sales</h4>*/}
+
+            {/*<div className="widget-chart text-center">*/}
+                {/*<div id="sparkline2"/>*/}
+                {/*<ul className="list-inline m-t-15">*/}
+                    {/*<li>*/}
+                        {/*<h5 className="text-muted m-t-20">Target</h5>*/}
+                        {/*<h4 className="m-b-0">$1000</h4>*/}
+                    {/*</li>*/}
+                    {/*<li>*/}
+                        {/*<h5 className="text-muted m-t-20">Last week</h5>*/}
+                        {/*<h4 className="m-b-0">$523</h4>*/}
+                    {/*</li>*/}
+                    {/*<li>*/}
+                        {/*<h5 className="text-muted m-t-20">Last Month</h5>*/}
+                        {/*<h4 className="m-b-0">$965</h4>*/}
+                    {/*</li>*/}
+                {/*</ul>*/}
+            {/*</div>*/}
+        {/*</div>*/}
+
+    {/*</div>*/}
+
+    {/*<div className="col-lg-12 col-xl-4">*/}
+        {/*<div className="card-box">*/}
+            {/*<h4 className="text-dark  header-title m-t-0 m-b-30">Monthly Sales</h4>*/}
+
+            {/*<div className="widget-chart text-center">*/}
+                {/*<div id="sparkline1"/>*/}
+                {/*<ul className="list-inline m-t-15">*/}
+                    {/*<li>*/}
+                        {/*<h5 className="text-muted m-t-20">Target</h5>*/}
+                        {/*<h4 className="m-b-0">$1000</h4>*/}
+                    {/*</li>*/}
+                    {/*<li>*/}
+                        {/*<h5 className="text-muted m-t-20">Last week</h5>*/}
+                        {/*<h4 className="m-b-0">$523</h4>*/}
+                    {/*</li>*/}
+                    {/*<li>*/}
+                        {/*<h5 className="text-muted m-t-20">Last Month</h5>*/}
+                        {/*<h4 className="m-b-0">$965</h4>*/}
+                    {/*</li>*/}
+                {/*</ul>*/}
+            {/*</div>*/}
+        {/*</div>*/}
+
+    {/*</div>*/}
+
+
+{/*</div>*/}

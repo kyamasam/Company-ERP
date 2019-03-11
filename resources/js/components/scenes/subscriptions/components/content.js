@@ -10,6 +10,7 @@ export default class Content extends Component {
         super(props);
         this.state ={
             products:[],
+            subscriptions:[],
             isLoading:true
         }
     }
@@ -18,17 +19,18 @@ export default class Content extends Component {
 
         console.log(this.invoice_id)
         axios
-            .get("/api/v1/products")
+            .get("/api/v1/subscriptions")
             .then(response => {
 
                 // create an array of projects only with relevant data
-                const newProducts = response.data.data;
-                console.log("all invoices"+ newProducts)
+                const newSubscriptions = response.data.data;
+                console.log("all invoices");
+                console.log(newSubscriptions);
 
                 // create a new "State" object without mutating
                 // the original State object.
                 const newState = Object.assign({}, this.state, {
-                    products: newProducts,
+                    subscriptions: newSubscriptions,
                     isLoading: false
                 });
                 // console.log(newProducts)
@@ -41,57 +43,82 @@ export default class Content extends Component {
     };
     create_table()
     {
-        var values = this.state.products.map((p,index)=>{
-        var product_name ="";
-        var price="";
-        var associations="";
-        var category="";
+        let product_name ="",customer_name ="",customer_id ="",product_id,start_date,expiry_date,expired;
+        var full_date=new Date();
+        var date_today=full_date.getFullYear()+'-'+(full_date.getMonth()+1)+'-'+full_date.getDate();
+
+
+       var val= this.state.subscriptions.map((p,index)=>{
+
             if((p !== null) ){
-                product_name = p.name;
-                price= p.price;
-                associations= p.association;
-                category= p.category;
+
+                if(p.product !== null){
+                    product_name =p.product.name;
+                }else
+                {
+                    product_name = '';
+                }
+                if(p.user !== null){
+                    customer_name =p.user.name;
+                    customer_id =p.user.id;
+                }else
+                {
+                    customer_name = '';
+                    customer_id = '';
+                }
+                product_id=p.id;
+                start_date = p.start_date;
+                expiry_date = p.expiry_date;
+
             }else{
-                product_name = '';
-                price= '';
-                associations='';
-                category= '';
+
+                start_date='';
+                expiry_date=''
             }
-            console.log("sdffsfdf" + product_name)
+            console.log("today");
+            console.log(date_today);
+            console.log('expiry_date');
+            console.log(expiry_date)
+
+           if(Date.parse(date_today)>Date.parse(expiry_date)){
+               expired = true;
+               console.log("setting true")
+           }else{
+               expired = false;
+               console.log("setting false")
+
+           }
+            console.log("sdffsfdf" + product_name);
 
             return([
                 <tr key={index}>
 
                     <td>{p.id}</td>
+                    <td><Link className="btn btn-primary waves-effect" to={"/profile/"+customer_id}>{customer_name}</Link></td>
+
+                    <td>{product_name}</td>
                     <td>
-                        {product_name}
+                        {start_date}
                     </td>
 
                     <td>
-                        {price}
+                        {expiry_date}
                     </td>
                     <td>
-                        {
-                            category.map((cat)=>{
-                                return([
-                                    <span className="label label-info mr-4">{cat.category_name} </span>
-                                ])
-                            })
+                        {expired ?
+                            < span className = "label label-danger">Expired</span>
+                            :< span className = "label label-success">Active</span>
+
                         }
                     </td>
-                    <td>
-                        <a href="#" className="table-action-btn"><i
-                            className="md md-edit"/></a>
-                        <a href="#" className="table-action-btn"><i
-                            className="md md-file-download"/></a>
-                    </td>
+
                 </tr>
 
 
             ]);
         });
+       return val;
 
-        return values;
 
     }
 
@@ -123,7 +150,7 @@ export default class Content extends Component {
 
                                 <div className="card-box">
                                     <div className="row m-t-10 m-b-10">
-                                        <div className="col-sm-6 col-lg-8">
+                                        <div className="col-sm-8 col-lg-10">
                                             {/*<form role="form">*/}
                                             <div className="form-group contact-search m-b-30">
                                                 <input type="text" id="search" className="form-control"
@@ -137,13 +164,13 @@ export default class Content extends Component {
                                             {/*</form>*/}
                                         </div>
 
-                                        <div className="col-sm-6 col-lg-4">
-                                            <div className="h5 m-0">
-                                                <Link to="/products/create/"
-                                                   className="btn btn-default btn-md waves-effect waves-light m-b-30"><i
-                                                    className="md md-add"></i> Add Product</Link>
-                                            </div>
-                                        </div>
+                                        {/*<div className="col-sm-6 col-lg-4">*/}
+                                            {/*<div className="h5 m-0">*/}
+                                                {/*<Link to="/products/create/"*/}
+                                                   {/*className="btn btn-default btn-md waves-effect waves-light m-b-30"><i*/}
+                                                    {/*className="md md-add"></i> New Subscription</Link>*/}
+                                            {/*</div>*/}
+                                        {/*</div>*/}
                                     </div>
 
                                     <div className="table-responsive">
@@ -151,10 +178,12 @@ export default class Content extends Component {
                                             <thead>
                                             <tr>
                                                 <th>ID</th>
+                                                <th>Customer Name</th>
                                                 <th>Product Name</th>
-                                                <th>Price</th>
-                                                <th>Category </th>
-                                                <th></th>
+                                                <th>Start Date</th>
+                                                <th>Expiry Date </th>
+                                                <th>Status</th>
+
                                             </tr>
                                             </thead>
 

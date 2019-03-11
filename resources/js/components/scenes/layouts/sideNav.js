@@ -25,6 +25,11 @@ export default class SideNav extends Component {
                             </li>
 
                             <li>
+                                <Link className='waves-effect' to='/subscriptions'><i className=" fa fa-calendar-check-o"/>
+                                    <span> Subscriptions </span>
+                                </Link>
+                            </li>
+                            <li>
                                 <Link className='waves-effect' to='/quotations'><i className="ti-bar-chart"/>
                                     <span> Quotations </span>
                                 </Link>
@@ -42,16 +47,16 @@ export default class SideNav extends Component {
                             </li>
 
                             <li>
-                                <Link className='waves-effect' to='/payments'><i className="ti-credit-card"/>
+                                <Link className='waves-effect' to='/payments'><i className="md-attach-money"/>
                                     <span> Payments </span>
                                 </Link>
                             </li>
 
-                            {/*<li>*/}
-                                {/*<Link className='waves-effect' to='/tickets'><i className="ti-ticket"/>*/}
-                                    {/*<span> Tickets </span>*/}
-                                {/*</Link>*/}
-                            {/*</li>*/}
+                            <li>
+                                <Link className='waves-effect' to='/tickets'><i className="ti-ticket"/>
+                                    <span> Tickets </span>
+                                </Link>
+                            </li>
 
                             {/*<li>*/}
                                 {/*<Link className='waves-effect' to='/announcements'><i className="ti-announcement"/>*/}

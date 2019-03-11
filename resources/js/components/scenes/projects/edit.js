@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import TopNav from "../layouts/topNav";
 import SideNav from "../layouts/sideNav";
 import RightNav from "../layouts/rightNav";
-import Content from "./components/project_detail";
+import Content from "./components/project_edit";
 
-export default class ProjectDetail extends Component {
+export default class ProjectsEdit extends Component {
     constructor(props){
         super(props);
 
@@ -14,11 +14,14 @@ export default class ProjectDetail extends Component {
         var scripts_array=[
             '/js/jquery.core.js',
             '/assets/js/jquery.app.js',
-            '/plugins/smoothproducts/js/smoothproducts.min.js',
+            '/plugins/jquery.steps/js/jquery.steps.min.js',
+            '/plugins/jquery-validation/js/jquery.validate.min.js',
+            '/plugins/select2/js/select2.min.js',
         ];
 
         var styles_array=[
-            '/plugins/smoothproducts/css/smoothproducts.css',
+            "/plugins/jquery.steps/css/jquery.steps.css",
+            "/plugins/select2/css/select2.min.css"
         ];
         for(var j=0;j<styles_array.length;j++){
             var head=document.getElementsByTagName('head')[0];
@@ -35,6 +38,8 @@ export default class ProjectDetail extends Component {
             script.async = true;
             document.body.appendChild(script);
         }
+        const script_body= document.createElement("script");
+
     }
     render() {
         return (

@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\TicketResource;
 use App\Ticket;
+use App\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use PHPUnit\Util\Json;
 
 class TicketController extends Controller
 {
@@ -16,7 +20,7 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $tickets =Ticket::all();
+        $tickets =Ticket::all()->sortByDesc('id');
 //        dd($tickets);
         return TicketResource::collection($tickets);
     }
@@ -46,8 +50,11 @@ class TicketController extends Controller
             'category'=>'required|integer',
             'description'=>'required',
             'resolved'=>'nullable|integer',
-            'assigned_to'=>'nullable|integer',
         ]);
+
+
+
+
 
         if($validator->fails()){
             return json_encode($validator->errors()->first());
@@ -67,13 +74,37 @@ class TicketController extends Controller
         else{
             $ticket->resolved = $request->resolved;
         }
+
         if(!isset($request->assigned_to)){
+            //assign to someone who has few tickets
+            //get a list of all employees
+            $all_employees = User::all()->where('is_employee','=',1);
+            $non_resolved_tickets=array();
+            $employee_ids=array();
+
+            //loop through all of them
+            foreach ($all_employees as $employee){
+                array_push($non_resolved_tickets,$employee->NonResolvedTickets()->count());
+                array_push($employee_ids,$employee->id);
+
+            }
+
+            //organize keys by employee id
+            $all_employees =$all_employees->keyBy('id');
+
+            $lowest_tickets_index =array_keys($non_resolved_tickets , min($non_resolved_tickets ))[0];
+
+            //get the id of employee with lowest tickets
+            $lowest_tickets_employee_id= $employee_ids[$lowest_tickets_index];
+            //now we can assign that id
+            $ticket->assigned_to=$lowest_tickets_employee_id;
+
         }
         else{
             $ticket->assigned_to=$request->assigned_to;
         }
         $ticket->save();
-        return json_encode('update_successful');
+        return json_encode('successful');
 
     }
 
@@ -168,5 +199,30 @@ class TicketController extends Controller
         $ticket->delete();
         return json_encode("delete_successful");
 
+    }
+
+    /**
+     * Resolve a ticket.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return
+     */
+    public function resolve(Request $request)
+    {
+
+        DB::table('tickets')->where('id','=',$request->ticket_id)->update(['resolved'=>1]);
+        return json_encode("successful");
+    }
+    /**
+     * Resolve a ticket.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return
+     */
+    public function reopen(Request $request)
+    {
+
+        DB::table('tickets')->where('id','=',$request->ticket_id)->update(['resolved'=>0]);
+        return json_encode("successful");
     }
 }

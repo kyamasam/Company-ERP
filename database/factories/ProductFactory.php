@@ -7,5 +7,6 @@ $factory->define(\App\product::class, function (Faker $faker) {
         'name'=> $faker->streetName,
         'price'=> $faker->numberBetween($min=0, $max=20000),
         'association'=>$faker->numberBetween($min=0, $max=30),
+        'subscription_duration'=>$faker->numberBetween($min=0, $max=30),
     ];
 });

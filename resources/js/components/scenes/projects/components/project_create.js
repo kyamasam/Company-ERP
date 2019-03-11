@@ -205,7 +205,7 @@ export default class Content extends Component {
 
                         <div className="row">
                             <div className="card-box col-md-8 offset-md-2">
-                                <h4 className="m-t-0 header-title text-center">Create a new Project</h4>
+                                <h4 className="m-t-0 header-title text-center">Create a new Project : {this.state.name}</h4>
                                 <div >
                                     {error != undefined && <div className={name} role="alert">{msg}</div>}
 

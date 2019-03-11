@@ -19,6 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->integer('is_employee')->nullable()->default(0);
+            $table->integer('is_admin')->default(0);
             $table->integer('type')->references('id')->on('user_types')->default(1);
             $table->string('username')->unique();
             $table->string('user_avatar')->default('https://eform.etixdubai.com/App_Themes/DefaultNew/images/profile.png');
