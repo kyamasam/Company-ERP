@@ -225,7 +225,7 @@ export default class Content extends Component {
                                                         Name
                                                     </label>
                                                 </div>
-                                                <Link className="btn btn-default btn-md waves-effect waves-light m-b-30 pull-right" to='/tickets/create'>
+                                                <Link className="btn btn-default btn-md waves-effect waves-light m-b-2 mt-2" to='/tickets/create'>
                                                     Create Ticket<i className="md md-add"/>
                                                 </Link>
 
