@@ -17,7 +17,7 @@ class UsersTableSeeder extends Seeder
         \Illuminate\Support\Facades\DB::table('users')->insert([
             'name'=>'developers',
             'email'=>'developers@skality.com',
-            'password'=>Hash::make('123456'),
+            'password'=>Hash::make('EggNet345&*'),
             'type'=>'1',
             'username'=>'skality',
             ]);
