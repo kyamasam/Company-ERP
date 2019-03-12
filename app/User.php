@@ -36,7 +36,8 @@ class User extends Authenticatable
 
     public function assigned_project()
     {
-        return $this->belongsToMany(project::class,'employee_projects','employee_id','project_id');
+        return $this->belongsToMany(project::class,'employee_projects','project_id','employee_id');
+
     }
 
     public function proficiency()

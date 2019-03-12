@@ -38,6 +38,7 @@ Route::group(['prefix'=>'v1','as'=>'v1.'], function(){
         Route::resource('systemuser', 'SystemUserController');
 
         Route::get('projects/recent', 'ProjectController@recent');
+        Route::get('projects/user_projects/{user_id}', 'ProjectController@user_projects');
         Route::get('projects/q/{search_term?}', 'ProjectController@search');
         Route::get('projects/count/{completion_status?}', 'ProjectController@complete_count')->where('completion_status', '[0-9]+');
         Route::resource('projects', 'ProjectController');
@@ -50,6 +51,7 @@ Route::group(['prefix'=>'v1','as'=>'v1.'], function(){
         Route::get('payments/sum_payments_within/{end_at}/{start_from?}', 'PaymentController@sum_payments_within')->where('no_of_days', '[0-9]+')->where('start_comparing_from', '[0-9+]');
         Route::get('payments/count_payments_within/{end_at}/{start_from?}', 'PaymentController@count_payments_within')->where('no_of_days', '[0-9]+')->where('start_comparing_from', '[0-9+]');
         Route::get('payments/invoice/{invoice_id}', 'PaymentController@payment_for_invoice');
+        Route::get('payments/user/{user_id}', 'PaymentController@user_payments');
         Route::resource('payments', 'PaymentController');
 
         Route::get('invoices/q/{search_term?}', 'InvoiceController@search');

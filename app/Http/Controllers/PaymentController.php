@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\PaymentResource;
+use App\Http\Resources\ProjectWithPayResource;
 use App\payment;
 use App\quotation_payment;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\quotation ;
@@ -168,6 +170,22 @@ class PaymentController extends Controller
 //        return App\
         return PaymentResource::collection(payment::where('invoice_id','=',$invoice_id)->get());
 //        return 'adsads';
+    }
+    /**
+     * Return Payments for user
+     *
+     * @param  \App\User  $user_id
+     * @return
+     */
+    public function user_payments($user_id)
+    {
+
+
+        $user_projects = User::find($user_id)->project()->get();
+//        return $user_projects;
+
+        return ProjectWithPayResource::collection($user_projects);
+
     }
 }
 

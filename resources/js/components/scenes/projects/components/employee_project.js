@@ -5,7 +5,7 @@ import Breadcrumbs from "../../layouts/breadcrumbs_2l";
 import {Link} from "react-router-dom";
 import JoinTeam from "./join_team"
 
-export default class Content extends Component {
+export default class EmployeeContent extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -16,7 +16,7 @@ export default class Content extends Component {
 
     componentDidMount() {
         axios
-            .get("/api/v1/projects")
+            .get("/api/v1/projects/user_projects/" + localStorage.getItem('user_id'))
             .then(response => {
 
                 // create an array of projects only with relevant data

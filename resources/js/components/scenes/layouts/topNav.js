@@ -17,6 +17,7 @@ export default class TopNav extends Component {
                     logged_in_user:response.data
                 });
                 localStorage.setItem('user_id',response.data.id);
+                localStorage.setItem('is_admin',response.data.is_admin);
                 console.log('userid' + localStorage.getItem('user_id'));
                 this.setState(newState);
             })
@@ -30,7 +31,9 @@ export default class TopNav extends Component {
         axios.post('/logout')
             .then(response=> {
                 localStorage.removeItem('user');
+                localStorage.removeItem('is');
                 console.log("removed user from local storage");
+
                 window.location.reload();
                 this.props.history.push('/login');
             })

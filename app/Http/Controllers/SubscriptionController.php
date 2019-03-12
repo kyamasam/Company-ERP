@@ -103,16 +103,17 @@ class SubscriptionController extends Controller
             //they don't have enough money
             //retrieve all payments where the amount is not completely used.
             $deficit = $total_assoc_prices - $payment_remaining;
-            return json_encode(
-                [
-                 "error" =>  "insufficient_funds",
-                    "deficit" => $deficit,
-                    "total_assoc_prices" =>$total_assoc_prices,
-                    "payment_remaining" =>$payment_remaining,
-                    "associated_products" =>$associated_products
-                ]
-
-            );
+            return json_encode("insufficient_funds");
+//            return json_encode(
+//                [
+//                 "error" =>  "insufficient_funds",
+//                    "deficit" => $deficit,
+//                    "total_assoc_prices" =>$total_assoc_prices,
+//                    "payment_remaining" =>$payment_remaining,
+//                    "associated_products" =>$associated_products
+//                ]
+//
+//            );
         }
         $subscription->start_date= \Carbon\Carbon::now();
         $subscription->expiry_date= \Carbon\Carbon::now()->addDays($product->subscription_duration);

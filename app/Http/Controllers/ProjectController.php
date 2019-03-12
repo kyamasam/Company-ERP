@@ -9,6 +9,7 @@ use App\project;
 use App\project_customer;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -232,6 +233,23 @@ class ProjectController extends Controller
 
                 ->get());
         return $result;
+    }
+
+    /**
+     * get the projects for the logged in user
+     *
+     * @param int $user_id
+     * @return string
+     */
+
+
+    public function user_projects( $user_id)
+    {
+        $user=User::find($user_id);
+
+
+        return ProjectsResource::collection($user->assigned_project()->get());
+
     }
 
 }

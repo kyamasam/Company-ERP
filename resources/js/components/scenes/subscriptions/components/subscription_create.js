@@ -43,19 +43,18 @@ export default class Content extends Component {
 
     onSubmit(e){
         e.preventDefault();
-        const {name, price, category,subscription_duration} = this.state ;
+        const {user_id,product,payment_id} = this.props ;
         console.log("data to post");
         console.log(
-            name,
-            price,
-            category,
-            subscription_duration,);
+            user_id,
+            product,
+            payment_id,
+            );
 
         axios.post('/api/v1/products', {
-            name,
-            price,
-            category,
-            subscription_duration
+            user_id,
+            product,
+            payment_id,
         })
 
             .then(response=> {
@@ -152,107 +151,85 @@ export default class Content extends Component {
         let show_err = this.state.show_err;
         return (
             <div className="content-page">
-                <div className="content">
-                    <div className="container-fluid">
-                        <div className="row">
-                            <div className="col-sm-12">
-                                <div className="btn-group pull-right m-t-15">
-                                    <button type="button"
-                                            className="btn btn-default dropdown-toggle waves-effect waves-light"
-                                            data-toggle="dropdown" aria-expanded="false">Settings
-                                    </button>
-                                    <div className="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
-                                        <a className="dropdown-item" href="#">Dropdown One</a>
-                                        <a className="dropdown-item" href="#">Dropdown Two</a>
-                                        <a className="dropdown-item" href="#">Dropdown Three</a>
-                                        <a className="dropdown-item" href="#">Dropdown Four</a>
-                                    </div>
-                                </div>
-
-                                <Breadcrumbs{...this.props}/>
-
-                                <div className="row">
-                                    <div className="card-box col-8 offset-md-2">
-                                        <h4 className="m-t-0 header-title text-center">Create a new Project</h4>
-                                        <div >
-                                            {error != undefined && <div className={name} role="alert">{msg}</div>}
-
-                                            {
-                                                show_err !=undefined ?<span></span> :
-                                                    save_error !=undefined && <div className="alert alert-danger">{save_error}</div>
-                                            }
-                                            {save_success !=undefined && <div className="alert alert-success">{save_success}</div> }
-                                        </div>
-
-                                        <div className="p-20">
-                                            <form className="form-horizontal" role="form" method="POST" onSubmit= {this.onSubmit.bind(this)} >
-                                                <div className="form-group row">
-                                                    <label className="col-2 col-form-label">Product Name</label>
-                                                    <div className="col-10">
-                                                        <input type="text" className="form-control"
-                                                               placeholder="Website" name="name" ref="name" id="name" onChange={this.normalChange.bind(this)}/>
-                                                    </div>
-                                                </div>
-                                                <div className="form-group row">
-                                                    <label className="col-2 col-form-label">Price</label>
-                                                    <div className="col-10">
-                                                        <input type="number" className="form-control"
-                                                               placeholder="2000" name="price" ref="price" id="price" onChange={this.normalChange.bind(this)}/>
-                                                    </div>
-                                                </div>
-                                                <div className="form-group row">
-                                                    <label className="col-2 col-form-label">Subscription Duration in days</label>
-                                                    <div className="col-10">
-                                                        <input type="number" className="form-control"
-                                                               placeholder="30" name="subscription_duration" ref="subscription_duration" id="subscription_duration" onChange={this.normalChange.bind(this)}/>
-                                                    </div>
-                                                </div>
-
-                                                <div className="form-group row">
-                                                    <label className="col-2 col-form-label">Categories</label>
-                                                    <div className="col-10">
-                                                        <AsyncSelect name="category"  loadOptions={SearchResults}
-                                                                     defaultOptions={
-                                                                         this.state.all_products.map(
-                                                                             c=>
-                                                                                 (
-                                                                                     {value: c.id ,label: c.category_name}
-
-                                                                                 )
-
-                                                                         )
-
-                                                                     }
-
-                                                                     isMulti onChange={this.handleChange.bind(this)} />
-                                                    </div>
-                                                </div>
 
 
+                    <div className="row">
+                        <div className="card-box col-8 offset-md-2">
+                            <h4 className="m-t-0 header-title text-center">Create a new Project</h4>
+                            <div >
+                                {error != undefined && <div className={name} role="alert">{msg}</div>}
 
-                                                <div className="form-group row">
-                                                    <div className="col-md-4 offset-4" >
-                                                        <button className="btn btn-primary waves-effect waves-light"
-                                                                type="submit">
-                                                            Submit
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-
-                                            </form>
-                                        </div>
-
-                                        {/*end row */}
-
-                                    </div>
-                                </div>
-
+                                {
+                                    show_err !=undefined ?<span></span> :
+                                        save_error !=undefined && <div className="alert alert-danger">{save_error}</div>
+                                }
+                                {save_success !=undefined && <div className="alert alert-success">{save_success}</div> }
                             </div>
+
+                            <div className="p-20">
+                                <form className="form-horizontal" role="form" method="POST" onSubmit= {this.onSubmit.bind(this)} >
+                                    <div className="form-group row">
+                                        <label className="col-2 col-form-label">Product Name</label>
+                                        <div className="col-10">
+                                            <input type="text" className="form-control"
+                                                   placeholder="Website" name="name" ref="name" id="name" onChange={this.normalChange.bind(this)}/>
+                                        </div>
+                                    </div>
+                                    <div className="form-group row">
+                                        <label className="col-2 col-form-label">Price</label>
+                                        <div className="col-10">
+                                            <input type="number" className="form-control"
+                                                   placeholder="2000" name="price" ref="price" id="price" onChange={this.normalChange.bind(this)}/>
+                                        </div>
+                                    </div>
+                                    <div className="form-group row">
+                                        <label className="col-2 col-form-label">Subscription Duration in days</label>
+                                        <div className="col-10">
+                                            <input type="number" className="form-control"
+                                                   placeholder="30" name="subscription_duration" ref="subscription_duration" id="subscription_duration" onChange={this.normalChange.bind(this)}/>
+                                        </div>
+                                    </div>
+
+                                    <div className="form-group row">
+                                        <label className="col-2 col-form-label">Categories</label>
+                                        <div className="col-10">
+                                            <AsyncSelect name="category"  loadOptions={SearchResults}
+                                                         defaultOptions={
+                                                             this.state.all_products.map(
+                                                                 c=>
+                                                                     (
+                                                                         {value: c.id ,label: c.category_name}
+
+                                                                     )
+
+                                                             )
+
+                                                         }
+
+                                                         isMulti onChange={this.handleChange.bind(this)} />
+                                        </div>
+                                    </div>
+
+
+
+                                    <div className="form-group row">
+                                        <div className="col-md-4 offset-4" >
+                                            <button className="btn btn-primary waves-effect waves-light"
+                                                    type="submit">
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </div>
+
+
+                                </form>
+                            </div>
+
+                            {/*end row */}
+
                         </div>
                     </div>
-                </div>
-                <Footer/>
+
             </div>
         )
     }

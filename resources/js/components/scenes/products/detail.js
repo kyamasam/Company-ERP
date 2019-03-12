@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import TopNav from "../layouts/topNav";
 import SideNav from "../layouts/sideNav";
 import RightNav from "../layouts/rightNav";
-import Content from "./components/content";
-import EmployeeContent from "./components/employee_project";
+import Content from "./components/product_detail";
 
-export default class Projects extends Component {
+export default class ProductDetail extends Component {
     constructor(props){
         super(props);
+
     }
 
     componentDidMount(){
@@ -28,14 +28,7 @@ export default class Projects extends Component {
             <div id="wrapper">
                 <TopNav/>
                 <SideNav/>
-                {
-                    (localStorage.getItem('is_admin') ==='1') ?
-                        <Content{...this.props}/>
-                        :
-                        <EmployeeContent{...this.props}/>
-
-                }
-
+                <Content{...this.props}/>
                 <RightNav/>
             </div>
         );

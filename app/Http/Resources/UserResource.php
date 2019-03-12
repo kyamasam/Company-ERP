@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -27,7 +28,7 @@ class UserResource extends JsonResource
             'bio'=>$this->bio,
             'type'=>new UserTypeResource($this->user_type),
             'proficiency'=>new UserTypeResource($this->proficiency),
-            'projects'=>EmployeeProjectResource::collection($this->assigned_project),
+            'projects'=>ProjectEmployeeResource::collection($this->assigned_project),
     ];
     }
 }

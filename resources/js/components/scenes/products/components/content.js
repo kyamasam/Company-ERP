@@ -62,7 +62,11 @@ export default class Content extends Component {
             return([
                 <tr key={index}>
 
-                    <td>{p.id}</td>
+                    <td>
+                        <Link className="btn btn-default btn-md waves-effect waves-light pull-right"
+                              to={'/products/'+p.id}>#{p.id}</Link>
+
+                        </td>
                     <td>
                         {product_name}
                     </td>
@@ -78,6 +82,9 @@ export default class Content extends Component {
                                 ])
                             })
                         }
+                    </td>
+                    <td>
+
                     </td>
                     <td>
                         <a href="#" className="table-action-btn"><i
