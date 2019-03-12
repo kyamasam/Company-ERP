@@ -61,7 +61,7 @@ export default class Content extends Component {
                 console.log(response)
                 if(response.data === "successful") {
                     this.setState({
-                        success_validation_message: 'Successfully Saved ' + this.state.name,
+                        success_validation_message: 'Successfully Subscribed to ' + this.state.name,
                         show_err: true
                     });
                     window.location.replace('/products');
