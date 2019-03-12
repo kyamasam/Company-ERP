@@ -116,70 +116,69 @@ export default class Content extends Component {
         return ([
             <div className="col-12" key={ticket_id}>
                 <div className="card-box m-b-10">
-                    <div className="table-box opport-box">
+                    <div className="table-box opport-box ">
                         <div className="table-detail">
                             <img src={customer_avatar} alt="img"
                                  className="rounded-circle thumb-lg m-r-4"/>
                         </div>
+                        <div className="row">
+                            <div className="col-12 col-md-6 ">
 
-                        <div className="table-detail">
-                            <div className="member-info">
-                                <h4 className="m-t-0"><b>{customer_name}. </b></h4>
-                                <p className="text-dark m-b-5"><b>Category: {category}</b></p>
+                                <div className="table-detail">
+                                    <div className="member-info">
+                                        <h4 className="m-t-0"><b>{customer_name}. </b></h4>
+                                        <p className="text-dark m-b-5"><b>Category: {category}</b></p>
+                                    </div>
+                                </div>
+
+                                <div className="table-detail lable-detail">
+                                    <p>Resolved</p>
+                                    {resolved ?
+                                        <span className="label label-success">Resolved</span> :
+                                        <span className="label label-danger">Unresolved</span>
+                                    }
+                                </div>
+                                <div className="table-detail lable-detail">
+                                    <p>Priority</p> <span className={"label label-" +this.priorityColor(priority_id)}>{priority}</span>
+
+                                </div>
                             </div>
-                        </div>
+                            <div className="col-12 col-md-6">
 
-                        <div className="table-detail lable-detail">
-                            <p>Resolved</p>
-                            {resolved ?
-                                <span className="label label-success">Resolved</span> :
-                                <span className="label label-danger">Unresolved</span>
-                            }
-                        </div>
-                        <div className="table-detail lable-detail">
-                            <p>Priority</p> <span className={"label label-" +this.priorityColor(priority_id)}>{priority}</span>
-
-                        </div>
-
-                        <div className="table-detail">
-                            {(customer_id+'' === localStorage.getItem('user_id') || assignee_id+'' === localStorage.getItem('user_id')) ?
-                                this.state.isResolved  ?
-                                <p>Re Open</p>:
-                                <p>Close </p>
-                                :
-                                <p></p>
-                            }
-                            {(customer_id+'' === localStorage.getItem('user_id') || assignee_id+'' === localStorage.getItem('user_id')) ?
-                                this.state.isResolved ?
-                                    <form role="form" method="POST" onSubmit= {this.onSubmit.bind(this, ticket_id, tick_action='reopen')}>
-                                        <button  type="submit" className="ladda-button btn btn-danger" data-style="expand-left"><span
-                                            className="ladda-label">
-                                                            Reopen
-                                                        </span><span className="ladda-spinner"></span>
-                                            <div className="ladda-progress" style={{width: '0'+'px'}}></div>
-                                        </button>
-                                    </form>
-                                    :
-                                    <form role="form" method="POST" onSubmit= {this.onSubmit.bind(this, ticket_id, tick_action='resolve')}>
-                                        <button  type="submit" className="ladda-button btn btn-primary" data-style="expand-left"><span
-                                            className="ladda-label">
-                                                            Resolve
-                                                        </span><span className="ladda-spinner"></span>
-                                            <div className="ladda-progress" style={{width: '0'+'px'}}></div>
-                                        </button>
-                                    </form>
-                                :
-                                <span></span>
+                                <div className="table-detail pl-2 ">
+                                    {(customer_id+'' === localStorage.getItem('user_id') || assignee_id+'' === localStorage.getItem('user_id')) ?
+                                        this.state.isResolved  ?
+                                        <p>Re Open</p>:
+                                        <p>Close </p>
+                                        :
+                                        <p></p>
+                                    }
+                                    {(customer_id+'' === localStorage.getItem('user_id') || assignee_id+'' === localStorage.getItem('user_id')) ?
+                                        this.state.isResolved ?
+                                            <form role="form" method="POST" onSubmit= {this.onSubmit.bind(this, ticket_id, tick_action='reopen')}>
+                                                <button  type="submit" className="ladda-button btn btn-danger" data-style="expand-left"><span
+                                                    className="ladda-label">
+                                                                    Reopen
+                                                                </span><span className="ladda-spinner"></span>
+                                                    <div className="ladda-progress" style={{width: '0'+'px'}}></div>
+                                                </button>
+                                            </form>
+                                            :
+                                            <form role="form" method="POST" onSubmit= {this.onSubmit.bind(this, ticket_id, tick_action='resolve')}>
+                                                <button  type="submit" className="ladda-button btn btn-primary" data-style="expand-left"><span
+                                                    className="ladda-label">
+                                                                    Resolve
+                                                                </span><span className="ladda-spinner"></span>
+                                                    <div className="ladda-progress" style={{width: '0'+'px'}}></div>
+                                                </button>
+                                            </form>
+                                        :
+                                        <span></span>
 
 
-                            }
-                        </div>
-
-                        <div className="table-detail table-actions-bar">
-                            <a href="#" className="table-action-btn"><i className="md md-edit"></i></a>
-                            <a href="#" className="table-action-btn"><i className="md md-close"></i></a>
-
-
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

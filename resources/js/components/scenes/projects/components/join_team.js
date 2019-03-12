@@ -86,7 +86,7 @@ export default class JoinTeam extends Component {
                 console.log(response)
                 if(response.data === "successful") {
                     this.setState({
-                        success_validation_message: 'Successfully Saved ' + name,
+                        success_validation_message: 'Successfully joined ' + name,
                         show_err: true
                     });
 
