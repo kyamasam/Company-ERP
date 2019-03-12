@@ -183,7 +183,9 @@ export default class Content extends Component {
                                                                 }
 
                                                                 <Link to={'/projects/'+project.id} className="text-center" style={{marginLeft:'20'+'px'}}>{project.name}</Link>
-                                                                <span className={"pull-right  label label-primary mr-2"}> {project.progress*10} % complete</span>
+                                                                {project.progress ===10 ?
+                                                                    <span className={"pull-right  label label-success mr-2"}> {project.progress*10} % complete</span>:
+                                                                    <span className={"pull-right  label label-warning mr-2"}> {project.progress*10} % complete</span>}
                                                                 <span className="clearfix"></span>
                                                             </li>
                                                         ])

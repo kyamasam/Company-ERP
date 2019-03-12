@@ -78,7 +78,7 @@ export default class EmployeeContent extends Component {
 
 
                         <div className="row">
-                            <div className="col-md-10">
+                            <div className="col-lg-6 col-md-12 col-sm-12 mr-5-md ml-2-md">
                                 <form role="form">
                                     <div className="form-group contact-search m-b-30">
                                         <input type="text" id="search" className="form-control" placeholder="Search..."/>
@@ -89,7 +89,7 @@ export default class EmployeeContent extends Component {
                                 </form>
                             </div>
                             <div className="col-md-2">
-                                <Link className="btn btn-default btn-md waves-effect waves-light m-b-30 pull-right" to='/projects/create'>
+                                <Link className="btn btn-default btn-md waves-effect waves-light m-b-30 " to='/projects/create'>
                                     Create Project<i className="md md-add"/>
                                 </Link>
 
@@ -177,9 +177,10 @@ export default class EmployeeContent extends Component {
                                                             </div>
                                                         </div>
 
-                                                        <div className="table-detail m-t-5-md col-md-2">
+
+                                                        <div className="table-detail col-md-2 mt-3">
                                                             {
-                                                                ( (project.project_team).findIndex(i => i.id === 5) )> -1?
+                                                                ( (project.project_team).findIndex(i => i.id === localStorage.getItem('user_id')) )> -1?
                                                                     <span></span>
                                                                     :
                                                                     <JoinTeam
@@ -195,14 +196,9 @@ export default class EmployeeContent extends Component {
 
                                                         </div>
 
-                                                        <div className="table-detail">
-                                                            <p className={'lead m-t-0 d-none'}>
-                                                                Project Team
-                                                            </p>
 
-                                                        </div>
 
-                                                        <div className="table-detail table-actions-bar">
+                                                        <div className="table-detail table-actions-bar mt-3">
                                                             <Link className="btn btn-default btn-md waves-effect waves-light pull-right"
                                                                   to={'/projects/'+project.id}>More Details</Link>
                                                         </div>
