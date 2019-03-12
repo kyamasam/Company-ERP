@@ -104,6 +104,19 @@ class InvoiceController extends Controller
     {
         //
     }
-
+    /**
+     * Search for a categories
+     *
+     * @param  int  $search_term
+     * @return string
+     */
+    public function search($search_term='')
+    {
+        $result= QuotationResource::collection(
+            quotation::where('name', 'LIKE', "%{$search_term}%")
+                ->where('accepted','=','1')
+                ->get());
+        return $result;
+    }
 
 }

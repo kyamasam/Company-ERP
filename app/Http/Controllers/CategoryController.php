@@ -17,7 +17,7 @@ class CategoryController extends Controller
     {
 //        CategoryResource::withoutWrapping();
 
-        return CategoryResource::collection(\App\category::paginate());
+        return CategoryResource::collection(category::all());
 
     }
 
@@ -87,5 +87,20 @@ class CategoryController extends Controller
     public function destroy(category $category)
     {
         //
+    }
+
+
+    /**
+     * Search for a categories
+     *
+     * @param  int  $search_term
+     * @return string
+     */
+    public function search($search_term='')
+    {
+        $result= CategoryResource::collection(
+            category::where('name', 'LIKE', "%{$search_term}%")
+                ->get());
+        return $result;
     }
 }

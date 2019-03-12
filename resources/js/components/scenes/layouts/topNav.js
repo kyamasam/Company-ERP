@@ -16,6 +16,9 @@ export default class TopNav extends Component {
                 const newState= Object.assign({},this.state,{
                     logged_in_user:response.data
                 });
+                localStorage.setItem('user_id',response.data.id);
+                localStorage.setItem('is_admin',response.data.is_admin);
+                console.log('userid' + localStorage.getItem('user_id'));
                 this.setState(newState);
             })
             .catch(error =>{
@@ -28,8 +31,11 @@ export default class TopNav extends Component {
         axios.post('/logout')
             .then(response=> {
                 localStorage.removeItem('user');
+                localStorage.removeItem('is');
                 console.log("removed user from local storage");
+
                 window.location.reload();
+                this.props.history.push('/login');
             })
             .catch(error=> {
                 console.log(error);
@@ -50,7 +56,7 @@ export default class TopNav extends Component {
 
 
                         <Link className='logo' to='/'>
-                            <img className="small-logo icon-c-logo" src="/skality_favicon.png" height="48"/> <span><img src="/skality_logo.png" height="30"/></span>
+                            <img className="small-logo icon-c-logo" src="/skality_favicon.png" height="37"/> <span><img src="/skality_logo.png" height="30"/></span>
                         </Link>
                          {/*Image Logo here -->*/}
                         {/*<a href="index.html" class="logo">*/}

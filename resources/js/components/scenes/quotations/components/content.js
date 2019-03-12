@@ -2,34 +2,26 @@ import {Component} from "react";
 import React from "react";
 import Footer from "../../layouts/footer"
 import Breadcrumbs from "../../layouts/breadcrumbs_2l";
+import axios from "axios";
 
 export default class Content extends Component {
     constructor(props){
         super(props);
         this.state ={
             isLoading:true,
-            quotations:[]
+            quotations:[],
         }
     }
 
     componentDidMount() {
         axios
-            .get("http://127.0.0.1:8000/api/v1/quotations")
+            .get("/api/v1/quotations")
             .then(response => {
 
                 // create an array of projects only with relevant data
                 const newQuotations = response.data.data;
                 console.log("all invoices"+ newQuotations)
 
-                // create a new "State" object without mutating
-                // the original State object.
-                // const newState = Object.assign({}, this.state, {
-                //     quotations: newQuotations
-                // });
-                // console.log(newQuotations)
-
-
-                // store the new state object in the component's state
 
                 this.setState({
                     quotations: newQuotations,
@@ -37,16 +29,49 @@ export default class Content extends Component {
                 });
             })
             .catch(error =>{
-                    if (error.response.status === 401){
-                        window.location.replace("/login");
-                    }
-                    else{
-                        console.log(error.response);
-                    }
+                    console.log(error);
                 }
             );
     };
+    onSubmit(quotation_id,e){
+        e.preventDefault();
+        console.log("data to post");
+        console.log(quotation_id);
 
+        axios.post('/api/v1/quotations/approve', {
+            quotation_id
+        })
+
+            .then(response=> {
+                console.log(response)
+                if(response.data === "successful") {
+                    this.setState({
+                        success_validation_message: 'Successfully Saved ',
+                        show_err: true
+                    });
+                    console.log("success");
+                    setTimeout(function() {
+                        this.props.history.push('/invoices/'+quotation_id);
+                    }.bind(this), 3000)
+
+                }
+                else {
+                    this.setState({err_validation_message: response.data,})
+                }
+
+            })
+            .catch(error=> {
+                console.log("we have an error");
+                console.log(error);
+                this.setState({err: true});
+            });
+    }
+    normalChange(e){
+        const {name, value} = e.target;
+        console.log("target");
+        console.log(e.target);
+        this.setState({[name]: value});
+    }
     create_table()
     {
         var array_of_invoices = [];
@@ -96,10 +121,18 @@ export default class Content extends Component {
                     <td><span className={"label label-"+confirmed_status}>{confirmed_status_text}</span></td>
                     <td>{c.created_at}</td>
                     <td>
-                        <a href="#" className="table-action-btn"><i
-                            className="md md-edit"/></a>
-                        <a href="#" className="table-action-btn"><i
-                            className="md md-file-download"/></a>
+                        {!c.accepted ?
+
+                            <form role="form" method="POST" onSubmit= {this.onSubmit.bind(this, c.id)}>
+                                <button  type="submit" className="ladda-button btn btn-primary" data-style="expand-left"><span
+                                    className="ladda-label">
+                                                            Approve
+                                                        </span><span className="ladda-spinner"></span>
+                                    <div className="ladda-progress" style={{width: '0'+'px'}}></div>
+                                </button>
+                            </form>
+                            :
+                            <span></span>}
                     </td>
 
                 </tr>
@@ -115,6 +148,10 @@ export default class Content extends Component {
 
     render() {
         var isLoading = this.state.isLoading;
+
+        let save_error= this.state.err_validation_message;
+        let save_success =this.state.success_validation_message;
+        let show_err = this.state.show_err;
         return (
 
             <div className="content-page">
@@ -127,12 +164,7 @@ export default class Content extends Component {
                                             className="btn btn-default dropdown-toggle waves-effect waves-light"
                                             data-toggle="dropdown" aria-expanded="false">Settings
                                     </button>
-                                    {/*<div className="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">*/}
-                                        {/*<a className="dropdown-item" href="#">Dropdown One</a>*/}
-                                        {/*<a className="dropdown-item" href="#">Dropdown Two</a>*/}
-                                        {/*<a className="dropdown-item" href="#">Dropdown Three</a>*/}
-                                        {/*<a className="dropdown-item" href="#">Dropdown Four</a>*/}
-                                    {/*</div>*/}
+
                                 </div>
 
                                 <Breadcrumbs{...this.props}/>
@@ -153,12 +185,16 @@ export default class Content extends Component {
                                             </div>
                                             <div className="col-sm-4">
                                                 <a href="#custom-modal"
-                                                   className="btn btn-default btn-md waves-effect waves-light m-b-30"
-                                                   data-animation="fadein" data-plugin="custommodal"
-                                                   data-overlayspeed="200" data-overlaycolor="#36404a"><i
-                                                    className="md md-add"></i> Add Customer</a>
+                                                   className="btn btn-default btn-md waves-effect waves-light m-b-30" data-overlaycolor="#36404a"><i
+                                                    className="md md-add"></i> New Quotation</a>
                                             </div>
                                         </div>
+
+                                        {
+                                            show_err !=undefined ?<span></span> :
+                                                save_error !=undefined && <div className="alert alert-danger">{save_error}</div>
+                                        }
+                                        {save_success !=undefined && <div className="alert alert-success">{save_success}</div> }
 
                                         <div className="table-responsive">
                                             <table className="table table-hover mails m-0 table table-actions-bar">
@@ -169,23 +205,8 @@ export default class Content extends Component {
                                                             <input id="action-checkbox" type="checkbox"/>
                                                                 <label htmlFor="action-checkbox"></label>
                                                         </div>
-                                                        {/*<div className="btn-group dropdown">*/}
-                                                            {/*<button type="button"*/}
-                                                                    {/*className="btn btn-white btn-sm dropdown-toggle waves-effect waves-light"*/}
-                                                                    {/*data-toggle="dropdown" aria-expanded="false"><i*/}
-                                                                {/*className="caret"></i></button>*/}
-                                                            {/*<div className="dropdown-menu"*/}
-                                                                 {/*// aria-labelledby="btnGroupDrop1"*/}
-                                                                 {/*x-placement="bottom-start"*/}
-                                                                 {/*style={{position: absolute; transform: translate3d(0px, 31px, 0px); top: 0px; left: 0px; will-change: transform;}}>*/}
-                                                                {/*<a className="dropdown-item" href="#">Dropdown One</a>*/}
-                                                                {/*<a className="dropdown-item" href="#">Dropdown Two</a>*/}
-                                                                {/*<a className="dropdown-item" href="#">Dropdown Three</a>*/}
-                                                                {/*<a className="dropdown-item" href="#">Dropdown Four</a>*/}
-                                                            {/*</div>*/}
-                                                        {/*</div>*/}
                                                     </th>
-                                                    <th>Invoice ID</th>
+                                                    <th>Quotation ID</th>
                                                     <th>Name</th>
                                                     <th>Email</th>
                                                     <th>Acceptance Status</th>
@@ -214,6 +235,12 @@ export default class Content extends Component {
                                             </table>
                                         </div>
                                     </div>
+                                    {
+                                        show_err !=undefined ?<span></span> :
+                                            save_error !=undefined && <div className="alert alert-danger">{save_error}</div>
+                                    }
+                                    {save_success !=undefined && <div className="alert alert-success">{save_success}</div> }
+
 
                                 </div>
                             </div>

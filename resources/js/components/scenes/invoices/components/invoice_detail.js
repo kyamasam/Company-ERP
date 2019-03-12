@@ -30,7 +30,7 @@ export default class Invoice_detail extends Component {
         console.log("sht"+ sth);
 
         axios
-            .get("http://127.0.0.1:8000/api/v1/invoices/"+this.props.match.params.invoice_id)
+            .get("/api/v1/invoices/"+this.props.match.params.invoice_id)
             .then(response => {
 
                 // create an array of projects only with relevant data
@@ -64,7 +64,7 @@ export default class Invoice_detail extends Component {
     };
 
     getPayments(){
-        axios.get('http://127.0.0.1:8000/api/v1/payments/invoice/9').then(response=>{
+        axios.get('/api/v1/payments/invoice/9').then(response=>{
             const Payments=response.data.data;
 
             const newPaymentState= Object.assign({},this.state,{

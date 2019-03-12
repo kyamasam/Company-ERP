@@ -7,6 +7,7 @@ import Content from "./components/content";
 export default class Tickets extends Component {
     constructor(props){
         super(props);
+
     }
 
     componentDidMount(){

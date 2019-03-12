@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\employee_project;
-use App\Http\Resources\EmployeeProjectResource;
+use App\Http\Resources\ProjectEmployeeResource;
 use App\project;
 use App\User;
 use Illuminate\Http\Request;
@@ -17,9 +17,9 @@ class EmployeeProjectController extends Controller
      */
     public function index()
     {
-//        EmployeeProjectResource::withoutWrapping();
+//        ProjectEmployeeResource::withoutWrapping();
 
-        return EmployeeProjectResource::collection(User::paginate());
+        return ProjectEmployeeResource::collection(User::all()->sortByDesc('id'));
     }
 
     /**
@@ -51,9 +51,9 @@ class EmployeeProjectController extends Controller
      */
     public function show(employee_project $employee_project)
     {
-//        EmployeeProjectResource::withoutWrapping();
+//        ProjectEmployeeResource::withoutWrapping();
 
-        return EmployeeProjectResource::collection(User::find($employee_project));
+        return ProjectEmployeeResource::collection(User::find($employee_project));
     }
 
     /**
@@ -98,8 +98,8 @@ class EmployeeProjectController extends Controller
      */
     public function projects(employee_project $employee_project)
     {
-//        EmployeeProjectResource::withoutWrapping();
+//        ProjectEmployeeResource::withoutWrapping();
 
-        return EmployeeProjectResource::collection(User::find($employee_project)->assigned_project);
+        return ProjectEmployeeResource::collection(User::find($employee_project)->assigned_project);
     }
 }

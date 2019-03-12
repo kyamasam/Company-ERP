@@ -3,19 +3,20 @@ import React from "react";
 import Footer from "../../layouts/footer"
 import Breadcrumbs from "../../layouts/breadcrumbs_2l";
 import {Link} from "react-router-dom";
+import JoinTeam from "./join_team"
 
 export default class Content extends Component {
     constructor(props){
         super(props);
         this.state = {
-            projects: []
+            projects: [],
         }
     }
 
 
     componentDidMount() {
         axios
-            .get("http://127.0.0.1:8000/api/v1/projects")
+            .get("/api/v1/projects")
             .then(response => {
 
                 // create an array of projects only with relevant data
@@ -48,6 +49,7 @@ export default class Content extends Component {
                 }
             );
     }
+
 
     componentWillMount(){
     }
@@ -117,64 +119,97 @@ export default class Content extends Component {
                                         text_progress_color ="text-custom";
                                     }
                                     return(
-                                        <div className="col-sm-4 col-lg-3 col-xs-12">
-                                            <div className="card m-b-20">
-                                                {/*<img className="card-img-top img-fluid"*/}
-                                                     {/*src="/assets/images/gallery/9.jpg" alt="Card image cap"/>*/}
-                                                <div className="card-body">
+                                        <div className='col-md-5 col-sm-12 mr-5-md ml-2-md'>
+                                            <div className="card-box m-b-10 ">
+                                                <div className="table-box opport-box">
+                                                    <div className="table-detail">
+                                                        {project.project_customers.map(function(customer,index) {
+                                                            if (index === 0){
+                                                                return(
+                                                                    <img key={index} src={customer.user_avatar} alt="img"
+                                                                         className="rounded-circle thumb-lg m-r-15"/>
 
-                                                    <h3> <Link to={'/projects/'+project.id} className={'card-title '+ 'text-center'}>{project.name}</Link></h3>
-                                                        <p className="card-text">{project.description}</p>
+                                                                );
+                                                            }
+                                                            else{
+                                                                return;
+                                                            }
+
+                                                        })}
                                                     </div>
+                                                    <div className="row">
+                                                        <div className="table-detail col-md-6">
+                                                            <div className="member-info">
+                                                                <h4 className="m-t-0"><b> <Link to={'/projects/'+project.id} className={'card-title '+ 'text-center'}>{project.name}</Link></b></h4>
+                                                                <p className="text-dark m-b-5"><b>Customers: </b>
 
-                                                    <div className="card-body">
-                                                        <p className={'lead m-t-0'}>
-                                                            Project Team
-                                                        </p>
+                                                                    <span
+                                                                    className="text-muted">
+                                                                        {project.project_customers.map(function(customer, index){
+                                                                            return(
 
-                                                        {project.project_team.map(function(team_member){
-                                                            return(
-
-                                                                    <a href="#" className="text-muted m-t-5 m-r-5" >
-                                                                        <img src={team_member.user_avatar} alt="task-user"
-                                                                             className="thumb-sm rounded-circle m-r-5 m-t-5"/> <span
-                                                                        className="font-bold">{team_member.name} ,</span></a>
-
-
-                                                            );
-                                                        })}
-
-                                                        <p className={'lead m-t-10' }>
-                                                            Customers
-                                                        </p>
-
-                                                        {project.project_customers.map(function(customer){
-                                                            return(
-
-                                                                    <a href="#" className="text-muted m-t-5 m-r-5" >
-                                                                        <img src={customer.user_avatar} alt="task-user"
-                                                                             className="thumb-sm rounded-circle m-r-5"/> <span
-                                                                        className="font-bold">{customer.name} ,</span></a>
+                                                                                <a key={index} href="#" className="text-muted m-t-5 " >
+                                                                                    {/*<img src={customer.user_avatar} alt="task-user"*/}
+                                                                                         {/*className="thumb-sm rounded-circle m-r-5"/>*/}
+                                                                                    <span
+                                                                                    className="font-bold">{customer.name} ,</span></a>
 
 
-                                                            );
-                                                        })}
+                                                                            );
+                                                                        })}</span></p>
+                                                                <p className="text-dark m-b-5"><b>Developers: </b>
+                                                                <span
+                                                                    className="text-muted">
+                                                                {project.project_team.map(function(team_member, index){
+                                                                    return(
 
-                                                        <p className={'lead m-t-10 '}>
-                                                            Progress
-                                                        </p>
+                                                                        <a key={index} href="#" className="text-muted m-t-5 " >
+                                                                            {/*<img src={team_member.user_avatar} alt="task-user"*/}
+                                                                                 {/*className="thumb-sm rounded-circle m-r-5 m-t-5"/>*/}
+                                                                            <span
+                                                                            className="font-bold">{team_member.name} ,</span></a>
 
 
-                                                        <div className="progress m-t-15">
+                                                                    );
+                                                                })}
+                                                                </span></p>
 
-                                                            <div className={progress_color}
-                                                                 role="progressbar" aria-valuenow={project.project_progress *10 } aria-valuemin="0"
-                                                                 aria-valuemax="100" style={{width: project.project_progress *10 + '%'}}>
-                                                                {project.project_progress *10}%
                                                             </div>
                                                         </div>
+
+                                                        <div className="table-detail m-t-5-md col-md-2">
+                                                            {
+                                                                ( (project.project_team).findIndex(i => i.id === 5) )> -1?
+                                                                    <span></span>
+                                                                    :
+                                                                    <JoinTeam
+                                                                        name={project.name}
+                                                                        progress={project.project_progress}
+                                                                        description={project.description}
+                                                                        developers={project.project_team}
+                                                                        customers={project.project_customers}
+                                                                        project_id={project.id}
+                                                                    />
+                                                            }
+
+
+                                                        </div>
+
+                                                        <div className="table-detail">
+                                                            <p className={'lead m-t-0 d-none'}>
+                                                                Project Team
+                                                            </p>
+
+                                                        </div>
+
+                                                        <div className="table-detail table-actions-bar">
+                                                            <Link className="btn btn-default btn-md waves-effect waves-light pull-right"
+                                                                  to={'/projects/'+project.id}>More Details</Link>
+                                                        </div>
                                                     </div>
+                                                </div>
                                             </div>
+
                                         </div>
                                     );
                                 })}
@@ -187,3 +222,61 @@ export default class Content extends Component {
         )
     }
 }
+//
+// <div className="col-sm-4 col-lg-3 col-xs-12">
+//     <div className="card m-b-20">
+//         <div className="card-body">
+//
+//             <h3> <Link to={'/projects/'+project.id} className={'card-title '+ 'text-center'}>{project.name}</Link></h3>
+//             <p className="card-text">{project.description}</p>
+//         </div>
+//
+//         <div className="card-body">
+//             <p className={'lead m-t-0'}>
+//                 Project Team
+//             </p>
+//
+//             {project.project_team.map(function(team_member){
+//                 return(
+//
+//                     <a href="#" className="text-muted m-t-5 m-r-5" >
+//                         <img src={team_member.user_avatar} alt="task-user"
+//                              className="thumb-sm rounded-circle m-r-5 m-t-5"/> <span
+//                         className="font-bold">{team_member.name} ,</span></a>
+//
+//
+//                 );
+//             })}
+//
+//             <p className={'lead m-t-10' }>
+//                 Customers
+//             </p>
+//
+//             {project.project_customers.map(function(customer){
+//                 return(
+//
+//                     <a href="#" className="text-muted m-t-5 m-r-5" >
+//                         <img src={customer.user_avatar} alt="task-user"
+//                              className="thumb-sm rounded-circle m-r-5"/> <span
+//                         className="font-bold">{customer.name} ,</span></a>
+//
+//
+//                 );
+//             })}
+//
+//             <p className={'lead m-t-10 '}>
+//                 Progress
+//             </p>
+//
+//
+//             <div className="progress m-t-15">
+//
+//                 <div className={progress_color}
+//                      role="progressbar" aria-valuenow={project.project_progress *10 } aria-valuemin="0"
+//                      aria-valuemax="100" style={{width: project.project_progress *10 + '%'}}>
+//                     {project.project_progress *10}%
+//                 </div>
+//             </div>
+//         </div>
+//     </div>
+// </div>

@@ -25,6 +25,7 @@
 
 </head>
 <body class="fixed-left">
+{{--{{ csrf_token() }}--}}
     <div id="app">
     </div>
     <script>
@@ -34,5 +35,8 @@
     <script src="{{ asset('/js/detect.js') }}"></script>
     <script src="{{ asset('/js/pace.js') }}"></script>
     <script src="{{ asset('/assets/js/waves.js') }}"></script>
+    <script>
+
+    </script>
 </body>
 </html>

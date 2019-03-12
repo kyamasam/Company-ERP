@@ -18,7 +18,7 @@ export default class Content extends Component {
 
         console.log(this.invoice_id)
         axios
-            .get("http://127.0.0.1:8000/api/v1/invoices")
+            .get("/api/v1/invoices")
             .then(response => {
 
                 // create an array of projects only with relevant data

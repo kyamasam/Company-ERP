@@ -14,7 +14,7 @@ export default class Content extends Component {
 
     componentDidMount() {
         axios
-            .get("http://127.0.0.1:8000/api/v1/payments")
+            .get("/api/v1/payments")
             .then(response => {
 
                 // create an array of projects only with relevant data

@@ -23,6 +23,7 @@ class PaymentResource extends JsonResource
             'created_at'=>$this->created_at->format('m/d/Y'),
             'updated_at'=>$this->updated_at->format('m/d/Y'),
             'payment_method'=>$this->payment_method,
+            'amount_used'=>$this->amount_used,
             'currency'=>$this->currency,
             'confirmed'=>$this->confirmed,
         ];

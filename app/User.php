@@ -36,7 +36,8 @@ class User extends Authenticatable
 
     public function assigned_project()
     {
-        return $this->belongsToMany(project::class,'employee_projects','employee_id','project_id');
+        return $this->belongsToMany(project::class,'employee_projects','project_id','employee_id');
+
     }
 
     public function proficiency()
@@ -53,6 +54,27 @@ class User extends Authenticatable
     {
         return $this->hasMany(quotation::class,'client_id');
     }
+    public function Subscription()
+    {
+        return $this->hasMany(Subscription::class,'user_id');
+    }
+
+    public function Tickets()
+    {
+        return $this->hasMany(Ticket::class,'user_id');
+    }
+    public function ToResolve()
+    {
+        return $this->hasMany(Ticket::class,'assigned_to');
+    }
+    public function NonResolvedTickets()
+    {
+        $all_tickets = Ticket::all()->where('assigned_to','=',$this->id)->where('resolved','=',0);
+        return $all_tickets;
+    }
+
+
+
 
 
 }

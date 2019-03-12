@@ -15,13 +15,14 @@ class ProjectsResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-        'id'=>$this->id,
-        'name'=>$this->name,
-        'description'=>$this->description,
-        'progress'=>$this->progress,
-        'customers' => UserResource::collection($this->user),
-        'assigned_to' => UserResource::collection($this->assigned_employee),
+         return [
+            'id'=>$this->id,
+            'name'=>$this->name,
+            'description'=>$this->description,
+            'progress'=>$this->progress,
+            'created_at'=>$this->created_at,
+            'customers' => UserResource::collection($this->user),
+            'assigned_to' => UserResource::collection($this->assigned_employee),
         ];
     }
 

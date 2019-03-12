@@ -21,6 +21,7 @@ class CreateUserProficienciesTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *

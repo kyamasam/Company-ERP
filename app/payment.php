@@ -14,4 +14,8 @@ class payment extends Model
     {
         return $this->belongsTo(project::class, 'project_id');
     }
+    public function subscription()
+    {
+        return $this->hasMany(Subscription::class, 'payment_id');
+    }
 }

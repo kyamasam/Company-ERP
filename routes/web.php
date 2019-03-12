@@ -19,7 +19,5 @@ Route::get('/user', function (Request $request) {
 });
 Route::view('/{path?}', 'app')->where('path','.*');
 
-Auth::routes();
-
 
 Route::get('/home', 'HomeController@index')->name('home');

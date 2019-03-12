@@ -15,13 +15,16 @@ class ProductResource extends JsonResource
     public function toArray($request)
     {
 //        return parent::toArray($request);
-        return [
+        $associations=explode(',',$this->association);
+
+
+       return [
             'id'=>$this->id,
             'name'=>$this->name,
             'price'=>$this->price,
-            'association'=>(array) $this->association,
+            'association'=>$this->association,
+            'subscription_duration'=>$this->subscription_duration,
             'category'=>CategoryResource::collection($this->category)
-
         ];
     }
 }

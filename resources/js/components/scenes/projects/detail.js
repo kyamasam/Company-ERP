@@ -4,7 +4,7 @@ import SideNav from "../layouts/sideNav";
 import RightNav from "../layouts/rightNav";
 import Content from "./components/project_detail";
 
-export default class Invoices extends Component {
+export default class ProjectDetail extends Component {
     constructor(props){
         super(props);
 

@@ -5,7 +5,8 @@ export default class AuthGuard extends Component {
         super(props);
         this.state={
             logged_in_user:[],
-            loading:true
+            loading:true,
+            isAdmin:0
         }
     }
 
@@ -16,16 +17,18 @@ export default class AuthGuard extends Component {
                 console.log(response.data)
                 const newState= Object.assign({},this.state,{
                     logged_in_user:response.data,
-                    loading:false
+                    loading:false,
+                    isAdmin:response.data.is_admin
                 });
                 this.setState(newState);
             })
             .catch(error =>{
                     if (error.response.status === 401){
                         var prev_location=(window.location.pathname);
-
                         localStorage.setItem('prev_location',prev_location.toString());
-                        window.location.replace("/login");
+
+                        this.props.history.push('/login');
+                        //window.location.replace("/login");
                     }
                     else{
                         console.log(error.response);

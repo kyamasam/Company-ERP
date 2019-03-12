@@ -19,7 +19,7 @@ export default class Content extends Component {
             progress:'',
             description:'',
             customers:'',
-            developers:[],
+            developers:''
 
 
         }
@@ -44,12 +44,9 @@ export default class Content extends Component {
                 this.setState(newState);
             })
             .catch(error =>{
-                    if (error.response.status === 401){
-                        window.location.replace("/login");
-                    }
-                    else{
-                        console.log(error.response);
-                    }
+
+                console.log(error.response);
+
                 }
             );
     }
@@ -63,23 +60,27 @@ export default class Content extends Component {
             description,
             customers,
             developers);
+
         axios.post('/api/v1/projects', {
             name,
             progress,
             description,
-            customers,
-            developers
+            developers,
+            customers
         })
 
             .then(response=> {
-                this.setState({err: false});
-                const { from } = this.props.location.state || { from: { pathname: '/' } };
-                console.log("previous location")
-
-
-                console.log(from.pathname);
-                this.props.history.push(from.pathname);
-                // window.location.replace(prev_location);
+               console.log(response)
+                if(response.data === "successful") {
+                    this.setState({
+                        success_validation_message: 'Successfully Saved ' + this.state.name,
+                        show_err: true
+                    });
+                    window.location.replace('/projects');
+                }
+                else {
+                    this.setState({err_validation_message: response.data,})
+                }
 
             })
             .catch(error=> {
@@ -100,13 +101,22 @@ export default class Content extends Component {
         var options = d;
         console.log("sth changed");
         console.log(options);
-        var values = [];
+        var values = '';
         for (var i = 0, l = options.length; i < l; i++) {
-            values.push(options[i].value)
+            // creating a string
+            if(i===0) {
+                //if its the first in the list then we dont need the ,
+                values += options[i].value
+            }else {
+                values +=','+ options[i].value
+
+            }
 
         }
         const data =2;
-        console.log(second.name);
+        console.log("the values ");
+
+        console.log(values)
 
         this.setState({[second.name]:values}, function () {
             this.checkState();
@@ -120,7 +130,7 @@ export default class Content extends Component {
         console.log("new developers");
         console.log(this.state.developers)
         console.log("new customers");
-        console.log(this.state.developers)
+        console.log(this.state.customers)
     }
 
 
@@ -133,6 +143,10 @@ export default class Content extends Component {
 
         let msg = (!error) ? 'Record created Successfully' : 'Oops! , Something went wrong. Try again' ;
         let name = (!error) ? 'alert alert-success' : 'alert alert-danger' ;
+        let save_error= this.state.err_validation_message;
+        let save_success =this.state.success_validation_message;
+        let show_err = this.state.show_err;
+
 
         const SearchResults = (inputValue='',callback) => {
 
@@ -146,7 +160,7 @@ export default class Content extends Component {
                         (
                             {value: c.id ,label: c.name }
 
-                            )
+                        )
 
                     );
                     callback(values);
@@ -190,33 +204,39 @@ export default class Content extends Component {
 
 
                         <div className="row">
-                            <div className="card-box col-8 offset-md-2">
-                                <h4 className="m-t-0 header-title text-center">Create a new Project</h4>
+                            <div className="card-box col-md-8 offset-md-2">
+                                <h4 className="m-t-0 header-title text-center">Create a new Project : {this.state.name}</h4>
                                 <div >
                                     {error != undefined && <div className={name} role="alert">{msg}</div>}
+
+                                    {
+                                        show_err !=undefined ?<span></span> :
+                                            save_error !=undefined && <div className="alert alert-danger">{save_error}</div>
+                                    }
+                                    {save_success !=undefined && <div className="alert alert-success">{save_success}</div> }
                                 </div>
 
                                         <div className="p-20">
                                             <form className="form-horizontal" role="form" role="form" method="POST" onSubmit= {this.onSubmit.bind(this)} >
                                                 <div className="form-group row">
-                                                    <label className="col-2 col-form-label">Project Name</label>
-                                                    <div className="col-10">
+                                                    <label className="col-md-2 col-form-label">Project Name</label>
+                                                    <div className="col-md-10">
                                                         <input type="text" className="form-control"
                                                                placeholder="Project Mat Pay" name="name" ref="name" id="name" onChange={this.normalChange.bind(this)}/>
                                                     </div>
                                                 </div>
 
                                                 <div className="form-group row">
-                                                    <label className="col-2 col-form-label">Project Description</label>
-                                                    <div className="col-10">
+                                                    <label className="col-md-2 col-form-label">Project Description</label>
+                                                    <div className="col-md-10">
                                                         <textarea className="form-control" rows="5" id="description" name="description"ref="description" onChange={this.normalChange.bind(this)}></textarea>
                                                     </div>
                                                 </div>
 
 
                                                 <div className="form-group row">
-                                                    <label className="col-2 col-form-label">Customers</label>
-                                                    <div className="col-10">
+                                                    <label className="col-md-2 col-form-label">Customers</label>
+                                                    <div className="col-md-10">
                                                         <AsyncSelect name="customers"  loadOptions={SearchResults}
                                                                      defaultOptions={
                                                                          this.state.users.map(
@@ -234,8 +254,8 @@ export default class Content extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="form-group row">
-                                                    <label className="col-2 col-form-label">Developers</label>
-                                                    <div className="col-10">
+                                                    <label className="col-md-2 col-form-label">Developers</label>
+                                                    <div className="col-md-10">
                                                         <AsyncSelect id="developers" value={SearchResults.value}  name="developers" ref="developers"  loadOptions={SearchResults}
                                                                      onChange={this.handleChange.bind(this)}
                                                                      defaultOptions={
@@ -252,10 +272,10 @@ export default class Content extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="form-group row">
-                                                    <label className="col-2 col-form-label">Progress</label>
+                                                    <label className="col-md-2 col-form-label">Progress</label>
                                                     <div className="col-md-10">
                                                         <input className="form-control" type="range" name="progress" ref="progress" id="progress" min="0"
-                                                               max="10" value={20} onChange={this.normalChange.bind(this)} />
+                                                               max="10" onChange={this.normalChange.bind(this)} />
                                                     </div>
                                                 </div>
                                                 <div className="form-group row">

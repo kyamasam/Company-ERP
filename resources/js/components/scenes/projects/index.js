@@ -3,6 +3,7 @@ import TopNav from "../layouts/topNav";
 import SideNav from "../layouts/sideNav";
 import RightNav from "../layouts/rightNav";
 import Content from "./components/content";
+import EmployeeContent from "./components/employee_project";
 
 export default class Projects extends Component {
     constructor(props){
@@ -27,7 +28,14 @@ export default class Projects extends Component {
             <div id="wrapper">
                 <TopNav/>
                 <SideNav/>
-                <Content{...this.props}/>
+                {
+                    (localStorage.getItem('is_admin') ==='1') ?
+                        <Content{...this.props}/>
+                        :
+                        <EmployeeContent{...this.props}/>
+
+                }
+
                 <RightNav/>
             </div>
         );
