@@ -84,97 +84,89 @@ export default class InterestingProjects extends Component {
                                         text_progress_color = "text-custom";
                                     }
                                     return (
-
-                                        <div className='col-md-5 col-sm-12 mr-5-md ml-2-md'>
+                                        <div className='col-md-6 col-sm-12 mr-5-md ml-2-md'>
                                             <div className="card-box m-b-10 ">
                                                 <div className="table-box opport-box">
-
                                                     <div className="table-detail">
-                                                        {project.project_customers.map(function (customer, index) {
-                                                            if (index === 0) {
-                                                                return (
-                                                                    <img src={customer.user_avatar} alt="img"
+                                                        {project.project_customers.map(function(customer,index) {
+                                                            if (index === 0){
+                                                                return(
+                                                                    <img key={index} src={customer.user_avatar} alt="img"
                                                                          className="rounded-circle thumb-lg m-r-15"/>
 
                                                                 );
                                                             }
-                                                            else {
+                                                            else{
                                                                 return;
                                                             }
 
                                                         })}
                                                     </div>
+                                                    <div className="row">
+                                                        <div className="table-detail col-md-6">
+                                                            <div className="member-info">
+                                                                <h4 className="m-t-0"><b> <Link to={'/projects/'+project.id} className={'card-title '+ 'text-center'}>{project.name}</Link></b></h4>
+                                                                <p className="text-dark m-b-5"><b>Customers: </b>
 
-                                                    <div className="table-detail">
-                                                        <div className="member-info">
-                                                            <h4 className="m-t-0"><b> <Link
-                                                                to={'/projects/' + project.id}
-                                                                className={'card-title ' + 'text-center'}>{project.name}</Link></b>
-                                                            </h4>
-                                                            <p className="text-dark m-b-5"><b>Customers: </b>
+                                                                    <span
+                                                                        className="text-muted">
+                                                                        {project.project_customers.map(function(customer, index){
+                                                                            return(
 
-                                                                <span
-                                                                    className="text-muted">
-                                                                    {project.project_customers.map(function (customer) {
-                                                                        return (
-
-                                                                            <a href="#" className="text-muted m-t-5 ">
-                                                                                {/*<img src={customer.user_avatar} alt="task-user"*/}
-                                                                                {/*className="thumb-sm rounded-circle m-r-5"/>*/}
-                                                                                <span
-                                                                                    className="font-bold">{customer.name} ,</span></a>
+                                                                                <a key={index} href="#" className="text-muted m-t-5 " >
+                                                                                    {/*<img src={customer.user_avatar} alt="task-user"*/}
+                                                                                    {/*className="thumb-sm rounded-circle m-r-5"/>*/}
+                                                                                    <span
+                                                                                        className="font-bold">{customer.name} ,</span></a>
 
 
-                                                                        );
-                                                                    })}</span></p>
-                                                            <p className="text-dark m-b-5"><b>Developers: </b>
-                                                                <span
-                                                                    className="text-muted">
-                                                            {project.project_team.map(function (team_member) {
-                                                                return (
+                                                                            );
+                                                                        })}</span></p>
+                                                                <p className="text-dark m-b-5"><b>Developers: </b>
+                                                                    <span
+                                                                        className="text-muted">
+                                                                {project.project_team.map(function(team_member, index){
+                                                                    return(
 
-                                                                    <a href="#" className="text-muted m-t-5 ">
-                                                                        {/*<img src={team_member.user_avatar} alt="task-user"*/}
-                                                                        {/*className="thumb-sm rounded-circle m-r-5 m-t-5"/>*/}
-                                                                        <span
-                                                                            className="font-bold">{team_member.name} ,</span></a>
+                                                                        <a key={index} href="#" className="text-muted m-t-5 " >
+                                                                            {/*<img src={team_member.user_avatar} alt="task-user"*/}
+                                                                            {/*className="thumb-sm rounded-circle m-r-5 m-t-5"/>*/}
+                                                                            <span
+                                                                                className="font-bold">{team_member.name} ,</span></a>
 
 
-                                                                );
-                                                            })}
-                                                            </span></p>
+                                                                    );
+                                                                })}
+                                                                </span></p>
+
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div className="table-detail col-md-2 mt-3">
+                                                            {
+                                                                ( (project.project_team).findIndex(i => i.id === localStorage.getItem('user_id')) )> -1?
+                                                                    <span></span>
+                                                                    :
+                                                                    <JoinTeam
+                                                                        name={project.name}
+                                                                        progress={project.project_progress}
+                                                                        description={project.description}
+                                                                        developers={project.project_team}
+                                                                        customers={project.project_customers}
+                                                                        project_id={project.id}
+                                                                    />
+                                                            }
+
 
                                                         </div>
-                                                    </div>
-
-                                                    <div className="table-detail lable-detail">
-                                                        {
-                                                            ( (project.project_team).findIndex(i => i.id === 5) )> -1?
-                                                                <span></span>
-                                                                :
-                                                                <JoinTeam
-                                                                    name={project.name}
-                                                                    progress={project.project_progress}
-                                                                    description={project.description}
-                                                                    developers={project.project_team}
-                                                                    customers={project.project_customers}
-                                                                    project_id={project.id}/>
-
-                                                        }
-                                                            </div>
-
-                                                    <div className="table-detail">
-                                                        <p className={'lead m-t-0 d-none'}>
-                                                            Project Team
-                                                        </p>
 
 
-                                                    </div>
 
-                                                    <div className="table-detail table-actions-bar">
-                                                        <Link
-                                                            className="btn btn-default btn-md waves-effect waves-light pull-right"
-                                                            to={'/projects/' + project.id}>More Details</Link>
+                                                        <div className="table-detail table-actions-bar mt-3">
+                                                            <Link className="btn btn-default btn-md waves-effect waves-light pull-right"
+                                                                  to={'/projects/'+project.id}>More Details</Link>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

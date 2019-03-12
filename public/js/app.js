@@ -370,7 +370,7 @@ var TopNav = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'topbar' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'topbar-left' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'text-center padding-sm-10' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["b" /* Link */], { className: 'logo', to: '/' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'small-logo icon-c-logo', src: '/skality_favicon.png', height: '37' }), ' ', __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/skality_logo.png', height: '30' }))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('nav', { className: 'navbar-custom' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('ul', { className: 'list-inline float-right mb-0' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('li', { className: 'list-inline-item dropdown notification-list' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('a', { className: 'nav-link dropdown-toggle arrow-none waves-light waves-effect',
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'topbar' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'topbar-left' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'text-center padding-sm-10' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["b" /* Link */], { className: 'logo', to: '/' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'small-logo icon-c-logo', src: '/skality_favicon.png' }), ' ', __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/skality_logo.png', height: '30' }))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('nav', { className: 'navbar-custom' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('ul', { className: 'list-inline float-right mb-0' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('li', { className: 'list-inline-item dropdown notification-list' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('a', { className: 'nav-link dropdown-toggle arrow-none waves-light waves-effect',
                 'data-toggle': 'dropdown',
                 href: '#', role: 'button',
                 'aria-haspopup': 'false', 'aria-expanded': 'false' }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'dripicons-bell noti-icon' }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'badge badge-pink noti-icon-badge' }, '4')), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'dropdown-menu dropdown-menu-right dropdown-arrow dropdown-lg',
@@ -87200,34 +87200,32 @@ var InterestingProjects = function (_Component) {
                     progress_color = "progress-bar progress-bar-custom";
                     text_progress_color = "text-custom";
                 }
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-md-5 col-sm-12 mr-5-md ml-2-md" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "card-box m-b-10 " }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-box opport-box" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail" }, project.project_customers.map(function (customer, index) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "col-md-6 col-sm-12 mr-5-md ml-2-md" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "card-box m-b-10 " }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-box opport-box" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail" }, project.project_customers.map(function (customer, index) {
                     if (index === 0) {
-                        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { src: customer.user_avatar, alt: "img",
+                        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", { key: index, src: customer.user_avatar, alt: "img",
                             className: "rounded-circle thumb-lg m-r-15" });
                     } else {
                         return;
                     }
-                })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "member-info" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "m-t-0" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, " ", __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_router_dom__["b" /* Link */], {
-                    to: '/projects/' + project.id,
-                    className: 'card-title ' + 'text-center' }, project.name))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-dark m-b-5" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Customers: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
-                    className: "text-muted" }, project.project_customers.map(function (customer) {
-                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "text-muted m-t-5 " }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+                })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "row" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail col-md-6" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "member-info" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h4", { className: "m-t-0" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, " ", __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_router_dom__["b" /* Link */], { to: '/projects/' + project.id, className: 'card-title ' + 'text-center' }, project.name))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-dark m-b-5" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Customers: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+                    className: "text-muted" }, project.project_customers.map(function (customer, index) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { key: index, href: "#", className: "text-muted m-t-5 " }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
                         className: "font-bold" }, customer.name, " ,"));
                 }))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: "text-dark m-b-5" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("b", null, "Developers: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
-                    className: "text-muted" }, project.project_team.map(function (team_member) {
-                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { href: "#", className: "text-muted m-t-5 " }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+                    className: "text-muted" }, project.project_team.map(function (team_member, index) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", { key: index, href: "#", className: "text-muted m-t-5 " }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
                         className: "font-bold" }, team_member.name, " ,"));
-                }))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail lable-detail" }, project.project_team.findIndex(function (i) {
-                    return i.id === 5;
+                }))))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail col-md-2 mt-3" }, project.project_team.findIndex(function (i) {
+                    return i.id === localStorage.getItem('user_id');
                 }) > -1 ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__projects_components_join_team__["a" /* default */], {
                     name: project.name,
                     progress: project.project_progress,
                     description: project.description,
                     developers: project.project_team,
                     customers: project.project_customers,
-                    project_id: project.id })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", { className: 'lead m-t-0 d-none' }, "Project Team")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail table-actions-bar" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_router_dom__["b" /* Link */], {
-                    className: "btn btn-default btn-md waves-effect waves-light pull-right",
-                    to: '/projects/' + project.id }, "More Details")))));
+                    project_id: project.id
+                })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "table-detail table-actions-bar mt-3" }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_router_dom__["b" /* Link */], { className: "btn btn-default btn-md waves-effect waves-light pull-right",
+                    to: '/projects/' + project.id }, "More Details"))))));
             })));
         }
     }]);

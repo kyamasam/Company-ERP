@@ -7638,6 +7638,13 @@ div.hopscotch-bubble .hopscotch-bubble-arrow-container.down .hopscotch-bubble-ar
     width: 1170px;
   }
 }
+@media (min-width: 420px) {
+    .logo .icon-c-logo {
+        /*display: inline-block !important;*/
+        /*line-height: 70px !important;*/
+        height: 42px;
+    }
+}
 
 @media (max-width: 419px) {
   .topbar-left {
@@ -7646,6 +7653,7 @@ div.hopscotch-bubble .hopscotch-bubble-arrow-container.down .hopscotch-bubble-ar
   .logo .icon-c-logo {
     display: inline-block !important;
     line-height: 70px !important;
+      height: 39px;
   }
   .logo span {
     display: none !important;
