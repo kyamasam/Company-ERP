@@ -5,7 +5,7 @@ export default class Footer extends Component {
     render() {
         return (
             <footer className="footer text-right">
-                &copy; 2016 - 2018. <Link to="/">Skality</Link>. All rights reserved.
+                &copy; 2016 - 2018. <Link to="/">Sefapay</Link>. All rights reserved.
             </footer>
         )
     }

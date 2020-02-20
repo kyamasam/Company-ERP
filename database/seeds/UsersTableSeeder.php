@@ -16,14 +16,15 @@ class UsersTableSeeder extends Seeder
 
         \Illuminate\Support\Facades\DB::table('users')->insert([
             'name'=>'developers',
-            'email'=>'developers@skality.com',
+            'email'=>'developers@Sefapay.com',
             'password'=>Hash::make('123456'),
             'type'=>'1',
-            'username'=>'skality',
+            'is_admin'=>1,
+            'username'=>'Sefapay',
             ]);
         \Illuminate\Support\Facades\DB::table('users')->insert([
             'name'=>'oscar',
-            'email'=>'oscar@skality.com',
+            'email'=>'oscar@Sefapay.com',
             'password'=>Hash::make('123456'),
             'type'=>'1',
             'is_employee'=>'1',

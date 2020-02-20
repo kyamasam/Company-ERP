@@ -62,7 +62,7 @@ class Register extends Component {
                     <div className="wrapper-page">
                         <div className="card-box">
                             <div className="panel-heading mb-3">
-                                <h4 className="text-center"><img src="/skality_logo.png" height="50"/></h4>
+                                <h4 className="text-center"><img src="/sefapay_logo_full_blue.png" height="50"/></h4>
                                 <Link to='/register'><h4 className="text-center"> Register <strong className="text-custom"></strong></h4></Link>
                             </div>
 

@@ -130,8 +130,8 @@ export default class Invoice_detail extends Component {
                                                     <div className="clearfix">
                                                         <div className="pull-left">
                                                             <h4 className="text-right">
-                                                                <img src="/skality_logo.png" height={"55"+ "px"}
-                                                                                            alt="Skality"/></h4>
+                                                                <img src="/sefapay_logo_full_blue.png" height={"55"+ "px"}
+                                                                                            alt="Sefapay"/></h4>
                                                         </div>
                                                         <div className="pull-right">
                                                             <h4 className="font-16">Invoice #<strong>{inv.id}</strong> <br/>
@@ -159,7 +159,7 @@ export default class Invoice_detail extends Component {
                                                             </div>
                                                             <div className="pull-right m-t-30">
                                                                 <address>
-                                                                    <strong>Skality Enteprises.</strong><br/>
+                                                                    <strong>Sefapay Enteprises.</strong><br/>
                                                                     KMA Centre Mara Road 2 nd floor office 212<br/>
                                                                     Nairobi Kenya<br/>
                                                                     <abbr title="Phone">P:</abbr> (+254) 716 651687 / (+254) +254 716 058638

@@ -13,9 +13,9 @@
         ]); ?>
     </script>
 
-    <title>Skality Client</title>
+    <title>Sefapay Client</title>
     <!--favicon-->
-    <link rel="icon" type="image/png" href="{{ asset('/skality_favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('/Sefapay_favicon.png') }}">
     <!-- Styles -->
     <link href="{{asset('/css/app.css') }}" rel="stylesheet">
     <link href="{{asset('/assets/css/icons.css')}}" rel="stylesheet" type="text/css" />

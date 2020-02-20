@@ -71,7 +71,7 @@ class Login extends Component {
                     <div className="card-box">
                         <div className="panel-heading">
                             <div className="panel-heading ">
-                                <h4 className="text-center"><img src="/skality_logo.png" height="50"/></h4>
+                                <h4 className="text-center"><img src="/sefapay_logo_full_blue.png" height="50"/></h4>
                                 <Link to='/login'><h4 className="text-center"> Sign In <strong className="text-custom"></strong></h4></Link>
                             </div>
                         </div>
