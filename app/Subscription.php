@@ -9,7 +9,7 @@ class Subscription extends Model
 //    protected $fillable =['product_id','user_id', 'start_date', 'expiry_date', 'payment_id'];
     protected $guarded=['start_date','expiry_date'];
     public function Product(){
-        return $this->belongsTo(product::class , 'product_id');
+        return $this->belongsTo(Product::class , 'product_id');
     }
     public function Payment(){
         return $this->belongsTo(payment::class,'payment_id');

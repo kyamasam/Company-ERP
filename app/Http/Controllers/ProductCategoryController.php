@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\product_category;
+use App\ProductCategory;
 use Illuminate\Http\Request;
 
 class ProductCategoryController extends Controller
@@ -41,10 +41,10 @@ class ProductCategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\product_category  $product_category
+     * @param  \App\ProductCategory  $product_category
      * @return \Illuminate\Http\Response
      */
-    public function show(product_category $product_category)
+    public function show(ProductCategory $product_category)
     {
         //
     }
@@ -52,10 +52,10 @@ class ProductCategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\product_category  $product_category
+     * @param  \App\ProductCategory  $product_category
      * @return \Illuminate\Http\Response
      */
-    public function edit(product_category $product_category)
+    public function edit(ProductCategory $product_category)
     {
         //
     }
@@ -64,10 +64,10 @@ class ProductCategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\product_category  $product_category
+     * @param  \App\ProductCategory  $product_category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, product_category $product_category)
+    public function update(Request $request, ProductCategory $product_category)
     {
         //
     }
@@ -75,10 +75,10 @@ class ProductCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\product_category  $product_category
+     * @param  \App\ProductCategory  $product_category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(product_category $product_category)
+    public function destroy(ProductCategory $product_category)
     {
         //
     }

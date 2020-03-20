@@ -2,7 +2,7 @@
 
 use Faker\Generator as Faker;
 
-$factory->define(\App\product::class, function (Faker $faker) {
+$factory->define(\App\Product::class, function (Faker $faker) {
     return [
         'name'=> $faker->streetName,
         'price'=> $faker->numberBetween($min=0, $max=20000),

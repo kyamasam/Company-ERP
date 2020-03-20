@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\SubscriptionResource;
 use App\payment;
-use App\product;
+use App\Product;
 use App\Subscription;
 use App\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -83,13 +83,13 @@ class SubscriptionController extends Controller
         //get the payment the user claims to have made
         $payment = payment::find($request->payment_id);
         //get the product they're subscribing to
-        $product = product::find($request->product_id);
+        $product = Product::find($request->product_id);
         $total_assoc_prices=$product->price;
         //get all other products associated with it
         $associated_products= array($product->association);
 //        dd($associated_products);
         foreach ($associated_products as $prod){
-            $assoc_product = product::find($prod);
+            $assoc_product = Product::find($prod);
             $total_assoc_prices += $assoc_product->price;
         }
         //check if they have enough money in the selected payment
@@ -178,13 +178,13 @@ class SubscriptionController extends Controller
         //get the payment the user claims to have made
         $payment = payment::find($request->payment_id);
         //get the product they're subscribing to
-        $product = product::find($request->product_id);
+        $product = Product::find($request->product_id);
         $total_assoc_prices=$product->price;
         //get all other products associated with it
         $associated_products= array($product->association);
 //        dd($associated_products);
         foreach ($associated_products as $prod){
-            $assoc_product = product::find($prod);
+            $assoc_product = Product::find($prod);
             $total_assoc_prices += $assoc_product->price;
         }
         //check if they have enough money in the selected payment

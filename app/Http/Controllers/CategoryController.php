@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\category;
+use App\Category;
 use App\Http\Resources\CategoryResource;
 use Illuminate\Http\Request;
 
@@ -17,7 +17,7 @@ class CategoryController extends Controller
     {
 //        CategoryResource::withoutWrapping();
 
-        return CategoryResource::collection(category::all());
+        return CategoryResource::collection(Category::all());
 
     }
 
@@ -45,23 +45,23 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\category  $category
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(category $category)
+    public function show(Category $category)
     {
 //        CategoryResource::withoutWrapping();
 
-        return CategoryResource::collection(\App\category::find($category));
+        return CategoryResource::collection(\App\Category::find($category));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\category  $category
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(category $category)
+    public function edit(Category $category)
     {
         //
     }
@@ -70,10 +70,10 @@ class CategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\category  $category
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, category $category)
+    public function update(Request $request, Category $category)
     {
         //
     }
@@ -81,10 +81,10 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\category  $category
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(category $category)
+    public function destroy(Category $category)
     {
         //
     }
@@ -99,7 +99,7 @@ class CategoryController extends Controller
     public function search($search_term='')
     {
         $result= CategoryResource::collection(
-            category::where('name', 'LIKE', "%{$search_term}%")
+            Category::where('name', 'LIKE', "%{$search_term}%")
                 ->get());
         return $result;
     }

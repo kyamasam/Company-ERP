@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductResource;
-use App\product;
-use App\product_category;
+use App\Product;
+use App\ProductCategory;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
@@ -19,7 +19,7 @@ class ProductController extends Controller
     {
 //        ProductResource::withoutWrapping();
 
-        return ProductResource::collection(\App\product::all()->sortByDesc('id'));
+        return ProductResource::collection(\App\Product::all()->sortByDesc('id'));
 
     }
 
@@ -59,7 +59,7 @@ class ProductController extends Controller
             }
         }
 
-        $product = new product;
+        $product = new Product;
         $product->name = $request->name;
         $product->price = $request->price;
         $product->subscription_duration = $request->subscription_duration;
@@ -68,7 +68,7 @@ class ProductController extends Controller
 
 
         foreach ($categories as $category){
-            $product_category=  new product_category;
+            $product_category=  new ProductCategory;
             $product_category->product_id = $product->id;
             $product_category->category_id = $category;
             $product_category->save();
@@ -82,10 +82,10 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\product  $product
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(product $product)
+    public function show(Product $product)
     {
 //        ProductResource::withoutWrapping();
 
@@ -95,10 +95,10 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\product  $product
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(product $product)
+    public function edit(Product $product)
     {
         //
     }
@@ -107,10 +107,10 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\product  $product
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, product $product)
+    public function update(Request $request, Product $product)
     {
         $validator=Validator::make($request->all(), [
             'name' => 'required',
@@ -139,7 +139,7 @@ class ProductController extends Controller
 
 
         foreach ($categories as $category){
-            $product_category=  new product_category;
+            $product_category=  new ProductCategory;
             $product_category->product_id = $edit_product->id;
             $product_category->category_id = $category;
             $product_category->save();
@@ -152,10 +152,10 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\product  $product
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(product $product)
+    public function destroy(Product $product)
     {
         //
     }
@@ -169,7 +169,7 @@ class ProductController extends Controller
     public function search($search_term='')
     {
         $result= ProductResource::collection(
-            product::where('name', 'LIKE', "%{$search_term}%")
+            Product::where('name', 'LIKE', "%{$search_term}%")
                 ->get());
         return $result;
     }
