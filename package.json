@@ -30,7 +30,7 @@
         "jquery-sparkline": "^2.4.0",
         "jquery.nicescroll": "^3.7.6",
         "jquery.scrollto": "^2.1.2",
-        "node-sass": "^4.13.1",
+        "node-sass": "^7.0.0",
         "peity": "^3.3.0",
         "react-pace-progress": "^1.0.2",
         "react-redux": "^5.1.1",
